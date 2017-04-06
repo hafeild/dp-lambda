@@ -16,6 +16,13 @@ to install any gems that were added to the Gemfile:
 
     bundler install
 
+After the initial clone, do the following:
+
+    cp application.EXAMPLE.yml config/application.yml
+
+and fill out `config/application.yml`. For development, nothing really needs to
+be filled in. This file is in the ignore list, so it will never be committed.
+
 After the initial clone, after any pull, and after any time you add a new
 migration, run the migrations in the test and development environments:
 
