@@ -32,4 +32,6 @@ Development of this project is funded through the Digital Liberal Arts
 Grant from The Davis Foundation to Endicott College (awarded November 2016).
 
 Some of this code, mostly concerning user management, was modified from 
-[Code Annotator](https://github.com/hafeild/code-annotator).
+[Code Annotator](https://github.com/hafeild/code-annotator). Much of that
+was based on the wonderful [Rails Tutorial](https://www.railstutorial.org/) by
+Michael Hartl. 

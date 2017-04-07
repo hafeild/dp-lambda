@@ -32,3 +32,21 @@ migration, run the migrations in the test and development environments:
 Any time you want to run a test, do:
 
     bundler exec rake test
+
+To start the dev server, do:
+
+    /bin/rails s
+
+That will fire up a server at http://localhost:3000 (3000 is the default port,
+but if it's in use, another may be used; the port used will be displayed
+in the output of the command).
+
+When signing up, resetting your password, or changing your email address in
+development mode, no real email will be sent. Instead, you can view the
+appropriate email (and access the necessary activation link) by visiting
+one of the following:
+
+  * new account: http://localhost:3000/rails/mailers/user_mailer/account_activation
+  * email change: http://localhost:3000/rails/mailers/user_mailer/email_verification
+  * password reset: http://localhost:3000/rails/mailers/user_mailer/password_reset
+

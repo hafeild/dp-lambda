@@ -19,9 +19,7 @@ class User < ApplicationRecord
   ## - updated_on
 
   attr_accessor :remember_token, :activation_token, :reset_token
-
-  has_secure_token :verification_token
-  has_secure_token :session_token
+  
   has_secure_password
 
   ## Emails will be lowercased.
