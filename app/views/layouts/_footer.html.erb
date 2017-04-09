@@ -1,13 +1,19 @@
-<% unless yield(:no_footer) %>
-<footer class="footer">
-  <small>
-    Alice
-  </small>
-  <nav>
-    <ul>
-      <li>About</li>
-      <li>Contact</li>
-    </ul>
-  </nav>
-</footer>
-<% end %>
+<nav class="navbar navbar-default footer">
+  <div class="container-fluid">
+
+    <div class="navbar-header">
+      <div id="logo" class="navbar-brand">
+        <%= link_to "Alice", root_path %>
+        <span class="version">v<%= VERSION_STRING %></span>
+      </div>
+    </div>
+
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li><%= link_to 'About', '#' %></li>
+        <li><%= link_to 'Contact', '#' %></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
