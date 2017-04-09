@@ -24,10 +24,23 @@ class SessionsController < ApplicationController
     end
   end
 
-  ## Log the user out (assuming they are logged in).
+  ## Log the user out if they're logged in; display an error message otherwise.
   def destroy
-    log_out if logged_in? 
-    redirect_to :root
+    ## The user is logged in; log them out and send them to the homepage.
+    if logged_in?
+      log_out 
+      flash[:info] = "You are now logged out."
+      redirect_to :root
+      
+    ## The user isn't logged in; display a message on the current page.
+    else
+      flash[:warning] = "No user is currently logged in."
+      if request.referrer and not request.referrer.empty?
+        redirect_to request.referrer
+      else
+        redirect_to :root
+      end
+    end
   end
 
 end

@@ -34,11 +34,22 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     # Simulate a user clicking logout in a second window.
     delete logout_path
     follow_redirect!
+    assert_template 'home'
     assert_select "a[href=?]", login_path
     assert_select "a[href=?]", logout_path,      count: 0
     assert_select "a[href=?]", user_path(@user), count: 0
   end
 
+  test "logout when not logged in shows an error" do
+    ## We can go to any page; what we're checking is that we're directed back
+    ## to the page we started at.
+    get login_path
+    response = delete logout_path, headers: {"HTTP_REFERER" => login_path}
+    assert_redirected_to login_path
+    follow_redirect!
+    assert (flash.key?(:warning) and 
+      flash[:warning] == "No user is currently logged in." )
+  end
 
   test "login with remembering" do
     cookies.delete('remember_token')
