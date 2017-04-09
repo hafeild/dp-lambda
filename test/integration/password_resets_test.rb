@@ -87,6 +87,28 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_match user.username, body
   end
 
+  test "token only works once" do
+    post password_resets_path, params: {
+      password_reset: { username: @user.username } }
+    user = assigns(:user)
+    # Right username, right token
+    get edit_password_reset_path(user.reset_token, username: user.username)
+    assert_template 'password_resets/edit'
+
+    patch password_reset_path(user.reset_token), params: {
+      username: user.username,
+      user: { password:              "password_new",
+              password_confirmation: "password_new" } }
+
+
+    get edit_password_reset_path(user.reset_token, username: user.username)
+    assert_not flash.empty?
+    assert_redirected_to root_url
+
+    user = assigns(:user)
+    assert user.reset_digest.nil?
+  end
+
   test "invalid password and confirmation raises an error" do
     post password_resets_path, params: {
       password_reset: { username: @user.username } }
