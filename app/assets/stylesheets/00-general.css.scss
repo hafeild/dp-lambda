@@ -1,2 +1,22 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.instructions {
+  font-size: 140%
+}
+
+.main-view-container {
+  padding-right: 5em;
+  padding-left: 5em;
+}
+
+/* Forms */
+.required-input {
+  color: $brand-danger;
+  font-weight: bold;
+}
+
+.form-container {
+  margin-top: 2em;
+  margin-bottom: 3em;
+}

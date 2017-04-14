@@ -5,10 +5,9 @@ class EmailVerificationsController < ApplicationController
       user.activate
       log_in user
       flash[:success] = "Email verified!"
-      redirect_to :projects
+      redirect_to root_url
     else
-      flash[:danger] = "Invalid activation link #{user.activated}; "+
-        "#{user.authenticated?(:activation, params[:id])}"
+      flash[:danger] = "Invalid activation link."
       redirect_to root_url
     end
   end

@@ -43,10 +43,10 @@ in the output of the command).
 
 When signing up, resetting your password, or changing your email address in
 development mode, no real email will be sent. Instead, you can view the
-appropriate email (and access the necessary activation link) by visiting
-one of the following:
+appropriate email (and access the necessary activation link) by looking at
+the server output (the contents of the email message will be printed in
+it entirety to the console, so you can copy and paste the confirmation link).
 
-  * new account: http://localhost:3000/rails/mailers/user_mailer/account_activation
-  * email change: http://localhost:3000/rails/mailers/user_mailer/email_verification
-  * password reset: http://localhost:3000/rails/mailers/user_mailer/password_reset
+
+
 

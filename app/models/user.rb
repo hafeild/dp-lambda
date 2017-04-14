@@ -48,6 +48,12 @@ class User < ApplicationRecord
   validates :password, presence: true,
     length: {minimum: 8, maximum: 50}, allow_nil: true
 
+  ## Validate role.
+  validates :role, presence: true
+
+  ## Validate field of study.
+  validates :field_of_study, presence: true
+
   ## Uses BCrypt to salt/encrypt a password.
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -101,9 +107,10 @@ class User < ApplicationRecord
 
   # Sets the password reset attributes.
   def create_reset_digest
-    self.reset_token = User.new_token
+    update_attribute(:reset_token, User.new_token)
     update_attribute(:reset_digest,  User.digest(reset_token))
     update_attribute(:reset_sent_at, Time.zone.now)
+    save
   end
 
   # Sends password reset email.
