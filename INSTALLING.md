@@ -35,7 +35,7 @@ Any time you want to run a test, do:
 
 To start the dev server, do:
 
-    /bin/rails s
+    bin/rails s
 
 That will fire up a server at http://localhost:3000 (3000 is the default port,
 but if it's in use, another may be used; the port used will be displayed
