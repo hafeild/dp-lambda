@@ -5,11 +5,11 @@ one:
   summary: MyText
   description: MyText
   thumbnail_url: MyString
-  user: MyString
+  creator: foo
 
 two:
   name: MyString
   summary: MyText
   description: MyText
   thumbnail_url: MyString
-  user: MyString
+  creator: bar
