@@ -1,0 +1,2 @@
+class WebResource < ApplicationRecord
+end

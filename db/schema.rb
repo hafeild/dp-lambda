@@ -10,7 +10,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405010720) do
+ActiveRecord::Schema.define(version: 20170415115124) do
+
+  create_table "examples", force: :cascade do |t|
+    t.integer  "dataset_id"
+    t.integer  "software_id"
+    t.integer  "analysis_id"
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "examples_software", force: :cascade do |t|
+    t.integer  "software_id"
+    t.integer  "example_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "software", force: :cascade do |t|
+    t.string   "name"
+    t.text     "summary"
+    t.text     "description"
+    t.string   "thumbnail_url"
+    t.integer  "creator_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "software_tags", force: :cascade do |t|
+    t.integer  "software_id"
+    t.integer  "tag_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "software_web_resources", force: :cascade do |t|
+    t.integer  "software_id"
+    t.integer  "web_resource_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
@@ -29,6 +76,13 @@ ActiveRecord::Schema.define(version: 20170405010720) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  create_table "web_resources", force: :cascade do |t|
+    t.string   "url"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
 end

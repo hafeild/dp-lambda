@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :software
   root    'static_pages#home'
   get     'password_resets/edit'
   get     'signup' => 'users#new'
