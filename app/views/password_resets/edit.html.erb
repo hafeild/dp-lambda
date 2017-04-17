@@ -11,7 +11,7 @@
     <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
-      <%= hidden_field :username, @user.username %>
+      <input type="hidden" name="user[username]" value="<%= @user.username %>"/>
 
       <div class="form-group">
         <%= f.label :password %>

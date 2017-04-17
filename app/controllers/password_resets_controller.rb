@@ -54,7 +54,16 @@ class PasswordResetsController < ApplicationController
     # Before filters
 
     def get_user
-      @user = User.find_by(username: params[:username])
+      begin
+        if params.key? :username
+          @user = User.find_by(username: params[:username])
+        elsif params.key?(:user) and params[:user].key?(:username)
+          @user = User.find_by(username: params[:user][:username])
+        end
+      rescue
+        flash[:danger] = "Your request could not be completed."
+        redirect_to root_url
+      end
     end
 
 
