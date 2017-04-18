@@ -1,6 +1,6 @@
 <% provide(:title, @software.name) %>
-<div class="container">
-  <h1><%= @software.name %>
+<div class="container software-page" data-software-id="<%= @software.id %>">
+  <h1><span class="name"><%= @software.name %></span>
   <% if can_edit? %>
     <a href="<%= edit_software_path(@software.id) %>">
       <button type="button" class="btn btn-default btn-md">
@@ -10,12 +10,15 @@
   <% end %>
   </h1>
 
-  <h2>Summary</h2>
-  <%= @software.summary %><br/>
-  
+  <div class="summary-wrapper">
+    <h2>Summary</h2>
+    <span class="summary"><%= @software.summary %></span>
+  </div>
 
-  <h2>Description</h2>
-  <%= @software.description %>
+  <div class="description-wrapper">
+    <h2>Description</h2>
+    <span class="description"><%= @software.description %></span>
+  </div>
 
 
 </div>

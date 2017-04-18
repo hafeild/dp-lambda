@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class SoftwareControllerTest < ActionController::TestCase
+
+  ## Testing create
+
   test "should break when creating a page without being logging in" do
     #log_in_as users(:foo)
     assert_no_difference 'Software.count', "Software page created" do
@@ -18,7 +21,6 @@ class SoftwareControllerTest < ActionController::TestCase
       assert_redirected_to software_path(Software.last.id), response.body
     end
   end
-
 
   test "should break if don't include any of: name, summary, or description" do
     log_in_as users(:foo)
@@ -48,7 +50,6 @@ class SoftwareControllerTest < ActionController::TestCase
     end
   end
 
-
   test "should create a software page with a new example" do
     log_in_as users(:foo)
     assert_difference 'Software.count', 1, "Software page not created" do
@@ -60,7 +61,6 @@ class SoftwareControllerTest < ActionController::TestCase
       end
     end
   end
-
 
   test "should create a software page with an existing example" do
     log_in_as users(:foo)
@@ -77,8 +77,6 @@ class SoftwareControllerTest < ActionController::TestCase
     end
   end
 
-
-
   test "should create a software page with a new web resource" do
     log_in_as users(:foo)
     assert_difference 'Software.count', 1, "Software page not created" do
@@ -90,7 +88,6 @@ class SoftwareControllerTest < ActionController::TestCase
       end
     end
   end
-
 
   test "should create a software page with an existing web resource" do
     log_in_as users(:foo)
@@ -107,8 +104,7 @@ class SoftwareControllerTest < ActionController::TestCase
     end
   end
 
-
-    test "should create a software page with a new tag" do
+  test "should create a software page with a new tag" do
     log_in_as users(:foo)
     assert_difference 'Software.count', 1, "Software page not created" do
       assert_difference 'Tag.count', 1, "Tag not created" do
@@ -119,7 +115,6 @@ class SoftwareControllerTest < ActionController::TestCase
       end
     end
   end
-
 
   test "should create a software page with an existing tag" do
     log_in_as users(:foo)
@@ -134,7 +129,6 @@ class SoftwareControllerTest < ActionController::TestCase
       end
     end
   end
-
 
   test "should create a software page with several examples, resources, and tags" do
     log_in_as users(:foo)
@@ -170,6 +164,9 @@ class SoftwareControllerTest < ActionController::TestCase
     end
     end
   end
+
+  ## End create tests
+  ##############################################################################
 
 
 end
