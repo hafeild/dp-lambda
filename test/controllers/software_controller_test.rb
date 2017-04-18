@@ -6,7 +6,7 @@ class SoftwareControllerTest < ActionController::TestCase
     assert_no_difference 'Software.count', "Software page created" do
       post :create, params: { software: { 
         name: "x", summary: "x", description: "x" } }
-      assert_redirected_to root_url
+      assert_redirected_to login_path
     end
   end
 

@@ -1,11 +1,28 @@
 class SoftwareController < ApplicationController
-  before_action :logged_in_user, only: [:create, :edit, :update, :destroy]
-  before_action :get_params, only: [:create, :edit, :update]
+  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
+  before_action :get_params, only: [:create, :update]
+
+  def index
+    @software = Software.all.sort_by { |e| e.name }
+  end
+
+  def show
+    @software = Software.find_by(id: params.require(:id))
+    if @software.nil?
+      render file: "#{Rails.root}/public/404.html" , status: 404
+    end
+  end
 
   def new
+    @software = Software.new
   end
 
   def edit
+    @software = Software.find_by(id: params.require(:id))
+    if @software.nil?
+      render file: "#{Rails.root}/public/404.html" , status: 404
+    end
   end
 
   ## Creates a new software entry. It assumes the following parameter structure:
@@ -126,7 +143,14 @@ class SoftwareController < ApplicationController
       unless logged_in?
         store_location
         flash[:danger] = "You must be logged in to modify content."
-        redirect_back_or root_url
+        redirect_to login_path
+      end
+    end
+
+    def user_can_edit
+      unless can_edit?
+        flash[:danger] = "You do not have permission to edit this content."
+        redirect_back_or root_path
       end
     end
 
