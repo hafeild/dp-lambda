@@ -130,7 +130,8 @@ class SoftwareControllerTest < ActionController::TestCase
     end
   end
 
-  test "should create a software page with several examples, resources, and tags" do
+  test "should create a software page with several examples, resources, "+
+      "and tags" do
     log_in_as users(:foo)
     tag = tags(:one)
     resource = web_resources(:one)
@@ -166,7 +167,111 @@ class SoftwareControllerTest < ActionController::TestCase
   end
 
   ## End create tests
-  ##############################################################################
 
+
+
+  ## Update tests.
+  test "shouldn't update software entry when not logged in" do 
+    software = software(:one)
+    software_name = "MY SOFTWARE"
+    software_description = "YABBA DABBA DOO"
+    software_summary = "A SOFTWARE SUMMARY"
+
+    patch :update, params: { id:software.id,
+      software: {name: software_name, summary: software_summary,
+        description: software_description}}
+
+    software.reload
+    assert_not software.name == software_name
+    assert_not software.summary == software_summary
+    assert_not software.description == software_description
+  end
+
+  test "should update software entry when logged in" do 
+    log_in_as users(:foo)
+    software = software(:one)
+    software_name = "MY SOFTWARE"
+    software_description = "YABBA DABBA DOO"
+    software_summary = "A SOFTWARE SUMMARY"
+
+    patch :update, params: { id:software.id,
+      software: {name: software_name, summary: software_summary,
+        description: software_description}}
+
+    software.reload
+    assert software.name == software_name
+    assert software.summary == software_summary
+    assert software.description == software_description
+  end
+
+  test "shouldn't update software entry with a non-unique name" do
+    log_in_as users(:foo)
+    software = software(:one)
+    software_name = software(:two).name
+    software_description = "YABBA DABBA DOO"
+    software_summary = "A SOFTWARE SUMMARY"
+
+    patch :update, params: { id:software.id,
+      software: {name: software_name, summary: software_summary,
+        description: software_description}}
+
+    software.reload
+    assert_not software.name == software_name
+    assert_not software.summary == software_summary
+    assert_not software.description == software_description
+  end
+
+  test "should update a software page with several examples, resources, "+
+      "and tags" do
+    log_in_as users(:foo)
+    tag = tags(:one)
+    resource = web_resources(:one)
+    example = examples(:one)
+    software = software(:one)
+    software_name = "MY SOFTWARE"
+    software_description = "YABBA DABBA DOO"
+    software_summary = "A SOFTWARE SUMMARY"
+
+    assert_difference 'Software.count', 0, "Software page created" do
+    assert_difference 'WebResource.count', 2 do
+    assert_difference 'Example.count', 1 do
+    assert_difference 'Tag.count', 2 do
+      @request.env['CONTENT_TYPE'] = 'application/json'
+      response = patch :update, params: { id:software.id, software: { 
+        name: software_name, summary: software_summary, 
+        description: software_description,
+        tags: [tag.text, "hi", "hello"],
+        examples: [
+          {id: example.id, title: "bye"}, 
+          {title: "hi", description: "xyz"}
+        ],
+        web_resources: [
+          {id: resource.id}, 
+          {url: "ack", description: "xyz"},
+          {url: "abc", description: "wow"}
+        ] } }  
+      assert_redirected_to software_path(Software.last.id), response.body
+      software.reload
+
+      assert software.name == software_name
+      assert software.summary == software_summary
+      assert software.description == software_description
+      assert software.tags.size == 3, "Tags: #{software.tags.size}"
+      assert software.examples.size == 2, 
+        "Examples: #{software.examples.size}"
+      assert software.web_resources.size == 3, 
+        "Web Res.: #{software.examples.size}"
+    end
+    end
+    end
+    end
+  end
+  ## End update tests.
+
+
+
+  ## Destroy tests.
+
+  ## End destroy tests.
 
 end
