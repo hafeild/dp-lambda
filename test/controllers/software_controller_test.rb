@@ -278,6 +278,8 @@ class SoftwareControllerTest < ActionController::TestCase
     example = software.examples.first
     web_resource = software.web_resources.first
 
+    assert_not example.nil?, software.examples.size
+
     assert_difference 'Software.count', -1, "Software page not removed" do
     assert_difference 'WebResource.count', -1, "Web resource not removed" do
     assert_difference 'Example.count', -1, "Example not removed" do
@@ -286,7 +288,7 @@ class SoftwareControllerTest < ActionController::TestCase
       delete :destroy, params: {id: software.id}
 
       assert Software.find_by(id: software.id).nil?
-      assert Tag.find_by(id: tag.id).nil?
+      assert Tag.find_by(id: tag.id).nil?, tag
       assert Example.find_by(id: example.id).nil?
       assert WebResource.find_by(id: web_resource.id).nil?
 

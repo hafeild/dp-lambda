@@ -108,7 +108,42 @@ class SoftwareController < ApplicationController
     end  
   end
 
+  ## Deletes the software page and any resources connected only to it.
   def destroy
+    begin
+      ActiveRecord::Base.transaction do
+
+        ## Remove tags.
+        @software.tags.each do |tag|
+          unless tag.belongs_to_more_than_one?
+            tag.destroy!
+          end
+        end
+
+        ## Remove web resources.
+        @software.web_resources.each do |web_resource|
+          unless web_resource.belongs_to_more_than_one?
+            web_resource.destroy!
+          end
+        end
+
+        ## Remove examples.
+        @software.examples.each do |example|
+          unless example.belongs_to_more_than_one?
+            example.destroy!
+          end
+        end
+
+        @software.destroy!
+
+        flash[:success] = "Page removed."
+        redirect_to software_index_path
+      end
+    rescue => e
+      flash[:danger] = "There was an error removing the software entry."
+      redirect_back_or new_software_path
+      # render plain: e
+    end
   end
 
   private
