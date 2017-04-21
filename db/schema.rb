@@ -23,10 +23,8 @@ ActiveRecord::Schema.define(version: 20170415115124) do
   end
 
   create_table "examples_software", force: :cascade do |t|
-    t.integer  "software_id"
-    t.integer  "example_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer "software_id"
+    t.integer "example_id"
   end
 
   create_table "software", force: :cascade do |t|
@@ -40,17 +38,13 @@ ActiveRecord::Schema.define(version: 20170415115124) do
   end
 
   create_table "software_tags", force: :cascade do |t|
-    t.integer  "software_id"
-    t.integer  "tag_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer "software_id"
+    t.integer "tag_id"
   end
 
   create_table "software_web_resources", force: :cascade do |t|
-    t.integer  "software_id"
-    t.integer  "web_resource_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer "software_id"
+    t.integer "web_resource_id"
   end
 
   create_table "tags", force: :cascade do |t|

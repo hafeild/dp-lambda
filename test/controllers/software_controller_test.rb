@@ -271,7 +271,30 @@ class SoftwareControllerTest < ActionController::TestCase
 
 
   ## Destroy tests.
+  test "should destroy a software page and any resources unique to it" do 
+    software = software(:two)
+    tag = software.tags.first
+    example = software.examples.first
+    web_resource = software.web_resources.first
 
+    assert_difference 'Software.count', -1, "Software page not removed" do
+    assert_difference 'WebResource.count', -1, "Web resource not removed" do
+    assert_difference 'Example.count', -1, "Example not removed" do
+    assert_difference 'Tag.count', -1, "Tag not removed" do
+
+      delete :destroy, params: {id: software.id}
+
+      assert Software.find_by(id: software.id).nil?
+      assert Tag.find_by(id: tag.id).nil?
+      assert Example.find_by(id: example.id).nil?
+      assert WebResource.find_by(id: web_resource.id).nil?
+
+    end
+    end
+    end
+    end
+
+  end
   ## End destroy tests.
 
 end

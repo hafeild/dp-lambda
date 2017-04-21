@@ -7,9 +7,13 @@ one:
   thumbnail_url: MyString
   creator: foo
 
+  
 two:
   name: MyString
   summary: MyText
   description: MyText
   thumbnail_url: MyString
   creator: bar
+  examples: [examples(one)]
+  web_resources: [web_resources(one)]
+  tags: [tags(one)]
