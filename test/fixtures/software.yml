@@ -1,18 +1,18 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  summary: MyText
-  description: MyText
-  thumbnail_url: MyString
+  name: A name
+  summary: A summary
+  description: A description
+  thumbnail_url: a.url
   creator: foo
 
   
 two:
-  name: MyString
-  summary: MyText
-  description: MyText
-  thumbnail_url: MyString
+  name: Another name
+  summary: Another summary
+  description: Another description
+  thumbnail_url: another.url
   creator: bar
   examples: [examples(one)]
   web_resources: [web_resources(one)]

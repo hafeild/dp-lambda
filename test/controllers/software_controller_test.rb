@@ -216,9 +216,9 @@ class SoftwareControllerTest < ActionController::TestCase
         description: software_description}}
 
     software.reload
-    assert_not software.name == software_name
-    assert_not software.summary == software_summary
-    assert_not software.description == software_description
+    assert_not software.name == software_name, "#{software.name} | #{software_name}"
+    assert_not software.summary == software_summary, software.summary
+    assert_not software.description == software_description, software.description
   end
 
   test "should update a software page with several examples, resources, "+
@@ -272,6 +272,7 @@ class SoftwareControllerTest < ActionController::TestCase
 
   ## Destroy tests.
   test "should destroy a software page and any resources unique to it" do 
+    log_in_as users(:foo)
     software = software(:two)
     tag = software.tags.first
     example = software.examples.first
