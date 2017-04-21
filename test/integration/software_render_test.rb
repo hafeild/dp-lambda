@@ -13,7 +13,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert_select ".description", software.description
 
     assert_select "a[href=?]", edit_software_path(software.id), count: 0
-    assert_select "a[href=?][method=delete]", software_path(software.id), 
+    assert_select "a[href=?][data-method=delete]", software_path(software.id), 
       count: 0
   end
 
@@ -28,7 +28,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert_select ".description", software.description
 
     assert_select "a[href=?]", edit_software_path(software.id), count: 1
-    assert_select "a[href=?][method=delete]", software_path(software.id), 
+    assert_select "a[href=?][data-method=delete]", software_path(software.id), 
       count: 1
   end
 
@@ -155,18 +155,18 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert_template "software/show"
 
     ## Delete the page.
-    assert_select "a[href=?][method=delete]", software_path(software.id), 
-      count: 0
+    assert_select "a[href=?][data-method=delete]", software_path(software.id), 
+      count: 1
     delete software_path(software.id)
     follow_redirect!
-    assert_template 'static/home'
+    assert_template 'software/index'
 
     ## "Click" on the Software link.
     get software_index_path
     assert_template "software/index"
 
     ## Confirm that the deleted software page is not there.
-    assert_select "a", href: software_path(software.id), count: 0
+    assert_select "a[href=?]", software_path(software.id), count: 0
 
   end
 
