@@ -79,24 +79,29 @@ class SoftwareController < ApplicationController
       end
     rescue => e
       flash[:danger] = "There was an error saving the software entry."
-      redirect_back_or new_software_path
-      # render plain: e
+      #redirect_back_or new_software_path
+      render plain: e
     end
   end
 
+  ## Updates a software entry. Takes all the usual parameters. The tags,
+  ## web_resources, and examples may include "remove" fields along with an
+  ## id, which will cause the resource to be disassociated with this project
+  ## and deleted altogether if the resource isn't associated with another
+  ## vertical entry.
   def update
     begin
       ActiveRecord::Base.transaction do
         @software.update(@data.permit(:name, :description, :summary))
 
         ## Process tags.
-        update_tags(@software)
+        update_tags(@software, true)
 
         ## Process web resources.
-        update_web_resources(@software)
+        update_web_resources(@software, true)
 
         ## Process examples.
-        update_examples(@software)
+        update_examples(@software, true)
 
         @software.save!
         redirect_to software_path(@software.id)
@@ -113,26 +118,8 @@ class SoftwareController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
 
-        ## Remove tags.
-        @software.tags.each do |tag|
-          unless tag.belongs_to_more_than_one?
-            tag.destroy!
-          end
-        end
-
-        ## Remove web resources.
-        @software.web_resources.each do |web_resource|
-          unless web_resource.belongs_to_more_than_one?
-            web_resource.destroy!
-          end
-        end
-
-        ## Remove examples.
-        @software.examples.each do |example|
-          unless example.belongs_to_more_than_one?
-            example.destroy!
-          end
-        end
+        ## Remove connected resources.
+        destroy_isolated_resources(@software)
 
         @software.destroy!
 
@@ -170,37 +157,46 @@ class SoftwareController < ApplicationController
     def get_params
       @data = params.require(:software).permit(:name, :summary, :description,
         :thumbnail, 
-        tags: [], 
-        web_resources: [:id, :url, :description], 
+        tags: [:id, :text, :remove], 
+        web_resources: [:id, :url, :description, :remove], 
         examples: [:id, :title, :description, :software_id, :analysis_id,
-          :dataset_id])
+          :dataset_id, :remove])
     end
 
     ## Updates/creates new web resources extracted from @data.
+    ##
     ## @param software The software instance to update.
-    def update_web_resources(software)
+    ## @param remove Whether to handle removals.
+    def update_web_resources(software, remove=false)
       if @data.key? :web_resources
         web_resources = []
         @data[:web_resources].each do |web_resource_data|
 
-          if web_resource_data.key?(:id)
+          if web_resource_data.key?(:id) and web_resource_data.key?(:remove) and
+              web_resource_data[:remove]
+
+          elsif web_resource_data.key?(:id)
             web_resource = WebResource.find_by(id: web_resource_data[:id])
             ## Update the data accordingly.
             if web_resource_data.keys.size > 1
               web_resource.update_attributes!(web_resource_data)
             end
+
           else
             ## Create new web resource
             web_resource = WebResource.create!(web_resource_data)
           end
-          software.web_resources.append(web_resource)
+
+          software.web_resources.append(web_resource) unless web_resource.nil?
         end
       end
     end
 
     ## Updates/creates new examples extracted from @data.
+    ##
     ## @param software The software instance to update.
-    def update_examples(software)
+    ## @param remove Whether to handle removals.
+    def update_examples(software, remove=false)
       if @data.key? :examples
         @data[:examples].each do |example_data|
           ## Create example.
@@ -218,17 +214,26 @@ class SoftwareController < ApplicationController
     end
 
     ## Updates/creates tags extracted from @data.
+    ##
     ## @param software The software instance to update.
-    def update_tags(software)
+    ## @param remove Whether to handle removals.
+    def update_tags(software, remove=false)
       if @data.key? :tags
         tags = []
-        @data[:tags].each do |tag_text|
+        @data[:tags].each do |tag_data|
           ## Create tag.
-          tag = Tag.find_by(text: tag_text)
-          if tag.nil?
-            tag = Tag.create! text: tag_text
+          if tag_data.key? :id and tag_data.key? :remove and tag_data[:remove]
+            software.keys.destroy(Tag.find_by(id: tag_data.id))
+
+          elsif tag_data.key? :id
+            tag = Tag.find_by(id: tag_data[:id])
+
+          elsif tag_data.key? :text
+            tag = Tag.find_by(text: tag_data[:text])
+            tag = Tag.create! text: tag_data[:text] if tag.nil?
           end
-          software.tags.append(tag)
+
+          software.tags.append(tag) unless tag.nil?
         end
       end
     end

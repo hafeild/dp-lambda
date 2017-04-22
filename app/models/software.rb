@@ -12,12 +12,18 @@ class Software < ApplicationRecord
   belongs_to :creator, class_name: "User"
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources
-  has_and_belongs_to_many :examples, through: :software_examples
+  has_and_belongs_to_many :examples #, through: :software_examples
 
   ## Ensure the presence of required fields. 
   validates :name, presence: true, length: {maximum: 200}, 
     uniqueness: {case_sensitive: false}
   validates :summary, presence: true
   validates :description, presence: true
+
+  def delink
+    tags.clear
+    web_resources.clear
+    examples.clear
+  end
 
 end

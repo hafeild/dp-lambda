@@ -110,7 +110,7 @@ class SoftwareControllerTest < ActionController::TestCase
       assert_difference 'Tag.count', 1, "Tag not created" do
         response = post :create, params: { software: { 
           name: "x", summary: "x", description: "x",
-          tags: ["a new tag"] } }  
+          tags: [{text: "a new tag"}] } }  
         assert_redirected_to software_path(Software.last.id), response.body
       end
     end
@@ -123,7 +123,7 @@ class SoftwareControllerTest < ActionController::TestCase
       assert_difference 'Tag.count', 0, "Tag created" do
         response = post :create, params: { software: { 
           name: "x", summary: "x", description: "x",
-          tags: [tag.text] } }  
+          tags: [{id: tag.id}] } }  
         assert_redirected_to software_path(Software.last.id), response.body
         assert Software.last.tags.first.id == tag.id
       end
@@ -144,7 +144,11 @@ class SoftwareControllerTest < ActionController::TestCase
       @request.env['CONTENT_TYPE'] = 'application/json'
       response = post :create, params: { software: { 
         name: "x", summary: "x", description: "x",
-        tags: [tag.text, "hi", "hello"],
+        tags: [
+          {text: tag.text}, 
+          {text: "hi"}, 
+          {text: "hello"}
+        ],
         examples: [
           {id: example.id, title: "bye"}, 
           {title: "hi", description: "xyz"}
@@ -240,7 +244,11 @@ class SoftwareControllerTest < ActionController::TestCase
       response = patch :update, params: { id:software.id, software: { 
         name: software_name, summary: software_summary, 
         description: software_description,
-        tags: [tag.text, "hi", "hello"],
+        tags: [
+          {text: tag.text}, 
+          {text: "hi"}, 
+          {text: "hello"}
+        ],
         examples: [
           {id: example.id, title: "bye"}, 
           {title: "hi", description: "xyz"}
@@ -287,10 +295,11 @@ class SoftwareControllerTest < ActionController::TestCase
 
       delete :destroy, params: {id: software.id}
 
-      assert Software.find_by(id: software.id).nil?
-      assert Tag.find_by(id: tag.id).nil?, tag
-      assert Example.find_by(id: example.id).nil?
-      assert WebResource.find_by(id: web_resource.id).nil?
+      assert Software.find_by(id: software.id).nil?, "Software not removed"
+      assert Tag.find_by(id: tag.id).nil?, "Tag not removed"
+      assert Example.find_by(id: example.id).nil?, "Example not removed"
+      assert WebResource.find_by(id: web_resource.id).nil?, 
+        "Web resource not removed"
 
     end
     end
