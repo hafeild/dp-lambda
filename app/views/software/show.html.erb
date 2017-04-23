@@ -27,5 +27,43 @@
     <span class="description"><%= @software.description %></span>
   </div>
 
+  <div class="tags">
+    <h2>Tags</h2>
+    <% if @software.tags.size == 0 %>
+      There are currently no tags associated with this software.
+    <% else %>
+      <%= @software.tags.map{|tag| tag.text}.join(',') %>
+    <% end %>
+  </div>
+
+  <div class="web-resources">
+    <h2>Web resources</h2>
+    <% if @software.web_resources.size == 0 %>
+      There are currently no resources associated with this software.
+    <% else %>
+      <ul>
+      <% @software.web_resources.each do |web_resource| %>
+        <li><a href="<%= web_resource.url %>"
+          ><%= web_resource.description %></a></li>
+      <% end %>
+      </ul>
+    <% end %>
+  </div>
+
+  <div class="examples">
+    <h2>Examples</h2>
+    <% if @software.examples.size == 0 %>
+      There are currently no examples associated with this software.
+    <% else %>
+      <ul>
+      <% @software.examples.each do |example| %>
+        <h3><%= example.title %></h3>
+        <p>
+          <%= example.description %>
+        </p>
+      <% end %>
+      </ul>
+    <% end %>
+  </div>
 
 </div>

@@ -1,4 +1,5 @@
 class SoftwareController < ApplicationController
+  # before_action :get_response_format
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
   before_action :get_params, only: [:create, :update]
@@ -50,11 +51,16 @@ class SoftwareController < ApplicationController
     if not @data.key?(:name) or @data[:name].empty? or 
         not @data.key?(:summary) or @data[:summary].empty? or 
         not @data.key?(:description) or @data[:description].empty?
-      flash[:danger] = "You must provide a name, summary, and description."
-      redirect_back_or new_software_path
+      error = "You must provide a name, summary, and description."
+      respond_to do |format|
+        format.json { render json: {success: false, error: error} }
+        format.html do
+          flash[:danger] = error
+          redirect_back_or new_software_path
+        end
+      end
       return
     end
-
 
     ## Create the new entry.
     begin
@@ -75,12 +81,23 @@ class SoftwareController < ApplicationController
 
         software.save!
         # render plain: "#{@data.to_h.to_json} -- #{params.require(:software).to_unsafe_h.to_json}"
-        redirect_to software_path(software.id)
+
+        respond_to do |format|
+          format.json { render json: 
+            {success: true, redirect: software_path(software.id)} }
+          format.html { redirect_to software_path(software.id) }
+        end
       end
     rescue => e
-      flash[:danger] = "There was an error saving the software entry."
-      #redirect_back_or new_software_path
-      render plain: e
+      error = "There was an error saving the software entry."
+      respond_to do |format|
+        format.json { render json: {success: false, error: error} }
+        format.html do 
+          flash[:danger] = error
+          redirect_back_or new_software_path
+          #render plain: e
+        end
+      end
     end
   end
 
@@ -127,7 +144,8 @@ class SoftwareController < ApplicationController
         redirect_to software_index_path
       end
     rescue => e
-      flash[:danger] = "There was an error removing the software entry."
+      error = "There was an error removing the software entry."
+      flash[:danger] = error 
       redirect_back_or new_software_path
       # render plain: e
     end
@@ -135,12 +153,23 @@ class SoftwareController < ApplicationController
 
   private
 
-    # Confirms a logged-in user.
+    ## Detects the requested response format -- HTML or JSON.
+    def get_response_format
+      @json = (params.key? :format and params[:format] == "json")
+    end
+
+    ## Confirms a logged-in user.
     def logged_in_user
       unless logged_in?
-        store_location
-        flash[:danger] = "You must be logged in to modify content."
-        redirect_to login_path
+        error = "You must be logged in to modify content."
+        respond_to do |format|
+          format.json { render json: {success: false, error: error} }
+          format.html do
+            store_location
+            flash[:danger] = error
+            redirect_to login_path
+          end
+        end
       end
     end
 
@@ -148,19 +177,36 @@ class SoftwareController < ApplicationController
     ## displays an error message.
     def user_can_edit
       unless can_edit?
-        flash[:danger] = "You do not have permission to edit this content."
-        redirect_back_or root_path
+        error = "You do not have permission to edit this content."
+        respond_to do |format|
+          format.json { render json: {success: false, error: error} }
+          format.html do
+            flash[:danger] = error 
+            redirect_back_or root_path
+          end
+        end
       end
     end
 
     ## Extracts the allowed parameters into a global named @data.
     def get_params
-      @data = params.require(:software).permit(:name, :summary, :description,
-        :thumbnail, 
-        tags: [:id, :text, :remove], 
-        web_resources: [:id, :url, :description, :remove], 
-        examples: [:id, :title, :description, :software_id, :analysis_id,
-          :dataset_id, :remove])
+      begin
+        @data = params.require(:software).permit(:name, :summary, :description,
+          :thumbnail, 
+          tags: [:id, :text, :remove], 
+          web_resources: [:id, :url, :description, :remove], 
+          examples: [:id, :title, :description, :software_id, :analysis_id,
+            :dataset_id, :remove])
+      rescue => e
+        error = "Required parameters not supplied."
+        respond_to do |format|
+          format.json { render json: {success: false, error: error} }
+          format.html do 
+            flash[:danger] = error
+            redirect_back_or root_path
+          end
+        end
+      end
     end
 
     ## Updates/creates new web resources extracted from @data.

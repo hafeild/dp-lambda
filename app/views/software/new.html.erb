@@ -1,32 +1,50 @@
 <% provide(:title, "New Software Entry") %>
-<div class="container">
+<div class="container vertical-modification" data-vertical="software">
   <h1>Create a new software entry</h1>
 
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-12 col-md-offset-0">
       <%= form_for(@software) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       
       <div class="form-group">
         <%= f.label :name %><span class="required-input">*</span> 
         (max 200 characters)
-        <%= f.text_field :name, class: 'form-control', placeholder: 
-          'e.g., NodeXL' %>
+        <input type="text" name="name" class="form-control add-to-vertical", 
+          placeholder="e.g., NodeXL"/>
       </div>
 
       <div class="form-group">
         <%= f.label :summary %><span class="required-input">*</span><br/>
         This should be a short overview of the software.
-        <%= f.text_area :summary, class: 'form-control', placeholder: 
-          'e.g., An Excel plugin that allows you to create and manipulate '+
-          'network diagrams.' %>
+        <textarea name="summary" class="form-control add-to-vertical"
+          placeholder="e.g., An Excel plugin that allows you to create and manipulate network diagrams."></textarea>
       </div>
 
       <div class="form-group">
         <%= f.label :description %><span class="required-input">*</span><br/>
         This should be a detailed description of the software and how to use it.
-        <%= f.text_area :description, class: 'form-control', placeholder: 
-          '' %>
+        <textarea name="description" class="form-control add-to-vertical"
+          rows="10"></textarea>
+      </div>
+
+      <div class="form-group examples resource">
+        <h2>Examples</h2>
+        <button class="btn btn-default add" data-resource="example"
+          >Add example</button>
+      </div>
+
+      <div class="form-group web_resources resource">
+        <h2>Links to related resources on the web</h2>
+        <button class="btn btn-default add" data-resource="web_resource"
+          >Add web resource</button>
+      </div>
+
+      <div class="form-group tags resource">
+        <h2>Tags</h2>
+        <button class="btn btn-default add" data-resource="tag"
+          >Add tag</button>
+        <br/><br/>
       </div>
 
       <%= f.submit "Create entry", class: "btn btn-primary" %>
@@ -37,4 +55,59 @@
   </div>
 
 
+</div>
+
+<div style="display: none">
+
+  <!-- Example form template. -->
+  <div id="example-form-template" class="resource-form">
+    <h3>Example <button class="btn btn-sm btn-danger remove">Remove</button></h3>
+
+      <!-- Title -->
+    <div class="form-group">
+      <label>Title</label><span class="required-input">*</span> 
+      (max 200 characters)
+      <input class="form-control ignore" type="text" name="title"
+        placeholder="e.g., Creating a simple NodeXL graph"/>
+    </div>    
+
+    <!-- Description -->
+    <div class="form-group">
+      <label>Description</label><span class="required-input">*</span> 
+      <textarea class="form-control ignore" name="description" rows="10"></textarea>
+    </div>
+  </div>
+
+  <!-- Web resource form template. -->
+  <div id="web_resource-form-template" class="resource-form">
+    <h3>Web resource <button class="btn btn-sm btn-danger remove">Remove</button></h3>
+
+    <!-- URL -->
+    <div class="form-group">
+      <label>URL</label><span class="required-input">*</span>
+      <input class="form-control ignore" type="text" name="url"
+        placeholder="e.g., https://nodexl.codeplex.com/"/>
+    </div>    
+
+    <!-- Description -->
+    <div class="form-group">
+      <label>Description</label><span class="required-input">*</span> 
+      <textarea class="form-control ignore" name="description" rows="5"
+      ></textarea>
+    </div>
+  </div>
+
+  <!-- Tag form template. -->
+  <div id="tag-form-template" class="resource-form">
+    <!-- Tag text. -->
+    <div class="form-group" style="width: 100%">
+      <div class="input-group">
+        <input type="text" class="form-control ignore" name="text"
+          placeholder="e.g., social network">
+        <span class="input-group-btn">
+          <button class="btn btn-danger remove">Remove</button>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
