@@ -1,0 +1,84 @@
+<div class="container vertical-modification" data-vertical="software">
+  <h1><%= yield :title %></h1>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <%= form_for(@software, url: action) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      
+      <div class="form-group">
+        <%= f.label :name %><span class="required-input">*</span> 
+        (max 200 characters)
+        <input type="text" name="name" 
+          class="form-control add-to-vertical unchanged", 
+          placeholder="e.g., NodeXL" value="<%= @software.name %>"/>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :summary %><span class="required-input">*</span><br/>
+        This should be a short overview of the software.
+        <textarea name="summary" class="form-control add-to-vertical unchanged"
+          placeholder="e.g., An Excel plugin that allows you to create and manipulate network diagrams."><%= @software.summary %></textarea>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :description %><span class="required-input">*</span><br/>
+        This should be a detailed description of the software and how to use it.
+        <textarea name="description" class="form-control add-to-vertical unchanged"
+          rows="10"><%= @software.description %></textarea>
+      </div>
+
+      <div class="form-group examples resource">
+        <h2>Examples</h2>
+        <button class="btn btn-default add" data-resource="example"
+          >Add example</button>
+
+        <% @software.examples.each do |example| %>
+          <%= render template: 'examples/_form', locals: { example: example } %>
+        <% end %>
+      </div>
+
+      <div class="form-group web_resources resource">
+        <h2>Links to related resources on the web</h2>
+        <button class="btn btn-default add" data-resource="web_resource"
+          >Add web resource</button>
+        <% @software.web_resources.each do |web_resource| %>
+          <%= render template: 'web_resources/_form', 
+            locals: { web_resource: web_resource } %>
+        <% end %>
+      </div>
+
+      <div class="form-group tags resource">
+        <h2>Tags</h2>
+        <button class="btn btn-default add" data-resource="tag"
+          >Add tag</button>
+        <br/><br/>
+        <% @software.tags.each do |tag| %>
+          <%= render template: 'tags/_form', locals: { tag: tag } %>
+        <% end %>
+      </div>
+
+      <%= f.submit "Create entry", class: "btn btn-primary" %>
+
+
+      <% end %>
+    </div>
+  </div>
+
+
+</div>
+
+<div style="display: none">
+
+  <!-- Example form template. -->
+  <%= render template: 'examples/_form', locals: {id: 'example-form-template',
+    example: Example.new} %>
+
+  <!-- Web resource form template. -->
+  <%= render template: 'web_resources/_form', 
+    locals: {id: 'web_resource-form-template', web_resource: WebResource.new} %>
+
+  <!-- Tag form template. -->
+  <%= render template: 'tags/_form', locals: {id:'tag-form-template', 
+    tag: Tag.new} %>
+</div>

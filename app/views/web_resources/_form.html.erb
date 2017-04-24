@@ -1,0 +1,22 @@
+<div <%= "id=#{id}" if defined? id %> class="resource-form">
+  <h3>Web resource <button class="btn btn-sm btn-danger remove">Remove</button></h3>
+
+  <% unless web_resource.id.nil? %>
+  <input type="hidden" name="id" value="<%= web_resource.id %>"/>
+  <% end %>
+
+  <!-- URL -->
+  <div class="form-group">
+    <label>URL</label><span class="required-input">*</span>
+    <input class="form-control ignore unchanged" type="text" name="url"
+      placeholder="e.g., https://nodexl.codeplex.com/"
+      value="<%= web_resource.url %>" />
+  </div>    
+
+  <!-- Description -->
+  <div class="form-group">
+    <label>Description</label><span class="required-input">*</span> 
+    <textarea class="form-control ignore unchanged" name="description" rows="5"
+    ><%= web_resource.description %></textarea>
+  </div>
+</div>

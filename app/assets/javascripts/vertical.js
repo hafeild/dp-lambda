@@ -33,6 +33,12 @@ $(document).on('click', '.resource-form .remove', function(event){
   event.preventDefault();
 });
 
+// Whenever an input/text area is modified, this removes the 'unchanged' class.
+$(document).on('input', '.vertical-modification input, '+
+    '.vertical-modification textarea', function(event){
+  $(this).removeClass('unchanged');
+});
+
 // Converts vertical form fields to form encoding, adds them as hidden fields,
 // and disables all .ignore fields. This is called before the form is submitted.
 $(document).on('submit', '.vertical-modification form', function(event){

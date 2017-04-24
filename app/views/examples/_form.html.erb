@@ -1,0 +1,23 @@
+<div <%= "id=#{id}" if defined? id %> class="resource-form">
+  <h3>Example <button class="btn btn-sm btn-danger remove">Remove</button></h3>
+  
+  <% unless example.id.nil? %>
+  <input type="hidden" name="id" value="<%= example.id %>"/>
+  <% end %>
+
+  <!-- Title -->
+  <div class="form-group">
+    <label>Title</label><span class="required-input">*</span> 
+    (max 200 characters)
+    <input class="form-control ignore unchanged" type="text" name="title"
+      placeholder="e.g., Creating a simple NodeXL graph" 
+      value="<%= example.title %>"/>
+  </div>    
+
+  <!-- Description -->
+  <div class="form-group">
+    <label>Description</label><span class="required-input">*</span> 
+    <textarea class="form-control ignore unchanged" name="description" rows="10"
+    ><%= example.description %></textarea>
+  </div>
+</div>
