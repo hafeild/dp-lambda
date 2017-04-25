@@ -3,9 +3,13 @@
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
-      <%= form_for(@software, url: action) do |f| %>
+      <%= form_for(@software, url: action, method: method) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       
+      <% unless @software.id.nil? %>
+      <input type="hidden" value="<%= @software.id %>" name="id"/>
+      <% end %>
+
       <div class="form-group">
         <%= f.label :name %><span class="required-input">*</span> 
         (max 200 characters)
@@ -58,7 +62,7 @@
         <% end %>
       </div>
 
-      <%= f.submit "Create entry", class: "btn btn-primary" %>
+      <%= f.submit @software.id.nil? ? "Create entry" : "Update entry", class: "btn btn-primary" %>
 
 
       <% end %>

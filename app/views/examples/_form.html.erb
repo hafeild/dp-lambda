@@ -1,8 +1,9 @@
-<div <%= "id=#{id}" if defined? id %> class="resource-form">
+<div <%= "id=#{id}" if defined? id %> 
+  class="resource-form unchanged<%= " saved" unless example.id.nil? %>">
   <h3>Example <button class="btn btn-sm btn-danger remove">Remove</button></h3>
   
   <% unless example.id.nil? %>
-  <input type="hidden" name="id" value="<%= example.id %>"/>
+  <input type="hidden" name="id" value="<%= example.id %>" class="ignore"/>
   <% end %>
 
   <!-- Title -->

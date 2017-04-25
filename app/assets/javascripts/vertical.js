@@ -22,9 +22,11 @@ $(document).on('click', '.resource .add', function(event){
 $(document).on('click', '.resource-form .remove', function(event){
   var form = $(this).parents('.resource-form');
 
-  if(form.data('id')){
+  if(form.hasClass('saved')){
     form.data('removed', true);
     form.hide();
+    $('<input class="ignore" name="remove" value="true" type="hidden"/>').appendTo(form);
+    form.removeClass('unchanged');
   } else {
     form.remove();
   }
@@ -37,6 +39,7 @@ $(document).on('click', '.resource-form .remove', function(event){
 $(document).on('input', '.vertical-modification input, '+
     '.vertical-modification textarea', function(event){
   $(this).removeClass('unchanged');
+  $(this).parents('.resource-form').removeClass('unchanged');
 });
 
 // Converts vertical form fields to form encoding, adds them as hidden fields,
@@ -54,19 +57,18 @@ $(document).on('submit', '.vertical-modification form', function(event){
 
   // Gather the params from each resource section into a JavaScript object.
   $.each(resources, function(i, resource){
-    console.log('Searching '+ resource);
     var resourceParams = [];
 
     formJq.find('.'+ resource +' .resource-form').each(function(j, elm){
-      console.log('- considering resource form', elm);
-
       elm = $(elm);
       var entry = {};
 
-      elm.find('input.ignore, textarea.ignore').each(function(k, input){
-        console.log('-- considering input.ignore', input);
+      // Ignore any unchanged forms.
+      if(elm.hasClass('unchanged')) return;
 
+      elm.find('input.ignore, textarea.ignore').each(function(k, input){
         input = $(input);
+        // Only add values that have been modified.
         if(!input.hasClass('unchanged')){
           entry[input.attr('name')] = input.val();
         }
@@ -75,14 +77,17 @@ $(document).on('submit', '.vertical-modification form', function(event){
       resourceParams.push(entry);
     });
 
-    if(resourceParams.length > 0)
+    if(resourceParams.length > 0){
       params[vertical][resource] = resourceParams;
+    }
   });
+
+  console.log('params v1:', params);
 
   // Gather all of the other parameters from the form.
   formJq.find('input,textarea').each(function(i, input){
     input = $(input);
-    if(input.hasClass('ignore')) return;
+    if(input.hasClass('ignore') || input.hasClass('unchanged')) return;
 
     if(input.hasClass('add-to-vertical')){
       params[vertical][input.attr('name')] = input.val();
@@ -91,15 +96,15 @@ $(document).on('submit', '.vertical-modification form', function(event){
     }
   });
 
+  console.log('params v2:', params);
+
   // Send the data to the server.
-  $.ajax(formJq.attr('action'), {
-    method: 'post',
+  $.ajax(formJq.attr('action')+'.json', {
+    method: params._method ? params._method : formJq.attr('method'),
     data: JSON.stringify(params),
     dataType: 'json',
     contentType: 'application/json',
     success: function(response){
-      console.log('heard back from the server:', response);
-
       if(!response){
         return;
       } else if(response.success){
@@ -110,7 +115,6 @@ $(document).on('submit', '.vertical-modification form', function(event){
       }
     },
     error: function(jqXHR, textStatus, error){
-      console.log('jqXHR', jqXHR);
       alert('Error: '+ textStatus +' '+ error);
     }
   });

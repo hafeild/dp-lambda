@@ -1,6 +1,7 @@
-<div <%= "id=#{id}" if defined? id %> class="resource-form">
+<div <%= "id=#{id}" if defined? id %> 
+  class="resource-form unchanged<%= " saved" unless tag.id.nil? %>">
   <% unless tag.id.nil? %>
-    <input type="hidden" name="id" value="<%= tag.id %>"/>
+    <input type="hidden" name="id" value="<%= tag.id %>" class="ignore"/>
   <% end %>
 
   <!-- Tag text. -->

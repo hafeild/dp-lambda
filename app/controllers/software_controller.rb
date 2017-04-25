@@ -121,12 +121,23 @@ class SoftwareController < ApplicationController
         update_examples(@software, true)
 
         @software.save!
-        redirect_to software_path(@software.id)
+
+        respond_to do |format|
+          format.json {render json: {success: true, 
+              redirect: software_path(@software.id)}}
+          format.html {redirect_to software_path(@software.id)}
+        end
       end
     rescue => e
-      flash[:danger] = "There was an error updating the software entry."
-      redirect_back_or new_software_path
-      # render plain: e
+      error = e #"There was an error updating the software entry."
+      respond_to do |format|
+        format.json {render json: {success: false, error: error}}
+        format.html do 
+          flash[:danger] = error 
+          redirect_back_or new_software_path
+          # render plain: e
+        end
+      end
     end  
   end
 
@@ -209,80 +220,6 @@ class SoftwareController < ApplicationController
       end
     end
 
-    ## Updates/creates new web resources extracted from @data.
-    ##
-    ## @param software The software instance to update.
-    ## @param remove Whether to handle removals.
-    def update_web_resources(software, remove=false)
-      if @data.key? :web_resources
-        web_resources = []
-        @data[:web_resources].each do |web_resource_data|
-
-          if web_resource_data.key?(:id) and web_resource_data.key?(:remove) and
-              web_resource_data[:remove]
-
-          elsif web_resource_data.key?(:id)
-            web_resource = WebResource.find_by(id: web_resource_data[:id])
-            ## Update the data accordingly.
-            if web_resource_data.keys.size > 1
-              web_resource.update_attributes!(web_resource_data)
-            end
-
-          else
-            ## Create new web resource
-            web_resource = WebResource.create!(web_resource_data)
-          end
-
-          software.web_resources.append(web_resource) unless web_resource.nil?
-        end
-      end
-    end
-
-    ## Updates/creates new examples extracted from @data.
-    ##
-    ## @param software The software instance to update.
-    ## @param remove Whether to handle removals.
-    def update_examples(software, remove=false)
-      if @data.key? :examples
-        @data[:examples].each do |example_data|
-          ## Create example.
-          if example_data.key?(:id)
-            example = Example.find_by(id: example_data[:id])
-            if example_data.keys.size > 1
-              example.update_attributes!(example_data) 
-            end
-          else
-            example = Example.create!(example_data)
-          end
-          software.examples.append(example)
-        end
-      end
-    end
-
-    ## Updates/creates tags extracted from @data.
-    ##
-    ## @param software The software instance to update.
-    ## @param remove Whether to handle removals.
-    def update_tags(software, remove=false)
-      if @data.key? :tags
-        tags = []
-        @data[:tags].each do |tag_data|
-          ## Create tag.
-          if tag_data.key? :id and tag_data.key? :remove and tag_data[:remove]
-            software.keys.destroy(Tag.find_by(id: tag_data.id))
-
-          elsif tag_data.key? :id
-            tag = Tag.find_by(id: tag_data[:id])
-
-          elsif tag_data.key? :text
-            tag = Tag.find_by(text: tag_data[:text])
-            tag = Tag.create! text: tag_data[:text] if tag.nil?
-          end
-
-          software.tags.append(tag) unless tag.nil?
-        end
-      end
-    end
 
     ## Gets the software specified by the id in the parameters. If it doesn't
     ## exist, a 404 page is displayed.
