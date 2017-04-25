@@ -130,7 +130,7 @@ class SoftwareController < ApplicationController
         end
       end
     rescue => e
-      error = e #"There was an error updating the software entry."
+      error = "There was an error updating the software entry."
       respond_to do |format|
         format.json {render json: {success: false, error: error}}
         format.html do 
@@ -227,7 +227,13 @@ class SoftwareController < ApplicationController
     def get_software
       @software = Software.find_by(id: params.require(:id))
       if @software.nil?
-        render file: "#{Rails.root}/public/404.html" , status: 404
+        error = "No software with the specified id exists."
+        respond_to do |format|
+          format.json {render json: {success: false, error: error}}
+          format.html do
+            render file: "#{Rails.root}/public/404.html" , status: 404
+          end
+        end
       end
     end
 end

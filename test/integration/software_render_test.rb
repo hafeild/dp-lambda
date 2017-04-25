@@ -101,12 +101,17 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert_template "software/edit"
 
     ## Simulate submitting the changes.
-    patch software_path(software.id), params: {software: {
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    patch software_path(software.id)+'.json', params: {software: {
       name: "A VERY NEW NAME!"
     }}
-    assert_redirected_to software_path(software.id)
-    follow_redirect!
+    result = JSON.parse(@response.body)
+    assert result['success']
+    assert result['redirect'] == software_path(software.id)
+    
+    get result['redirect']
     assert_template "software/show"
+
     assert_select ".name", "A VERY NEW NAME!"
   end
 
@@ -131,7 +136,8 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert_template "software/new"
 
     ## Simulate submitting the page info.
-    post software_index_path, params: {software: {
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    post software_index_path+'.json', params: {software: {
       name: software_name, summary: software_summary, 
       description: software_description
     }}
@@ -139,8 +145,9 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert software.name == software_name
     assert software.summary == software_summary
     assert software.description == software_description
-    assert_redirected_to software_path(software.id)
-    follow_redirect!
+    result = JSON.parse(@response.body)
+    assert result['success']
+    get result['redirect']
     assert_template "software/show"
     assert_select ".name", software.name
     assert_select "a", href: software_index_path

@@ -171,6 +171,62 @@ class SoftwareControllerTest < ActionController::TestCase
     end
   end
 
+  ## JSON response errors.
+
+  test "should return must be logged in json error" do
+    ## Not logged in.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    post :create, format: :json, params: { software: { 
+        name: "x", summary: "x", description: "x" } }
+    result = JSON.parse(@response.body)
+    assert_not result['success']
+    assert result['error'] = "You must be logged in to modify content."
+  end
+
+  test "should return success json on basic create" do
+    ## Logged in, successful create.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    log_in_as users(:foo)
+    post :create, format: :json, params: { software: { 
+      name: "x", summary: "x", description: "x" } }
+    result = JSON.parse(@response.body)
+    assert result['success']
+    assert result['redirect'] == software_path(Software.last.id)
+  end
+
+  test "should return missing params json error message" do
+    ## Missing required field.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    log_in_as users(:foo)
+    post :create, format: :json, params: { software: { 
+        name: "x", summary: ""   } }
+    result = JSON.parse(@response.body)
+    assert_not result['success']
+    assert result['error']=="You must provide a name, summary, and description."
+  end
+
+  test "should return required params not supplied json error" do
+    ## No software parameter.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    log_in_as users(:foo)
+    post :create, format: :json, params: {}
+    result = JSON.parse(@response.body)
+    assert_not result['success']
+    assert result['error'] == "Required parameters not supplied."
+  end
+
+  test "should return saving software json error" do
+    ## No software parameter.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    log_in_as users(:foo)
+    post :create, format: :json, params: {software: { 
+      name: software(:one).name, summary: "x", description: "x" }}
+    result = JSON.parse(@response.body)
+    assert_not result['success']
+    assert result['error'] == "There was an error saving the software entry."
+  end
+
+
   ## End create tests
   ##############################################################################
 
@@ -278,7 +334,6 @@ class SoftwareControllerTest < ActionController::TestCase
     end
   end
 
-
   test "should remove and destroy a resource" do
     log_in_as users(:foo)
     software = software(:two)
@@ -323,6 +378,55 @@ class SoftwareControllerTest < ActionController::TestCase
 
   end
 
+  ## JSON response on update tests.
+
+  test "should return unknown software json error on update" do
+    ## No software parameter.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    log_in_as users(:foo)
+    patch :update, format: :json, params: {id: 0, software: { 
+      name: "x", summary: "x", description: "x" }}
+    result = JSON.parse(@response.body)
+    assert_not result['success']
+    assert result['error'] == "No software with the specified id exists."
+  end
+
+  test "should return success json message with redirect to software "+
+      " page on update" do
+    ## No software parameter.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    log_in_as users(:foo)
+    software = software(:one)
+    software_name = "MY SOFTWARE"
+    software_description = "YABBA DABBA DOO"
+    software_summary = "A SOFTWARE SUMMARY"
+
+    patch :update, format: :json, params: { id:software.id,
+      software: {name: software_name, summary: software_summary,
+        description: software_description}}
+
+    result = JSON.parse(@response.body)
+    assert result['success']
+    assert result['redirect'] == software_path(software.id)
+  end
+
+  test "should return error updating software json message on update" do
+    ## No software parameter.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    log_in_as users(:foo)
+    software = software(:one)
+    software_name = software(:two).name
+    software_description = "YABBA DABBA DOO"
+    software_summary = "A SOFTWARE SUMMARY"
+
+    patch :update, format: :json, params: { id:software.id,
+      software: {name: software_name, summary: software_summary,
+        description: software_description}}
+
+    result = JSON.parse(@response.body)
+    assert_not result['success']
+    assert result['error'] == "There was an error updating the software entry."
+  end
 
   ## End update tests.
   ##############################################################################
