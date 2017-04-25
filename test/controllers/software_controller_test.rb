@@ -2,14 +2,15 @@ require 'test_helper'
 
 class SoftwareControllerTest < ActionController::TestCase
 
+  ##############################################################################
   ## Testing create
 
   test "should break when creating a page without being logging in" do
     #log_in_as users(:foo)
     assert_no_difference 'Software.count', "Software page created" do
-      post :create, params: { software: { 
+      reponse = post :create, params: { software: { 
         name: "x", summary: "x", description: "x" } }
-      assert_redirected_to login_path
+      assert_redirected_to login_path, response.body
     end
   end
 
@@ -30,7 +31,7 @@ class SoftwareControllerTest < ActionController::TestCase
         "Excluding name should not have worked" do
       response = post :create, params: { software: { 
         summary: "x", description: "x" } }
-      assert_redirected_to new_software_path
+      assert_redirected_to new_software_path, response.body
     end
 
     ## Exclude summary.
@@ -38,7 +39,7 @@ class SoftwareControllerTest < ActionController::TestCase
         "Excluding summary should not have worked" do
       response = post :create, params: { software: { 
         name: "x", description: "x" } }
-      assert_redirected_to new_software_path
+      assert_redirected_to new_software_path, response.body
     end
 
     ## Exclude description.
@@ -46,7 +47,7 @@ class SoftwareControllerTest < ActionController::TestCase
         "Excluding description should not have worked" do
       response = post :create, params: { software: { 
         name: "x", summary: "x" } }
-      assert_redirected_to new_software_path
+      assert_redirected_to new_software_path, response.body
     end
   end
 
@@ -94,10 +95,10 @@ class SoftwareControllerTest < ActionController::TestCase
     resource = web_resources(:one)
     assert_difference 'Software.count', 1, "Software page not created" do
       assert_difference 'WebResource.count', 0, "Web resource created" do
-        response = post :create, params: { software: { 
+        post :create, params: { software: { 
           name: "x", summary: "x", description: "x",
           web_resources: [{id: resource.id, url: "www.yahoo.com"}] } }  
-        assert_redirected_to software_path(Software.last.id), response.body
+        assert_redirected_to software_path(Software.last.id), @response.body
         assert Software.last.web_resources.first.id == resource.id
         assert WebResource.find_by(id: resource.id).url == "www.yahoo.com"
       end
@@ -171,10 +172,12 @@ class SoftwareControllerTest < ActionController::TestCase
   end
 
   ## End create tests
+  ##############################################################################
 
 
-
+  ##############################################################################
   ## Update tests.
+
   test "shouldn't update software entry when not logged in" do 
     software = software(:one)
     software_name = "MY SOFTWARE"
@@ -274,11 +277,59 @@ class SoftwareControllerTest < ActionController::TestCase
     end
     end
   end
+
+
+  test "should remove and destroy a resource" do
+    log_in_as users(:foo)
+    software = software(:two)
+    tag = software.tags.first
+    example = software.examples.first
+    web_resource = software.web_resources.first
+
+    assert_not example.nil?, software.examples.size
+
+    ## Associate the example with another software entry so that it is not
+    ## destroyed when disassociating it from the first software entry.
+    alt_software = software(:one)
+    alt_software.examples << example
+    alt_software.save!
+
+
+    assert_no_difference 'Software.count', "Software page removed" do
+    assert_difference 'WebResource.count', -1, "Web resource not removed" do
+    assert_no_difference 'Example.count', "Example removed" do
+    assert_difference 'Tag.count', -1, "Tag not removed" do
+
+      patch :update, params: {id: software.id, software: {
+        examples: [{id: example.id, remove: "true"}],
+        tags: [{id: tag.id, remove: "true"}],
+        web_resources: [{id: web_resource.id, remove: "true"}]
+      }}
+
+      software.reload
+      assert software.examples.size == 0
+      assert software.tags.size == 0
+      assert software.web_resources.size == 0
+
+      assert Tag.find_by(id: tag.id).nil?, "Tag not removed"
+      assert_not Example.find_by(id: example.id).nil?, "Example removed"
+      assert WebResource.find_by(id: web_resource.id).nil?, 
+        "Web resource not removed"
+
+    end
+    end
+    end
+    end
+
+  end
+
+
   ## End update tests.
+  ##############################################################################
 
-
-
+  ##############################################################################
   ## Destroy tests.
+
   test "should destroy a software page and any resources unique to it" do 
     log_in_as users(:foo)
     software = software(:two)
@@ -307,6 +358,8 @@ class SoftwareControllerTest < ActionController::TestCase
     end
 
   end
+
   ## End destroy tests.
+  ##############################################################################
 
 end

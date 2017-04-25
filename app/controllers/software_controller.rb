@@ -56,6 +56,7 @@ class SoftwareController < ApplicationController
         format.json { render json: {success: false, error: error} }
         format.html do
           flash[:danger] = error
+          # render plain: error
           redirect_back_or new_software_path
         end
       end
@@ -95,7 +96,7 @@ class SoftwareController < ApplicationController
         format.html do 
           flash[:danger] = error
           redirect_back_or new_software_path
-          #render plain: e
+          # render plain: e
         end
       end
     end

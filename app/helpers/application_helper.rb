@@ -36,7 +36,7 @@ module ApplicationHelper
 
           ## Delete the example if necessary.
           if remove and example_data.key? :remove and 
-              not vertical.examples.find(example.id).nil?
+              vertical.examples.exists?(id: example.id)
             example.destroy_if_isolated(1)
             vertical.examples.delete(example)
 
@@ -47,7 +47,7 @@ module ApplicationHelper
             end
 
             ## Add the example if it's not already in there.
-            if vertical.examples.find(example.id).nil?
+            unless vertical.examples.exists?(id: example.id)
               vertical.examples << example 
             end
           end
@@ -71,15 +71,14 @@ module ApplicationHelper
           tag = Tag.find_by(id: tag_data[:id])
 
           ## Remove tag.
-          if tag_data.key? :remove and not vertical.tags.find(tag.id).nil?
+          if not tag.nil? and remove and tag_data.key? :remove and 
+              vertical.tags.exists?(id: tag.id)
             tag.destroy_if_isolated(1)
             vertical.tags.destroy(tag)
 
           ## Add existing tag.
-          else
-            if not tag.nil? and vertical.tags.find(tag.id).nil?
+          elsif not tag.nil? and not vertical.tags.exists?(id: tag.id)
               vertical.tags << tag
-            end
           end
 
         ## Add new tag.
@@ -107,7 +106,7 @@ module ApplicationHelper
 
           ## Remove web resource.
           if web_resource_data.key? :remove and 
-              not vertical.web_resources.find(web_resource.id).nil?
+              vertical.web_resources.exists?(id: web_resource.id)
             web_resource.destroy_if_isolated(1)
             vertical.web_resources.delete(web_resource)
 
@@ -118,8 +117,7 @@ module ApplicationHelper
               web_resource.update_attributes!(web_resource_data)
             end
 
-            if not web_resource.nil? and 
-                vertical.web_resources.find(web_resource.id).nil?
+            unless vertical.web_resources.exists?(web_resource.id)
               vertical.web_resources << web_resource
             end
           end
