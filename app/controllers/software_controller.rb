@@ -205,6 +205,7 @@ class SoftwareController < ApplicationController
       begin
         @data = params.require(:software).permit(:name, :summary, :description,
           :thumbnail, 
+          :bootsy_image_gallery_id,
           tags: [:id, :text, :remove], 
           web_resources: [:id, :url, :description, :remove], 
           examples: [:id, :title, :description, :software_id, :analysis_id,

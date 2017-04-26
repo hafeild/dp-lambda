@@ -29,9 +29,10 @@
       <div class="form-group">
         <%= f.label :description %><span class="required-input">*</span><br/>
         This should be a detailed description of the software and how to use it.
-        <textarea name="description" 
+        <%= f.bootsy_area :description, class: "form-control add-to-vertical unchanged", rows: 10 %>
+        <!-- <textarea name="description" 
           class="form-control add-to-vertical unchanged"
-          rows="10"><%= @software.description %></textarea>
+          rows="10"><%= @software.description %></textarea> -->
       </div>
 
       <div class="form-group examples resource">
