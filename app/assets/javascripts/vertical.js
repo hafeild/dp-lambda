@@ -7,11 +7,24 @@
 /////////////////////
 // Edit/update pages.
 
+$(document).ready(function(event){
+  $('.vertical-modification .set_bootsy_text_area').each(function(i,elm){
+    $(elm).removeClass('set_bootsy_text_area').addClass('bootsy_text_area');
+    Bootsy.init();
+  });
+});
+
 // Adds a new resource form from the *-form-template.
 $(document).on('click', '.resource .add', function(event){
   var resource = $(this).data('resource');
-  $('#'+ resource +'-form-template').clone().attr('id', '').appendTo($(this).
-    parents('.resource'));
+  var clone = $('#'+ resource +'-form-template').clone();
+  clone.attr('id', '').appendTo($(this).parents('.resource'));
+
+  clone.find('.set_bootsy_text_area').each(function(i,elm){
+    $(elm).removeClass('set_bootsy_text_area').addClass('bootsy_text_area');
+    Bootsy.init();
+  });
+
   event.stopPropagation();
   event.preventDefault();
 });
