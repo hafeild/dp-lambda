@@ -36,24 +36,34 @@ $(document).on('click', '.resource-form .remove', function(event){
 });
 
 // Whenever an input/text area is modified, this removes the 'unchanged' class.
-$(document).on('input', '.vertical-modification input, '+
+$(document).on('change', '.vertical-modification input, '+
     '.vertical-modification textarea', function(event){
   $(this).removeClass('unchanged');
   $(this).parents('.resource-form').removeClass('unchanged');
+  $('#form-submit').prop('disabled', false);
+});
+
+
+// Listens for clicks on any elements with a link class. E.g., the cancel 
+// button.
+$(document).on('click', '.link', function(event){
+  window.location = $(this).data('href');
+  event.stopPropagation();
+  event.preventDefault();
 });
 
 // Converts vertical form fields to form encoding, adds them as hidden fields,
 // and disables all .ignore fields. This is called before the form is submitted.
 $(document).on('submit', '.vertical-modification form', function(event){
+  event.stopPropagation();
+  event.preventDefault();
+
   var formJq = $(this);
   var resources = ['tags', 'web_resources', 'examples'];
   var vertical = $('.vertical-modification').data('vertical');
   var serializedParams = '';
   var params = {};
   params[vertical] = {}
-
-  event.stopPropagation();
-  event.preventDefault();
 
   // Gather the params from each resource section into a JavaScript object.
   $.each(resources, function(i, resource){
@@ -82,8 +92,6 @@ $(document).on('submit', '.vertical-modification form', function(event){
     }
   });
 
-  console.log('params v1:', params);
-
   // Gather all of the other parameters from the form.
   formJq.find('input,textarea').each(function(i, input){
     input = $(input);
@@ -95,8 +103,6 @@ $(document).on('submit', '.vertical-modification form', function(event){
       params[input.attr('name')] = input.val();
     }
   });
-
-  console.log('params v2:', params);
 
   // Send the data to the server.
   $.ajax(formJq.attr('action')+'.json', {

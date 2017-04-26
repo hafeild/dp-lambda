@@ -29,10 +29,9 @@
       <div class="form-group">
         <%= f.label :description %><span class="required-input">*</span><br/>
         This should be a detailed description of the software and how to use it.
-        <%= f.bootsy_area :description, class: "form-control add-to-vertical unchanged", rows: 10 %>
-        <!-- <textarea name="description" 
-          class="form-control add-to-vertical unchanged"
-          rows="10"><%= @software.description %></textarea> -->
+        <%= f.bootsy_area :description, name: "description",  rows: 10,
+          class: "form-control add-to-vertical unchanged" %>
+
       </div>
 
       <div class="form-group examples resource">
@@ -66,8 +65,11 @@
       </div>
 
       <%= f.submit @software.id.nil? ? "Create entry" : "Update entry", 
-        class: "btn btn-primary" %>
+        id: "form-submit", class: "btn btn-primary", disabled: :disabled %>
 
+      
+      <button class="btn btn-danger link" 
+        data-href="<%= software_path(@software) %>">Cancel</button>
 
       <% end %>
     </div>
