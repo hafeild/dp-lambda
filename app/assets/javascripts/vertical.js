@@ -6,11 +6,17 @@
 
 /////////////////////
 // Edit/update pages.
+var idCounter = 0;
 
 $(document).ready(function(event){
   $('.vertical-modification .set_bootsy_text_area').each(function(i,elm){
-    $(elm).removeClass('set_bootsy_text_area').addClass('bootsy_text_area');
-    Bootsy.init();
+    $(elm).removeClass('bootsy_text_area');
+    //$(elm).removeClass('set_bootsy_text_area').addClass('bootsy_text_area');
+    //Bootsy.init();
+  });
+
+  $('.templates .set_bootsy_text_area').each(function(i,elm){
+    $(elm).removeClass('bootsy_text_area');
   });
 });
 
@@ -21,6 +27,7 @@ $(document).on('click', '.resource .add', function(event){
   clone.attr('id', '').appendTo($(this).parents('.resource'));
 
   clone.find('.set_bootsy_text_area').each(function(i,elm){
+    elm.id = "bootsy_" + (idCounter++);
     $(elm).removeClass('set_bootsy_text_area').addClass('bootsy_text_area');
     Bootsy.init();
   });
@@ -67,9 +74,12 @@ $(document).on('click', '.link', function(event){
 
 // Converts vertical form fields to form encoding, adds them as hidden fields,
 // and disables all .ignore fields. This is called before the form is submitted.
-$(document).on('submit', '.vertical-modification form', function(event){
+$(document).on('submit', '.vertical-modification .vertical-form', function(event){
+  console.log(event);
+
   event.stopPropagation();
   event.preventDefault();
+
 
   var formJq = $(this);
   var resources = ['tags', 'web_resources', 'examples'];

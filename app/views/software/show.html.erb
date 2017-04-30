@@ -59,7 +59,7 @@
       <% @software.examples.each do |example| %>
         <h3><%= example.title %></h3>
         <p>
-          <%= example.description %>
+          <%= example.description.html_safe %>
         </p>
       <% end %>
       </ul>

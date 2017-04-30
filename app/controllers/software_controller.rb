@@ -14,9 +14,11 @@ class SoftwareController < ApplicationController
 
   def new
     @software = Software.new
+    @gallery = Gallery.last.nil? ? Gallery.create! : Gallery.last
   end
 
   def edit
+    @gallery = Gallery.last.nil? ? Gallery.create! : Gallery.last
   end
 
   ## Creates a new software entry. It assumes the following parameter structure:

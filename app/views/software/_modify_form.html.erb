@@ -3,7 +3,8 @@
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
-      <%= form_for(@software, url: action, method: method) do |f| %>
+      <%= form_for(@software, url: action, method: method, 
+        html: {class: "vertical-form"}) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       
       <% unless @software.id.nil? %>
@@ -29,7 +30,7 @@
       <div class="form-group">
         <%= f.label :description %><span class="required-input">*</span><br/>
         This should be a detailed description of the software and how to use it.
-        <%= f.bootsy_area :description, name: "description",  rows: 10,
+        <%= bootsy_area @gallery, nil, container: @gallery, value: @software.description, name: "description",  rows: 10,
           class: "form-control add-to-vertical unchanged" %>
 
       </div>
@@ -40,7 +41,7 @@
           >Add example</button>
 
         <% @software.examples.each do |example| %>
-          <%= render template: 'examples/_form', locals: { example: example } %>
+          <%= render template: 'examples/_form', locals: { example: example, gallery: @gallery } %>
         <% end %>
       </div>
 
@@ -69,7 +70,8 @@
 
       
       <button class="btn btn-danger link" 
-        data-href="<%= software_path(@software) %>">Cancel</button>
+        data-href="<%= @software.id.nil? ? software_index_path : 
+          software_path(@software) %>">Cancel</button>
 
       <% end %>
     </div>
@@ -78,11 +80,11 @@
 
 </div>
 
-<div style="display: none">
+<div class="templates" style="display: none">
 
   <!-- Example form template. -->
   <%= render template: 'examples/_form', locals: {id: 'example-form-template',
-    example: Example.new} %>
+    example: Example.new, gallery: @gallery } %>
 
   <!-- Web resource form template. -->
   <%= render template: 'web_resources/_form', 
