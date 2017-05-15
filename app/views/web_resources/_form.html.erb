@@ -17,8 +17,8 @@
 
   <!-- Description -->
   <div class="form-group">
-    <label>Description</label><span class="required-input">*</span> 
-    <textarea class="form-control ignore unchanged" name="description" rows="5"
-    ><%= web_resource.description %></textarea>
+    <label>Brief description</label><span class="required-input">*</span> 
+    <input class="form-control ignore unchanged" type="text" name="description"
+      value="<%= web_resource.description %>" placeholder="e.g., NodeXL Homepage"/>
   </div>
 </div>

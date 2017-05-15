@@ -20,6 +20,24 @@
       </div>
 
       <div class="form-group">
+        <%= f.label :thumbnail %><span class="required-input">*</span><br/>
+        This should be a detailed description of the software and how to use it.
+        <%= bootsy_area @gallery, nil, container: @gallery, value: "", 
+          name: "thumbnail_url_holder", 
+          class: "form-control ignore unchanged vertical-thumbnail-bootsy",
+          editor_options: { blockquote: false, font_styles: false,
+            emphasis: false, lists: false, html: false, color: false} %>
+
+        <div id="vertical-thumbnail">
+          <% unless @software.thumbnail_url.nil? %>
+            <img src="<%= @software.thumbnail_url.nil %>"/>
+          <% end %>
+        </div>
+        <input type="text" value="<%= @software.thumbnail_url %>" name="thumbnail_url" class="form-control add-to-vertical unchanged"
+      </div>
+
+
+      <div class="form-group">
         <%= f.label :summary %><span class="required-input">*</span><br/>
         This should be a short overview of the software.
         <textarea name="summary" class="form-control add-to-vertical unchanged"
