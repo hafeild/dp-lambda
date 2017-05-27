@@ -20,20 +20,19 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :thumbnail %><span class="required-input">*</span><br/>
-        This should be a detailed description of the software and how to use it.
-        <%= bootsy_area @gallery, nil, container: @gallery, value: "", 
-          name: "thumbnail_url_holder", 
-          class: "form-control ignore unchanged vertical-thumbnail-bootsy",
-          editor_options: { blockquote: false, font_styles: false,
-            emphasis: false, lists: false, html: false, color: false} %>
+        <%= f.label :thumbnail %><br/>
+        Select a non-copyrighted image that is representative of this software.
+        <br/>
+        <!-- <button class="btn btn-primary" id="select-thumbnail"
+          >Select thumbnail</button> -->
 
         <div id="vertical-thumbnail">
           <% unless @software.thumbnail_url.nil? %>
             <img src="<%= @software.thumbnail_url.nil %>"/>
           <% end %>
         </div>
-        <input type="text" value="<%= @software.thumbnail_url %>" name="thumbnail_url" class="form-control add-to-vertical unchanged"
+        <input type="text" value="<%= @software.thumbnail_url %>" 
+          name="thumbnail_url" class="form-control add-to-vertical unchanged"
       </div>
 
 
@@ -48,43 +47,18 @@
       <div class="form-group">
         <%= f.label :description %><span class="required-input">*</span><br/>
         This should be a detailed description of the software and how to use it.
-        <%= bootsy_area @gallery, nil, container: @gallery, value: @software.description, name: "description",  rows: 10,
-          class: "form-control add-to-vertical unchanged" %>
+        <%= f.bootsy_area :description, name: "description",  
+          rows: 10, class: "form-control add-to-vertical unchanged" %>
 
       </div>
 
-      <div class="form-group examples resource">
-        <h2>Examples</h2>
-        <button class="btn btn-default add" data-resource="example"
-          >Add example</button>
+      <p>
+      You will have an opportunity to add resource links and examples after you
+      save.
+      </p>
 
-        <% @software.examples.each do |example| %>
-          <%= render template: 'examples/_form', locals: { example: example, gallery: @gallery } %>
-        <% end %>
-      </div>
-
-      <div class="form-group web_resources resource">
-        <h2>Links to related resources on the web</h2>
-        <button class="btn btn-default add" data-resource="web_resource"
-          >Add web resource</button>
-        <% @software.web_resources.each do |web_resource| %>
-          <%= render template: 'web_resources/_form', 
-            locals: { web_resource: web_resource } %>
-        <% end %>
-      </div>
-
-      <div class="form-group tags resource">
-        <h2>Tags</h2>
-        <button class="btn btn-default add" data-resource="tag"
-          >Add tag</button>
-        <br/><br/>
-        <% @software.tags.each do |tag| %>
-          <%= render template: 'tags/_form', locals: { tag: tag } %>
-        <% end %>
-      </div>
-
-      <%= f.submit @software.id.nil? ? "Create entry" : "Update entry", 
-        id: "form-submit", class: "btn btn-primary", disabled: :disabled %>
+      <%= f.submit "Save", 
+        id: "form-submit", class: "btn btn-primary" %>
 
       
       <button class="btn btn-danger link" 
@@ -96,19 +70,4 @@
   </div>
 
 
-</div>
-
-<div class="templates" style="display: none">
-
-  <!-- Example form template. -->
-  <%= render template: 'examples/_form', locals: {id: 'example-form-template',
-    example: Example.new, gallery: @gallery } %>
-
-  <!-- Web resource form template. -->
-  <%= render template: 'web_resources/_form', 
-    locals: {id: 'web_resource-form-template', web_resource: WebResource.new} %>
-
-  <!-- Tag form template. -->
-  <%= render template: 'tags/_form', locals: {id:'tag-form-template', 
-    tag: Tag.new} %>
 </div>

@@ -60,7 +60,6 @@ $(document).on('change', '.vertical-modification input, '+
     '.vertical-modification textarea', function(event){
   $(this).removeClass('unchanged');
   $(this).parents('.resource-form').removeClass('unchanged');
-  $('#form-submit').prop('disabled', false);
 });
 
 
@@ -71,6 +70,14 @@ $(document).on('click', '.link', function(event){
   event.stopPropagation();
   event.preventDefault();
 });
+
+
+$(document).on('click', '.select-thumbnail', function(event){
+  window.location = $(this).data('href');
+  event.stopPropagation();
+  event.preventDefault();
+});
+
 
 // Converts vertical form fields to form encoding, adds them as hidden fields,
 // and disables all .ignore fields. This is called before the form is submitted.

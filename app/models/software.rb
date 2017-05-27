@@ -9,6 +9,8 @@ class Software < ApplicationRecord
   ## - web_resources
   ## - examples
 
+  include Bootsy::Container
+
   belongs_to :creator, class_name: "User"
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources

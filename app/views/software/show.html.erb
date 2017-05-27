@@ -57,9 +57,10 @@
     <% else %>
       <ul>
       <% @software.examples.each do |example| %>
-        <h3><%= example.title %></h3>
+        <h3><%= example.title.nil? ? "(No title given)" : example.title %></h3>
         <p>
-          <%= example.description.html_safe %>
+          <%= example.description.nil? ?
+              "(No description provided)" : example.description.html_safe %>
         </p>
       <% end %>
       </ul>
