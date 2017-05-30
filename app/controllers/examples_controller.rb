@@ -47,9 +47,9 @@ class ExamplesController < ApplicationController
       @vertical.examples << @example
       @vertical.save!
       respond_with_success @redirect_path
-    rescue Exception => e
+    rescue => e
       respond_with_error "The example could not be associated to the "+
-        "requested vertical. #{e}", @redirect_path
+        "requested vertical.", @redirect_path
       
     end
   end
@@ -59,12 +59,12 @@ class ExamplesController < ApplicationController
       if @vertical.examples.exists?(id: @example.id)
         @example.destroy_if_isolated(1)
         @vertical.examples.delete(@example)
-        @vertical.save!
+        @vertical.save! 
       end
       respond_with_success @redirect_path
-    rescue Exception => e
+    rescue => e
       respond_with_error "The example could not be disassociated with the "+
-        "requested vertical. #{e}", @redirect_path
+        "requested vertical.", @redirect_path
     end
   end
 
