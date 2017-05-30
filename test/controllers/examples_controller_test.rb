@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ExamplesControllerTest < ActionController::TestCase
 
@@ -6,7 +6,7 @@ class ExamplesControllerTest < ActionController::TestCase
   ## Testing create
 
   test "should break when creating an example without being logging in" do
-    assert_no_difference 'Example.count', "Example created" do
+    assert_no_difference "Example.count", "Example created" do
       post :create, params: { example: { 
         title: "x", description: "x" } }
       assert_redirected_to login_path, @response.body
@@ -16,12 +16,52 @@ class ExamplesControllerTest < ActionController::TestCase
   test "should create example and link to software page" do
     log_in_as users(:foo)
     software = software(:one)
-    assert_difference 'Example.count', 1, "Example not created" do
+    assert_difference "Example.count", 1, "Example not created" do
       post :create, params: { software_id: software.id, example: { 
         title: "x", description: "x" } }
       assert_redirected_to software_path(software), @response.body
     end
   end
+
+  test "should break when creating an example with no title or description" do
+    log_in_as users(:foo)
+    software = software(:one)
+    assert_no_difference "Example.count", "Example created" do
+      post :create, params: { software_id: software.id, 
+        example: { title: "", description: "" } }
+      assert_redirected_to software_path(software), @response.body
+
+      post :create, params: { software_id: software.id,
+        example: { title: "xyz", description: "" } }
+      assert_redirected_to software_path(software), @response.body
+
+      post :create, params: { software_id: software.id,
+        example: { title: "", description: "xyz" } }
+      assert_redirected_to software_path(software), @response.body
+    end
+  end
+
+  test "should break when creating an example with a non-unique title" do
+    log_in_as users(:foo)
+    software = software(:one)
+    example = examples(:one)
+    assert_no_difference "Example.count", "Example created" do
+      post :create, params: { software_id: software.id,
+        example: { title: example.title, description: "xyz" } }
+      assert_redirected_to software_path(software), @response.body
+    end
+  end
+
+  test "should break when creating an example with a long title" do
+    log_in_as users(:foo)
+    software = software(:one)
+    assert_no_difference "Example.count", "Example created" do
+      post :create, params: { software_id: software.id,
+        example: { title: "x"*201, description: "xyz" } }
+      assert_redirected_to software_path(software), @response.body
+    end
+  end
+
   ##############################################################################
 
 
@@ -32,7 +72,7 @@ class ExamplesControllerTest < ActionController::TestCase
     log_in_as users(:foo)
     software = software(:one)
     example = examples(:one)
-    assert_difference 'software.examples.size', 1, "Example not linked" do
+    assert_difference "software.examples.size", 1, "Example not linked" do
       post :connect, params: { software_id: software.id, id: example.id }
       assert_redirected_to software_path(software), @response.body
       software.reload
@@ -49,7 +89,7 @@ class ExamplesControllerTest < ActionController::TestCase
     log_in_as users(:foo)
     software = software(:two)
     example = examples(:one)
-    assert_difference 'software.examples.size', -1, "Example not unlinked" do
+    assert_difference "software.examples.size", -1, "Example not unlinked" do
       delete :disconnect, params: { software_id: software.id, id: example.id }
       assert_redirected_to software_path(software), @response.body
       assert Example.find_by(id: example.id).nil?

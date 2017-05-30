@@ -1,13 +1,18 @@
 class Example < ApplicationRecord
   ## Examples have...
-  ## - title
-  ## - description
+  ## - title -- must be present, <= 200 chars, and unique
+  ## - description -- must be present
   ## - software_id
   ## - analysis_id
   ## - dataset_id
 
   include Bootsy::Container
   has_and_belongs_to_many :software
+
+  ## Ensure the presence of required fields. 
+  validates :title, presence: true, length: {maximum: 200}, 
+    uniqueness: {case_sensitive: false}
+  validates :description, presence: true
 
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
