@@ -1,6 +1,8 @@
-<div data-software-id="<%= software.id %>" class="software index-entry">
 
-  <span class="name"><%= link_to software.name, software_path(software.id) %></span>
+<a href="<%= software_path(software.id) %>" 
+  data-software-id="<%= software.id %>" class="software index-entry">
+
+  <span class="name"><%= software.name %></span>
   <span class="summary"><%= software.summary %></span>
   
-</div>
+</a>
