@@ -1,0 +1,14 @@
+<div data-example-id="<%= example.id %>" class="example index-entry">
+
+  <span class="name">
+  <%= form_for(example, url: vertical_example_path(@vertical, example), 
+      method: :post, html: {style: 'display: inline'}) do |f| %>
+    <button class="btn btn-sm btn-default">Add</button>
+  <% end %>
+  <%= link_to example.title, example_path(example) %></span>
+  <% clean_description = strip_tags example.description %>
+  <% clean_description = clean_description[0..100] + '...' if 
+    clean_description.size > 100 %>
+  <span class="description"><%= clean_description %></span>
+  
+</div>

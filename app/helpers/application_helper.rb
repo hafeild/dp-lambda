@@ -138,12 +138,20 @@ module ApplicationHelper
     end
   end
 
-  def new_example_path(vertical)
+  def new_vertical_example_path(vertical)
       "#{get_vertical_path(vertical)}/examples/new"
   end
 
-  def edit_example_path(vertical, example)
+  def edit_vertical_example_path(vertical, example)
+      "#{get_vertical_path(vertical)}/examples/#{example.id}/edit"
+  end
+
+  def vertical_example_path(vertical, example)
       "#{get_vertical_path(vertical)}/examples/#{example.id}"
+  end
+
+  def vertical_example_index_path(vertical)
+      "#{get_vertical_path(vertical)}/examples"
   end
 
 end

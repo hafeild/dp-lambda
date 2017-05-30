@@ -1,17 +1,21 @@
 class ExamplesController < ApplicationController
-  before_action :logged_in_user, except: [:index, :show]
-  before_action :user_can_edit, except: [:index, :show]
+  before_action :logged_in_user
+  before_action :user_can_edit
   before_action :get_simple_params, only: [:new, :edit]
   before_action :get_params, except: [:index, :show, :edit, :new, 
     :connect, :disconnect]
-  before_action :get_example, except: [:index, :show, :connect]
-  before_action :get_verticals, except: [:index, :show]
-  before_action :get_redirect_path, except: [:index, :show, :new, :edit]
+  before_action :get_example, except: [:index, :show]
+  before_action :get_verticals
+  before_action :get_redirect_path
 
   def new
   end
 
   def edit
+  end
+
+  def index
+    @examples = Example.all.sort_by{|e| e.title}
   end
 
   def create
@@ -28,7 +32,7 @@ class ExamplesController < ApplicationController
 
   def update
     begin
-      @example.update_attributes! @params.permit(:url, :description)
+      @example.update_attributes! @params
       respond_with_success @redirect_path
     rescue
       respond_with_error "The example could not be updated.", @redirect_path
@@ -43,9 +47,9 @@ class ExamplesController < ApplicationController
       @vertical.examples << @example
       @vertical.save!
       respond_with_success @redirect_path
-    rescue
+    rescue Exception => e
       respond_with_error "The example could not be associated to the "+
-        "requested vertical.", @redirect_path
+        "requested vertical. #{e}", @redirect_path
       
     end
   end
@@ -54,6 +58,8 @@ class ExamplesController < ApplicationController
     begin
       if @vertical.examples.exists?(id: @example.id)
         @example.destroy_if_isolated(1)
+        @vertical.examples.delete(@example)
+        @vertical.save!
       end
       respond_with_success @redirect_path
     rescue Exception => e
@@ -72,8 +78,7 @@ class ExamplesController < ApplicationController
     ## Extracts the allowed parameters into a global named @data.
     def get_params
       begin
-        @params = params.require(:example).permit(:title, :description,
-          :software_id)
+        @params = params.require(:example).permit(:title, :description)
       rescue => e
         respond_with_error "Required parameters not supplied."
       end

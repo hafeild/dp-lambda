@@ -10,8 +10,9 @@ Rails.application.routes.draw do
 
   resources :examples, except: [:index, :show, :destroy]
   software_example_path = 
+  get    'software/:software_id/examples'          => 'examples#index'
   get    'software/:software_id/examples/new'      => 'examples#new'
-  patch  'software/:software_id/examples/:id/edit' => 'examples#edit'
+  get    'software/:software_id/examples/:id/edit' => 'examples#edit'
   post   'software/:software_id/examples/:id'      => 'examples#connect'
   delete 'software/:software_id/examples/:id'      => 'examples#disconnect'
 

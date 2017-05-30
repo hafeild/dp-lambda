@@ -65,8 +65,12 @@
         </p>
         <% if can_edit? %>
           <%= form_for(example, method: :delete,
-              url: edit_example_path(@software, example)) do |f| %>
+              url: vertical_example_path(@software, example)) do |f| %>
             <button class="btn btn-sm btn-danger">Remove example</button>
+          <% end %>
+          <%= form_for(example, method: :get,
+             url: edit_vertical_example_path(@software, example)) do |f| %>
+            <button class="btn btn-sm btn-default">Edit example</button>
           <% end %>
         <% end %>
       <% end %>
@@ -74,10 +78,10 @@
     <% end %>
     <p>
     <% if can_edit? %>
-      <a href="<%= new_example_path @software %>"
+      <a href="<%= new_vertical_example_path @software %>"
         ><button class="btn btn-sm btn-default">Add new example</button
       ></a>
-      <a href="<%= new_example_path @software %>"
+      <a href="<%= vertical_example_index_path @software %>"
         ><button class="btn btn-sm btn-default">Add existing example</button
       ></a>
     <% end %>
