@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170429125936) do
+ActiveRecord::Schema.define(version: 20170426003013) do
 
   create_table "bootsy_image_galleries", force: :cascade do |t|
     t.string   "bootsy_resource_type"
@@ -39,11 +39,6 @@ ActiveRecord::Schema.define(version: 20170429125936) do
   create_table "examples_software", force: :cascade do |t|
     t.integer "software_id"
     t.integer "example_id"
-  end
-
-  create_table "galleries", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "software", force: :cascade do |t|
