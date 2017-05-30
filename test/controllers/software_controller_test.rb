@@ -106,7 +106,6 @@ class SoftwareControllerTest < ActionController::TestCase
     assert result['error'] == "There was an error saving the software entry."
   end
 
-
   ## End create tests
   ##############################################################################
 
