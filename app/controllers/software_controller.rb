@@ -19,47 +19,15 @@ class SoftwareController < ApplicationController
   def edit
   end
 
-  ## Creates a new software entry. It assumes the following parameter structure:
-  ##
-  ##  id: ...
-  ##  software: {
-  ##    name: ...
-  ##    summary: ...
-  ##    description: ...
-  ##    tags*: [text, ...]
-  ##    web_resources*: {
-  ##      id*: ...
-  ##      url**: ...
-  ##      description**: ...
-  ##    }
-  ##    examples*: {
-  ##      id*: ...
-  ##      title**: ...
-  ##      description**: ...
-  ##      software_id*: ...
-  ##      analyses_id*: ...
-  ##      dataset_id*: ...
-  ##    }
-  ## }
-  ##    
-  ## * is optional; in the case that ids are supplied, any existing element
-  ##   will have its information updated with the other values passed in. 
-  ## ** optional in the presence of an optional id, required otherwise.
+  ## Creates a new software entry. 
   def create
 
     ## Make sure we have the required fields.
-    if not @data.key?(:name) or @data[:name].empty? or 
-        not @data.key?(:summary) or @data[:summary].empty? or 
-        not @data.key?(:description) or @data[:description].empty?
-      error = "You must provide a name, summary, and description."
-      respond_to do |format|
-        format.json { render json: {success: false, error: error} }
-        format.html do
-          flash[:danger] = error
-          # render plain: error
-          redirect_back_or new_software_path
-        end
-      end
+    if get_with_default(@data, :name, "").empty? or 
+        get_with_default(@data, :summary, "").empty? or
+        get_with_default(@data, :description, "").empty?
+      respond_with_error "You must provide a name, summary, and description.",
+        new_software_path
       return
     end
 
@@ -71,34 +39,13 @@ class SoftwareController < ApplicationController
           description: @data[:description]
         )
 
-        ## Process tags.
-        update_tags(software)
-
-        ## Process web resources.
-        update_web_resources(software)
-
-        ## Process examples.
-        update_examples(software)
-
         software.save!
-        # render plain: "#{@data.to_h.to_json} -- #{params.require(:software).to_unsafe_h.to_json}"
 
-        respond_to do |format|
-          format.json { render json: 
-            {success: true, redirect: software_path(software.id)} }
-          format.html { redirect_to software_path(software.id) }
-        end
+        respond_with_success software_path(software)
       end
     rescue => e
-      error = "There was an error saving the software entry."
-      respond_to do |format|
-        format.json { render json: {success: false, error: error} }
-        format.html do 
-          flash[:danger] = error
-          redirect_back_or new_software_path
-          # render plain: e
-        end
-      end
+      respond_with_error "There was an error saving the software entry.",
+        new_software_path
     end
   end
 
@@ -111,34 +58,13 @@ class SoftwareController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @software.update(@data.permit(:name, :description, :summary))
-
-        # ## Process tags.
-        # update_tags(@software, true)
-
-        # ## Process web resources.
-        # update_web_resources(@software, true)
-
-        # ## Process examples.
-        # update_examples(@software, true)
-
         @software.save!
 
-        respond_to do |format|
-          format.json {render json: {success: true, 
-              redirect: software_path(@software.id)}}
-          format.html {redirect_to software_path(@software.id)}
-        end
+        respond_with_success software_path(@software)
       end
     rescue => e
-      error = "There was an error updating the software entry."
-      respond_to do |format|
-        format.json {render json: {success: false, error: error}}
-        format.html do 
-          flash[:danger] = error 
-          redirect_back_or new_software_path
-          # render plain: e
-        end
-      end
+      respond_with_error "There was an error updating the software entry.",
+        new_software_path
     end  
   end
 
@@ -156,10 +82,8 @@ class SoftwareController < ApplicationController
         redirect_to software_index_path
       end
     rescue => e
-      error = "There was an error removing the software entry."
-      flash[:danger] = error 
-      redirect_back_or new_software_path
-      # render plain: e
+      respond_with_error "There was an error removing the software entry.",
+        new_software_path
     end
   end
 
@@ -181,14 +105,7 @@ class SoftwareController < ApplicationController
           examples: [:id, :title, :description, :software_id, :analysis_id,
             :dataset_id, :remove])
       rescue => e
-        error = "Required parameters not supplied."
-        respond_to do |format|
-          format.json { render json: {success: false, error: error} }
-          format.html do 
-            flash[:danger] = error
-            redirect_back_or root_path
-          end
-        end
+        respond_with_error "Required parameters not supplied.", root_path
       end
     end
 
