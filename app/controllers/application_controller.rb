@@ -9,11 +9,44 @@ class ApplicationController < ActionController::Base
   private
 
     ## Confirms a logged-in user.
+    # def logged_in_user
+    #   unless logged_in?
+    #     store_location
+    #     flash[:danger] = "Please log in."
+    #     redirect_to login_url
+    #   end
+    # end
+
+
+
+    ## Confirms a logged-in user.
     def logged_in_user
       unless logged_in?
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
+        error = "You must be logged in to modify content."
+        respond_to do |format|
+          format.json { render json: {success: false, error: error} }
+          format.html do
+            store_location
+            flash[:danger] = error
+            redirect_to login_path
+          end
+        end
+      end
+    end
+
+
+    ## Checks if the logged in user can make edits. If not, redirect. and 
+    ## displays an error message.
+    def user_can_edit
+      unless can_edit?
+        error = "You do not have permission to edit this content."
+        respond_to do |format|
+          format.json { render json: {success: false, error: error} }
+          format.html do
+            flash[:danger] = error 
+            redirect_back_or root_path
+          end
+        end
       end
     end
 
@@ -44,4 +77,28 @@ class ApplicationController < ActionController::Base
       hash.key?(key) ? hash[key] : default
     end
 
+    ## Responds with an error, either as JSON or HTML based on the requested
+    ## format.
+    ## @param error The error to return.
+    ## @param redirect_path The path to return to if 'back' isn't an option. 
+    ##                      Defaults to root_path.
+    def respond_with_error(error, redirect_path=root_path)
+      respond_to do |format|
+        format.json { render json: {success: false, error: error} }
+        format.html do 
+          flash[:danger] = error
+          redirect_back_or redirect_path
+        end
+      end
+    end
+
+    ## Responds successfully, either as JSON or HTML based on the requested
+    ## format.
+    ## @param path The path to redirect to.
+    def respond_with_success(path)
+      respond_to do |format|
+        format.json { render json: {success: true, redirect: path} }
+        format.html { redirect_to path }
+      end
+    end
 end

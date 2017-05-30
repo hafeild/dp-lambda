@@ -7,47 +7,25 @@
         html: {class: "vertical-form"}) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       
-      <% unless @software.id.nil? %>
-      <input type="hidden" value="<%= @software.id %>" name="id"/>
-      <% end %>
-
       <div class="form-group">
         <%= f.label :name %><span class="required-input">*</span> 
         (max 200 characters)
-        <input type="text" name="name" 
-          class="form-control add-to-vertical unchanged", 
-          placeholder="e.g., NodeXL" value="<%= @software.name %>"/>
+        <%= f.text_field :name, class: "form-control", 
+          placeholder: "e.g., NodeXL" %>
       </div>
-
-      <div class="form-group">
-        <%= f.label :thumbnail %><br/>
-        Select a non-copyrighted image that is representative of this software.
-        <br/>
-        <!-- <button class="btn btn-primary" id="select-thumbnail"
-          >Select thumbnail</button> -->
-
-        <div id="vertical-thumbnail">
-          <% unless @software.thumbnail_url.nil? %>
-            <img src="<%= @software.thumbnail_url.nil %>"/>
-          <% end %>
-        </div>
-        <input type="text" value="<%= @software.thumbnail_url %>" 
-          name="thumbnail_url" class="form-control add-to-vertical unchanged"
-      </div>
-
 
       <div class="form-group">
         <%= f.label :summary %><span class="required-input">*</span><br/>
         This should be a short overview of the software.
-        <textarea name="summary" class="form-control add-to-vertical unchanged"
-          placeholder="e.g., An Excel plugin that allows you to create and manipulate network diagrams."
-          ><%= @software.summary %></textarea>
+        <%= f.text_area :summary, class: "form-control",
+          placeholder: "e.g., An Excel plugin that allows you to create "+
+            "and manipulate network diagrams." %>
       </div>
 
       <div class="form-group">
         <%= f.label :description %><span class="required-input">*</span><br/>
         This should be a detailed description of the software and how to use it.
-        <%= f.bootsy_area :description, name: "description",  
+        <%= f.bootsy_area :description,  
           rows: 10, class: "form-control add-to-vertical unchanged" %>
 
       </div>

@@ -44,7 +44,8 @@
       <ul>
       <% @software.web_resources.each do |web_resource| %>
         <li><a href="<%= web_resource.url %>"
-          ><%= web_resource.description %></a></li>
+          ><%= web_resource.description %></a>
+        </li>
       <% end %>
       </ul>
     <% end %>
@@ -62,9 +63,25 @@
           <%= example.description.nil? ?
               "(No description provided)" : example.description.html_safe %>
         </p>
+        <% if can_edit? %>
+          <%= form_for(example, method: :delete,
+              url: edit_example_path(@software, example)) do |f| %>
+            <button class="btn btn-sm btn-danger">Remove example</button>
+          <% end %>
+        <% end %>
       <% end %>
-      </ul>
+      </ul>     
     <% end %>
+    <p>
+    <% if can_edit? %>
+      <a href="<%= new_example_path @software %>"
+        ><button class="btn btn-sm btn-default">Add new example</button
+      ></a>
+      <a href="<%= new_example_path @software %>"
+        ><button class="btn btn-sm btn-default">Add existing example</button
+      ></a>
+    <% end %>
+    </p> 
   </div>
 
 </div>

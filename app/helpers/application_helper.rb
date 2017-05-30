@@ -132,4 +132,18 @@ module ApplicationHelper
     end
   end
 
+  def get_vertical_path(vertical)
+    if vertical.class == Software
+      software_path(vertical)
+    end
+  end
+
+  def new_example_path(vertical)
+      "#{get_vertical_path(vertical)}/examples/new"
+  end
+
+  def edit_example_path(vertical, example)
+      "#{get_vertical_path(vertical)}/examples/#{example.id}"
+  end
+
 end

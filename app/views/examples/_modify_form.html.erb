@@ -1,0 +1,39 @@
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <%= form_for(@example, url: action, method: method, 
+        html: {class: "vertical-form"}) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        
+        <% unless @software.nil? %>
+          <%= f.hidden_field :software_id, value: @software.id %>
+        <% end %>
+
+        <!-- Title -->
+        <div class="form-group">
+          <label>Title</label><span class="required-input">*</span> 
+          (max 200 characters)
+          <%= f.text_field :title, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., Creating a simple NodeXL graph" %>
+        </div>    
+
+        <!-- Description -->
+        <div class="form-group">
+          <label>Description</label><span class="required-input">*</span> 
+
+          <%= f.bootsy_area :description, rows: 10,
+                class: "form-control ignore unchanged" %>    
+        </div>
+
+        <%= f.submit "Save", id: "form-submit", class: "btn btn-primary" %>
+
+        
+        <button class="btn btn-danger link" 
+          data-href="<%= @back_path %>">Cancel</button>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,9 @@
 class WebResource < ApplicationRecord
+  ## WebResource has...
+  ## - url
+  ## - description
+
+  include Bootsy::Container
   has_and_belongs_to_many :software
 
   ## Reports the number of entries this resource is connected to.

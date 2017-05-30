@@ -14,11 +14,9 @@ class SoftwareController < ApplicationController
 
   def new
     @software = Software.new
-    @gallery = Gallery.last.nil? ? Gallery.create! : Gallery.last
   end
 
   def edit
-    @gallery = Gallery.last.nil? ? Gallery.create! : Gallery.last
   end
 
   ## Creates a new software entry. It assumes the following parameter structure:
@@ -114,14 +112,14 @@ class SoftwareController < ApplicationController
       ActiveRecord::Base.transaction do
         @software.update(@data.permit(:name, :description, :summary))
 
-        ## Process tags.
-        update_tags(@software, true)
+        # ## Process tags.
+        # update_tags(@software, true)
 
-        ## Process web resources.
-        update_web_resources(@software, true)
+        # ## Process web resources.
+        # update_web_resources(@software, true)
 
-        ## Process examples.
-        update_examples(@software, true)
+        # ## Process examples.
+        # update_examples(@software, true)
 
         @software.save!
 
@@ -170,36 +168,6 @@ class SoftwareController < ApplicationController
     ## Detects the requested response format -- HTML or JSON.
     def get_response_format
       @json = (params.key? :format and params[:format] == "json")
-    end
-
-    ## Confirms a logged-in user.
-    def logged_in_user
-      unless logged_in?
-        error = "You must be logged in to modify content."
-        respond_to do |format|
-          format.json { render json: {success: false, error: error} }
-          format.html do
-            store_location
-            flash[:danger] = error
-            redirect_to login_path
-          end
-        end
-      end
-    end
-
-    ## Checks if the logged in user can make edits. If not, redirect. and 
-    ## displays an error message.
-    def user_can_edit
-      unless can_edit?
-        error = "You do not have permission to edit this content."
-        respond_to do |format|
-          format.json { render json: {success: false, error: error} }
-          format.html do
-            flash[:danger] = error 
-            redirect_back_or root_path
-          end
-        end
-      end
     end
 
     ## Extracts the allowed parameters into a global named @data.

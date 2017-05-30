@@ -8,6 +8,15 @@ Rails.application.routes.draw do
   post    'login'  => 'sessions#create'
   delete  'logout' => 'sessions#destroy'
 
+  resources :examples, except: [:index, :show, :destroy]
+  software_example_path = 
+  get    'software/:software_id/examples/new'      => 'examples#new'
+  patch  'software/:software_id/examples/:id/edit' => 'examples#edit'
+  post   'software/:software_id/examples/:id'      => 'examples#connect'
+  delete 'software/:software_id/examples/:id'      => 'examples#disconnect'
+
+
+  resources :web_resources
   resources :software
   resources :users, only: [:create,:update,:edit,:destroy]
   resources :account_activations, only: [:edit]

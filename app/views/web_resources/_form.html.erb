@@ -3,22 +3,48 @@
   <h3>Web resource <button class="btn btn-sm btn-danger remove"
     >Remove</button></h3>
 
-  <% unless web_resource.id.nil? %>
-  <input type="hidden" name="id" value="<%= web_resource.id %>" class="ignore"/>
-  <% end %>
 
-  <!-- URL -->
-  <div class="form-group">
-    <label>URL</label><span class="required-input">*</span>
-    <input class="form-control ignore unchanged" type="text" name="url"
-      placeholder="e.g., https://nodexl.codeplex.com/"
-      value="<%= web_resource.url %>" />
-  </div>    
+</div>
 
-  <!-- Description -->
-  <div class="form-group">
-    <label>Brief description</label><span class="required-input">*</span> 
-    <input class="form-control ignore unchanged" type="text" name="description"
-      value="<%= web_resource.description %>" placeholder="e.g., NodeXL Homepage"/>
+
+<div class="row">
+  <h3>Edit Example</h3>
+
+  <div class="col-md-12 col-md-offset-0">
+    <%= form_for(@web_resource, url: action, method: method, 
+      html: {class: "vertical-form"}) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      
+      <% unless @software.id.nil? %>
+      <input type="hidden" value="<%= @software.id %>" name="software_id"/>
+      <% end %>
+
+
+      <% unless web_resource.id.nil? %>
+      <input type="hidden" name="id" value="<%= web_resource.id %>" class="ignore"/>
+      <% end %>
+
+      <!-- URL -->
+      <div class="form-group">
+        <label>URL</label><span class="required-input">*</span>
+        <input class="form-control ignore unchanged" type="text" name="url"
+          placeholder="e.g., https://nodexl.codeplex.com/"
+          value="<%= @web_resource.url %>" />
+      </div>    
+
+      <!-- Description -->
+      <div class="form-group">
+        <label>Brief description</label><span class="required-input">*</span> 
+        <input class="form-control ignore unchanged" type="text" name="description"
+          value="<%= @web_resource.description %>" placeholder="e.g., NodeXL Homepage"/>
+      </div>
+
+      <%= f.submit "Save", 
+        id: "form-submit", class: "btn btn-primary" %>
+
+      
+      <button class="btn btn-danger link" 
+        data-href="<%= @back_path %>">Cancel</button>
+    <% end %>
   </div>
 </div>

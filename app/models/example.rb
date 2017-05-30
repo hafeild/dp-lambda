@@ -1,4 +1,12 @@
 class Example < ApplicationRecord
+  ## Examples have...
+  ## - title
+  ## - description
+  ## - software_id
+  ## - analysis_id
+  ## - dataset_id
+
+  include Bootsy::Container
   has_and_belongs_to_many :software
 
   ## Reports the number of entries this resource is connected to.
