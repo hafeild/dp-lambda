@@ -26,7 +26,8 @@
           <label>Description</label><span class="required-input">*</span> 
 
           <%= f.bootsy_area :description, rows: 10,
-                class: "form-control ignore unchanged" %>    
+                class: "form-control ignore unchanged",
+                editor_options: bootsy_editing_options  %>    
         </div>
 
         <%= f.submit "Save", id: "form-submit", class: "btn btn-primary" %>

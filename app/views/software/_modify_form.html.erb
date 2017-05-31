@@ -26,7 +26,8 @@
         <%= f.label :description %><span class="required-input">*</span><br/>
         This should be a detailed description of the software and how to use it.
         <%= f.bootsy_area :description,  
-          rows: 10, class: "form-control add-to-vertical unchanged" %>
+          rows: 10, class: "form-control add-to-vertical unchanged",
+          editor_options: bootsy_editing_options %>
 
       </div>
 

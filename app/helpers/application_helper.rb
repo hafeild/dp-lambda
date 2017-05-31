@@ -30,19 +30,25 @@ module ApplicationHelper
   end
 
   def new_vertical_example_path(vertical)
-      "#{get_vertical_path(vertical)}/examples/new"
+    "#{get_vertical_path(vertical)}/examples/new"
   end
 
   def edit_vertical_example_path(vertical, example)
-      "#{get_vertical_path(vertical)}/examples/#{example.id}/edit"
+    "#{get_vertical_path(vertical)}/examples/#{example.id}/edit"
   end
 
   def vertical_example_path(vertical, example)
-      "#{get_vertical_path(vertical)}/examples/#{example.id}"
+    "#{get_vertical_path(vertical)}/examples/#{example.id}"
   end
 
   def vertical_example_index_path(vertical)
-      "#{get_vertical_path(vertical)}/examples"
+    "#{get_vertical_path(vertical)}/examples"
   end
   ##############################################################################
+
+  ## For hard coding bootsy options.
+  def bootsy_editing_options()
+    {font_styles: false, html: true}
+  end
+
 end
