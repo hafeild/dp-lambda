@@ -1,0 +1,19 @@
+<div data-tag-id="<%= tag.id %>" class="tag index-entry">
+
+  <div class="connect-resource">
+    <%= form_for(tag, 
+        url: vertical_tag_path(@vertical, tag), 
+        method: :post, html: {style: 'display: inline'}) do |f| %>
+      <% if @vertical.tags.exists?(tag.id) %>
+        <button class="btn btn-sm btn-default" disabled="disabled">Already added</button>
+      <% else %>
+        <button class="btn btn-sm btn-default">Add</button>
+      <% end %>
+    <% end %>
+  </div>
+
+  <span class="entry-data-wrapper">
+    <span class="name"><%= 
+      link_to tag.text, tag_path(tag) %></span>
+  </span>
+</div>

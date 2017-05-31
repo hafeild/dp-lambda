@@ -72,6 +72,32 @@ module ApplicationHelper
   ##############################################################################
 
 
+  ##############################################################################
+  ## The following generate paths for vertical-tag.
+  def get_vertical_path(vertical)
+    if vertical.class == Software
+      software_path(vertical)
+    end
+  end
+
+  def new_vertical_tag_path(vertical)
+    "#{get_vertical_path(vertical)}/tags/new"
+  end
+
+  def edit_vertical_tag_path(vertical, tag)
+    "#{get_vertical_path(vertical)}/tags/#{tag.id}/edit"
+  end
+
+  def vertical_tag_path(vertical, tag)
+    "#{get_vertical_path(vertical)}/tags/#{tag.id}"
+  end
+
+  def vertical_tag_index_path(vertical)
+    "#{get_vertical_path(vertical)}/tags"
+  end
+  ##############################################################################
+
+
   ## For keeping bootsy options consistent.
   def bootsy_editing_options()
     {font_styles: false, html: true}

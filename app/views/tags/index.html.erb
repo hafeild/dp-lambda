@@ -1,4 +1,4 @@
-<% provide(:title, "Choose web resource") %>
+<% provide(:title, "Choose tag") %>
 <div class="container resource-modification">
   <h1><%= yield :title %></h1>
   <p>
@@ -8,13 +8,13 @@
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
-      <% if @web_resources.empty? %>
-        No web resources exist yet!
+      <% if @tags.empty? %>
+        No tags exist yet!
       <% else %>
-        <h2>Web resources</h2>
+        <h2>Tags</h2>
         <div class="connection-index">
-          <%= render partial: 'web_resource_index_item', 
-            collection: @web_resources, as: :web_resource %>
+          <%= render partial: 'tag_index_item', 
+            collection: @tags, as: :tag %>
         </div>
       <% end %> 
     </div>

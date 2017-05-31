@@ -23,13 +23,16 @@ Rails.application.routes.draw do
   post   'software/:software_id/web_resources/:id' => 'web_resources#connect'
   delete 'software/:software_id/web_resources/:id' => 'web_resources#disconnect'
 
-
-
+  resources :tags, except: [:index, :destroy]
+  get    'software/:software_id/tags'          => 'tags#index'
+  get    'software/:software_id/tags/new'      => 'tags#new'
+  get    'software/:software_id/tags/:id/edit' => 'tags#edit'
+  post   'software/:software_id/tags/:id'      => 'tags#connect'
+  delete 'software/:software_id/tags/:id'      => 'tags#disconnect'
 
   resources :software
   resources :users, only: [:create,:update,:edit,:destroy]
   resources :account_activations, only: [:edit]
   resources :email_verifications, only: [:edit]
   resources :password_resets, only: [:edit, :new, :create, :update]
-  resources :galleries, only: [:create, :update, :destroy]
 end

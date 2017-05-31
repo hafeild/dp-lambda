@@ -30,11 +30,20 @@
 
   <div class="tags">
     <h2>Tags</h2>
-    <% if @software.tags.size == 0 %>
-      There are currently no tags associated with this software.
-    <% else %>
-      <%= @software.tags.map{|tag| tag.text}.join(',') %>
+    <% if can_edit? %>
+      <a href="<%= new_vertical_tag_path @software %>"
+        ><button class="btn btn-sm btn-default">Add new</button
+      ></a>
+      <a href="<%= vertical_tag_index_path @software %>"
+        ><button class="btn btn-sm btn-default">Add existing</button
+      ></a>
     <% end %>
+    <ul>
+      <%= render(partial: "tags/tag_list_item", 
+        collection: @software.tags, as: :tag,
+        locals: {print_header: true, vertical: @software}) || 
+        "There are currently no tags associated with this software." %>
+    </ul>
   </div>
 
   <div class="web-resources">
