@@ -15,6 +15,7 @@
         <!-- URL -->
         <div class="form-group">
           <label>URL</label><span class="required-input">*</span>
+          (max length: 200 characters)
           <%= f.text_field :url, 
             class: "form-control ignore unchanged",
             placeholder: "e.g., http://nodexlgraphgallery.org" %>
@@ -22,7 +23,8 @@
 
         <!-- Description -->
         <div class="form-group">
-          <label>Description</label><span class="required-input">*</span> 
+          <label>Description</label><span class="required-input">* </span>
+          (max length: 200 characters)
 
           <%= f.text_field :description, 
             class: "form-control ignore unchanged", 
