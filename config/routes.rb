@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   delete  'logout' => 'sessions#destroy'
 
   resources :examples, except: [:index, :destroy]
-  software_example_path = 
   get    'software/:software_id/examples'          => 'examples#index'
   get    'software/:software_id/examples/new'      => 'examples#new'
   get    'software/:software_id/examples/:id/edit' => 'examples#edit'
@@ -17,7 +16,16 @@ Rails.application.routes.draw do
   delete 'software/:software_id/examples/:id'      => 'examples#disconnect'
 
 
-  resources :web_resources
+  resources :web_resources, except: [:index, :destroy]
+  get    'software/:software_id/web_resources'     => 'web_resources#index'
+  get    'software/:software_id/web_resources/new' => 'web_resources#new'
+  get    'software/:software_id/web_resources/:id/edit' => 'web_resources#edit'
+  post   'software/:software_id/web_resources/:id' => 'web_resources#connect'
+  delete 'software/:software_id/web_resources/:id' => 'web_resources#disconnect'
+
+
+
+
   resources :software
   resources :users, only: [:create,:update,:edit,:destroy]
   resources :account_activations, only: [:edit]

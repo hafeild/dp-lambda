@@ -9,7 +9,6 @@ class ExamplesController < ApplicationController
   before_action :get_redirect_path
 
   def show
-    
   end
 
   def new
@@ -52,7 +51,7 @@ class ExamplesController < ApplicationController
       @vertical.save!
       respond_with_success @redirect_path
     rescue => e
-      respond_with_error "The example could not be associated to the "+
+      respond_with_error "The example could not be associated with the "+
         "requested vertical.", @redirect_path
       
     end

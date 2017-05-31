@@ -46,7 +46,33 @@ module ApplicationHelper
   end
   ##############################################################################
 
-  ## For hard coding bootsy options.
+  ##############################################################################
+  ## The following generate paths for vertical-web_resources.
+  def get_vertical_path(vertical)
+    if vertical.class == Software
+      software_path(vertical)
+    end
+  end
+
+  def new_vertical_web_resource_path(vertical)
+    "#{get_vertical_path(vertical)}/web_resources/new"
+  end
+
+  def edit_vertical_web_resource_path(vertical, web_resource)
+    "#{get_vertical_path(vertical)}/web_resources/#{web_resource.id}/edit"
+  end
+
+  def vertical_web_resource_path(vertical, web_resource)
+    "#{get_vertical_path(vertical)}/web_resources/#{web_resource.id}"
+  end
+
+  def vertical_web_resource_index_path(vertical)
+    "#{get_vertical_path(vertical)}/web_resources"
+  end
+  ##############################################################################
+
+
+  ## For keeping bootsy options consistent.
   def bootsy_editing_options()
     {font_styles: false, html: true}
   end

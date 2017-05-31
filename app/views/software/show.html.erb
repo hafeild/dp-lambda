@@ -39,27 +39,30 @@
 
   <div class="web-resources">
     <h2>Web resources</h2>
-    <% if @software.web_resources.size == 0 %>
-      There are currently no resources associated with this software.
-    <% else %>
-      <ul>
-      <% @software.web_resources.each do |web_resource| %>
-        <li><a href="<%= web_resource.url %>"
-          ><%= web_resource.description %></a>
-        </li>
-      <% end %>
-      </ul>
+    <% if can_edit? %>
+      <a href="<%= new_vertical_web_resource_path @software %>"
+        ><button class="btn btn-sm btn-default">Add new</button
+      ></a>
+      <a href="<%= vertical_web_resource_index_path @software %>"
+        ><button class="btn btn-sm btn-default">Add existing</button
+      ></a>
     <% end %>
+    <ul>
+      <%= render(partial: "web_resources/web_resource_list_item", 
+        collection: @software.web_resources, as: :web_resource,
+        locals: {print_header: true, vertical: @software}) || 
+        "There are currently no web resources associated with this software." %>
+    </ul>
   </div>
 
   <div class="examples">
     <h2>Examples</h2>
     <% if can_edit? %>
       <a href="<%= new_vertical_example_path @software %>"
-        ><button class="btn btn-sm btn-default">Add new example</button
+        ><button class="btn btn-sm btn-default">Add new</button
       ></a>
       <a href="<%= vertical_example_index_path @software %>"
-        ><button class="btn btn-sm btn-default">Add existing example</button
+        ><button class="btn btn-sm btn-default">Add existing</button
       ></a>
     <% end %>
 

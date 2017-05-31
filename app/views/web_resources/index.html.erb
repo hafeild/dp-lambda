@@ -1,0 +1,22 @@
+<% provide(:title, "Choose web resource") %>
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+  <p>
+  Choose an example to associated with 
+  <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <% if @web_resources.empty? %>
+        No examples exist yet!
+      <% else %>
+        <h2>Web resources</h2>
+        <div class="connection-index">
+          <%= render partial: 'web_resource_index_item', 
+            collection: @web_resources, as: :web_resource %>
+        </div>
+      <% end %> 
+    </div>
+  </div>
+</div>

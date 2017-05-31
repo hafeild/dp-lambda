@@ -1,0 +1,3 @@
+<% provide(:title, "Editing web resource: #{@web_resource.description}") %>
+<%= render template: 'web_resources/_modify_form', 
+  locals: {action: web_resource_path(@web_resource), method: :patch } %>
