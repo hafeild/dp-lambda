@@ -1,12 +1,16 @@
 class ExamplesController < ApplicationController
-  before_action :logged_in_user
-  before_action :user_can_edit
+  before_action :logged_in_user, except: [:show]
+  before_action :user_can_edit, except: [:show]
   before_action :get_simple_params, only: [:new, :edit]
   before_action :get_params, except: [:index, :show, :edit, :new, 
     :connect, :disconnect]
-  before_action :get_example, except: [:index, :show]
+  before_action :get_example, except: [:index]
   before_action :get_verticals
   before_action :get_redirect_path
+
+  def show
+    
+  end
 
   def new
   end

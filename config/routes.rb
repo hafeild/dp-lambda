@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   post    'login'  => 'sessions#create'
   delete  'logout' => 'sessions#destroy'
 
-  resources :examples, except: [:index, :show, :destroy]
+  resources :examples, except: [:index, :destroy]
   software_example_path = 
   get    'software/:software_id/examples'          => 'examples#index'
   get    'software/:software_id/examples/new'      => 'examples#new'

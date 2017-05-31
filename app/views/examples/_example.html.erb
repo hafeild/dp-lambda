@@ -1,21 +1,26 @@
-<div data-example-id="<%= example.id %>" class="example index-entry">
 
-  <div class="connect-resource">
-    <%= form_for(example, url: vertical_example_path(@vertical, example), 
-        method: :post, html: {style: 'display: inline'}) do |f| %>
-      <% if @vertical.examples.exists?(example.id) %>
-        <button class="btn btn-sm btn-default" disabled="disabled">Already added</button>
-      <% else %>
-        <button class="btn btn-sm btn-default">Add</button>
-      <% end %>
+<% if print_header %>
+<h3><%= example.title %></h3>
+<% end %>
+
+<% if can_edit? %>
+  <% if defined? vertical %>
+    <%= form_for(example, method: :delete,
+        url: vertical_example_path(vertical, example)) do |f| %>
+      <button class="btn btn-sm btn-danger">Remove example</button>
     <% end %>
-  </div>
+    <%= form_for(example, method: :get,
+       url: edit_vertical_example_path(vertical, example)) do |f| %>
+      <button class="btn btn-sm btn-default">Edit example</button>
+    <% end %>
+  <% else %>
+    <%= form_for(example, method: :get,
+       url: edit_example_path(example)) do |f| %>
+      <button class="btn btn-sm btn-default">Edit example</button>
+    <% end %>
+  <% end %>
+<% end %>
 
-  <a href="<%= example_path(example) %>" class="entry-data-wrapper">
-    <span class="name"><%= example.title %></span>
-    <% clean_description = strip_tags example.description %>
-    <% clean_description = clean_description[0..100] + '...' if 
-      clean_description.size > 100 %>
-    <span class="snippet"><%= clean_description %></span>
-  </a>
-</div>
+<iframe class="html-value description embed-html"
+  data-html="<%= url_encode example.description.html_safe %>">
+</iframe>

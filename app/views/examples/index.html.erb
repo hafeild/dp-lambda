@@ -13,7 +13,8 @@
       <% else %>
         <h2>Examples</h2>
         <div class="connection-index">
-          <%= render @examples %>
+          <%= render partial: 'example_index_item', collection: @examples, 
+            as: :example %>
         </div>
       <% end %> 
     </div>

@@ -1,0 +1,14 @@
+<% provide(:title, "Example -- #{@example.title}") %>
+<div class="container resource-modification">
+  <h1><%= @example.title %></h1>
+
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+
+      <%= render template: 'examples/_example', locals: {
+        print_header: false, example: @example} %>
+     
+    </div>
+  </div>
+</div>
