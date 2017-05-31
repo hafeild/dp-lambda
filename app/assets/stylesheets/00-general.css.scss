@@ -10,6 +10,10 @@
   padding-left: 5em;
 }
 
+.inline {
+  display: inline-block;
+}
+
 /* Forms */
 .required-input {
   color: $brand-danger;
@@ -22,8 +26,18 @@
 }
 
 iframe.embed-html {
-  border: 1px solid gray;
+  border: 1px dashed #bbb;
   display: block;
   width: 100%;
   height: 100%;
+}
+
+h2 {
+  color: steelblue;
+  font-size: 170%
+}
+
+h3 {
+  color: #555;
+  font-size: 140%;
 }
