@@ -6,6 +6,10 @@ class Tag < ApplicationRecord
     software.size
   end
 
+  ## Ensure the presence of required fields. 
+  validates :text, presence: true, length: {maximum: 200}, 
+    uniqueness: {case_sensitive: false}
+
   ## Destroys this resource if it's connected to target_count entries.
   ## @param target_count The number of connections to consider this resource
   ##                     isolated.
