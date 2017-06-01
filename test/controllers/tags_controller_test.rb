@@ -17,12 +17,26 @@ class TagsControllerTest < ActionController::TestCase
     software = software(:one)
     assert_difference "Tag.count", 1, "Tag not created" do
       post :create, params: { software_id: software.id, tag: { 
-        text: "x" } }
+        text: "X" } }
+      assert_redirected_to software_path(software), @response.body
+      assert Tag.find_by(text: "X").nil?, "Case not normalized"
+      assert_not Tag.find_by(text: "x").nil?, "Case not normalized"
+    end
+  end
+
+  test "should create multiple tags and link them to software page" do
+    log_in_as users(:foo)
+    software = software(:one)
+    tag = tags(:one)
+    assert_difference "Tag.count", 2, "Tag not created" do
+      post :create, params: { software_id: software.id, tag: { 
+        text: "x, #{tag.text}, XX" } }
       assert_redirected_to software_path(software), @response.body
     end
   end
 
-  test "should break when creating an tag with no title or description" do
+
+  test "should break when creating a tag with no text" do
     log_in_as users(:foo)
     software = software(:one)
     assert_no_difference "Tag.count", "Tag created" do
@@ -30,17 +44,12 @@ class TagsControllerTest < ActionController::TestCase
         tag: { text: "" } }
       assert_redirected_to software_path(software), @response.body
 
-      post :create, params: { software_id: software.id,
-        tag: { text: "" } }
-      assert_redirected_to software_path(software), @response.body
-
-      post :create, params: { software_id: software.id,
-        tag: { text: "xyz" } }
-      assert_redirected_to software_path(software), @response.body
+      post :create, params: { software_id: software.id }
+      assert_redirected_to root_path, @response.body
     end
   end
 
-  test "should break when creating an tag with non-unique text" do
+  test "should break when creating a tag with non-unique text" do
     log_in_as users(:foo)
     software = software(:one)
     tag = tags(:one)
@@ -51,7 +60,7 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
-  test "should break when creating an tag with long text" do
+  test "should break when creating a tag with long text" do
     log_in_as users(:foo)
     software = software(:one)
     assert_no_difference "Tag.count", "Tag created" do
@@ -109,7 +118,7 @@ class TagsControllerTest < ActionController::TestCase
       tag: { text: "A better tag!" } }
     assert_redirected_to software_path(software), @response.body
     tag.reload
-    assert tag.text == "A better tag!"
+    assert tag.text == "a better tag!"
   end
 
   ##############################################################################

@@ -7,7 +7,7 @@ class Tag < ApplicationRecord
   end
 
   ## Ensure the presence of required fields. 
-  validates :text, presence: true, length: {maximum: 200}, 
+  validates :text, presence: true, length: {maximum: 200, minimum: 1}, 
     uniqueness: {case_sensitive: false}
 
   ## Destroys this resource if it's connected to target_count entries.

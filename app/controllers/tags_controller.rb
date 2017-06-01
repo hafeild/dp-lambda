@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   before_action :get_simple_params, only: [:new, :edit]
   before_action :get_params, except: [:index, :show, :edit, :new, 
     :connect, :disconnect]
-  before_action :get_tag, except: [:index]
+  before_action :get_tag, except: [:index, :create]
   before_action :get_verticals
   before_action :get_redirect_path
 
@@ -27,15 +27,20 @@ class TagsController < ApplicationController
   ## linked to the vertical requesting the creation.
   def create
     begin
-        throw Exception("No vertical specified!") if @vertical.nil?
+      throw Exception("No vertical specified!") if @vertical.nil?
+      ActiveRecord::Base.transaction do
+
         @params[:text].split(/\s*,\s*/).each do |tag_text|
+          next if tag_text.size == 0
+          tag_text.downcase!
           tag = Tag.find_by(text: tag_text) || Tag.create!(text: tag_text)
           @vertical.tags << tag
           @vertical.save!
         end
 
-      respond_with_success @redirect_path
-    rescue
+        respond_with_success @redirect_path
+      end
+    rescue => e
       respond_with_error("The web resource could not be created; check if an "+
         "existing resource has the same URL and description.", @redirect_path)
     end
@@ -43,7 +48,7 @@ class TagsController < ApplicationController
 
   def update
     begin
-      @tag.update_attributes! @params
+      @tag.update_attributes!(text: @params[:text].downcase)
       respond_with_success @redirect_path
     rescue
       respond_with_error "The web resource could not be updated.", 
