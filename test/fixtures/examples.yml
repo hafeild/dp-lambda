@@ -5,3 +5,7 @@ one:
   # analysis:
   title: "Example 1"
   description: "An example!"
+
+two:
+  title: "Example 2"
+  description: "Another example!"
