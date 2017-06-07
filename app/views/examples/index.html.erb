@@ -1,0 +1,22 @@
+<% provide(:title, "Choose example") %>
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+  <p>
+  Choose an example to associated with 
+  <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <% if @examples.empty? %>
+        No examples exist yet!
+      <% else %>
+        <h2>Examples</h2>
+        <div class="connection-index">
+          <%= render partial: 'example_index_item', collection: @examples, 
+            as: :example %>
+        </div>
+      <% end %> 
+    </div>
+  </div>
+</div>

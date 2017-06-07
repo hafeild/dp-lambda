@@ -3,7 +3,8 @@
 ## Branching
 The primary branches are:
 
-  * master, where released, tagged versions live (see below for details on versioning)
+  * master, where released, tagged versions live (see below for details on 
+    versioning)
   * develop, where the current stable development version lives
 
 Beyond these two branches, others should also be created in the following
@@ -38,7 +39,8 @@ nutshell:
         remove the v<version> branch
       * update develop so that `config/initializers/version.rb` indicates it is
         a development version and commit
-  * for mission-critical bugs found in the current release that require patching:
+  * for mission-critical bugs found in the current release that require 
+    patching:
     - create a branch from master; name this v<version>-hotfix
     - update the version to include the new patch level
     - after fixing the issue, submit a pull request to merge with master
@@ -47,6 +49,37 @@ nutshell:
     - remove the branch after merges are completed
 
 Before any pull request is made, all tests should be passing.
+
+### Branching examples
+
+#### Example: create feature3 branch from develop
+
+First things first, make sure you have the `develop` branch on your local
+machine. To check this, do the following:
+
+    git branch
+
+If you do not see `develop` as one of the branches listed, then you need to
+check it out and track it; issue the following command:
+
+    git checkout -t origin/develop
+
+Once you have the `develop` branch, make it your current branch and update it:
+
+    git checkout develop
+    git pull origin develop
+
+Now suppose you want to create a new feature branch called `feature3` (you 
+can call this whatever you want). Since your current branch is `develop`, that
+will be used as the base for the new branch (as opposed to `master` or something
+else); if you wanted the base to be a different branch, checkout that branch
+before proceeding. To create the new feature branch, do:
+
+    git checkout -t origin/feature3
+
+Add, commit, push, and pull like usual, making sure to specify the feature 
+branch name for the latter two (e.g., `git push origin feature3`).
+
 
 ## Release versioning
 Versions should be in the format:
@@ -66,11 +99,26 @@ where:
 greater than 00, then `<number>` must be included regardless of whether it is
 00 or not.
 
-### Examples
+### Example version numbers
 
   * **17.06**: the first release of June, 2017
   * **17.08.01**: the second release of August, 2017
   * **18.01.00.05**: the fifth patch to the first release of January, 2018
+
+### Example tagging a release
+
+Assume that you have merged your release branch to master (see 
+[Branching](#branching) above) and you're ready to tag. First, move to `master`
+if you're not already there:
+
+    git checkout master
+
+Supposing you want to release version 17.05, do:
+
+    git tag -a 17.05
+    git push --tags
+
+
 
 ## Committing and commit/push request messages
 Commits on feature branches should occur frequently. Every commit should include
@@ -81,7 +129,9 @@ merged. Bulleted lists of changes/additions are preferred.
 
 
 ## Changelog
-For every release, update [CHANGELOG.md](CHANGELOG.md) with a list of new features and changes made between the previous and current release.
+For every release, update [CHANGELOG.md](CHANGELOG.md) with a list of new 
+features and changes made between the previous and current release.
+
 
 ## Coding style
 Because this application is implemented on top of the Ruby on Rails framework,

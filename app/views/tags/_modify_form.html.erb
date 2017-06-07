@@ -1,0 +1,32 @@
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <%= form_for(@tag, url: action, method: method, 
+        html: {class: "vertical-form"}) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        
+        <% unless @software.nil? %>
+          <%= f.hidden_field :software_id, name: :software_id, 
+            value: @software.id %>
+        <% end %>
+
+        <!-- Tags -->
+        <div class="form-group">
+          <label>Tags</label><span class="required-input">*</span>
+          Separate tags with a comma
+          <%= f.text_field :text, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., social networking, graphs" %>
+        </div>    
+
+        <%= f.submit "Save", id: "form-submit", class: "btn btn-primary" %>
+
+        
+        <button class="btn btn-danger link" 
+          data-href="<%= @back_path %>">Cancel</button>
+      <% end %>
+    </div>
+  </div>
+</div>

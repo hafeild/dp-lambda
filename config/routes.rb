@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Bootsy::Engine => '/bootsy', as: 'bootsy'
 
   root    'static_pages#home'
   get     'password_resets/edit'
@@ -7,6 +8,29 @@ Rails.application.routes.draw do
   post    'login'  => 'sessions#create'
   delete  'logout' => 'sessions#destroy'
 
+  resources :examples, except: [:index, :destroy]
+  get    'software/:software_id/examples'          => 'examples#index'
+  get    'software/:software_id/examples/new'      => 'examples#new'
+  get    'software/:software_id/examples/:id/edit' => 'examples#edit'
+  post   'software/:software_id/examples/:id'      => 'examples#connect'
+  delete 'software/:software_id/examples/:id'      => 'examples#disconnect'
+
+
+  resources :web_resources, except: [:index, :destroy]
+  get    'software/:software_id/web_resources'     => 'web_resources#index'
+  get    'software/:software_id/web_resources/new' => 'web_resources#new'
+  get    'software/:software_id/web_resources/:id/edit' => 'web_resources#edit'
+  post   'software/:software_id/web_resources/:id' => 'web_resources#connect'
+  delete 'software/:software_id/web_resources/:id' => 'web_resources#disconnect'
+
+  resources :tags, except: [:index, :destroy]
+  get    'software/:software_id/tags'          => 'tags#index'
+  get    'software/:software_id/tags/new'      => 'tags#new'
+  get    'software/:software_id/tags/:id/edit' => 'tags#edit'
+  post   'software/:software_id/tags/:id'      => 'tags#connect'
+  delete 'software/:software_id/tags/:id'      => 'tags#disconnect'
+
+  resources :software
   resources :users, only: [:create,:update,:edit,:destroy]
   resources :account_activations, only: [:edit]
   resources :email_verifications, only: [:edit]

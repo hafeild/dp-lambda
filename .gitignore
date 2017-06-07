@@ -22,3 +22,6 @@
 
 # Ignore custom config files.
 config/application.yml
+
+# Ignore public files.
+public/uploads
