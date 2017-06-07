@@ -5,17 +5,17 @@ More to come...
 ## Development
 
 ### First time setup
-If developing on Windows, install [RailsInstaller](http://railsinstaller.org/en)
-(Ruby 2.3). There may be in issue with a few of the commands, so after cloning,
-do the following in the alice directory (this will remove rails, but don't 
-worry, it'll be reinstalled with the next step):
+First, install Ruby 2.3 or greater. If developing on Windows, install
+[RailsInstaller](http://railsinstaller.org/en) (Ruby 2.3). There may be in issue
+with a few of the commands, so after cloning, do the following in the alice
+directory (this will remove rails, but don't worry, it'll be reinstalled with
+the next step):
 
     gem uninstall rails 5.0.2 
 
-
 Install [ImageMagick](https://www.imagemagick.org/script/binary-releases.php)
-(required for uploading photos). This needs to be done before running bundle
-install.
+(required for uploading photos). This needs to be done before moving on or else
+uploads won't work properly (everything else should function).
 
 On any system, do the following after the initial clone or any subsequent pull
 to install any gems that were added to the Gemfile:
