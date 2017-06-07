@@ -12,6 +12,18 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
+  test "should create tag and link to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    assert_difference "Tag.count", 1, "Tag not created" do
+      post :create, params: { dataset_id: dataset.id, tag: { 
+        text: "X" } }
+      assert_redirected_to dataset_path(dataset), @response.body
+      assert Tag.find_by(text: "X").nil?, "Case not normalized"
+      assert_not Tag.find_by(text: "x").nil?, "Case not normalized"
+    end
+  end
+
   test "should create tag and link to software page" do
     log_in_as users(:foo)
     software = software(:one)
@@ -87,6 +99,17 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
+  test "should link tag to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    tag = tags(:one)
+    assert_difference "dataset.tags.size", 1, "Tag not linked" do
+      post :connect, params: { dataset_id: dataset.id, id: tag.id }
+      assert_redirected_to dataset_path(dataset), @response.body
+      dataset.reload
+    end
+  end
+
   ##############################################################################
 
 
@@ -105,6 +128,19 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
+  test "should unlink tag to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:two)
+    tag = tags(:two)
+    assert_difference "dataset.tags.size", -1, "Tag not unlinked" do
+      delete :disconnect, params: { dataset_id: dataset.id, id: tag.id }
+      assert_redirected_to dataset_path(dataset), @response.body
+      assert Tag.find_by(id: tag.id).nil?
+      dataset.reload
+    end
+  end
+
+
   ##############################################################################
 
   ##############################################################################
@@ -120,6 +156,18 @@ class TagsControllerTest < ActionController::TestCase
     tag.reload
     assert tag.text == "a better tag!"
   end
+
+  test "should update the tag of redirect to a dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:two)
+    tag = tags(:one)
+    patch :update, params: { dataset_id: dataset.id, id: tag.id,
+      tag: { text: "A better tag!" } }
+    assert_redirected_to dataset_path(dataset), @response.body
+    tag.reload
+    assert tag.text == "a better tag!"
+  end
+
 
   ##############################################################################
 

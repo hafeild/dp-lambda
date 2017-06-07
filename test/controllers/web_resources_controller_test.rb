@@ -13,6 +13,16 @@ class WebResourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should create web_resource and link to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    assert_difference "WebResource.count", 1, "Web resource not created" do
+      post :create, params: { dataset_id: dataset.id, web_resource: { 
+        url: "x", description: "x" } }
+      assert_redirected_to dataset_path(dataset), @response.body
+    end
+  end
+
   test "should create web_resource and link to software page" do
     log_in_as users(:foo)
     software = software(:one)
@@ -79,6 +89,17 @@ class WebResourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should link web_resource to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    web_resource = web_resources(:one)
+    assert_difference "dataset.web_resources.size", 1, "Web resource not linked" do
+      post :connect, params: { dataset_id: dataset.id, id: web_resource.id }
+      assert_redirected_to dataset_path(dataset), @response.body
+      dataset.reload
+    end
+  end
+
   ##############################################################################
 
 
@@ -97,6 +118,18 @@ class WebResourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should unlink web_resource to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:two)
+    web_resource = web_resources(:two)
+    assert_difference "dataset.web_resources.size", -1, "Web resource not unlinked" do
+      delete :disconnect, params: { dataset_id: dataset.id, id: web_resource.id }
+      assert_redirected_to dataset_path(dataset), @response.body
+      assert WebResource.find_by(id: web_resource.id).nil?
+      dataset.reload
+    end
+  end
+
   ##############################################################################
 
   ##############################################################################
@@ -109,6 +142,18 @@ class WebResourcesControllerTest < ActionController::TestCase
     patch :update, params: { software_id: software.id, id: web_resource.id,
       web_resource: { url: "A better web_resource!" } }
     assert_redirected_to software_path(software), @response.body
+    web_resource.reload
+    assert web_resource.url == "A better web_resource!"
+  end
+
+
+  test "should update the web_resource of redirect to a dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:two)
+    web_resource = web_resources(:two)
+    patch :update, params: { dataset_id: dataset.id, id: web_resource.id,
+      web_resource: { url: "A better web_resource!" } }
+    assert_redirected_to dataset_path(dataset), @response.body
     web_resource.reload
     assert web_resource.url == "A better web_resource!"
   end
