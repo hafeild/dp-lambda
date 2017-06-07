@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   get    'software/:software_id/examples/:id/edit' => 'examples#edit'
   post   'software/:software_id/examples/:id'      => 'examples#connect'
   delete 'software/:software_id/examples/:id'      => 'examples#disconnect'
+  get    'datasets/:dataset_id/examples'          => 'examples#index'
+  get    'datasets/:dataset_id/examples/new'      => 'examples#new'
+  get    'datasets/:dataset_id/examples/:id/edit' => 'examples#edit'
+  post   'datasets/:dataset_id/examples/:id'      => 'examples#connect'
+  delete 'datasets/:dataset_id/examples/:id'      => 'examples#disconnect'
 
 
   resources :web_resources, except: [:index, :destroy]
@@ -22,6 +27,12 @@ Rails.application.routes.draw do
   get    'software/:software_id/web_resources/:id/edit' => 'web_resources#edit'
   post   'software/:software_id/web_resources/:id' => 'web_resources#connect'
   delete 'software/:software_id/web_resources/:id' => 'web_resources#disconnect'
+  get    'datasets/:dataset_id/web_resources'     => 'web_resources#index'
+  get    'datasets/:dataset_id/web_resources/new' => 'web_resources#new'
+  get    'datasets/:dataset_id/web_resources/:id/edit' => 'web_resources#edit'
+  post   'datasets/:dataset_id/web_resources/:id' => 'web_resources#connect'
+  delete 'datasets/:dataset_id/web_resources/:id' => 'web_resources#disconnect'
+
 
   resources :tags, except: [:index, :destroy]
   get    'software/:software_id/tags'          => 'tags#index'
@@ -29,8 +40,14 @@ Rails.application.routes.draw do
   get    'software/:software_id/tags/:id/edit' => 'tags#edit'
   post   'software/:software_id/tags/:id'      => 'tags#connect'
   delete 'software/:software_id/tags/:id'      => 'tags#disconnect'
+  get    'datasets/:dataset_id/tags'          => 'tags#index'
+  get    'datasets/:dataset_id/tags/new'      => 'tags#new'
+  get    'datasets/:dataset_id/tags/:id/edit' => 'tags#edit'
+  post   'datasets/:dataset_id/tags/:id'      => 'tags#connect'
+  delete 'datasets/:dataset_id/tags/:id'      => 'tags#disconnect'
 
   resources :software
+  resources :datasets
   resources :users, only: [:create,:update,:edit,:destroy]
   resources :account_activations, only: [:edit]
   resources :email_verifications, only: [:edit]

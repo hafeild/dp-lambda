@@ -95,33 +95,4 @@ class WebResourcesController < ApplicationController
         @web_resource = WebResource.new
       end
     end
-
-    ## Gets the associated software or other vertical.
-    def get_verticals
-      begin
-        @vertical = nil
-        @software = nil
-
-        if params.key? :software_id
-          @software = Software.find(params[:software_id]) 
-          @vertical = @software
-        end
-
-      rescue
-        error = "Invalid vertical id given."
-
-      end
-    end
-
-
-    ## Gets the back path (where to go on submit or cancel).
-    def get_redirect_path
-      if params.key? :redirect_path
-        @redirect_path = params[:redirect_path]
-      elsif not @software.nil?
-        @redirect_path = software_path(@software.id)
-      else
-        @redirect_path = root_path
-      end
-    end
 end

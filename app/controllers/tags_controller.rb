@@ -41,8 +41,7 @@ class TagsController < ApplicationController
         respond_with_success @redirect_path
       end
     rescue => e
-      respond_with_error("The web resource could not be created; check if an "+
-        "existing resource has the same URL and description.", @redirect_path)
+      respond_with_error("The tag could not be created.", @redirect_path)
     end
   end
 
@@ -51,7 +50,7 @@ class TagsController < ApplicationController
       @tag.update_attributes!(text: @params[:text].downcase)
       respond_with_success @redirect_path
     rescue
-      respond_with_error "The web resource could not be updated.", 
+      respond_with_error "The tag could not be updated.", 
         @redirect_path
     end
   end
@@ -65,7 +64,7 @@ class TagsController < ApplicationController
       @vertical.save!
       respond_with_success @redirect_path
     rescue => e
-      respond_with_error "The web resource could not be associated with the "+
+      respond_with_error "The tag could not be associated with the "+
         "requested vertical.", @redirect_path
     end
   end
@@ -79,7 +78,7 @@ class TagsController < ApplicationController
       end
       respond_with_success @redirect_path
     rescue => e
-      respond_with_error "The web resource could not be disassociated with the"+
+      respond_with_error "The tag could not be disassociated with the"+
         " requested vertical.", @redirect_path
     end
   end
@@ -108,32 +107,5 @@ class TagsController < ApplicationController
       end
     end
 
-    ## Gets the associated software or other vertical.
-    def get_verticals
-      begin
-        @vertical = nil
-        @software = nil
 
-        if params.key? :software_id
-          @software = Software.find(params[:software_id]) 
-          @vertical = @software
-        end
-
-      rescue
-        error = "Invalid vertical id given."
-
-      end
-    end
-
-
-    ## Gets the back path (where to go on submit or cancel).
-    def get_redirect_path
-      if params.key? :redirect_path
-        @redirect_path = params[:redirect_path]
-      elsif not @software.nil?
-        @redirect_path = software_path(@software.id)
-      else
-        @redirect_path = root_path
-      end
-    end
 end
