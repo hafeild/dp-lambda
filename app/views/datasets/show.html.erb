@@ -1,0 +1,83 @@
+<% provide(:title, @dataset.name) %>
+<div class="container dataset-page" data-dataset-id="<%= @dataset.id %>">
+  <h1><span class="name"><%= @dataset.name %></span>
+  <% if can_edit? %>
+    <%= link_to edit_dataset_path(@dataset.id)  do %>
+      <button type="button" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+      </button>
+    <% end %>
+
+    <%= link_to @dataset, method: :delete, data: {
+        confirm: "Are you sure you want to delete this page?"} do %> 
+      <button type="button" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
+      Delete </button>
+    <% end %>
+  <% end %>
+  </h1>
+
+  <div class="summary-wrapper">
+    <h2>Summary</h2>
+    <span class="summary"><%= @dataset.summary %></span>
+  </div>
+
+  <div class="description-wrapper">
+    <h2>Description</h2>
+    <iframe class="description embed-html" 
+      data-html="<%= url_encode @dataset.description.html_safe %>"></iframe>
+  </div>
+
+  <div class="tags">
+    <h2>Tags</h2>
+    <% if can_edit? %>
+      <a href="<%= new_vertical_tag_path @dataset %>"
+        ><button class="btn btn-sm btn-default">Add new</button
+      ></a>
+      <a href="<%= vertical_tag_index_path @dataset %>"
+        ><button class="btn btn-sm btn-default">Add existing</button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "tags/tag_list_item", 
+        collection: @dataset.tags, as: :tag,
+        locals: {print_header: true, vertical: @dataset}) || 
+        "There are currently no tags associated with this dataset." %>
+    </ul>
+  </div>
+
+  <div class="web-resources">
+    <h2>Web resources</h2>
+    <% if can_edit? %>
+      <a href="<%= new_vertical_web_resource_path @dataset %>"
+        ><button class="btn btn-sm btn-default">Add new</button
+      ></a>
+      <a href="<%= vertical_web_resource_index_path @dataset %>"
+        ><button class="btn btn-sm btn-default">Add existing</button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "web_resources/web_resource_list_item", 
+        collection: @dataset.web_resources, as: :web_resource,
+        locals: {print_header: true, vertical: @dataset}) || 
+        "There are currently no web resources associated with this dataset." %>
+    </ul>
+  </div>
+
+  <div class="examples">
+    <h2>Examples</h2>
+    <% if can_edit? %>
+      <a href="<%= new_vertical_example_path @dataset %>"
+        ><button class="btn btn-sm btn-default">Add new</button
+      ></a>
+      <a href="<%= vertical_example_index_path @dataset %>"
+        ><button class="btn btn-sm btn-default">Add existing</button
+      ></a>
+    <% end %>
+
+    <%= render(partial: "examples/example", collection: @dataset.examples, 
+      locals: {print_header: true, vertical: @dataset}) || 
+      "There are currently no examples associated with this dataset." %>
+  </div>
+
+</div>
