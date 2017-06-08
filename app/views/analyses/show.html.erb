@@ -77,7 +77,7 @@
 
     <%= render(partial: "examples/example", collection: @analysis.examples, 
       locals: {print_header: true, vertical: @analysis}) || 
-      "There are currently no examples associated with this analysis." %>
+      "<p>There are currently no examples associated with this analysis.</p>".html_safe %>
   </div>
 
 </div>
