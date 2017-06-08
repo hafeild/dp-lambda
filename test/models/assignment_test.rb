@@ -28,7 +28,10 @@ class AssignmentTest < ActiveSupport::TestCase
       web_resources: [web_resources(:one)],
       tags: [tags(:one)],
       assignments_related_to: [assignments(:one), assignments(:two)],
-      assignment_results: [assignment_results(:two)]
+      assignment_results: [assignment_results(:two)],
+      software: [software(:one)],
+      datasets: [datasets(:one)],
+      analyses: [analyses(:one)]
     )
     assert assignment.save, "Couldn't save"
 
@@ -40,6 +43,12 @@ class AssignmentTest < ActiveSupport::TestCase
     assert web_resources(:one).assignments.exists?(id: assignment.id),
       "Web resource not saved"
     assert tags(:one).assignments.exists?(id: assignment.id), "Tag not saved"
+    assert software(:one).assignments.exists?(id: assignment.id), 
+      "Software not saved"
+    assert datasets(:one).assignments.exists?(id: assignment.id), 
+      "Dataset not saved"
+    assert analyses(:one).assignments.exists?(id: assignment.id), 
+      "Analysis not saved"
     assert assignment_results(:two).assignment == assignment, 
       "Assignment not saved"
   end

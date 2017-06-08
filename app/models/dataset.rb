@@ -15,6 +15,7 @@ class Dataset < ApplicationRecord
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources
   has_and_belongs_to_many :examples
+  has_and_belongs_to_many :assignments
 
   ## Ensure the presence of required fields. 
   validates :name, presence: true, length: {maximum: 200}, 

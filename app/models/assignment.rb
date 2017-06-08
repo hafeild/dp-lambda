@@ -13,6 +13,9 @@ class Assignment < ApplicationRecord
   ## - web_resources
   ## - examples
   ## - assignment_results
+  ## - software
+  ## - analyses
+  ## - datasets
   ## - creator (user)
 
   include Bootsy::Container
@@ -31,6 +34,9 @@ class Assignment < ApplicationRecord
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources
   has_and_belongs_to_many :examples
+  has_and_belongs_to_many :software
+  has_and_belongs_to_many :analyses
+  has_and_belongs_to_many :datasets
   has_many :assignment_results
 
   ## Ensure the presence of required fields. 
