@@ -21,14 +21,17 @@ module ApplicationHelper
     entry.examples.each{|example| example.destroy_if_isolated(1)}
   end
 
-  ##############################################################################
-  ## The following generate paths for vertical-examples.
+  ## Returns the path to the given vertical.
   def get_vertical_path(vertical)
     if vertical.class == Software
       software_path(vertical)
+    elsif vertical.class == Dataset
+      dataset_path(vertical)
     end
   end
 
+  ##############################################################################
+  ## The following generate paths for vertical-examples.
   def new_vertical_example_path(vertical)
     "#{get_vertical_path(vertical)}/examples/new"
   end
@@ -48,12 +51,6 @@ module ApplicationHelper
 
   ##############################################################################
   ## The following generate paths for vertical-web_resources.
-  def get_vertical_path(vertical)
-    if vertical.class == Software
-      software_path(vertical)
-    end
-  end
-
   def new_vertical_web_resource_path(vertical)
     "#{get_vertical_path(vertical)}/web_resources/new"
   end
@@ -74,12 +71,6 @@ module ApplicationHelper
 
   ##############################################################################
   ## The following generate paths for vertical-tag.
-  def get_vertical_path(vertical)
-    if vertical.class == Software
-      software_path(vertical)
-    end
-  end
-
   def new_vertical_tag_path(vertical)
     "#{get_vertical_path(vertical)}/tags/new"
   end

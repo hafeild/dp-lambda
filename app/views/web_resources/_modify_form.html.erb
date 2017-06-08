@@ -7,9 +7,9 @@
         html: {class: "vertical-form"}) do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
         
-        <% unless @software.nil? %>
-          <%= f.hidden_field :software_id, name: :software_id, 
-            value: @software.id %>
+        <% unless @vertical.nil? %>
+          <%= f.hidden_field @vertical_form_id, name: @vertical_form_id, 
+            value: @vertical.id %>
         <% end %>
 
         <!-- URL -->

@@ -3,3 +3,7 @@
 one: 
   url: http://www.google.com
   description: A search engine
+
+two: 
+  url: http://www.bing.com
+  description: Another search engine

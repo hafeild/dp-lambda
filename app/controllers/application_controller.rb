@@ -101,4 +101,44 @@ class ApplicationController < ActionController::Base
         format.html { redirect_to path }
       end
     end
+
+
+    ## Gets the associated software or other vertical.
+    def get_verticals
+      begin
+        @vertical_form_id = nil
+        @vertical = nil
+        @software = nil
+        @dataset = nil
+
+        if params.key? :software_id
+          @software = Software.find(params[:software_id]) 
+          @vertical = @software
+          @vertical_form_id = :software_id
+        elsif params.key? :dataset_id
+          @dataset = Dataset.find(params[:dataset_id]) 
+          @vertical = @dataset
+          @vertical_form_id = :dataset_id
+        end
+
+      rescue
+        error = "Invalid vertical id given."
+
+      end
+    end
+
+
+    ## Gets the back path (where to go on submit or cancel).
+    def get_redirect_path
+      if params.key? :redirect_path
+        @redirect_path = params[:redirect_path]
+      elsif not @software.nil?
+        @redirect_path = software_path(@software.id)
+      elsif not @dataset.nil?
+        @redirect_path = dataset_path(@dataset)
+      else
+        @redirect_path = root_path
+      end
+    end
+
 end

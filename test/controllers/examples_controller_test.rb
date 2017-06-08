@@ -13,6 +13,16 @@ class ExamplesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should create example and link to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    assert_difference "Example.count", 1, "Example not created" do
+      post :create, params: { dataset_id: dataset.id, example: { 
+        title: "x", description: "x" } }
+      assert_redirected_to dataset_path(dataset), @response.body
+    end
+  end
+
   test "should create example and link to software page" do
     log_in_as users(:foo)
     software = software(:one)
@@ -79,6 +89,17 @@ class ExamplesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should link example to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    example = examples(:one)
+    assert_difference "dataset.examples.size", 1, "Example not linked" do
+      post :connect, params: { dataset_id: dataset.id, id: example.id }
+      assert_redirected_to dataset_path(dataset), @response.body
+      dataset.reload
+    end
+  end
+
   ##############################################################################
 
 
@@ -97,6 +118,18 @@ class ExamplesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should unlink example to dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:two)
+    example = examples(:two)
+    assert_difference "dataset.examples.size", -1, "Example not unlinked" do
+      delete :disconnect, params: { dataset_id: dataset.id, id: example.id }
+      assert_redirected_to dataset_path(dataset), @response.body
+      assert Example.find_by(id: example.id).nil?
+      dataset.reload
+    end
+  end
+
   ##############################################################################
 
   ##############################################################################
@@ -109,6 +142,17 @@ class ExamplesControllerTest < ActionController::TestCase
     patch :update, params: { software_id: software.id, id: example.id,
       example: { title: "A better example!" } }
     assert_redirected_to software_path(software), @response.body
+    example.reload
+    assert example.title == "A better example!"
+  end
+
+  test "should update the example of redirect to a dataset page" do
+    log_in_as users(:foo)
+    dataset = datasets(:two)
+    example = examples(:two)
+    patch :update, params: { dataset_id: dataset.id, id: example.id,
+      example: { title: "A better example!" } }
+    assert_redirected_to dataset_path(dataset), @response.body
     example.reload
     assert example.title == "A better example!"
   end
