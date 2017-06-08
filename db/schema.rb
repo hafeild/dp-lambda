@@ -10,7 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607192203) do
+ActiveRecord::Schema.define(version: 20170608131323) do
+
+  create_table "analyses", force: :cascade do |t|
+    t.string   "name"
+    t.text     "summary"
+    t.text     "description"
+    t.string   "thumbnail_url"
+    t.integer  "creator_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "analyses_examples", force: :cascade do |t|
+    t.integer "analysis_id"
+    t.integer "example_id"
+  end
+
+  create_table "analyses_tags", force: :cascade do |t|
+    t.integer "analysis_id"
+    t.integer "tag_id"
+  end
+
+  create_table "analyses_web_resources", force: :cascade do |t|
+    t.integer "analysis_id"
+    t.integer "web_resource_id"
+  end
 
   create_table "bootsy_image_galleries", force: :cascade do |t|
     t.string   "bootsy_resource_type"
