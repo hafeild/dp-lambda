@@ -15,7 +15,6 @@ class AssignmentTest < ActiveSupport::TestCase
 
 
   test "valid with a all fields" do 
-    assignment1 = assignments(:one)
     assignment = Assignment.new(
       creator: users(:foo),
       name: "A very unique name",
@@ -28,14 +27,21 @@ class AssignmentTest < ActiveSupport::TestCase
       examples: [examples(:one)],
       web_resources: [web_resources(:one)],
       tags: [tags(:one)],
-      assignments_related_to: [assignment1, assignments(:two)]
+      assignments_related_to: [assignments(:one), assignments(:two)],
+      assignment_results: [assignment_results(:two)]
     )
     assert assignment.save, "Couldn't save"
 
-    assignment1.reload
 
-    assert assignment1.assignments_related_from.exists?(id: assignment.id),
+    assert assignments(:one).assignments_related_from.exists?(id: assignment.id),
       "Inverse of assignments_related_to not held"
+    assert examples(:one).assignments.exists?(id: assignment.id),
+      "Example not saved"
+    assert web_resources(:one).assignments.exists?(id: assignment.id),
+      "Web resource not saved"
+    assert tags(:one).assignments.exists?(id: assignment.id), "Tag not saved"
+    assert assignment_results(:two).assignment == assignment, 
+      "Assignment not saved"
   end
 
 
