@@ -1,25 +1,25 @@
-class DatasetsController < ApplicationController
+class AnalysesController < ApplicationController
   # before_action :get_response_format
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
   before_action :get_params, only: [:create, :update]
-  before_action :get_dataset, only: [:update, :destroy, :show, :edit]
+  before_action :get_analysis, only: [:update, :destroy, :show, :edit]
 
   def index
-    @datasets = Dataset.all.sort_by { |e| e.name }
+    @analyses = Analysis.all.sort_by { |e| e.name }
   end
 
   def show
   end
 
   def new
-    @dataset = Dataset.new
+    @analysis = Analysis.new
   end
 
   def edit
   end
 
-  ## Creates a new dataset entry. 
+  ## Creates a new analysis entry. 
   def create
 
     ## Make sure we have the required fields.
@@ -27,29 +27,29 @@ class DatasetsController < ApplicationController
         get_with_default(@data, :summary, "").empty? or
         get_with_default(@data, :description, "").empty?
       respond_with_error "You must provide a name, summary, and description.",
-        new_dataset_path
+        new_analysis_path
       return
     end
 
     ## Create the new entry.
     begin
       ActiveRecord::Base.transaction do
-        dataset = Dataset.new(
+        analysis = Analysis.new(
           creator: current_user, name: @data[:name], summary: @data[:summary], 
           description: @data[:description]
         )
 
-        dataset.save!
+        analysis.save!
 
-        respond_with_success dataset_path(dataset)
+        respond_with_success analysis_path(analysis)
       end
     rescue => e
-      respond_with_error "There was an error saving the dataset entry.",
-        new_dataset_path
+      respond_with_error "There was an error saving the analysis entry.",
+        new_analysis_path
     end
   end
 
-  ## Updates a dataset entry. Takes all the usual parameters. The tags,
+  ## Updates a analysis entry. Takes all the usual parameters. The tags,
   ## web_resources, and examples may include "remove" fields along with an
   ## id, which will cause the resource to be disassociated with this project
   ## and deleted altogether if the resource isn't associated with another
@@ -57,33 +57,33 @@ class DatasetsController < ApplicationController
   def update
     begin
       ActiveRecord::Base.transaction do
-        @dataset.update(@data.permit(:name, :description, :summary))
-        @dataset.save!
+        @analysis.update(@data.permit(:name, :description, :summary))
+        @analysis.save!
 
-        respond_with_success dataset_path(@dataset)
+        respond_with_success analysis_path(@analysis)
       end
     rescue => e
-      respond_with_error "There was an error updating the dataset entry.",
-        new_dataset_path
+      respond_with_error "There was an error updating the analysis entry.",
+        new_analysis_path
     end  
   end
 
-  ## Deletes the dataset page and any resources connected only to it.
+  ## Deletes the analysis page and any resources connected only to it.
   def destroy
     begin
       ActiveRecord::Base.transaction do
 
         ## Remove connected resources.
-        destroy_isolated_resources(@dataset)
+        destroy_isolated_resources(@analysis)
 
-        @dataset.destroy!
+        @analysis.destroy!
 
         flash[:success] = "Page removed."
-        redirect_to datasets_path
+        redirect_to analyses_path
       end
     rescue => e
-      respond_with_error "There was an error removing the dataset entry.",
-        new_dataset_path
+      respond_with_error "There was an error removing the analysis entry.",
+        new_analysis_path
     end
   end
 
@@ -97,25 +97,25 @@ class DatasetsController < ApplicationController
     ## Extracts the allowed parameters into a global named @data.
     def get_params
       begin
-        @data = params.require(:dataset).permit(:name, :summary, :description,
+        @data = params.require(:analysis).permit(:name, :summary, :description,
           :thumbnail, 
           :bootsy_image_gallery_id,
           tags: [:id, :text, :remove], 
           web_resources: [:id, :url, :description, :remove], 
-          examples: [:id, :title, :description, :software_id, :analysis_id,
-            :dataset_id, :remove])
+          examples: [:id, :title, :description, :software_id, :dataset_id,
+            :analysis_id, :remove])
       rescue => e
         respond_with_error "Required parameters not supplied.", root_path
       end
     end
 
 
-    ## Gets the dataset specified by the id in the parameters. If it doesn't
+    ## Gets the analysis specified by the id in the parameters. If it doesn't
     ## exist, a 404 page is displayed.
-    def get_dataset
-      @dataset = Dataset.find_by(id: params.require(:id))
-      if @dataset.nil?
-        error = "No dataset with the specified id exists."
+    def get_analysis
+      @analysis = Analysis.find_by(id: params.require(:id))
+      if @analysis.nil?
+        error = "No analysis with the specified id exists."
         respond_to do |format|
           format.json {render json: {success: false, error: error}}
           format.html do

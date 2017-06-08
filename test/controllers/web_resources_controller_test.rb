@@ -13,6 +13,16 @@ class WebResourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should create web_resource and link to analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:one)
+    assert_difference "WebResource.count", 1, "Web resource not created" do
+      post :create, params: { analysis_id: analysis.id, web_resource: { 
+        url: "x", description: "x" } }
+      assert_redirected_to analysis_path(analysis), @response.body
+    end
+  end
+
   test "should create web_resource and link to dataset page" do
     log_in_as users(:foo)
     dataset = datasets(:one)
@@ -100,6 +110,17 @@ class WebResourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should link web_resource to analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:one)
+    web_resource = web_resources(:one)
+    assert_difference "analysis.web_resources.size", 1, "Web resource not linked" do
+      post :connect, params: { analysis_id: analysis.id, id: web_resource.id }
+      assert_redirected_to analysis_path(analysis), @response.body
+      analysis.reload
+    end
+  end
+
   ##############################################################################
 
 
@@ -130,6 +151,18 @@ class WebResourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should unlink web_resource to analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:two)
+    web_resource = web_resources(:two)
+    assert_difference "analysis.web_resources.size", -1, "Web resource not unlinked" do
+      delete :disconnect, params: { analysis_id: analysis.id, id: web_resource.id }
+      assert_redirected_to analysis_path(analysis), @response.body
+      assert WebResource.find_by(id: web_resource.id).nil?
+      analysis.reload
+    end
+  end
+
   ##############################################################################
 
   ##############################################################################
@@ -154,6 +187,17 @@ class WebResourcesControllerTest < ActionController::TestCase
     patch :update, params: { dataset_id: dataset.id, id: web_resource.id,
       web_resource: { url: "A better web_resource!" } }
     assert_redirected_to dataset_path(dataset), @response.body
+    web_resource.reload
+    assert web_resource.url == "A better web_resource!"
+  end
+
+  test "should update the web_resource of redirect to a analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:two)
+    web_resource = web_resources(:two)
+    patch :update, params: { analysis_id: analysis.id, id: web_resource.id,
+      web_resource: { url: "A better web_resource!" } }
+    assert_redirected_to analysis_path(analysis), @response.body
     web_resource.reload
     assert web_resource.url == "A better web_resource!"
   end
