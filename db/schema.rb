@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20170608173916) do
     t.string   "instructor"
     t.string   "course_prefix"
     t.string   "course_number"
+    t.string   "course_title"
     t.string   "field_of_study"
     t.string   "semester"
     t.float    "project_length_weeks"
