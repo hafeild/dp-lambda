@@ -9,6 +9,7 @@ class Example < ApplicationRecord
   include Bootsy::Container
   has_and_belongs_to_many :software
   has_and_belongs_to_many :datasets
+  has_and_belongs_to_many :analyses
 
   ## Ensure the presence of required fields. 
   validates :title, presence: true, length: {maximum: 200}, 
@@ -17,7 +18,7 @@ class Example < ApplicationRecord
 
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
-    software.size + datasets.size
+    software.size + datasets.size + analyses.size
   end
 
   ## Destroys this resource if it's connected to target_count entries.

@@ -146,7 +146,7 @@ class ExamplesControllerTest < ActionController::TestCase
     assert_difference "dataset.examples.size", -1, "Example not unlinked" do
       delete :disconnect, params: { dataset_id: dataset.id, id: example.id }
       assert_redirected_to dataset_path(dataset), @response.body
-      assert Example.find_by(id: example.id).nil?
+      assert_not Example.find_by(id: example.id).nil?
       dataset.reload
     end
   end
@@ -158,7 +158,7 @@ class ExamplesControllerTest < ActionController::TestCase
     assert_difference "analysis.examples.size", -1, "Example not unlinked" do
       delete :disconnect, params: { analysis_id: analysis.id, id: example.id }
       assert_redirected_to analysis_path(analysis), @response.body
-      assert Example.find_by(id: example.id).nil?
+      assert_not Example.find_by(id: example.id).nil?
       analysis.reload
     end
   end

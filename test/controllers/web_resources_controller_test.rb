@@ -146,7 +146,7 @@ class WebResourcesControllerTest < ActionController::TestCase
     assert_difference "dataset.web_resources.size", -1, "Web resource not unlinked" do
       delete :disconnect, params: { dataset_id: dataset.id, id: web_resource.id }
       assert_redirected_to dataset_path(dataset), @response.body
-      assert WebResource.find_by(id: web_resource.id).nil?
+      assert_not WebResource.find_by(id: web_resource.id).nil?
       dataset.reload
     end
   end
@@ -158,7 +158,7 @@ class WebResourcesControllerTest < ActionController::TestCase
     assert_difference "analysis.web_resources.size", -1, "Web resource not unlinked" do
       delete :disconnect, params: { analysis_id: analysis.id, id: web_resource.id }
       assert_redirected_to analysis_path(analysis), @response.body
-      assert WebResource.find_by(id: web_resource.id).nil?
+      assert_not WebResource.find_by(id: web_resource.id).nil?
       analysis.reload
     end
   end
