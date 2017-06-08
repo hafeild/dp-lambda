@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount Bootsy::Engine => '/bootsy', as: 'bootsy'
 
+  ## Static pages.
   root    'static_pages#home'
   get     'password_resets/edit'
   get     'signup' => 'users#new'
@@ -8,6 +9,12 @@ Rails.application.routes.draw do
   post    'login'  => 'sessions#create'
   delete  'logout' => 'sessions#destroy'
 
+  ## Verticals.
+  resources :software
+  resources :datasets
+  resources :analyses
+
+  ## Resources.
   resources :examples, except: [:index, :destroy]
   resources :web_resources, except: [:index, :destroy]
   resources :tags, except: [:index, :destroy]
@@ -30,12 +37,7 @@ Rails.application.routes.draw do
     end
   end
 
-
-
-  resources :software
-  resources :datasets
-  resources :analyses
-
+  ## Account management.
   resources :users, only: [:create,:update,:edit,:destroy]
   resources :account_activations, only: [:edit]
   resources :email_verifications, only: [:edit]

@@ -1,0 +1,3 @@
+<% provide(:title, "Editing analysis: #{@analysis.name}") %>
+<%= render template: 'analyses/_modify_form', 
+  locals: {action: analysis_path(@analysis.id), method: :PATCH} %>

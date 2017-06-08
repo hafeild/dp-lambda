@@ -27,6 +27,8 @@ module ApplicationHelper
       software_path(vertical)
     elsif vertical.class == Dataset
       dataset_path(vertical)
+    elsif vertical.class == Analysis
+      analysis_path(vertical)
     end
   end
 

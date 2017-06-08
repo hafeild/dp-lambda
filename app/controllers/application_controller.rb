@@ -119,6 +119,10 @@ class ApplicationController < ActionController::Base
           @dataset = Dataset.find(params[:dataset_id]) 
           @vertical = @dataset
           @vertical_form_id = :dataset_id
+        elsif params.key? :analysis_id
+          @analysis = Analysis.find(params[:analysis_id]) 
+          @vertical = @analysis
+          @vertical_form_id = :analysis_id
         end
 
       rescue
@@ -136,6 +140,8 @@ class ApplicationController < ActionController::Base
         @redirect_path = software_path(@software.id)
       elsif not @dataset.nil?
         @redirect_path = dataset_path(@dataset)
+      elsif not @analysis.nil?
+        @redirect_path = analysis_path(@analysis)
       else
         @redirect_path = root_path
       end
