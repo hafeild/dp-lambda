@@ -22,10 +22,8 @@ class AssignmentResult < ApplicationRecord
   validates :instructor, presence: true, length: {minimum: 1, maximum: 200}
   validates :course_prefix, presence: true, length: {minimum: 1, maximum: 3}
   validates :course_number, presence: true, length: {minimum: 1, maximum: 3}
+  validates :course_title, presence: true, length: {minimum: 1, maximum: 200}
   validates :field_of_study, presence: true, length: {minimum: 1, maximum: 200}
-
-  validates :summary, presence: true
-  validates :description, presence: true
 
   def course
     "#{:course_prefix}#{:course_number}"

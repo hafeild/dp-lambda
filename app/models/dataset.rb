@@ -14,7 +14,7 @@ class Dataset < ApplicationRecord
   belongs_to :creator, class_name: "User"
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources
-  has_and_belongs_to_many :examples #, through: :software_examples
+  has_and_belongs_to_many :examples
 
   ## Ensure the presence of required fields. 
   validates :name, presence: true, length: {maximum: 200}, 
