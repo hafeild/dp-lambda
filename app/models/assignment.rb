@@ -25,8 +25,8 @@ class Assignment < ApplicationRecord
     association_foreign_key: :from_assignment_id
   has_and_belongs_to_many :assignments_related_from, class_name: 'Assignment',
     join_table: :assignments_assignments,
-    association_foreign_key: :from_assignment_id
-    foreign_key: :to_assignment_id,
+    foreign_key: :from_assignment_id,
+    association_foreign_key: :to_assignment_id
 
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources
