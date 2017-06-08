@@ -12,6 +12,18 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
+  test "should create tag and link to analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:one)
+    assert_difference "Tag.count", 1, "Tag not created" do
+      post :create, params: { analysis_id: analysis.id, tag: { 
+        text: "X" } }
+      assert_redirected_to analysis_path(analysis), @response.body
+      assert Tag.find_by(text: "X").nil?, "Case not normalized"
+      assert_not Tag.find_by(text: "x").nil?, "Case not normalized"
+    end
+  end
+
   test "should create tag and link to dataset page" do
     log_in_as users(:foo)
     dataset = datasets(:one)
@@ -110,6 +122,17 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
+  test "should link tag to analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:one)
+    tag = tags(:one)
+    assert_difference "analysis.tags.size", 1, "Tag not linked" do
+      post :connect, params: { analysis_id: analysis.id, id: tag.id }
+      assert_redirected_to analysis_path(analysis), @response.body
+      analysis.reload
+    end
+  end
+
   ##############################################################################
 
 
@@ -140,6 +163,17 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
+  test "should unlink tag to analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:two)
+    tag = tags(:two)
+    assert_difference "analysis.tags.size", -1, "Tag not unlinked" do
+      delete :disconnect, params: { analysis_id: analysis.id, id: tag.id }
+      assert_redirected_to analysis_path(analysis), @response.body
+      assert Tag.find_by(id: tag.id).nil?
+      analysis.reload
+    end
+  end
 
   ##############################################################################
 
@@ -168,6 +202,16 @@ class TagsControllerTest < ActionController::TestCase
     assert tag.text == "a better tag!"
   end
 
+  test "should update the tag of redirect to a analysis page" do
+    log_in_as users(:foo)
+    analysis = analyses(:two)
+    tag = tags(:one)
+    patch :update, params: { analysis_id: analysis.id, id: tag.id,
+      tag: { text: "A better tag!" } }
+    assert_redirected_to analysis_path(analysis), @response.body
+    tag.reload
+    assert tag.text == "a better tag!"
+  end
 
   ##############################################################################
 
