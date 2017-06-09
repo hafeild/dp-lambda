@@ -25,9 +25,18 @@
   <div class="metadata-wrapper">
     <h2>Metadata</h2>
     <table class="metadata">
-      <tr><th>Author</th><td><%= @assignment.author %></td></tr>
-      <tr><th>Learning curve</th><td><%= @assignment.learning_curve %></td></tr>
-      <tr><th>Expected instruction hours</th><td><%= @assignment.instruction_hours %></td></tr>
+      <tr>
+        <th>Author</th>
+        <td class="author"><%= @assignment.author %></td>
+      </tr>
+      <tr>
+        <th>Learning curve</th>
+        <td class="learning_curve"><%= @assignment.learning_curve %></td>
+      </tr>
+      <tr>
+        <th>Expected instruction hours</th>
+        <td class="instruction_hours"><%= @assignment.instruction_hours %></td>
+      </tr>
     </table>
   </div>
 
