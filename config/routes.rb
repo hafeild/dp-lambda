@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   end
 
   ## Configures all of the routes for connecting two verticals together.
-  verticals.each do |vertical|
+  [:assignment].each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 
     verticals.each do |vertical2|

@@ -3,7 +3,9 @@ class AssignmentsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
   before_action :get_params, only: [:create, :update]
-  before_action :get_assignment, only: [:update, :destroy, :show, :edit]
+  before_action :get_assignment,  except: [:index, :new, :create] 
+  before_action :get_verticals, only: [:connect, :disconnect]
+  before_action :get_redirect_path, only: [:connect, :disconnect]
 
   def index
     @assignments = Assignment.all.sort_by { |e| e.name }
@@ -77,6 +79,40 @@ class AssignmentsController < ApplicationController
     rescue => e
       respond_with_error "There was an error removing the assignment entry.",
         new_assignment_path
+    end
+  end
+
+  def connect
+    begin
+      if @vertical.class == Assignment
+        @vertical.assignments_related_to << @assignment
+      else
+        @vertical.assignments << @assignment
+      end
+      @vertical.save!
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "These assignments could not be linked.", 
+        @redirect_path
+    end
+  end
+
+  def disconnect
+    begin
+      if @vertical.class == Assignment
+        if @vertical.assignments_related_to.exists?(id: @assignment.id)
+          @vertical.assignments_related_to.delete(@assignment)
+        end
+      else
+        if @vertical.assignments.exists?(id: @assignment.id)
+          @vertical.assignments.delete(@assignment)
+        end
+      end
+      @vertical.save! 
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "These assignments could not be unlinked.", 
+        @redirect_path
     end
   end
 

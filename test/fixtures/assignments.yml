@@ -24,10 +24,13 @@ two:
   datasets: one
   software: one
   analyses: one
+  # assignments_related_from: one
 
-thress:
+three:
   creator: bar
   author: Bar Car
   name: Assignment 3
   summary: A brief summary
   description: A long description
+  # assignments_related_from: one
+  # assignments_related_to: one
