@@ -40,10 +40,14 @@ Rails.application.routes.draw do
   end
 
   ## Configures all of the routes for connecting two verticals together.
-  [:assignment].each do |vertical|
+  verticals.each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 
     verticals.each do |vertical2|
+      ## Right now, we only want to make connections between assignments and
+      ## other verticals, not between arbitrary verticals.
+      next unless vertical == :assignment or vertical2 == :assignment
+
       vertical2 = vertical2.to_s.pluralize(2)
       expanded_base = "#{base}/#{vertical2}"
       get    expanded_base               => "#{vertical2}#connect_index"
