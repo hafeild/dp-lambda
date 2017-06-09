@@ -123,6 +123,10 @@ class ApplicationController < ActionController::Base
           @analysis = Analysis.find(params[:analysis_id]) 
           @vertical = @analysis
           @vertical_form_id = :analysis_id
+        elsif params.key? :assignment_id
+          @assignment = Assignment.find(params[:assignment_id]) 
+          @vertical = @assignment
+          @vertical_form_id = :assignment_id
         end
 
       rescue
@@ -142,6 +146,8 @@ class ApplicationController < ActionController::Base
         @redirect_path = dataset_path(@dataset)
       elsif not @analysis.nil?
         @redirect_path = analysis_path(@analysis)
+      elsif not @assignment.nil?
+        @redirect_path = assignment_path(@assignment)
       else
         @redirect_path = root_path
       end

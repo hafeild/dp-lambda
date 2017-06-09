@@ -1,0 +1,70 @@
+<div class="container vertical-modification" data-vertical="assignment">
+  <h1><%= yield :title %></h1>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <%= form_for(@assignment, url: action, method: method, 
+        html: {class: "vertical-form"}) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      
+      <div class="form-group">
+        <%= f.label :assignment_name %><span class="required-input">*</span> 
+        (max 200 characters)
+        <%= f.text_field :name, class: "form-control", 
+          placeholder: "e.g., Analyze your social network" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :author %><span class="required-input">*</span> 
+        <%= f.text_field :author, class: "form-control", 
+          placeholder: "e.g., Pat Smith" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :summary %><span class="required-input">*</span><br/>
+        This should be a short, one sentence overview of the assignment.
+        <%= f.text_area :summary, class: "form-control",
+          placeholder: "e.g., Represent data as a set of nodes and connections, then calculate network metrics over the data." %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :description %><span class="required-input">*</span><br/>
+        This should be a detailed description of the assignment and how to use it.
+        <%= f.bootsy_area :description,  
+          rows: 10, class: "form-control add-to-vertical unchanged",
+          editor_options: bootsy_editing_options %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :learning_curve %><br/>
+        High, medium, low, or something more descriptive.
+        <%= f.text_field :learning_curve, class: "form-control", 
+          placeholder: "e.g., medium" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :hours_of_instruction_required %> <br/>
+        How many hours of in-class instruction is this assignment expected to require?
+        <%= f.text_field :instruction_hours, class: "form-control", 
+          placeholder: "e.g., 5" %>
+      </div>
+
+      <p>
+      You will have an opportunity to add resource links and examples after you
+      save.
+      </p>
+
+      <%= f.submit "Save", 
+        id: "form-submit", class: "btn btn-primary" %>
+
+      
+      <button class="btn btn-danger link" 
+        data-href="<%= @assignment.id.nil? ? assignments_path : 
+          assignment_path(@assignment) %>">Cancel</button>
+
+      <% end %>
+    </div>
+  </div>
+
+
+</div>

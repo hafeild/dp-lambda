@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :software
   resources :datasets
   resources :analyses
+  resources :assignments
 
   ## Resources.
   resources :examples, except: [:index, :destroy]
@@ -23,7 +24,7 @@ Rails.application.routes.draw do
   ## a particular vertical. E.g.,
   ##  get 'software/:software_id/examples' => 'examples#index'
   ## Go through each vertical (with)
-  [:software, :dataset, :analysis].each do |vertical|
+  [:software, :dataset, :analysis, :assignment].each do |vertical|
 
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 

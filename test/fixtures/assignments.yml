@@ -18,6 +18,9 @@ two:
   name: Assignment 2
   summary: A brief summary
   description: A long description
+  examples: two
+  web_resources: two
+  tags: two, five
 
 thress:
   creator: bar
