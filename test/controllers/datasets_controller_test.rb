@@ -278,7 +278,57 @@ class DatasetsControllerTest < ActionController::TestCase
 
   end
 
+  # test "should connect a software page to a dataset" do
+  #   log_in_as users(:foo)
+  #   dataset = datasets(:one)
+  #   software = software(:one)
+
+  #   assert_difference "software.datasets.count", 1, "Dataset not linked" do
+  #   assert_difference "dataset.software.count", 1, "Software not linked" do
+  #     post :connect, params: {software_id: software.id, id: dataset.id}
+  #     assert_redirected_to software_path(software), @response.body
+  #     software.reload
+  #     dataset.reload
+  #     assert software.datasets.exists?(id: dataset.id), 
+  #       "Dataset not in list of software datasets"
+  #     assert dataset.software.exists?(id: software.id), 
+  #       "Software not in list of dataset software"
+  #   end
+  #   end
+
+  # end
+
+
   ## End connection tests.
   ##############################################################################
+
+  ##############################################################################
+  ## Removing a connection tests.
+
+  test "should remove the connection between an assignment and dataset" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    assignment = assignments(:two)
+
+    assert_difference "assignment.datasets.count", -1, "Dataset not linked" do
+    assert_difference "dataset.assignments.count", -1, "Assignment not linked" do
+      delete :disconnect, params: {assignment_id: assignment.id, id: dataset.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      dataset.reload
+      assert_not assignment.datasets.exists?(id: dataset.id), 
+        "Dataset not removed from list of assignment datasets"
+      assert_not dataset.assignments.exists?(id: assignment.id), 
+        "Assignment not removed from list of dataset assignments"
+    end
+    end
+
+  end
+
+
+
+  ## End connection removal tests.
+  ##############################################################################
+
 
 end
