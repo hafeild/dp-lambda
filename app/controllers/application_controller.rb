@@ -107,25 +107,18 @@ class ApplicationController < ActionController::Base
     def get_verticals
       begin
         @vertical_form_id = nil
-        @vertical = nil
-        @software = nil
-        @dataset = nil
 
         if params.key? :software_id
-          @software = Software.find(params[:software_id]) 
-          @vertical = @software
+          @vertical = Software.find(params[:software_id]) 
           @vertical_form_id = :software_id
         elsif params.key? :dataset_id
-          @dataset = Dataset.find(params[:dataset_id]) 
-          @vertical = @dataset
+          @vertical = Dataset.find(params[:dataset_id])
           @vertical_form_id = :dataset_id
         elsif params.key? :analysis_id
-          @analysis = Analysis.find(params[:analysis_id]) 
-          @vertical = @analysis
+          @vertical = Analysis.find(params[:analysis_id]) 
           @vertical_form_id = :analysis_id
         elsif params.key? :assignment_id
-          @assignment = Assignment.find(params[:assignment_id]) 
-          @vertical = @assignment
+          @vertical = Assignment.find(params[:assignment_id]) 
           @vertical_form_id = :assignment_id
         end
 
@@ -135,19 +128,12 @@ class ApplicationController < ActionController::Base
       end
     end
 
-
     ## Gets the back path (where to go on submit or cancel).
     def get_redirect_path
       if params.key? :redirect_path
         @redirect_path = params[:redirect_path]
-      elsif not @software.nil?
-        @redirect_path = software_path(@software.id)
-      elsif not @dataset.nil?
-        @redirect_path = dataset_path(@dataset)
-      elsif not @analysis.nil?
-        @redirect_path = analysis_path(@analysis)
-      elsif not @assignment.nil?
-        @redirect_path = assignment_path(@assignment)
+      elsif not @vertical.nil?
+        @redirect_path = get_vertical_path(@vertical)
       else
         @redirect_path = root_path
       end

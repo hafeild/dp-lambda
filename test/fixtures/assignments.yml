@@ -21,6 +21,7 @@ two:
   examples: two
   web_resources: two
   tags: two, five
+  software: one
 
 thress:
   creator: bar

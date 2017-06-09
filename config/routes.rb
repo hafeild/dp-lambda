@@ -20,12 +20,13 @@ Rails.application.routes.draw do
   resources :web_resources, except: [:index, :destroy]
   resources :tags, except: [:index, :destroy]
 
+  verticals = [:software, :dataset, :analysis, :assignment]
+
   ## Configures all of the routes for interacting with resources attached to
   ## a particular vertical. E.g.,
   ##  get 'software/:software_id/examples' => 'examples#index'
   ## Go through each vertical (with)
-  [:software, :dataset, :analysis, :assignment].each do |vertical|
-
+  verticals.each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 
     [:examples, :web_resources, :tags].each do |resource|
@@ -37,6 +38,19 @@ Rails.application.routes.draw do
       delete "#{resource_base}/:id"      => "#{resource}#disconnect"
     end
   end
+
+  ## Configures all of the routes for connecting two verticals together.
+  verticals.each do |vertical|
+    base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
+
+    verticals.each do |vertical2|
+      vertical2 = vertical2.to_s.pluralize(2)
+      expanded_base = "#{base}/#{vertical2}"
+      post   "#{expanded_base}/:id"      => "#{vertical2}#connect"
+      delete "#{expanded_base}/:id"      => "#{vertical2}#disconnect"
+    end
+  end
+
 
   ## Account management.
   resources :users, only: [:create,:update,:edit,:destroy]

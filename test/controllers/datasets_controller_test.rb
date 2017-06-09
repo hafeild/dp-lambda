@@ -254,4 +254,31 @@ class DatasetsControllerTest < ActionController::TestCase
   ## End destroy tests.
   ##############################################################################
 
+
+  ##############################################################################
+  ## Connection tests.
+
+  test "should connect an assignment to a dataset" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    assignment = assignments(:one)
+
+    assert_difference "assignment.datasets.count", 1, "Dataset not linked" do
+    assert_difference "dataset.assignments.count", 1, "Assignment not linked" do
+      post :connect, params: {assignment_id: assignment.id, id: dataset.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      dataset.reload
+      assert assignment.datasets.exists?(id: dataset.id), 
+        "Dataset not in list of assignment datasets"
+      assert dataset.assignments.exists?(id: assignment.id), 
+        "Assignment not in list of dataset assignments"
+    end
+    end
+
+  end
+
+  ## End connection tests.
+  ##############################################################################
+
 end
