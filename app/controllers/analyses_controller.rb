@@ -3,12 +3,18 @@ class AnalysesController < ApplicationController
   before_action :logged_in_user, except: [:show, :index]
   before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
-  before_action :get_analysis,  except: [:index, :new, :create] 
-  before_action :get_verticals, only: [:connect, :disconnect]
-  before_action :get_redirect_path, only: [:connect, :disconnect]
-
+  before_action :get_analysis,  except: [:connect_index, :index, :new, :create] 
+  before_action :get_verticals, only: [:connect_index, :connect, :disconnect]
+  before_action :get_redirect_path, only: [:connect_index, :connect, :disconnect]
   def index
     @analyses = Analysis.all.sort_by { |e| e.name }
+  end
+
+  def connect_index
+    @analyses = Analysis.all.sort_by { |e| e.name }
+    if @vertical.class == Analysis
+      @analyses.delete(@vertical)
+    end
   end
 
   def show

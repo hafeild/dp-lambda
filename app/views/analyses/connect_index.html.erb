@@ -1,0 +1,26 @@
+<% provide(:title, "Choose analysis") %>
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+  <p>
+  Choose an analysis to link from
+  <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <% if @analyses.empty? %>
+        <% if @vertical.class == Analysis %>
+          No other analyses exist yet!
+        <% else %>
+          No analyses exist yet!
+        <% end %>
+      <% else %>
+        <h2>Analyses</h2>
+        <div class="connection-index">
+          <%= render partial: 'analysis_index_item', 
+            collection: @analyses, as: :analysis %>
+        </div>
+      <% end %> 
+    </div>
+  </div>
+</div>

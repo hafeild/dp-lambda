@@ -40,7 +40,7 @@
     <% end %>
     <ul>
       <%= render(partial: "tags/tag_list_item", 
-        collection: @analysis.tags, as: :tag,
+        collection: sort_by(@analysis.tags, :text), as: :tag,
         locals: {print_header: true, vertical: @analysis}) || 
         "There are currently no tags associated with this analysis." %>
     </ul>
@@ -58,7 +58,7 @@
     <% end %>
     <ul>
       <%= render(partial: "web_resources/web_resource_list_item", 
-        collection: @analysis.web_resources, as: :web_resource,
+        collection: sort_by(@analysis.web_resources, :description), as: :web_resource,
         locals: {print_header: true, vertical: @analysis}) || 
         "There are currently no web resources associated with this analysis." %>
     </ul>
@@ -73,7 +73,7 @@
     <% end %>
     <ul>
       <%= render(partial: "assignments/assignment_list_item", 
-        collection: @analysis.assignments, as: :assignment,
+        collection: sort_by_name(@analysis.assignments), as: :assignment,
         locals: {print_header: true, vertical: @analysis}) || 
         "This analysis does not link to any assignments." %>
     </ul>
@@ -91,7 +91,8 @@
       ></a>
     <% end %>
 
-    <%= render(partial: "examples/example", collection: @analysis.examples, 
+    <%= render(partial: "examples/example", 
+      collection: sort_by(@analysis.examples, :title), 
       locals: {print_header: true, vertical: @analysis}) || 
       "<p>There are currently no examples associated with this analysis.</p>".html_safe %>
   </div>

@@ -3,12 +3,19 @@ class DatasetsController < ApplicationController
   before_action :logged_in_user, except: [:show, :index]
   before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
-  before_action :get_dataset, except: [:index, :new, :create] 
-  before_action :get_verticals, only: [:connect, :disconnect]
-  before_action :get_redirect_path, only: [:connect, :disconnect]
+  before_action :get_dataset, except: [:connect_index, :index, :new, :create] 
+  before_action :get_verticals, only: [:connect_index, :connect, :disconnect]
+  before_action :get_redirect_path, only: [:connect_index, :connect, :disconnect]
 
   def index
     @datasets = Dataset.all.sort_by { |e| e.name }
+  end
+
+  def connect_index
+    @datasets = Dataset.all.sort_by { |e| e.name }
+    if @vertical.class == Dataset
+      @datasets.delete(@vertical)
+    end
   end
 
   def show

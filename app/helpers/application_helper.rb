@@ -117,4 +117,16 @@ module ApplicationHelper
     text.size > length ? "#{text[0..length]}..."  : text
   end
 
+  ## Sorts a given list or collection by the name field of each entry.
+  ## Assumes that an entry has a name field (it is not verified).
+  def sort_by_name(collection)
+    sort_by(collection, :name)
+  end
+
+
+  ## Sorts a given list or collection by the given key of each entry.
+  ## Assumes that an entry has a field of name key (it is not verified).
+  def sort_by(collection, key)
+    collection.sort{|x,y| x[key] <=> y[key]}
+  end
 end

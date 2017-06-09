@@ -1,1 +1,3 @@
-<li><%= link_to software.name, software_path(software) %></li>
+<li><span class="vertical-name"><%= link_to software.name, software_path(software) %></span>
+    <span class="snippet"> &ndash; <%= get_snippet(software.summary, 200)%></span>
+</li>

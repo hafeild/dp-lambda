@@ -1,1 +1,3 @@
-<li><%= link_to dataset.name, dataset_path(dataset) %></li>
+<li><span class="vertical-name"><%= link_to dataset.name, dataset_path(dataset) %></span>
+  <span class="snippet"> &ndash; <%= get_snippet(dataset.summary, 200)%></span>
+</li>

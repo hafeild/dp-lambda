@@ -55,8 +55,8 @@
     <% end %>
     <ul>
       <%= render(partial: "assignments/assignment_list_item", 
-        collection: @assignment.assignments_related_to, as: :assignment,
-        locals: {print_header: true, vertical: @assignment}) || 
+        collection: sort_by_name(@assignment.assignments_related_to), 
+        as: :assignment, locals: {print_header: true, vertical: @assignment}) || 
         "This assignment does not link to any other assignments." %>
     </ul>
   </div>
@@ -65,8 +65,8 @@
     <h2>Assignments that link to this one</h2>
     <ul>
       <%= render(partial: "assignments/assignment_list_item", 
-        collection: @assignment.assignments_related_from, as: :assignment,
-        locals: {print_header: true, vertical: @assignment}) || 
+        collection: sort_by_name(@assignment.assignments_related_from), 
+        as: :assignment, locals: {print_header: true, vertical: @assignment}) || 
         "No other assignments link to this one." %>
     </ul>
   </div>
@@ -84,7 +84,7 @@
     <% end %>
     <ul>
       <%= render(partial: "tags/tag_list_item", 
-        collection: @assignment.tags, as: :tag,
+        collection: sort_by(@assignment.tags, :text), as: :tag,
         locals: {print_header: true, vertical: @assignment}) || 
         "There are currently no tags associated with this assignment." %>
     </ul>
@@ -102,11 +102,60 @@
     <% end %>
     <ul>
       <%= render(partial: "web_resources/web_resource_list_item", 
-        collection: @assignment.web_resources, as: :web_resource,
+        collection: sort_by(@assignment.web_resources, :description), 
+        as: :web_resource, 
         locals: {print_header: true, vertical: @assignment}) || 
         "There are currently no web resources associated with this assignment." %>
     </ul>
   </div>
+
+  <div class="related-software">
+    <h2>Software</h2>
+    <% if can_edit? %>
+      <a href="<%= vertical_vertical_index_path @assignment, Software.new %>"
+        ><button class="btn btn-sm btn-default">Link to software</button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "software/software_list_item", 
+        collection: sort_by_name(@assignment.software), as: :software,
+        locals: {print_header: true, vertical: @software}) || 
+        "This assignment does not link to any software." %>
+    </ul>
+  </div>
+
+
+  <div class="related-analyses">
+    <h2>Analyses</h2>
+    <% if can_edit? %>
+      <a href="<%= vertical_vertical_index_path @assignment, Analysis.new %>"
+        ><button class="btn btn-sm btn-default">Link to analysis</button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "analyses/analysis_list_item", 
+        collection: sort_by_name(@assignment.analyses), as: :analysis,
+        locals: {print_header: true, vertical: @analysis}) || 
+        "This assignment does not link to any analyses." %>
+    </ul>
+  </div>
+
+
+  <div class="related-datasets">
+    <h2>Datasets</h2>
+    <% if can_edit? %>
+      <a href="<%= vertical_vertical_index_path @assignment, Dataset.new %>"
+        ><button class="btn btn-sm btn-default">Link to dataset</button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "datasets/dataset_list_item", 
+        collection: sort_by_name(@assignment.datasets), as: :dataset,
+        locals: {print_header: true, vertical: @dataset}) || 
+        "This assignment does not link to any datasets." %>
+    </ul>
+  </div>
+
 
   <div class="examples">
     <h2>Examples</h2>
@@ -119,7 +168,8 @@
       ></a>
     <% end %>
 
-    <%= render(partial: "examples/example", collection: @assignment.examples, 
+    <%= render(partial: "examples/example", 
+      collection: sort_by(@assignment.examples, :title), 
       locals: {print_header: true, vertical: @assignment}) || 
       "<p>There are currently no examples associated with this assignment.</p>".html_safe %>
   </div>

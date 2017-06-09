@@ -1,2 +1,2 @@
-<li><%= link_to assignment.name, assignment_path(assignment) %> 
-  <span class="snippet"><%= get_snippet(assignment.summary, 200)%></span></li>
+<li><span class="vertical-name"><%= link_to assignment.name, assignment_path(assignment) %></span> 
+  <span class="snippet"> &ndash; <%= get_snippet(assignment.summary, 200)%></span></li>

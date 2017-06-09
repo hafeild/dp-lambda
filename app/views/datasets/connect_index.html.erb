@@ -1,0 +1,26 @@
+<% provide(:title, "Choose dataset") %>
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+  <p>
+  Choose an dataset to link from
+  <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <% if @datasets.empty? %>
+        <% if @vertical.class == Dataset %>
+          No other datasets exist yet!
+        <% else %>
+          No datasets exist yet!
+        <% end %>
+      <% else %>
+        <h2>Datasets</h2>
+        <div class="connection-index">
+          <%= render partial: 'dataset_index_item', 
+            collection: @datasets, as: :dataset %>
+        </div>
+      <% end %> 
+    </div>
+  </div>
+</div>

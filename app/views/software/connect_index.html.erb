@@ -1,0 +1,26 @@
+<% provide(:title, "Choose software") %>
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+  <p>
+  Choose an software to link from
+  <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <% if @software.empty? %>
+        <% if @vertical.class == Software %>
+          No other software exist yet!
+        <% else %>
+          No software exist yet!
+        <% end %>
+      <% else %>
+        <h2>Software</h2>
+        <div class="connection-index">
+          <%= render partial: 'software_index_item', 
+            collection: @software, as: :software %>
+        </div>
+      <% end %> 
+    </div>
+  </div>
+</div>

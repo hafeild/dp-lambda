@@ -40,7 +40,7 @@
     <% end %>
     <ul>
       <%= render(partial: "tags/tag_list_item", 
-        collection: @software.tags, as: :tag,
+        collection: sort_by(@software.tags, :text), as: :tag,
         locals: {print_header: true, vertical: @software}) || 
         "There are currently no tags associated with this software." %>
     </ul>
@@ -58,7 +58,8 @@
     <% end %>
     <ul>
       <%= render(partial: "web_resources/web_resource_list_item", 
-        collection: @software.web_resources, as: :web_resource,
+        collection: sort_by(@software.web_resources, :description), 
+        as: :web_resource,
         locals: {print_header: true, vertical: @software}) || 
         "There are currently no web resources associated with this software." %>
     </ul>
@@ -73,7 +74,7 @@
     <% end %>
     <ul>
       <%= render(partial: "assignments/assignment_list_item", 
-        collection: @software.assignments, as: :assignment,
+        collection: sort_by_name(@software.assignments), as: :assignment,
         locals: {print_header: true, vertical: @software}) || 
         "This software does not link to any assignments." %>
     </ul>
@@ -90,7 +91,8 @@
       ></a>
     <% end %>
 
-    <%= render(partial: "examples/example", collection: @software.examples, 
+    <%= render(partial: "examples/example", 
+      collection: sort_by(@software.examples, :title), 
       locals: {print_header: true, vertical: @software}) || 
       "<p>There are currently no examples associated with this software.</p>".html_safe %>
   </div>
