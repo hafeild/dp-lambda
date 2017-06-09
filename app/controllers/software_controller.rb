@@ -1,7 +1,7 @@
 class SoftwareController < ApplicationController
   # before_action :get_response_format
-  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
-  before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user, except: [:show, :index]
+  before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
   before_action :get_software,  except: [:index, :new, :create] 
   before_action :get_verticals, only: [:connect, :disconnect]
