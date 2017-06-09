@@ -325,8 +325,6 @@ class DatasetsControllerTest < ActionController::TestCase
 
   end
 
-
-
   ## End connection removal tests.
   ##############################################################################
 

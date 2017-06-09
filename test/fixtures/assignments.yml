@@ -22,6 +22,8 @@ two:
   web_resources: two
   tags: two, five
   datasets: one
+  software: one
+  analyses: one
 
 thress:
   creator: bar

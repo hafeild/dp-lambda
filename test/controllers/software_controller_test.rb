@@ -252,4 +252,79 @@ class SoftwareControllerTest < ActionController::TestCase
   ## End destroy tests.
   ##############################################################################
 
+  ##############################################################################
+  ## Connection tests.
+
+  test "should connect an assignment to software" do
+    log_in_as users(:foo)
+    software = software(:one)
+    assignment = assignments(:one)
+
+    assert_difference "assignment.software.count", 1, "Software not linked" do
+    assert_difference "software.assignments.count", 1, "Assignment not linked" do
+      post :connect, params: {assignment_id: assignment.id, id: software.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      software.reload
+      assert assignment.software.exists?(id: software.id), 
+        "Software not in list of assignment software"
+      assert software.assignments.exists?(id: assignment.id), 
+        "Assignment not in list of software assignments"
+    end
+    end
+
+  end
+
+  # test "should connect a software page to a software" do
+  #   log_in_as users(:foo)
+  #   software = software(:one)
+  #   software = software(:one)
+
+  #   assert_difference "software.software.count", 1, "Software not linked" do
+  #   assert_difference "software.software.count", 1, "Software not linked" do
+  #     post :connect, params: {software_id: software.id, id: software.id}
+  #     assert_redirected_to software_path(software), @response.body
+  #     software.reload
+  #     software.reload
+  #     assert software.software.exists?(id: software.id), 
+  #       "Software not in list of software software"
+  #     assert software.software.exists?(id: software.id), 
+  #       "Software not in list of software software"
+  #   end
+  #   end
+
+  # end
+
+
+  ## End connection tests.
+  ##############################################################################
+
+  ##############################################################################
+  ## Removing a connection tests.
+
+  test "should remove the connection between an assignment and software" do
+    log_in_as users(:foo)
+    software = software(:one)
+    assignment = assignments(:two)
+
+    assert_difference "assignment.software.count", -1, "Software not linked" do
+    assert_difference "software.assignments.count", -1, "Assignment not linked" do
+      delete :disconnect, params: {assignment_id: assignment.id, id: software.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      software.reload
+      assert_not assignment.software.exists?(id: software.id), 
+        "Software not removed from list of assignment software"
+      assert_not software.assignments.exists?(id: assignment.id), 
+        "Assignment not removed from list of software assignments"
+    end
+    end
+
+  end
+
+  ## End connection removal tests.
+  ##############################################################################
+
+
+
 end

@@ -254,4 +254,79 @@ class AnalysesControllerTest < ActionController::TestCase
   ## End destroy tests.
   ##############################################################################
 
+  ##############################################################################
+  ## Connection tests.
+
+  test "should connect an assignment to a analysis" do
+    log_in_as users(:foo)
+    analysis = analyses(:one)
+    assignment = assignments(:one)
+
+    assert_difference "assignment.analyses.count", 1, "Analysis not linked" do
+    assert_difference "analysis.assignments.count", 1, "Assignment not linked" do
+      post :connect, params: {assignment_id: assignment.id, id: analysis.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      analysis.reload
+      assert assignment.analyses.exists?(id: analysis.id), 
+        "Analysis not in list of assignment analyses"
+      assert analysis.assignments.exists?(id: assignment.id), 
+        "Assignment not in list of analysis assignments"
+    end
+    end
+
+  end
+
+  # test "should connect a software page to a analysis" do
+  #   log_in_as users(:foo)
+  #   analysis = analyses(:one)
+  #   software = software(:one)
+
+  #   assert_difference "software.analyses.count", 1, "Analysis not linked" do
+  #   assert_difference "analysis.software.count", 1, "Software not linked" do
+  #     post :connect, params: {software_id: software.id, id: analysis.id}
+  #     assert_redirected_to software_path(software), @response.body
+  #     software.reload
+  #     analysis.reload
+  #     assert software.analyses.exists?(id: analysis.id), 
+  #       "Analysis not in list of software analyses"
+  #     assert analysis.software.exists?(id: software.id), 
+  #       "Software not in list of analysis software"
+  #   end
+  #   end
+
+  # end
+
+
+  ## End connection tests.
+  ##############################################################################
+
+  ##############################################################################
+  ## Removing a connection tests.
+
+  test "should remove the connection between an assignment and analysis" do
+    log_in_as users(:foo)
+    analysis = analyses(:one)
+    assignment = assignments(:two)
+
+    assert_difference "assignment.analyses.count", -1, "Analysis not linked" do
+    assert_difference "analysis.assignments.count", -1, "Assignment not linked" do
+      delete :disconnect, params: {assignment_id: assignment.id, id: analysis.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      analysis.reload
+      assert_not assignment.analyses.exists?(id: analysis.id), 
+        "Analysis not removed from list of assignment analyses"
+      assert_not analysis.assignments.exists?(id: assignment.id), 
+        "Assignment not removed from list of analysis assignments"
+    end
+    end
+
+  end
+
+  ## End connection removal tests.
+  ##############################################################################
+
+
+
 end

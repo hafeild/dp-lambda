@@ -3,7 +3,9 @@ class AnalysesController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
   before_action :get_params, only: [:create, :update]
-  before_action :get_analysis, only: [:update, :destroy, :show, :edit]
+  before_action :get_analysis,  except: [:index, :new, :create] 
+  before_action :get_verticals, only: [:connect, :disconnect]
+  before_action :get_redirect_path, only: [:connect, :disconnect]
 
   def index
     @analyses = Analysis.all.sort_by { |e| e.name }
@@ -84,6 +86,30 @@ class AnalysesController < ApplicationController
     rescue => e
       respond_with_error "There was an error removing the analysis entry.",
         new_analysis_path
+    end
+  end
+
+  def connect
+    begin
+      @vertical.analyses << @analysis
+      @vertical.save!
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "The analysis could not be associated with the "+
+        "requested vertical.", @redirect_path
+    end
+  end
+
+  def disconnect
+    begin
+      if @vertical.analyses.exists?(id: @analysis.id)
+        @vertical.analyses.delete(@analysis)
+        @vertical.save! 
+      end
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "The analysis could not be disassociated with the"+
+        " requested vertical.", @redirect_path
     end
   end
 

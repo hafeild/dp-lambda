@@ -3,7 +3,9 @@ class SoftwareController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
   before_action :get_params, only: [:create, :update]
-  before_action :get_software, only: [:update, :destroy, :show, :edit]
+  before_action :get_software,  except: [:index, :new, :create] 
+  before_action :get_verticals, only: [:connect, :disconnect]
+  before_action :get_redirect_path, only: [:connect, :disconnect]
 
   def index
     @software = Software.all.sort_by { |e| e.name }
@@ -84,6 +86,30 @@ class SoftwareController < ApplicationController
     rescue => e
       respond_with_error "There was an error removing the software entry.",
         new_software_path
+    end
+  end
+
+  def connect
+    begin
+      @vertical.software << @software
+      @vertical.save!
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "The software could not be associated with the "+
+        "requested vertical.", @redirect_path
+    end
+  end
+
+  def disconnect
+    begin
+      if @vertical.software.exists?(id: @software.id)
+        @vertical.software.delete(@software)
+        @vertical.save! 
+      end
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "The software could not be disassociated with the"+
+        " requested vertical.", @redirect_path
     end
   end
 
