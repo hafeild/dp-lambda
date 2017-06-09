@@ -1,0 +1,26 @@
+<% provide(:title, "Choose assignment") %>
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+  <p>
+  Choose an assignment to link from
+  <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <% if @assignments.empty? %>
+        <% if @vertical.class == Assignment %>
+          No other assignments exist yet!
+        <% else %>
+          No assignments exist yet!
+        <% end %>
+      <% else %>
+        <h2>Assignments</h2>
+        <div class="connection-index">
+          <%= render partial: 'assignment_index_item', 
+            collection: @assignments, as: :assignment %>
+        </div>
+      <% end %> 
+    </div>
+  </div>
+</div>

@@ -1,1 +1,2 @@
-<li><%= link_to assignment.name, assignment_path(assignment) %></li>
+<li><%= link_to assignment.name, assignment_path(assignment) %> 
+  <span class="snippet"><%= get_snippet(assignment.summary, 200)%></span></li>

@@ -37,6 +37,32 @@
       data-html="<%= url_encode @assignment.description.html_safe %>"></iframe>
   </div>
 
+  <div class="related-assignments">
+    <h2>Assignments this assignment links to</h2>
+    <% if can_edit? %>
+      <a href="<%= vertical_vertical_index_path @assignment, @assignment %>"
+        ><button class="btn btn-sm btn-default">Link to another assignment</button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "assignments/assignment_list_item", 
+        collection: @assignment.assignments_related_to, as: :assignment,
+        locals: {print_header: true, vertical: @assignment}) || 
+        "This assignment does not link to any other assignments." %>
+    </ul>
+  </div>
+
+  <div class="related-assignments">
+    <h2>Assignments that link to this one</h2>
+    <ul>
+      <%= render(partial: "assignments/assignment_list_item", 
+        collection: @assignment.assignments_related_from, as: :assignment,
+        locals: {print_header: true, vertical: @assignment}) || 
+        "No other assignments link to this one." %>
+    </ul>
+  </div>
+
+
   <div class="tags">
     <h2>Tags</h2>
     <% if can_edit? %>
