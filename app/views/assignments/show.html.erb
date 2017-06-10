@@ -46,31 +46,20 @@
       data-html="<%= url_encode @assignment.description.html_safe %>"></iframe>
   </div>
 
-  <div class="related-assignments">
-    <h2>Assignments this assignment links to</h2>
-    <% if can_edit? %>
-      <a href="<%= vertical_vertical_index_path @assignment, @assignment %>"
-        ><button class="btn btn-sm btn-default">Link to another assignment</button
-      ></a>
-    <% end %>
-    <ul>
-      <%= render(partial: "assignments/assignment_list_item", 
-        collection: sort_by_name(@assignment.assignments_related_to), 
-        as: :assignment, locals: {print_header: true, vertical: @assignment}) || 
-        "This assignment does not link to any other assignments." %>
-    </ul>
-  </div>
 
-  <div class="related-assignments">
-    <h2>Assignments that link to this one</h2>
-    <ul>
-      <%= render(partial: "assignments/assignment_list_item", 
-        collection: sort_by_name(@assignment.assignments_related_from), 
-        as: :assignment, locals: {print_header: true, vertical: @assignment}) || 
-        "No other assignments link to this one." %>
-    </ul>
-  </div>
+  <%= render(partial: "verticals_shared/related_vertical",
+    locals: {title: "Assignments this assignment links to", 
+             vertical_from: @assignment, 
+             vertical_to: Assignment.new, 
+             data: @assignment.assignments_related_to,
+             editable: true }) %>
 
+
+  <%= render(partial: "verticals_shared/related_vertical",
+    locals: {title: "Assignments that link to this one", 
+             vertical_from: @assignment, 
+             vertical_to: Assignment.new, 
+             data: @assignment.assignments_related_from}) %>
 
   <div class="tags">
     <h2>Tags</h2>
@@ -109,52 +98,26 @@
     </ul>
   </div>
 
-  <div class="related-software">
-    <h2>Software</h2>
-    <% if can_edit? %>
-      <a href="<%= vertical_vertical_index_path @assignment, Software.new %>"
-        ><button class="btn btn-sm btn-default">Link to software</button
-      ></a>
-    <% end %>
-    <ul>
-      <%= render(partial: "software/software_list_item", 
-        collection: sort_by_name(@assignment.software), as: :software,
-        locals: {print_header: true, vertical: @software}) || 
-        "This assignment does not link to any software." %>
-    </ul>
-  </div>
+
+  <%= render(partial: "verticals_shared/related_vertical",
+    locals: {title: "Related software", 
+             vertical_from: @assignment, 
+             vertical_to: Software.new, 
+             editable: true }) %>
 
 
-  <div class="related-analyses">
-    <h2>Analyses</h2>
-    <% if can_edit? %>
-      <a href="<%= vertical_vertical_index_path @assignment, Analysis.new %>"
-        ><button class="btn btn-sm btn-default">Link to analysis</button
-      ></a>
-    <% end %>
-    <ul>
-      <%= render(partial: "analyses/analysis_list_item", 
-        collection: sort_by_name(@assignment.analyses), as: :analysis,
-        locals: {print_header: true, vertical: @analysis}) || 
-        "This assignment does not link to any analyses." %>
-    </ul>
-  </div>
+  <%= render(partial: "verticals_shared/related_vertical",
+    locals: {title: "Related analyses", 
+             vertical_from: @assignment, 
+             vertical_to: Analysis.new, 
+             editable: true }) %>
 
 
-  <div class="related-datasets">
-    <h2>Datasets</h2>
-    <% if can_edit? %>
-      <a href="<%= vertical_vertical_index_path @assignment, Dataset.new %>"
-        ><button class="btn btn-sm btn-default">Link to dataset</button
-      ></a>
-    <% end %>
-    <ul>
-      <%= render(partial: "datasets/dataset_list_item", 
-        collection: sort_by_name(@assignment.datasets), as: :dataset,
-        locals: {print_header: true, vertical: @dataset}) || 
-        "This assignment does not link to any datasets." %>
-    </ul>
-  </div>
+  <%= render(partial: "verticals_shared/related_vertical",
+    locals: {title: "Related datasets", 
+             vertical_from: @assignment, 
+             vertical_to: Dataset.new, 
+             editable: true }) %>
 
 
   <div class="examples">

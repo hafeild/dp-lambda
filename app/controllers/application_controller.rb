@@ -129,14 +129,15 @@ class ApplicationController < ActionController::Base
     end
 
     ## Gets the back path (where to go on submit or cancel).
-    def get_redirect_path
+    def get_redirect_path(default=root_path)
       if params.key? :redirect_path
         @redirect_path = params[:redirect_path]
       elsif not @vertical.nil?
         @redirect_path = get_vertical_path(@vertical)
       else
-        @redirect_path = root_path
+        @redirect_path = default
       end
+      @redirect_path
     end
 
 end

@@ -4,8 +4,9 @@ class AnalysesController < ApplicationController
   before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
   before_action :get_analysis,  except: [:connect_index, :index, :new, :create] 
-  before_action :get_verticals, only: [:connect_index, :connect, :disconnect]
-  before_action :get_redirect_path, only: [:connect_index, :connect, :disconnect]
+  before_action :get_verticals
+  before_action :get_redirect_path
+
   def index
     @analyses = Analysis.all.sort_by { |e| e.name }
   end
@@ -49,7 +50,7 @@ class AnalysesController < ApplicationController
 
         analysis.save!
 
-        respond_with_success analysis_path(analysis)
+        respond_with_success get_redirect_path(analysis_path(analysis))
       end
     rescue => e
       respond_with_error "There was an error saving the analysis entry.",
@@ -68,7 +69,7 @@ class AnalysesController < ApplicationController
         @analysis.update(@data.permit(:name, :description, :summary))
         @analysis.save!
 
-        respond_with_success analysis_path(@analysis)
+        respond_with_success get_redirect_path(analysis_path(@analysis))
       end
     rescue => e
       respond_with_error "There was an error updating the analysis entry.",

@@ -95,9 +95,17 @@ module ApplicationHelper
   ##############################################################################
   ## The following generate paths for vertical-tag.
   def vertical_vertical_path(vertical1, vertical2)
-    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), vertical2.id
+    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
+      vertical2.id
       ].join("/")
   end
+
+  def edit_vertical_vertical_path(vertical1, vertical2)
+    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
+      vertical2.id, "edit"
+      ].join("/")
+  end
+
 
   def vertical_vertical_index_path(vertical1, vertical2)
     [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2)].join("/")

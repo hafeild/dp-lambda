@@ -51,6 +51,7 @@ Rails.application.routes.draw do
       vertical2 = vertical2.to_s.pluralize(2)
       expanded_base = "#{base}/#{vertical2}"
       get    expanded_base               => "#{vertical2}#connect_index"
+      get    "#{expanded_base}/:id/edit" => "#{vertical2}#edit"
       post   "#{expanded_base}/:id"      => "#{vertical2}#connect"
       delete "#{expanded_base}/:id"      => "#{vertical2}#disconnect"
     end

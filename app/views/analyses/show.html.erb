@@ -64,20 +64,9 @@
     </ul>
   </div>
 
-  <div class="related-assignments">
-    <h2>Assignments</h2>
-    <% if can_edit? %>
-      <a href="<%= vertical_vertical_index_path @analysis, Assignment.new %>"
-        ><button class="btn btn-sm btn-default">Link to an assignment</button
-      ></a>
-    <% end %>
-    <ul>
-      <%= render(partial: "assignments/assignment_list_item", 
-        collection: sort_by_name(@analysis.assignments), as: :assignment,
-        locals: {print_header: true, vertical: @analysis}) || 
-        "This analysis does not link to any assignments." %>
-    </ul>
-  </div>
+  <%= render(partial: "verticals_shared/related_vertical",
+    locals: {title: "Assignments", vertical_from: @analysis, 
+             vertical_to: Assignment.new}) %>
 
 
   <div class="examples">
