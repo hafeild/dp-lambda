@@ -3,14 +3,14 @@
   <h3><span class="name"><%= web_resource.description %></span>
 
     <% if can_edit? and defined? vertical %>
-      <%= form_for(example, method: :delete,
+      <%= form_for(web_resource, method: :delete,
           url: vertical_web_resource_path(vertical, web_resource), 
           html: {class: "inline"}) do |f| %>
         <button type="submit" class="btn btn-default btn-sm">
           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
           Disassociate</button>
       <% end %>
-      <%= form_for(example, method: :get,
+      <%= form_for(web_resource, method: :get,
          url: edit_vertical_web_resource_path(vertical, web_resource),
          html: {class: "inline"}) do |f| %>
         <button type="submit" class="btn btn-default btn-sm">

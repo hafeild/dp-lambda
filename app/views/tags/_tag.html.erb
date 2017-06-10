@@ -3,14 +3,14 @@
   <h3><span class="name"><%= tag.text %></span>
 
     <% if can_edit? and defined? vertical %>
-      <%= form_for(example, method: :delete,
-          url: vertical_tag_path(vertical, example), 
+      <%= form_for(tag, method: :delete,
+          url: vertical_tag_path(vertical, tag), 
           html: {class: "inline"}) do |f| %>
         <button type="submit" class="btn btn-default btn-sm">
           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
           Disassociate</button>
       <% end %>
-      <%= form_for(example, method: :get,
+      <%= form_for(tag, method: :get,
          url: edit_vertical_tag_path(vertical, tag),
          html: {class: "inline"}) do |f| %>
         <button type="submit" class="btn btn-default btn-sm">
