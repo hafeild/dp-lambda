@@ -27,8 +27,18 @@
   <%= link_to web_resource.url, web_resource.url %>
 </p>
 
-<h4>Associated software</h4>
-<ul>
-  <%= render partial: 'software/software_list_item', 
-    collection: web_resource.software, as: :software %>
-</ul>
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated assignments", vertical_from: WebResource.new, 
+           vertical_to: Assignment.new}) %>
+
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated analyses", vertical_from: WebResource.new, 
+           vertical_to: Analysis.new}) %>
+
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated software", vertical_from: WebResource.new, 
+           vertical_to: Software.new}) %>
+
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated datasets", vertical_from: WebResource.new, 
+           vertical_to: Dataset.new}) %>

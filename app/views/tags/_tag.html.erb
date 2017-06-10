@@ -21,8 +21,18 @@
   </h3>
 <% end %>
 
-<h4>Associated software</h4>
-<ul>
-  <%= render partial: 'software/software_list_item', 
-    collection: tag.software, as: :software %>
-</ul>
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated assignments", vertical_from: Tag.new, 
+           vertical_to: Assignment.new}) %>
+
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated analyses", vertical_from: Tag.new, 
+           vertical_to: Analysis.new}) %>
+
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated software", vertical_from: Tag.new, 
+           vertical_to: Software.new}) %>
+
+<%= render(partial: "verticals_shared/related_vertical",
+  locals: {title: "Associated datasets", vertical_from: Tag.new, 
+           vertical_to: Dataset.new}) %>
