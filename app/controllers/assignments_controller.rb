@@ -66,7 +66,7 @@ class AssignmentsController < ApplicationController
         respond_with_success get_redirect_path(assignment_path(@assignment))
       end
     rescue => e
-      respond_with_error "There was an error updating the assignment entry. #{e}",
+      respond_with_error "There was an error updating the assignment entry.",
         new_assignment_path
     end  
   end
