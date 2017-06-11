@@ -2,21 +2,7 @@ require 'test_helper'
 
 class AssignmentResultTest < ActiveSupport::TestCase
 
-  test "valid with a creator, a unique name, a summary, author, and a description" do 
-    assignment_result = AssignmentResult.new(
-      creator: users(:foo),
-      assignment: assignments(:one),
-      course_prefix: "ART",
-      course_number: "490",
-      course_title: "Senior Thesis I",
-      field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
-    )
-    assert assignment_result.save, "Couldn't save"
-  end
-
-
-  test "valid with a all fields" do 
+  test "valid with only required fields" do 
     assignment_result = AssignmentResult.new(
       creator: users(:foo),
       assignment: assignments(:one),
@@ -25,6 +11,22 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
       instructor: "Foo Bar",
+      semester: "Summer 2017"
+    )
+    assert assignment_result.save, "Couldn't save"
+  end
+
+
+  test "valid with all fields" do 
+    assignment_result = AssignmentResult.new(
+      creator: users(:foo),
+      assignment: assignments(:one),
+      course_prefix: "ART",
+      course_number: "490",
+      course_title: "Senior Thesis I",
+      field_of_study: "Visual and Performing Art",
+      instructor: "Foo Bar",
+      semester: "Summer 2017",
       project_length_weeks: 5,
       students_given_assignment: 30,
       instruction_hours: 6,
@@ -46,7 +48,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
   end
@@ -59,7 +62,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
 
@@ -70,7 +74,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
   end
@@ -84,7 +89,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
 
@@ -95,7 +101,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
   end
@@ -109,7 +116,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_prefix: "ART",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have" 
 
@@ -120,7 +128,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have" 
   end
@@ -134,7 +143,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_prefix: "ART",
       course_number: "490",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
 
@@ -145,7 +155,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "",
       field_of_study: "Visual and Performing Art",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have" 
   end
@@ -158,7 +169,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_prefix: "ART",
       course_number: "490",
       course_title: "Senior Thesis I",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
 
@@ -169,7 +181,8 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "",
-      instructor: "Foo Bar"
+      instructor: "Foo Bar",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have" 
   end
@@ -182,6 +195,7 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
+      semester: "Summer 2017"
     )
     assert_not assignment_result.save, "Saved without error, but should not have"
 
@@ -192,7 +206,33 @@ class AssignmentResultTest < ActiveSupport::TestCase
       course_number: "490",
       course_title: "Senior Thesis I",
       field_of_study: "Visual and Performing Art",
-      instructor: ""
+      instructor: "",
+      semester: "Summer 2017"
+    )
+    assert_not assignment_result.save, "Saved without error, but should not have" 
+  end
+
+  test "must have a semester" do 
+    assignment_result = AssignmentResult.new(
+      creator: users(:foo),
+      assignment: assignments(:one),
+      course_prefix: "ART",
+      course_number: "490",
+      course_title: "Senior Thesis I",
+      field_of_study: "Visual and Performing Art",
+      instructor: "Pat Smith"
+    )
+    assert_not assignment_result.save, "Saved without error, but should not have"
+
+    assignment_result = AssignmentResult.new(
+      creator: users(:foo),
+      assignment: assignments(:one),
+      course_prefix: "ART",
+      course_number: "490",
+      course_title: "Senior Thesis I",
+      field_of_study: "Visual and Performing Art",
+      instructor: "Path Smith",
+      semester: ""
     )
     assert_not assignment_result.save, "Saved without error, but should not have" 
   end

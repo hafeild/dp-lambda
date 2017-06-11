@@ -5,6 +5,7 @@ one:
   course_number: "101"
   course_title: Intro to Computer Science
   field_of_study: Computer Science
+  semester: Fall 2010
   project_length_weeks: 3
   students_given_assignment: 15
   instruction_hours: 3.5
@@ -20,6 +21,7 @@ two:
   course_number: "102"
   course_title: History of the World
   field_of_study: History
+  semester: Spring 2020
   project_length_weeks: 3
   students_given_assignment: 15
   instruction_hours: 3.5
