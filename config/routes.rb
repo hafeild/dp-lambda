@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   resources :software
   resources :datasets
   resources :analyses
-  resources :assignments
+  resources :assignments do 
+    resources :assignment_results, only: [:create, :new]
+  end
+  resources :assignment_results, except: [:index, :create, :new]
+
 
   ## Resources.
   resources :examples, except: [:index, :destroy]

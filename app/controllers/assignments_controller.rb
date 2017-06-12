@@ -84,7 +84,7 @@ class AssignmentsController < ApplicationController
         redirect_to assignments_path
       end
     rescue => e
-      respond_with_error "There was an error removing the assignment entry.",
+      respond_with_error "There was an error removing the assignment entry. #{e}",
         new_assignment_path
     end
   end

@@ -20,6 +20,9 @@ class Assignment < ApplicationRecord
 
   include Bootsy::Container
 
+  ## Destroys all assignment results when destroyed.
+  before_destroy :destroy_assignment_results
+
   belongs_to :creator, class_name: "User"
 
   has_and_belongs_to_many :assignments_related_to, class_name: 'Assignment',
@@ -52,4 +55,10 @@ class Assignment < ApplicationRecord
     examples.clear
   end
 
+  private
+    def destroy_assignment_results
+      assignment_results.each do |assignment_result|
+        assignment_result.destroy!
+      end
+    end
 end

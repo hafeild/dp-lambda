@@ -244,9 +244,9 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_difference 'Example.count', 0, "Example removed" do
     assert_difference 'Tag.count', -1, "Tag not removed" do
 
-      delete :destroy, params: {id: assignment.id}
+      delete :destroy, params: {id: assignment.id}, format: :json
 
-      assert Assignment.find_by(id: assignment.id).nil?, "Assignment not removed"
+      assert Assignment.find_by(id: assignment.id).nil?, @response.body #{}"Assignment not removed"
       assert_not Tag.find_by(id: tag1.id).nil?, "Tag removed"
       assert Tag.find_by(id: tag2.id).nil?, "Tag not removed"
       assert_not Example.find_by(id: example.id).nil?, "Example removed"
