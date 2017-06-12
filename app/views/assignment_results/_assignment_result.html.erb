@@ -1,0 +1,57 @@
+<div class="metadata-wrapper">
+  <h2>Metadata</h2>
+  <table class="metadata">
+    <tr>
+      <th>Assignment</th>
+      <td class="assignment"><%= link_to assignment_result.assignment.name,
+        assignment_path(assignment_result.assignment) %></td>
+    </tr>
+    <tr>
+      <th>Instructor</th>
+      <td class="instructor"><%= assignment_result.instructor %></td>
+    </tr>
+    <tr>
+      <th>Course title</th>
+      <td class="course_title"><%= assignment_result.course_title %></td>
+    </tr>
+    <tr>
+      <th>Course prefix</th>
+      <td class="course_prefix"><%= assignment_result.course_prefix %></td>
+    </tr>
+    <tr>
+      <th>Course number</th>
+      <td class="course_number"><%= assignment_result.course_number %></td>
+    </tr>
+    <tr>
+      <th>Semester</th>
+      <td class="semester"><%= assignment_result.semester %></td>
+    </tr>
+    <tr>
+      <th>Field of study</th>
+      <td class="field_of_study"><%= assignment_result.field_of_study %></td>
+    </tr>
+    <tr>
+      <th>Project length (weeks)</th>
+      <td class="project_length_weeks"><%= assignment_result.project_length_weeks %></td>
+    </tr>
+    <tr>
+      <th>Number of students given assignment</th>
+      <td class="students_given_assignment"><%= assignment_result.students_given_assignment %></td>
+    </tr>
+    <tr>
+      <th>In-class instruction (hours)</th>
+      <td class="instruction_hours"><%= assignment_result.instruction_hours %></td>
+    </tr>
+    <tr>
+      <th>Average student rubric score</th>
+      <td class="average_student_score"><%= assignment_result.average_student_score %></td>
+    </tr>
+  </table>
+</div>
+
+<div class="outcome_summary-wrapper">
+  <h2>Outcome summary</h2>
+  <iframe class="html-value outcome_summary embed-html"
+    data-html="<%= url_encode assignment_result.outcome_summary.html_safe %>">
+  </iframe>
+</div>

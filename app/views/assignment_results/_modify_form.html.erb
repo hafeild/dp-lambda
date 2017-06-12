@@ -1,0 +1,124 @@
+<div class="container resource-modification">
+  <h1><%= yield :title %></h1>
+
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <%= form_for(@assignment_result, url: action, method: method, 
+        html: {class: "vertical-form"}) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        
+        <% unless @vertical.nil? %>
+          <%= f.hidden_field @vertical_form_id, name: @vertical_form_id, 
+            value: @vertical.id %>
+        <% end %>
+
+        <!-- Instructor -->
+        <div class="form-group">
+          <label>Instructor</label><span class="required-input">*</span>
+          (max length: 200 characters)
+          <%= f.text_field :instructor, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., Pat Smith" %>
+        </div>    
+
+        <!-- Course prefix -->
+        <div class="form-group">
+          <label>Course prefix</label><span class="required-input">*</span>
+          (max length: 3 characters)
+          <%= f.text_field :course_prefix, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., HST" %>
+        </div>   
+
+        <!-- Course number -->
+        <div class="form-group">
+          <label>Course number</label><span class="required-input">*</span>
+          (max length: 3 characters)
+          <%= f.text_field :course_number, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., 489" %>
+        </div>   
+
+        <!-- Course title -->
+        <div class="form-group">
+          <label>Course title</label><span class="required-input">*</span>
+          (max length: 200 characters)
+          <%= f.text_field :course_title, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., Senior Thesis I" %>
+        </div>   
+
+        <!-- Field of study -->
+        <div class="form-group">
+          <label>Field of study</label><span class="required-input">*</span>
+          (max length: 200 characters)
+          <%= f.text_field :field_of_study, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., History" %>
+        </div>   
+
+        <!-- Semester -->
+        <div class="form-group">
+          <label>Semester</label><span class="required-input">*</span>
+          (max length: 15 characters)
+          <%= f.text_field :semester, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., Fall 2020" %>
+        </div>      
+
+        <!-- Project length -->
+        <div class="form-group">
+          <label>Project length (weeks)</label><br/>
+          How many weeks were students given to complete the assignment?
+          <%= f.text_field :project_length_weeks, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., 3" %>
+        </div>      
+
+        <!-- Student given assignment -->
+        <div class="form-group">
+          <label>Number of students given assignment</label><br/>
+          How many students were given the assignment?
+          <%= f.text_field :students_given_assignment, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., 15" %>
+        </div>      
+
+        <!-- Hours of instruction -->
+        <div class="form-group">
+          <label>Hours of instruction</label><br/>
+          How many in-class hours were spent preparing students to complete the
+          assignment?
+          <%= f.text_field :instruction_hours, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., 5" %>
+        </div>  
+
+        <!-- Average student score -->
+        <div class="form-group">
+          <label>Average student score</label><br/>
+          What was the average student score on the DLA rubric?
+          <%= f.text_field :average_student_score, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., 3.4" %>
+        </div>  
+
+        <!-- Outcome summary -->
+        <div class="form-group">
+          <%= f.label :outcome_summary %><br/>
+          How did the assignment go? What would you change about it? What were
+          the strengths and weaknesses of the assignment?
+          <%= f.bootsy_area :outcome_summary,  
+            rows: 10, class: "form-control add-to-vertical unchanged",
+            editor_options: bootsy_editing_options %>
+        </div>
+
+        <%= f.submit "Save", id: "form-submit", class: "btn btn-primary" %>
+
+        
+        <button class="btn btn-danger link" 
+          data-href="<%= @back_path %>">Cancel</button>
+      <% end %>
+    </div>
+  </div>
+</div>

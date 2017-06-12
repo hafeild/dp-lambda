@@ -1,0 +1,36 @@
+one:
+  creator: foo
+  author: Foo Bar
+  name: Assignment 1
+  summary: A brief summary
+  description: A long description
+  learning_curve: low
+  instruction_hours: 3
+  examples: two
+  tags: two
+  web_resources: two
+  assignments_related_to: two, three
+  assignments_related_from: three
+
+two:
+  creator: foo
+  author: Foo Bar
+  name: Assignment 2
+  summary: A brief summary
+  description: A long description
+  examples: two
+  web_resources: two
+  tags: two, five
+  datasets: one
+  software: one
+  analyses: one
+  # assignments_related_from: one
+
+three:
+  creator: bar
+  author: Bar Car
+  name: Assignment 3
+  summary: A brief summary
+  description: A long description
+  # assignments_related_from: one
+  # assignments_related_to: one

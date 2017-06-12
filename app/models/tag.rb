@@ -1,10 +1,12 @@
 class Tag < ApplicationRecord
   has_and_belongs_to_many :software
   has_and_belongs_to_many :datasets
+  has_and_belongs_to_many :analyses
+  has_and_belongs_to_many :assignments
 
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
-    software.size + datasets.size
+    software.size + datasets.size + analyses.size + assignments.size
   end
 
   ## Ensure the presence of required fields. 

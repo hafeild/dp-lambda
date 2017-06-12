@@ -29,6 +29,8 @@ module ApplicationHelper
       dataset_path(vertical)
     elsif vertical.class == Analysis
       analysis_path(vertical)
+    elsif vertical.class == Assignment
+      assignment_path(vertical)
     end
   end
 
@@ -90,10 +92,49 @@ module ApplicationHelper
   end
   ##############################################################################
 
+  ##############################################################################
+  ## The following generate paths for vertical-tag.
+  def vertical_vertical_path(vertical1, vertical2)
+    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
+      vertical2.id
+      ].join("/")
+  end
+
+  def edit_vertical_vertical_path(vertical1, vertical2)
+    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
+      vertical2.id, "edit"
+      ].join("/")
+  end
+
+
+  def vertical_vertical_index_path(vertical1, vertical2)
+    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2)].join("/")
+  end
+
+  ##############################################################################
+
 
   ## For keeping bootsy options consistent.
   def bootsy_editing_options()
     {font_styles: false, html: true}
   end
 
+  ## Takes a string and truncates it to the given length. If the original size
+  ## is greater than the requested length, ellipses are appended.
+  def get_snippet(text, length)
+    text.size > length ? "#{text[0..length]}..."  : text
+  end
+
+  ## Sorts a given list or collection by the name field of each entry.
+  ## Assumes that an entry has a name field (it is not verified).
+  def sort_by_name(collection)
+    sort_by(collection, :name)
+  end
+
+
+  ## Sorts a given list or collection by the given key of each entry.
+  ## Assumes that an entry has a field of name key (it is not verified).
+  def sort_by(collection, key)
+    collection.sort{|x,y| x[key] <=> y[key]}
+  end
 end

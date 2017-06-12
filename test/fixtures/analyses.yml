@@ -16,4 +16,4 @@ two:
   creator: bar
   examples: two
   web_resources: two
-  tags: two
+  tags: two, three

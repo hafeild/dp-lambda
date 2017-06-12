@@ -1,12 +1,21 @@
 class SoftwareController < ApplicationController
   # before_action :get_response_format
-  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
-  before_action :user_can_edit, only: [:new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user, except: [:show, :index]
+  before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
-  before_action :get_software, only: [:update, :destroy, :show, :edit]
+  before_action :get_software,  except: [:connect_index, :index, :new, :create] 
+  before_action :get_verticals
+  before_action :get_redirect_path
 
   def index
     @software = Software.all.sort_by { |e| e.name }
+  end
+
+  def connect_index
+    @software = Software.all.sort_by { |e| e.name }
+    if @vertical.class == Software
+      @software.delete(@vertical)
+    end
   end
 
   def show
@@ -41,7 +50,7 @@ class SoftwareController < ApplicationController
 
         software.save!
 
-        respond_with_success software_path(software)
+        respond_with_success get_redirect_path(software_path(software))
       end
     rescue => e
       respond_with_error "There was an error saving the software entry.",
@@ -60,7 +69,7 @@ class SoftwareController < ApplicationController
         @software.update(@data.permit(:name, :description, :summary))
         @software.save!
 
-        respond_with_success software_path(@software)
+        respond_with_success get_redirect_path(software_path(@software))
       end
     rescue => e
       respond_with_error "There was an error updating the software entry.",
@@ -84,6 +93,30 @@ class SoftwareController < ApplicationController
     rescue => e
       respond_with_error "There was an error removing the software entry.",
         new_software_path
+    end
+  end
+
+  def connect
+    begin
+      @vertical.software << @software
+      @vertical.save!
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "The software could not be associated with the "+
+        "requested vertical.", @redirect_path
+    end
+  end
+
+  def disconnect
+    begin
+      if @vertical.software.exists?(id: @software.id)
+        @vertical.software.delete(@software)
+        @vertical.save! 
+      end
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "The software could not be disassociated with the"+
+        " requested vertical.", @redirect_path
     end
   end
 

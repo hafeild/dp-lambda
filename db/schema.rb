@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608131323) do
+ActiveRecord::Schema.define(version: 20170608203937) do
 
   create_table "analyses", force: :cascade do |t|
     t.string   "name"
@@ -20,6 +20,11 @@ ActiveRecord::Schema.define(version: 20170608131323) do
     t.integer  "creator_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "analyses_assignments", id: false, force: :cascade do |t|
+    t.integer "assignment_id", null: false
+    t.integer "analysis_id",   null: false
   end
 
   create_table "analyses_examples", force: :cascade do |t|
@@ -34,6 +39,67 @@ ActiveRecord::Schema.define(version: 20170608131323) do
 
   create_table "analyses_web_resources", force: :cascade do |t|
     t.integer "analysis_id"
+    t.integer "web_resource_id"
+  end
+
+  create_table "assignment_results", force: :cascade do |t|
+    t.string   "instructor"
+    t.string   "course_prefix"
+    t.string   "course_number"
+    t.string   "course_title"
+    t.string   "field_of_study"
+    t.string   "semester"
+    t.float    "project_length_weeks"
+    t.integer  "students_given_assignment"
+    t.float    "instruction_hours"
+    t.float    "average_student_score"
+    t.text     "outcome_summary"
+    t.integer  "assignment_id"
+    t.integer  "creator_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "assignments", force: :cascade do |t|
+    t.string   "author"
+    t.string   "name"
+    t.text     "summary"
+    t.text     "description"
+    t.string   "thumbnail_url"
+    t.string   "learning_curve"
+    t.float    "instruction_hours"
+    t.integer  "creator_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "assignments_assignments", force: :cascade do |t|
+    t.integer "from_assignment_id"
+    t.integer "to_assignment_id"
+  end
+
+  create_table "assignments_datasets", id: false, force: :cascade do |t|
+    t.integer "assignment_id", null: false
+    t.integer "dataset_id",    null: false
+  end
+
+  create_table "assignments_examples", force: :cascade do |t|
+    t.integer "assignment_id"
+    t.integer "example_id"
+  end
+
+  create_table "assignments_software", id: false, force: :cascade do |t|
+    t.integer "assignment_id", null: false
+    t.integer "software_id",   null: false
+  end
+
+  create_table "assignments_tags", force: :cascade do |t|
+    t.integer "assignment_id"
+    t.integer "tag_id"
+  end
+
+  create_table "assignments_web_resources", force: :cascade do |t|
+    t.integer "assignment_id"
     t.integer "web_resource_id"
   end
 

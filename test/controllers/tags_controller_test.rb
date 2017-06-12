@@ -158,7 +158,7 @@ class TagsControllerTest < ActionController::TestCase
     assert_difference "dataset.tags.size", -1, "Tag not unlinked" do
       delete :disconnect, params: { dataset_id: dataset.id, id: tag.id }
       assert_redirected_to dataset_path(dataset), @response.body
-      assert Tag.find_by(id: tag.id).nil?
+      assert_not Tag.find_by(id: tag.id).nil?
       dataset.reload
     end
   end
@@ -170,7 +170,7 @@ class TagsControllerTest < ActionController::TestCase
     assert_difference "analysis.tags.size", -1, "Tag not unlinked" do
       delete :disconnect, params: { analysis_id: analysis.id, id: tag.id }
       assert_redirected_to analysis_path(analysis), @response.body
-      assert Tag.find_by(id: tag.id).nil?
+      assert_not Tag.find_by(id: tag.id).nil?
       analysis.reload
     end
   end

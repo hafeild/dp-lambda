@@ -1,6 +1,7 @@
 
 <% if print_header %>
   <h3><span class="name"><%= example.title %></span>
+    (<%= link_to "details", example_path(example) %>)
 
     <% if can_edit? and defined? vertical %>
       <%= form_for(example, method: :delete,

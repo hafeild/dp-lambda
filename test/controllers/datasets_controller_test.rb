@@ -223,24 +223,26 @@ class DatasetsControllerTest < ActionController::TestCase
   test "should destroy a dataset page and any resources unique to it" do 
     log_in_as users(:foo)
     dataset = datasets(:two)
-    tag = dataset.tags.first
+    tag1 = tags(:two)
+    tag2 = tags(:four)
     example = dataset.examples.first
     web_resource = dataset.web_resources.first
 
     assert_not example.nil?, dataset.examples.size
 
     assert_difference 'Dataset.count', -1, "Dataset page not removed" do
-    assert_difference 'WebResource.count', -1, "Web resource not removed" do
-    assert_difference 'Example.count', -1, "Example not removed" do
+    assert_difference 'WebResource.count', 0, "Web resource removed" do
+    assert_difference 'Example.count', 0, "Example removed" do
     assert_difference 'Tag.count', -1, "Tag not removed" do
 
       delete :destroy, params: {id: dataset.id}
 
       assert Dataset.find_by(id: dataset.id).nil?, "Dataset not removed"
-      assert Tag.find_by(id: tag.id).nil?, "Tag not removed"
-      assert Example.find_by(id: example.id).nil?, "Example not removed"
-      assert WebResource.find_by(id: web_resource.id).nil?, 
-        "Web resource not removed"
+      assert_not Tag.find_by(id: tag1.id).nil?, "Tag removed"
+      assert Tag.find_by(id: tag2.id).nil?, "Tag not removed"
+      assert_not Example.find_by(id: example.id).nil?, "Example removed"
+      assert_not WebResource.find_by(id: web_resource.id).nil?, 
+        "Web resource removed"
 
     end
     end
@@ -251,5 +253,80 @@ class DatasetsControllerTest < ActionController::TestCase
 
   ## End destroy tests.
   ##############################################################################
+
+
+  ##############################################################################
+  ## Connection tests.
+
+  test "should connect an assignment to a dataset" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    assignment = assignments(:one)
+
+    assert_difference "assignment.datasets.count", 1, "Dataset not linked" do
+    assert_difference "dataset.assignments.count", 1, "Assignment not linked" do
+      post :connect, params: {assignment_id: assignment.id, id: dataset.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      dataset.reload
+      assert assignment.datasets.exists?(id: dataset.id), 
+        "Dataset not in list of assignment datasets"
+      assert dataset.assignments.exists?(id: assignment.id), 
+        "Assignment not in list of dataset assignments"
+    end
+    end
+
+  end
+
+  # test "should connect a software page to a dataset" do
+  #   log_in_as users(:foo)
+  #   dataset = datasets(:one)
+  #   software = software(:one)
+
+  #   assert_difference "software.datasets.count", 1, "Dataset not linked" do
+  #   assert_difference "dataset.software.count", 1, "Software not linked" do
+  #     post :connect, params: {software_id: software.id, id: dataset.id}
+  #     assert_redirected_to software_path(software), @response.body
+  #     software.reload
+  #     dataset.reload
+  #     assert software.datasets.exists?(id: dataset.id), 
+  #       "Dataset not in list of software datasets"
+  #     assert dataset.software.exists?(id: software.id), 
+  #       "Software not in list of dataset software"
+  #   end
+  #   end
+
+  # end
+
+
+  ## End connection tests.
+  ##############################################################################
+
+  ##############################################################################
+  ## Removing a connection tests.
+
+  test "should remove the connection between an assignment and dataset" do
+    log_in_as users(:foo)
+    dataset = datasets(:one)
+    assignment = assignments(:two)
+
+    assert_difference "assignment.datasets.count", -1, "Dataset not linked" do
+    assert_difference "dataset.assignments.count", -1, "Assignment not linked" do
+      delete :disconnect, params: {assignment_id: assignment.id, id: dataset.id}
+      assert_redirected_to assignment_path(assignment), @response.body
+      assignment.reload
+      dataset.reload
+      assert_not assignment.datasets.exists?(id: dataset.id), 
+        "Dataset not removed from list of assignment datasets"
+      assert_not dataset.assignments.exists?(id: assignment.id), 
+        "Assignment not removed from list of dataset assignments"
+    end
+    end
+
+  end
+
+  ## End connection removal tests.
+  ##############################################################################
+
 
 end
