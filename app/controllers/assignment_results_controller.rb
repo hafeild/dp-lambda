@@ -71,7 +71,16 @@ class AssignmentResultsController < ApplicationController
 
     def get_assignment_result
       if params.key? :id
-        @assignment_result = AssignmentResult.find(params[:id])
+        @assignment_result = AssignmentResult.find_by(id: params[:id])
+        if @assignment_result.nil?
+        error = "No assignment result with the specified id exists."
+        respond_to do |format|
+          format.json {render json: {success: false, error: error}}
+          format.html do
+            render file: "#{Rails.root}/public/404.html" , status: 404
+          end
+        end
+      end
       else
         @assignment_result = AssignmentResult.new
       end
