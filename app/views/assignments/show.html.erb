@@ -137,4 +137,22 @@
       "<p>There are currently no examples associated with this assignment.</p>".html_safe %>
   </div>
 
+
+  <div class="assignment-results">
+   <h2>Results</h2>
+    <% if can_edit? %>
+      <a href="<%= new_assignment_assignment_result_path @assignment %>"
+        ><button class="btn btn-sm btn-default">Add new</button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "assignment_results/assignment_result_list_item", 
+        collection: sort_by(@assignment.assignment_results, :semester), 
+        as: :assignment_result, 
+        locals: {print_header: true, assignment: @assignment}) || 
+        "There are currently no results for this assignment." %>
+    </ul>
+  </div>
+
+  </div>
 </div>
