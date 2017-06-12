@@ -160,4 +160,13 @@ class AssignmentTest < ActiveSupport::TestCase
     assert_not assignment.save, "Saved without error, but should not have"
   end
 
+  test "destroying an assignment destroys all associated assignment results" do
+    assignment_result_id = assignment_results(:one)
+    assignment = assignments(:one)
+
+    assignment.destroy
+
+    assert AssignmentResult.find_by(id: assignment_result_id).nil?
+  end
+
 end
