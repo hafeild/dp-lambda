@@ -1,0 +1,43 @@
+
+
+.serp {
+  padding: 0;
+  
+  .search-result {
+  
+    padding: 0;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    list-style-type: none;
+  
+    .vertical-result-data {
+      display: block;  
+      min-height: 3em;
+      width: 100%;
+      margin-bottom: 1em;
+      padding: 1em .5em 1em .5em;
+      border: 1px solid gray;
+
+      .name {
+        font-size: 150%;
+        font-weight: bold;
+        display: block;
+      }
+
+      .snippet {
+        /* See vertical.css.scss for defaults. */
+        display: block;
+      }
+      
+      .score {
+        color: #aaa;
+        font-style: italic;
+      }
+    }
+
+  }
+  
+
+  
+}
+
