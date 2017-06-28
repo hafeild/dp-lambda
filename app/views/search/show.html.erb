@@ -1,0 +1,11 @@
+Showing search results for <strong><%= @query %></strong>:
+
+<p>
+Found <%= @search.total %> results in <%= @query_seconds.round(3) %> seconds.
+</p>
+
+<ul>
+  <% @search.each_hit_with_result do |hit, result| %>
+    <li>Score: <%= hit.score %>, Class: <%= hit.class_name %>, ID: <%= hit.primary_key %></li>
+  <% end %>
+</ul>
