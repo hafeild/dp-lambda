@@ -49,6 +49,20 @@ class Assignment < ApplicationRecord
   validates :description, presence: true, length: {minimum: 1}
   validates :author, presence: true, length: {minimum: 1}
 
+  ## For search.
+  searchable do
+    text :author, :name, :summary, :description, :learning_curve, :creator
+    text :tags do
+      tags.map{|tag| tag.text}
+    end
+
+    text :assignment_results do
+      assignment_results.map { |res| res.to_s }
+    end
+
+    double :instruction_hours
+  end
+
   def delink
     tags.clear
     web_resources.clear

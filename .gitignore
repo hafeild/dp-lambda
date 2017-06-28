@@ -25,3 +25,6 @@ config/application.yml
 
 # Ignore public files.
 public/uploads
+
+# Ignore search stuff.
+/solr
