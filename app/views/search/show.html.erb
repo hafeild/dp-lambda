@@ -1,13 +1,37 @@
 <% provide(:title, "#{@query} -- #{@vertical} search results") %>
-<div class="container resource-modification">
+<div class="container serp">
   <h1>Search results</h1>
+  
+  
+  <!-- Verticals that can be searched. CSS will take care of showing which
+       was searched on the current SERP. -->
+  <div class="search-verticals serp-for-<%= @vertical %>">
+    <span data-vertical="all" class="all vertical-tab">All verticals</span>
+    <span data-vertical="assignments" 
+      class="assignments vertical-tab">Assignments</span>
+    <span data-vertical="analyses" class="analyses vertical-tab">Analyses</span>
+    <span data-vertical="software" class="software vertical-tab">Software</span>
+    <span data-vertical="datasets" class="datasets vertical-tab">Datasets</span>
+  </div>
+  
+  <form id="search-box-form" action="/search/<%= @vertical %>">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search"
+        name="q" value="<%= @query %>">
+      <div class="input-group-btn">
+        <button class="btn btn-default" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+       </div>
+    </div>
+  </form>
+  
   <p>
-  Showing search results for <strong><%= @query %></strong> across 
-  <%= @vertical == 'all' ? @vertical : "all categories" %>.
+  Showing search results for <strong><%= @query %></strong>.
   Found <%= @search.total %> results in <%= @query_seconds.round(3) %> seconds.
   </p>
 
-  <ul class="serp">
+  <ul class="results">
     <% @search.each_hit_with_result do |hit, result| %>
       <% result_vertical = hit.class_name.downcase %>
       <% result_vertical_dir = result_vertical.pluralize(2) %>
@@ -15,3 +39,5 @@
         locals: { result_vertical.to_sym => result, score: hit.score } %></li>
     <% end %>
   </ul>
+  
+</div>
