@@ -57,8 +57,8 @@
   .serp-for-all .all, 
   .serp-for-software .software,
   .serp-for-analyses .analyses, 
-  .search-for-datasets .datasets, 
-  .search-for-assignments .assignments {
+  .serp-for-datasets .datasets, 
+  .serp-for-assignments .assignments {
     color: black;
     border-color: gray;
   }
@@ -67,7 +67,7 @@
     border-bottom-color: $all-color;
   }
 
-  .serp-for-assignments .assignment {
+  .serp-for-assignments .assignments {
     border-bottom-color: $assignment-color;
   }
   
