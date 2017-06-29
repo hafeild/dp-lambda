@@ -20,7 +20,7 @@ class SearchController < ApplicationController
       
       start_time = Time.now
       if @vertical == 'all'
-        @search = Sunspot.search Assignment, Example, Analysis, Dataset, Software, &query_body
+        @search = Sunspot.search Assignment, Software, &query_body
       else
         @search = Sunspot.search @vertical_map[@vertical], &query_body
       end
