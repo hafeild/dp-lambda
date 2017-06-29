@@ -3,7 +3,7 @@ class SearchController < ApplicationController
   before_action :get_redirect_path
   
   def show    
-    # begin
+    begin
       @search_params = params.permit(:vertical, :q)
       @vertical = @search_params.require(:vertical)
       
@@ -20,7 +20,7 @@ class SearchController < ApplicationController
       
       start_time = Time.now
       if @vertical == 'all'
-        @search = Sunspot.search Assignment, Software, &query_body
+        @search = Sunspot.search Assignment, Analysis, Software, &query_body
       else
         @search = Sunspot.search @vertical_map[@vertical], &query_body
       end
@@ -29,10 +29,10 @@ class SearchController < ApplicationController
       @query_seconds = (end_time - start_time)/1000.0
       
       render 'show'
-    # rescue => e 
-    #   respond_with_error "There was an error while executing your search: #{e}.", 
-    #     @redirect_path
-    # end
+    rescue => e 
+      respond_with_error "There was an error while executing your search: #{e}.", 
+        @redirect_path
+    end
   end
   
   private  
