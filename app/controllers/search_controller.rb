@@ -18,9 +18,13 @@ class SearchController < ApplicationController
       
       
       query_body = Proc.new do |dsl|
-        dsl.keywords @query
+        dsl.order_by :score, :desc
         #dsl.paginate page: 1, per_page: 10
-        dsl.paginate :cursor => cursor, per_page: 3
+        dsl.paginate cursor: cursor, per_page: 10
+        dsl.keywords @query do
+          boost_fields name: 2.0, summary: 1.5, description: 1.0,
+            tags: 1.0, web_resources: 0.75, examples: 0.5
+        end
       end
       
       start_time = Time.now

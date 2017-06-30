@@ -14,69 +14,73 @@ $(document).ready(function(event){
     form.submit();
   });
   
-  // If all results are displayed on the screen, don't load more results.
-  // Instead, reveal a button that the user must press to get them started.
-  if(window.scrollY != scrollYMax()){
-    $('.click-for-more-results').addClass('hidden');
-  }
-  
-  // Listens for the infinite scroll marker to come into view; if so, fetches
-  // more results if there are any.
-  var checkInfiniteScroll = function(){
-    // Check if we're at the bottom of the page.
-    if(window.scrollY == scrollYMax() && 
-        $('.no-more-results').hasClass('hidden') && 
-        $('.loading-more-results').hasClass('hidden') &&
-        $('.error').hasClass('hidden') &&
-        $('.click-for-more-results').hasClass('hidden')){
-      
-      getAdditionalResults();
+  // Handles infinite scrolling.
+  if($('.infinite-scroll').length > 0){
+    // If all results are displayed on the screen, don't load more results.
+    // Instead, reveal a button that the user must press to get them started.
+    if(!$('.no-more-results').hasClass('hidden') || 
+        scrollYMax() - window.scrollY > 50){
+      $('.click-for-more-results').addClass('hidden');
     }
-  };
-  
-  $(document).on('scroll', checkInfiniteScroll);
-  $(window).on('resize',  checkInfiniteScroll);
-  
-  
-  $(document).on('click', '.click-for-more-results', function(){
-    $(this).addClass('hidden');
-    getAdditionalResults();
-  });
-  
-  var getAdditionalResults = function(){
-    // Show the loading message.
-    $('.loading-more-results').removeClass('hidden');
     
-    var infiniteScroll = $('.infinite-scroll');
-    var vertical = infiniteScroll.data('vertical');
+    // Listens for the infinite scroll marker to come into view; if so, fetches
+    // more results if there are any.
+    var checkInfiniteScroll = function(){
+      // Check if we're at the bottom of the page.
+      if(window.scrollY == scrollYMax() && 
+          $('.no-more-results').hasClass('hidden') && 
+          $('.loading-more-results').hasClass('hidden') &&
+          $('.error').hasClass('hidden') &&
+          $('.click-for-more-results').hasClass('hidden')){
+        
+        getAdditionalResults();
+      }
+    };
     
-    // Get the new results.
-    $.ajax(vertical, {
-      data: {
-        q: encodeURIComponent(infiniteScroll.data('query')),
-        format: 'json',
-        cursor: infiniteScroll.data('next-page-cursor')
-      },
-      dataType: 'json',
-      success: function(data){
-        if(!data.success){
+    $(document).on('scroll', checkInfiniteScroll);
+    $(window).on('resize',  checkInfiniteScroll);
+    
+    
+    $(document).on('click', '.click-for-more-results', function(){
+      $(this).addClass('hidden');
+      getAdditionalResults();
+    });
+    
+    var getAdditionalResults = function(){
+      // Show the loading message.
+      $('.loading-more-results').removeClass('hidden');
+      
+      var infiniteScroll = $('.infinite-scroll');
+      var vertical = infiniteScroll.data('vertical');
+      
+      // Get the new results.
+      $.ajax(vertical, {
+        data: {
+          q: encodeURIComponent(infiniteScroll.data('query')),
+          format: 'json',
+          cursor: infiniteScroll.data('next-page-cursor')
+        },
+        dataType: 'json',
+        success: function(data){
+          if(!data.success){
+            infiniteScroll.find('.message').addClass('hidden');
+            infiniteScroll.find('.error').removeClass('hidden');
+            return;
+          }
+          
+          $('.results').append(data.result_set_html);
+          infiniteScroll.find('.message').addClass('hidden');
+          infiniteScroll.data('next-page-cursor', data.next_page_cursor);
+          if(data.last_page){
+            infiniteScroll.find('.no-more-results').removeClass('hidden');
+          }
+        },
+        error: function(qXHR, textStatus, error){
           infiniteScroll.find('.message').addClass('hidden');
           infiniteScroll.find('.error').removeClass('hidden');
-          return;
         }
-        
-        $('.results').append(data.result_set_html);
-        infiniteScroll.find('.message').addClass('hidden');
-        infiniteScroll.data('next-page-cursor', data.next_page_cursor);
-        if(data.last_page){
-          infiniteScroll.find('.no-more-results').removeClass('hidden');
-        }
-      },
-      error: function(qXHR, textStatus, error){
-        infiniteScroll.find('.message').addClass('hidden');
-        infiniteScroll.find('.error').removeClass('hidden');
-      }
-    });
-  };
+      });
+    };
+  }
   
 });
