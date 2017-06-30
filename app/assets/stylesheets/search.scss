@@ -122,16 +122,24 @@
   }
   
 
-  .infinite-scroll .message {
-    min-width: 20em;
-    width: 33%;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #bbb;
-    text-align: center;
-    padding: .5em;
-    border-radius: 1em;
+  .infinite-scroll {
+  
+    .message {
+      min-width: 20em;
+      width: 33%;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #bbb;
+      text-align: center;
+      padding: .5em;
+      border-radius: 1em;
+    }
     
+    .click-for-more-results {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }
 

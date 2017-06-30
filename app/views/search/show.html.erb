@@ -36,13 +36,22 @@
   </ul>
 
   <div class="infinite-scroll" 
-    data-next-page-cursor="<%= @search.results.next_page_cursor %>">
+    data-next-page-cursor="<%= @search.results.next_page_cursor %>"
+    data-vertical="<%= @vertical %>"
+    data-query="<%= @query %>">
+    
+    <div class="click-for-more-results">
+      <button class="btn btn-sm">Click to see more results</button>
+    </div>
     <div class="message loading-more-results hidden">
       Loading more results...
     </div>
     <div class="message no-more-results 
       <%= @search.results.last_page? ? "" : "hidden" %>">
       There are no more results.
+    </div>
+    <div class="message error hidden">
+      There was an error retrieving more results.
     </div>
   </div>
 </div>
