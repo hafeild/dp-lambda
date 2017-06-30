@@ -13,4 +13,19 @@ $(document).ready(function(event){
     form.attr('action', '/search/'+ $(this).data('vertical'));
     form.submit();
   });
+  
+  // Listens for the infinite scroll marker to come into view; if so, fetches
+  // more results if there are any.
+  $(document).on('scroll', function(){
+    console.log(window.scrollY, scrollYMax());
+    // Check if we're at the bottom of the page.
+    if(window.scrollY == scrollYMax() && 
+        $('.no-more-results').hasClass('hidden') && 
+        $('.loading-more-results').hasClass('hidden')){
+      
+      $('.loading-more-results').removeClass('hidden');
+    
+    
+    }
+  });
 });

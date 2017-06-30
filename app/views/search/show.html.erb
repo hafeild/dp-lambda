@@ -32,12 +32,17 @@
   </p>
 
   <ul class="results">
-    <% @search.each_hit_with_result do |hit, result| %>
-      <% result_vertical = hit.class_name.downcase %>
-      <% result_vertical_dir = result_vertical.pluralize(2) %>
-      <li class="search-result"><%= render partial: "#{result_vertical_dir}/#{result_vertical}_search_result", 
-        locals: { result_vertical.to_sym => result, score: hit.score } %></li>
-    <% end %>
+    <%= render partial: 'result_set', locals: {search: @search} %>
   </ul>
-  
+
+  <div class="infinite-scroll" 
+    data-next-page-cursor="<%= @search.results.next_page_cursor %>">
+    <div class="message loading-more-results hidden">
+      Loading more results...
+    </div>
+    <div class="message no-more-results 
+      <%= @search.results.last_page? ? "" : "hidden" %>">
+      There are no more results.
+    </div>
+  </div>
 </div>

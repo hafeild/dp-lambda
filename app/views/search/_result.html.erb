@@ -1,0 +1,5 @@
+<%# Expects local variables: hit, result %>
+<% result_vertical = hit.class_name.downcase %>
+<% result_vertical_dir = result_vertical.pluralize(2) %>
+<li class="search-result"><%= render partial: "#{result_vertical_dir}/#{result_vertical}_search_result", 
+  locals: { result_vertical.to_sym => result, score: hit.score } %></li>
