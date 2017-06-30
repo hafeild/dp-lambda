@@ -3,37 +3,84 @@ class SearchController < ApplicationController
   before_action :get_redirect_path
   
   def show    
-    # begin
-      @search_params = params.permit(:vertical, :q, :cursor, :full_json)
+    begin
+      start_time = Time.now
+    
+      @search_params = params.permit(:vertical, :q, :cursor, :full_json,
+        :advanced, :nq, :dq, :tq, :ex, :aq, :arq, :lcq, :all)
       @vertical = @search_params.require(:vertical)
       
       ## Check that vertical is valid:
       throw Exception.new('Invalid vertical.') unless valid_vertical(@vertical)
       
-      @query = @search_params.require(:q).to_s.downcase
       
       ## Other options.
       cursor = get_with_default(@search_params, :cursor, '*')
-      full_json = get_with_default(@search_params, :full_json, false)
+      full_json = get_with_default(@search_params, :full_json, '') == 'true'
+      advanced = get_with_default(@search_params, :advanced, '') == 'true'
+
       
       
-      query_body = Proc.new do |dsl|
-        dsl.order_by :score, :desc
-        #dsl.paginate page: 1, per_page: 10
-        dsl.paginate cursor: cursor, per_page: 10
-        dsl.keywords @query do
-          boost_fields name: 2.0, summary: 1.5, description: 1.0,
-            tags: 1.0, web_resources: 0.75, examples: 0.5
+      
+      if advanced
+        @query = get_with_default(@search_params, :q, "").downcase
+        
+        extract_advanced_query()
+        
+        field_queries = Proc.new do |dsl|
+          @advanced_query_fields.each do |field, value|
+            unless value == ''
+              dsl.keywords value, fields: field
+            end
+          end
+        end
+        
+        
+        query_body = Proc.new do |dsl|
+          dsl.order_by :score, :desc
+          #dsl.paginate page: 1, per_page: 10
+          dsl.paginate cursor: cursor, per_page: 10
+          ## General query.
+          unless @query == ''
+            dsl.keywords @query do
+              boost_fields name: 2.0, summary: 1.5, description: 1.0,
+                tags: 1.0, web_resources: 0.75, examples: 0.5
+            end
+          end
+          
+          if @is_conjunction
+            dsl.all do
+              field_queries.call(dsl)
+            end
+          else
+            dsl.any do
+              field_queries.call(dsl)
+            end
+          end
+        end
+      else
+        
+        @query = @search_params.require(:q).to_s.downcase
+        query_body = Proc.new do |dsl|
+          dsl.order_by :score, :desc
+          #dsl.paginate page: 1, per_page: 10
+          dsl.paginate cursor: cursor, per_page: 10
+          dsl.keywords @query do
+            boost_fields name: 2.0, summary: 1.5, description: 1.0,
+              tags: 1.0, web_resources: 0.75, examples: 0.5
+          end
         end
       end
       
-      start_time = Time.now
       if @vertical == 'all'
         @search = Sunspot.search( Assignment, Analysis, Software, Dataset, 
           &query_body )
       else
         @search = Sunspot.search @vertical_map[@vertical], &query_body
       end
+      
+      
+      
       end_time = Time.now
       
       @query_seconds = (end_time - start_time)/1000.0
@@ -52,10 +99,10 @@ class SearchController < ApplicationController
         end
         format.html { render 'show' }
       end
-    # rescue => e 
-    #   respond_with_error "There was an error while executing your search: #{e}.", 
-    #     @redirect_path
-    # end
+    rescue => e 
+      respond_with_error "There was an error while executing your search: #{e}.", 
+        @redirect_path
+    end
   end
   
   private  
@@ -75,4 +122,20 @@ class SearchController < ApplicationController
       return @vertical_map.key? vertical
     end
   
+  
+    def extract_advanced_query()
+      @advanced_query_fields = {
+        name: get_with_default(@search_params, :nq, ''),
+        description: get_with_default(@search_params, :dq, ''),
+        summary: get_with_default(@search_params, :sq, ''),
+        tags: get_with_default(@search_params, :tq, ''),
+        examples: get_with_default(@search_params, :eq, ''),
+        web_resources: get_with_default(@search_params, :wrq, ''),
+        author: get_with_default(@search_params, :aq, ''),
+        assignment_results: get_with_default(@search_params, :arq, ''),
+        learning_curve_: get_with_default(@search_params, :lcq, '')
+      }
+      @is_conjunction = get_with_default(@search_params, :all, 'false') == 'true'
+      
+    end
 end

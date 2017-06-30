@@ -84,7 +84,7 @@ class Assignment < ApplicationRecord
     string :author_facet do 
       author
     end
-    string :learning_curve_face do
+    string :learning_curve_facet do
       learning_curve
     end
 
