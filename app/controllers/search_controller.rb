@@ -1,4 +1,5 @@
 class SearchController < ApplicationController  
+  before_action :set_search_indicator
   before_action :get_vertical_map
   before_action :get_redirect_path
   
@@ -7,7 +8,7 @@ class SearchController < ApplicationController
       start_time = Time.now
     
       @search_params = params.permit(:vertical, :q, :cursor, :full_json,
-        :advanced, :nq, :dq, :tq, :ex, :aq, :arq, :lcq, :all)
+        :advanced, :nq, :sq, :dq, :tq, :ex, :aq, :arq, :lcq, :all)
       @vertical = @search_params.require(:vertical)
       
       ## Check that vertical is valid:
@@ -17,15 +18,13 @@ class SearchController < ApplicationController
       ## Other options.
       cursor = get_with_default(@search_params, :cursor, '*')
       full_json = get_with_default(@search_params, :full_json, '') == 'true'
-      advanced = get_with_default(@search_params, :advanced, '') == 'true'
-
+      @advanced = get_with_default(@search_params, :advanced, '') == 'true'
+      extract_advanced_query()
       
       
       
-      if advanced
+      if @advanced
         @query = get_with_default(@search_params, :q, "").downcase
-        
-        extract_advanced_query()
         
         field_queries = Proc.new do |dsl|
           @advanced_query_fields.each do |field, value|
@@ -106,6 +105,10 @@ class SearchController < ApplicationController
   end
   
   private  
+    def set_search_indicator
+      @is_search_page = true
+    end
+  
     def get_vertical_map
       @vertical_map = {
         'all' => nil,

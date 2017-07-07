@@ -9,9 +9,10 @@ $(document).ready(function(event){
   // Listens for a vertical search tab to be clicked and then issues the
   // query to that vertical.
   $('.serp .vertical-tab').on('click', function(event){
-    var form = $('#search-box-form');
-    form.attr('action', '/search/'+ $(this).data('vertical'));
-    form.submit();
+    var vertical = $(this).data('vertical');
+    var url = window.location.href;
+    var params = url.substr(url.indexOf('?'));
+    window.location = '/search/'+ vertical + params;
   });
   
   // Handles infinite scrolling.
@@ -83,4 +84,17 @@ $(document).ready(function(event){
     };
   }
   
+  $(document).on('click', '.trigger-advanced-search', function(event){
+    $('.advanced-search-control').toggleClass('hidden');
+    event.preventDefault();
+  });
+  
+  $(document).on('click', '.hide-advanced-search', function(event){
+    $('.advanced-search-control').toggleClass('hidden');
+    event.preventDefault();
+  });
+  
+  $('.advanced-search-form').on('submit', function(){
+    $(this).attr('action', '/search/'+ $(this.vertical).val());
+  });
 });

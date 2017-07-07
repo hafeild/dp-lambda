@@ -147,5 +147,16 @@
     font-size: 130%;
     font-style: italic;    
   }
+  
+  .advanced-search-summary {
+    margin-left: 2em;
+    margin-bottom: 1em;
+    border: 1px solid gray;
+    
+    th, td {
+      padding-left: .5em;
+      padding-right: .5em;
+    }
+  }
 }
 
