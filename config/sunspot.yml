@@ -1,23 +1,20 @@
 production:
   solr:
-    hostname: localhost
-    port: 8983
-    log_level: WARNING
-    path: /solr/production
-    # read_timeout: 2
-    # open_timeout: 0.5
+    hostname: <%= ENV["SOLR_HOST"] %>
+    port: <%= ENV["SOLR_PORT"] %>
+    log_level: <%= ENV["SOLR_LOG_LEVEL"] %>
+    path: <%= ENV["SOLR_PATH"] %>
 
 development:
   solr:
-    hostname: localhost
-    port: 8982
-    log_level: INFO
-    path: /solr/development
-
+    hostname: <%= ENV["SOLR_HOST"] %>
+    port: <%= ENV["SOLR_PORT"] %>
+    log_level: <%= ENV["SOLR_LOG_LEVEL"] %>
+    path: <%= ENV["SOLR_PATH"] %>
+    
 test:
   solr:
-    hostname: localhost
-    port: 8981
-    log_level: WARNING
-    path: /solr/test
-    
+    hostname: <%= ENV["SOLR_HOST"] %>
+    port: <%= ENV["SOLR_PORT"] %>
+    log_level: <%= ENV["SOLR_LOG_LEVEL"] %>
+    path: <%= ENV["SOLR_PATH"] %>
