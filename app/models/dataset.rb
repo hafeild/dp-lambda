@@ -41,7 +41,7 @@ class Dataset < ApplicationRecord
     text :examples do
       examples.map{|example| "#{example.title} #{example.description}"}
     end
-
+    
     ## For scoping and faceting.
     integer :creator_facet do 
       creator_id

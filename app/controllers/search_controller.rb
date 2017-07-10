@@ -8,7 +8,7 @@ class SearchController < ApplicationController
       start_time = Time.now
     
       @search_params = params.permit(:vertical, :q, :cursor, :full_json,
-        :advanced, :nq, :sq, :dq, :tq, :ex, :aq, :arq, :lcq, :all)
+        :advanced, :nq, :sq, :dq, :tq, :eq, :wrq, :aq, :arq, :lcq, :all)
       @vertical = @search_params.require(:vertical)
       
       ## Check that vertical is valid:
@@ -24,7 +24,11 @@ class SearchController < ApplicationController
       
       
       if @advanced
-        @query = get_with_default(@search_params, :q, "").downcase
+        @query = get_with_default(@search_params, :q, "").downcase.chomp
+        
+        if @query.size == 0 && !@advanced_query_fields.any?{|k,v| v.size > 0}
+          throw Exception.new('At least one search field must be filled.')
+        end
         
         field_queries = Proc.new do |dsl|
           @advanced_query_fields.each do |field, value|
@@ -99,6 +103,8 @@ class SearchController < ApplicationController
         format.html { render 'show' }
       end
     rescue => e 
+      # render text: e
+      
       respond_with_error "There was an error while executing your search: #{e}.", 
         @redirect_path
     end
@@ -136,8 +142,10 @@ class SearchController < ApplicationController
         web_resources: get_with_default(@search_params, :wrq, ''),
         author: get_with_default(@search_params, :aq, ''),
         assignment_results: get_with_default(@search_params, :arq, ''),
-        learning_curve_: get_with_default(@search_params, :lcq, '')
+        learning_curve: get_with_default(@search_params, :lcq, '')
       }
+      @advanced_query_fields.each{|k,v| 
+        @advanced_query_fields[k] = v.chomp.downcase}
       @is_conjunction = get_with_default(@search_params, :all, 'false') == 'true'
       
     end

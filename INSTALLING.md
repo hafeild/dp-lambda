@@ -57,7 +57,12 @@ Run the migrations in the test and development environments:
 
 Any time you want to run a test, do:
 
+    ## Start Solr (this uses the development version; you can swap it out for
+    ## your own version of Solr; see below).
+    bundle exec sunspot-solr start -p 8981
     bundle exec rake test
+    ## To stop Solr if you're using the dev version bundled with Sunspot.
+    bundle exec sunspot-solr stop
 
 
 Start the Solr dev instance. You can do this by manually starting a Solr
@@ -70,7 +75,6 @@ Reindex all data (unless you know for a fact that nothing has changed with
 indexing):
 
     bundle exec rake sunspot:reindex
-
 
 To start the dev server, do:
 
