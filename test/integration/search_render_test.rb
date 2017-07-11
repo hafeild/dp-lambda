@@ -30,6 +30,16 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
       end
     end
     
+    
+    get '/search/software', params: {q: "lion" }
+    
+    assert_template "search/show"
+    assert_select ".search-result", count: 1
+    
+    assert_select ".search-result[data-rank=\"1\"]", count: 1 do
+      assert_select "div[data-software-id=\"#{software(:two).id}\"]", count: 1
+    end
+    
   end
   
   ##############################################################################
