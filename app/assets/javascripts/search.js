@@ -59,7 +59,8 @@ $(document).ready(function(event){
         data: {
           q: encodeURIComponent(infiniteScroll.data('query')),
           format: 'json',
-          cursor: infiniteScroll.data('next-page-cursor')
+          cursor: infiniteScroll.data('next-page-cursor'),
+          sr: infiniteScroll.data('next-rank')
         },
         dataType: 'json',
         success: function(data){
@@ -72,6 +73,7 @@ $(document).ready(function(event){
           $('.results').append(data.result_set_html);
           infiniteScroll.find('.message').addClass('hidden');
           infiniteScroll.data('next-page-cursor', data.next_page_cursor);
+          infiniteScroll.data('next-rank', data.next_rank);
           if(data.last_page){
             infiniteScroll.find('.no-more-results').removeClass('hidden');
           }

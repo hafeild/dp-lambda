@@ -8,7 +8,7 @@ class SearchController < ApplicationController
       start_time = Time.now
     
       @search_params = params.permit(:vertical, :q, :cursor, :full_json,
-        :advanced, :nq, :sq, :dq, :tq, :eq, :wrq, :aq, :arq, :lcq, :all)
+        :advanced, :nq, :sq, :dq, :tq, :eq, :wrq, :aq, :arq, :lcq, :all, :sr)
       @vertical = @search_params.require(:vertical)
       
       ## Check that vertical is valid:
@@ -17,6 +17,12 @@ class SearchController < ApplicationController
       
       ## Other options.
       cursor = get_with_default(@search_params, :cursor, '*')
+      if cursor == '*'
+        @starting_rank = 1
+      else
+        @starting_rank = get_with_default(@search_params, :sr, '1').to_i
+      end
+      
       full_json = get_with_default(@search_params, :full_json, '') == 'true'
       @advanced = get_with_default(@search_params, :advanced, '') == 'true'
       extract_advanced_query()
@@ -46,7 +52,7 @@ class SearchController < ApplicationController
           ## General query.
           unless @query == ''
             dsl.keywords @query do
-              boost_fields name: 2.0, summary: 1.5, description: 1.0,
+              boost_fields name: 20.0, summary: 15.0, description: 10.0,
                 tags: 1.0, web_resources: 0.75, examples: 0.5
             end
           end
@@ -69,7 +75,7 @@ class SearchController < ApplicationController
           #dsl.paginate page: 1, per_page: 10
           dsl.paginate cursor: cursor, per_page: 10
           dsl.keywords @query do
-            boost_fields name: 2.0, summary: 1.5, description: 1.0,
+            boost_fields name: 20.0, summary: 15.0, description: 10.0,
               tags: 1.0, web_resources: 0.75, examples: 0.5
           end
         end
@@ -95,6 +101,7 @@ class SearchController < ApplicationController
             last_page: @search.results.last_page?,
             current_cursor: @search.results.current_cursor,
             next_page_cursor: @search.results.next_page_cursor,
+            next_rank: @starting_rank + @search.hits.size,
             result_set_html: render_to_string(
                 partial: 'search/result_set.html.erb', 
                 locals: {search: @search}, formats: [:html])

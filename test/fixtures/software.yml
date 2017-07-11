@@ -2,16 +2,16 @@
 
 one:
   name: A name
-  summary: A summary
-  description: A description
+  summary: apple orange eggplant
+  description: apple
   thumbnail_url: a.url
   creator: foo
 
   
 two:
   name: Another name
-  summary: Another summary
-  description: Another description
+  summary: tractor car car car truck
+  description: car
   thumbnail_url: another.url
   creator: bar
   examples: one

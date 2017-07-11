@@ -2,7 +2,7 @@
 
 one:
   name: A name
-  summary: A summary
+  summary: apple orange pear
   description: A description
   thumbnail_url: a.url
   creator: foo
@@ -10,7 +10,7 @@ one:
   
 two:
   name: Another name
-  summary: Another summary
+  summary: car truck tractor
   description: Another description
   thumbnail_url: another.url
   creator: bar
