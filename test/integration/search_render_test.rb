@@ -10,7 +10,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   ## Test each vertical to make sure that the correct results show up for
   ## each one.
   
-  test "should display SERP with the correct results in the correct order" do 
+  test "perform general searches" do 
     
     expected_results = [
       ['assignment', assignments(:two).id],
@@ -46,19 +46,67 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   
   
   ##############################################################################
-  ## Test infinite scrolling.
-  
-  test "infinite scrolling should work" do
-    
-    
-  end
-  ##############################################################################
-  
-  
-  ##############################################################################
   ## Test advanced search.
   
-  test "advanced search should work" do
+  test "perform an advanced search" do
+    get '/search/software', params: {nq: "green", advanced: "true"}
+    
+    assert_template "search/show"
+    assert_select ".search-result", count: 3
+    assert_select ".advanced-search-summary", count: 1 do 
+      assert_select "td", "Name", count: 1
+    end
+    assert_select "input[name=\"nq\"][value=\"green\"]", count: 1
+    assert_select "input[name=\"sq\"][value=\"\"]", count: 1
+    assert_select "input[name=\"dq\"][value=\"\"]", count: 1
+    
+    get '/search/software', params: {sq: "green", advanced: "true"}
+    assert_template "search/show"
+    assert_select ".search-result", count: 3
+    assert_select ".advanced-search-summary", count: 1 do 
+      assert_select "td", "Summary", count: 1
+    end
+      assert_select "input[name=\"nq\"][value=\"\"]", count: 1
+    assert_select "input[name=\"sq\"][value=\"green\"]", count: 1
+    assert_select "input[name=\"dq\"][value=\"\"]", count: 1
+    
+    get '/search/software', params: {dq: "green", advanced: "true"}
+    assert_template "search/show"
+    assert_select ".search-result", count: 3
+    assert_select ".advanced-search-summary", count: 1 do 
+      assert_select "td", "Description", count: 1
+    end
+    assert_select "input[name=\"nq\"][value=\"\"]", count: 1
+    assert_select "input[name=\"sq\"][value=\"\"]", count: 1
+    assert_select "input[name=\"dq\"][value=\"green\"]", count: 1
+    
+    get '/search/software', params: {nq: "green", sq: "green", dq: "green", 
+      advanced: "true"}
+    assert_template "search/show"
+    assert_select ".search-result", count: 9
+    assert_select ".advanced-search-summary", count: 1 do 
+      assert_select "td", "Name", count: 1
+      assert_select "td", "Summary", count: 1
+      assert_select "td", "Description", count: 1
+    end
+    assert_select "input[name=\"nq\"][value=\"green\"]", count: 1
+    assert_select "input[name=\"sq\"][value=\"green\"]", count: 1
+    assert_select "input[name=\"dq\"][value=\"green\"]", count: 1
+    
+    get '/search/software', params: {nq: "green", sq: "green", dq: "green", 
+      advanced: "true", all: "true"}
+    
+    assert_template "search/show"
+    assert_select ".search-result", count: 0
+    assert_select ".advanced-search-summary", count: 1 do 
+      assert_select "td", "Name", count: 1
+      assert_select "td", "Summary", count: 1
+      assert_select "td", "Description", count: 1
+    end
+    assert_select "input[name=\"nq\"][value=\"green\"]", count: 1
+    assert_select "input[name=\"sq\"][value=\"green\"]", count: 1
+    assert_select "input[name=\"dq\"][value=\"green\"]", count: 1
+    assert_select "input[name=\"vertical\"][value=\"software\"]:checked", count: 1
   end
   ##############################################################################
   

@@ -44,7 +44,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
 
   ## Tests for index.
   test "should display all software entries" do 
-    softwares = [software(:one), software(:two)]
+    softwares = Software.all
 
     get software_index_path
     assert_template "software/index"

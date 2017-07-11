@@ -97,6 +97,7 @@ $(document).ready(function(event){
   });
   
   $('.advanced-search-form').on('submit', function(){
-    $(this).attr('action', '/search/'+ $(this.vertical).val());
+    $(this).attr('action', '/search/'+ $(this).find('[name=vertical]:checked').val());
+    console.log('setting action to /search/'+ $(this).find('[name=vertical]:checked').val());
   });
 });
