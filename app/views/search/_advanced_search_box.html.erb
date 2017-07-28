@@ -89,11 +89,11 @@
   <h2>How do you want to combine these?</h2>
   
   <div class="form-group">
-    <input name="any" value="true" type="checkbox" 
+    <input name="any" value="true" type="radio" 
       <%= is_conjunction ? '' : 'checked="checked"'%>> 
       A result should match <em>at least one</em> of these<br/>
       
-    <input name="any" value="true" type="checkbox" 
+    <input name="any" value="false" type="radio" 
       <%= is_conjunction ? 'checked="checked"' : '' %>> 
       A result should match <em>all</em> of these<br/>   
   </div>
