@@ -49,6 +49,47 @@ class Assignment < ApplicationRecord
   validates :description, presence: true, length: {minimum: 1}
   validates :author, presence: true, length: {minimum: 1}
 
+  ## For search.
+  searchable do
+    text :author, :name, :summary, :description, :learning_curve
+    
+    text :creator do 
+      creator.username
+    end
+
+    text :tags do
+      tags.map{|tag| tag.text}
+    end
+
+    text :assignment_results do
+      assignment_results.map{ |res| res.to_s}
+    end
+
+
+    text :web_resources do
+      web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
+    end
+
+    text :examples do
+      examples.map{|example| "#{example.title} #{example.description}"}
+    end
+
+    ## For scoping and faceting.
+    double :instruction_hours_facet do 
+      instruction_hours
+    end
+    integer :creator_facet do 
+      creator_id
+    end
+    string :author_facet do 
+      author
+    end
+    string :learning_curve_facet do
+      learning_curve
+    end
+
+  end
+
   def delink
     tags.clear
     web_resources.clear

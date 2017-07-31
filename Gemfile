@@ -21,6 +21,8 @@ gem 'jquery-rails'
 gem 'rails-controller-testing', '1.0.1'
 gem 'bootsy'
 gem 'mini_magick'
+gem 'sunspot_rails'
+gem 'sunspot_solr'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 

@@ -1,0 +1,121 @@
+<%# Optional local params include:
+  - query
+  - advanced_query_fields -- one key per field; see search controller for
+                             key names.
+  - is_conjunction -- toggles which checkbox (any or all) to be checked.
+%>
+<% 
+  unless defined? query
+    query = ''
+  end
+  
+  unless defined? advanced_query_fields
+    advanced_query_fields = {}
+  end
+  advanced_query_fields.default = ''
+  
+  unless defined? is_conjunction
+    is_conjunction = false
+  end
+%>
+
+<div class="advanced-search-box">
+<h1>Advanced search</h1>
+
+<form class="advanced-search-form">
+  <input type="hidden" name="advanced" value="true"/>
+
+  
+  <h2>
+  Fields common to all verticals:
+  </h2>
+  
+  <div class="form-group">
+    <label>General search terms (can match any field)</label>
+    <input class="form-control" type="text" name="q" value="<%= query %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Name:</label>
+    <input class="form-control" type="text" name="nq" value="<%= advanced_query_fields[:name] %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Summary:</label>
+    <input class="form-control" type="text" name="sq" value="<%= advanced_query_fields[:summary] %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Description:</label>
+    <input class="form-control" type="text" name="dq" value="<%= advanced_query_fields[:description] %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Tags:</label>
+    <input class="form-control" type="text" name="tq" value="<%= advanced_query_fields[:tags] %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Web resources:</label>
+    <input class="form-control" type="text" name="wrq" value="<%= advanced_query_fields[:web_resources] %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Examples:</label>
+    <input class="form-control" type="text" name="eq" value="<%= advanced_query_fields[:examples] %>">
+  </div>
+  
+  <h2>
+  Fields just for assignments:
+  </h2>
+  
+  <div class="form-group">
+    <label>Author:</label>
+    <input class="form-control" type="text" name="aq" value="<%= advanced_query_fields[:author] %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Assignment results:</label>
+    <input class="form-control" type="text" name="arq" value="<%= advanced_query_fields[:assignment_results] %>">
+  </div>
+  
+  <div class="form-group">
+    <label>Learning curve:</label>
+    <input class="form-control" type="text" name="lcq" value="<%= advanced_query_fields[:learning_curve] %>">
+  </div>
+  
+  <hr>
+  
+  <h2>How do you want to combine these?</h2>
+  
+  <div class="form-group">
+    <input name="any" value="true" type="checkbox" 
+      <%= is_conjunction ? '' : 'checked="checked"'%>> 
+      A result should match <em>at least one</em> of these<br/>
+      
+    <input name="any" value="true" type="checkbox" 
+      <%= is_conjunction ? 'checked="checked"' : '' %>> 
+      A result should match <em>all</em> of these<br/>   
+  </div>
+  
+  <h2>Which vertical do you want to search?</h2>
+  <div class="form-group">
+    <input type="radio" name="vertical" value="all" 
+      <%= @vertical == 'all' ? 'checked="checked"' : '' %>/> All verticals<br/>
+    <input type="radio" name="vertical" value="assignments" 
+      <%= @vertical == 'assignments' ? 'checked="checked"' : '' %>/> 
+      Assignments<br/>
+    <input type="radio" name="vertical" value="analyses" 
+      <%= @vertical == 'analyses' ? 'checked="checked"' : '' %>/> 
+      Analyses<br/>
+    <input type="radio" name="vertical" value="software" 
+      <%= @vertical == 'software' ? 'checked="checked"' : '' %>/> 
+      Software<br/>
+    <input type="radio" name="vertical" value="datasets" 
+      <%= @vertical == 'datasets' ? 'checked="checked"' : '' %>/> Datasets<br/>
+  </div>
+  
+  
+  <button class="btn btn-primary">Search</button>
+</form>
+</div>

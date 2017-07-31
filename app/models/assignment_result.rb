@@ -32,4 +32,11 @@ class AssignmentResult < ApplicationRecord
     "#{:course_prefix}#{:course_number}"
   end
 
+  def to_s
+    [instructor, course, course_prefix, course_number, course_title,
+     semester, field_of_study, project_length_weeks, students_given_assignment,
+     instruction_hours, average_student_score, outcome_summary, creator
+    ].join(" ")
+  end
+
 end
