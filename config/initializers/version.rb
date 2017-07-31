@@ -12,9 +12,9 @@
 ## restart.
 
 ## Update these fields ##
-isRelease = false
+isRelease = true
 yearVersion   = "17" ## Year of release.
-monthVersion  = "04" ## Month of release.
+monthVersion  = "07" ## Month of release.
 numberVersion = "00" ## Number of release within Year-Month
 hotFixNo      = "00" ## Hot fix no. for release.
 
@@ -26,4 +26,4 @@ VERSION = [
   isRelease ? hotFixNo : `git describe --always --tags`.strip
 ]
 
-VERSION_STRING = VERSION.join(".").sub(/(\.{0,1}00)*/, '')
+VERSION_STRING = VERSION.join(".").sub(/(\.00)*$/, '')
