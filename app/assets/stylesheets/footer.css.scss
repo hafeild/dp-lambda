@@ -1,0 +1,24 @@
+/**
+ * Consists of styles for the footer that appears at the bottom of every page.
+ *
+ * Created by hfeild on 08-Apr-2017.
+ */
+
+/* To make the footer sticky to the bottom of the page/viewport. Taken from
+ * http://stackoverflow.com/a/28713303/5991528
+ */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 60px;
+  padding-bottom: 20px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  margin-bottom: 0;
+}

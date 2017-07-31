@@ -1,0 +1,33 @@
+<%# 
+This is expecting the following local variables:
+
+  title
+  vertical_from -- the vertical whose page this is being presented
+  vertical_to -- the vertical whose data is being listed
+  editable -- if true, then a 'disassociate' and 'edit' button will appear 
+              next to the entry if the user has editing privileges. Defaults to
+              false.
+  data -- defaults to vertical_from.public_send(vertical_to_name)
+%>
+  <% vertical_from_name = vertical_from.class.to_s.downcase %>
+  <% vertical_to_name = vertical_to.class.to_s.downcase %>
+  <% vertical_to_names = vertical_to_name.pluralize(2) %>
+  <% if not defined?(data) or data.nil? %>
+    <% data = vertical_from.public_send(vertical_to_names) %>
+  <% end %>
+
+  <div class="related-<%= vertical_to_names %>">
+    <h2><%= title %></h2>
+    <% if can_edit? %>
+      <a href="<%= vertical_vertical_index_path vertical_from, vertical_to %>"
+        ><button class="btn btn-sm btn-default">Link to <%= vertical_to_name %></button
+      ></a>
+    <% end %>
+    <ul>
+      <%= render(partial: "verticals_shared/vertical_list_item", 
+        collection: sort_by_name(data), as: :vertical_to,
+        locals: {print_header: true, vertical_from: vertical_from, 
+          editable: (defined? editable) ? editable : false}) || 
+        "This #{vertical_from_name} does not link to any #{vertical_to_names}." %>
+    </ul>
+  </div>

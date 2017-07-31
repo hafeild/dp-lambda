@@ -1,0 +1,22 @@
+/**
+ * Consists of styles for the header that appears above every page.
+ *
+ * Created by hfeild on 06-Apr-2017.
+ */
+
+#header {
+  text-align: center;
+}
+
+.version {
+  font-size: 55%;
+}
+
+#verticals-nav {
+  display: inline-block;
+
+  ul {
+    vertical-align: top;
+    display: inline-block;
+  }
+}

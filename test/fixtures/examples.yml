@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one: 
+  # dataset: 
+  # analysis:
+  title: Example 1
+  description: frog snake lizzard
+
+two:
+  title: Example 2
+  description: cloud sun rain

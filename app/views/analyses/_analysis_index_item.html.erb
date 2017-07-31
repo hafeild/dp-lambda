@@ -1,0 +1,22 @@
+<div data-analysis-id="<%= analysis.id %>" class="analysis index-entry">
+
+  <div class="connect-resource">
+    <%= form_for(analysis, 
+        url: vertical_vertical_path(@vertical, analysis), 
+        method: :post, html: {style: 'display: inline'}) do |f| %>
+      <% if (@vertical.class == Analysis and 
+              @vertical.analyses_related_to.exists?(analysis.id)) or
+            (@vertical.class != Analysis and 
+              @vertical.analyses.exists?(analysis.id)) %>
+        <button class="btn btn-sm btn-default" disabled="disabled">Already added</button>
+      <% else %>
+        <button class="btn btn-sm btn-default">Add</button>
+      <% end %>
+    <% end %>
+  </div>
+
+  <span class="entry-data-wrapper">
+    <span class="name"><%= analysis.name %></span>
+    <span class="snippet"><%= analysis.summary %></span>
+  </span>
+</div>

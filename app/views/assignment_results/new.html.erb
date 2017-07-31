@@ -1,0 +1,4 @@
+<% provide(:title, "New assignment result") %>
+<%= render template: 'assignment_results/_modify_form', 
+  locals: {action: assignment_assignment_results_path(@assignment), 
+    method: :post} %>

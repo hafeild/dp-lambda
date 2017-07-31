@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: A name
+  summary: apple banana
+  description: A description
+  thumbnail_url: a.url
+  creator: foo
+
+  
+two:
+  name: Another name
+  summary: lion tiger bear lion
+  description: lion tiger tiger tiger
+  thumbnail_url: another.url
+  creator: bar
+  examples: two
+  web_resources: two
+  tags: two, four

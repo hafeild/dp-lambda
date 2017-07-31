@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one: 
+  text: lion
+
+two: 
+  text: english
+
+three:
+  text: a tag
+
+four:
+  text: another tag
+
+five:
+  text: computer science

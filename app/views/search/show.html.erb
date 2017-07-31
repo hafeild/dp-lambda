@@ -1,0 +1,131 @@
+<% provide(:title, "#{@query} - search results") %>
+<div class="container serp">
+
+
+
+  <div class="basic-search advanced-search-control">
+    <form id="search-box-form" action="/search/<%= @vertical %>">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search"
+          name="q" value="<%= @query %>">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+         </div>
+      </div>
+    </form>
+  </div>
+  
+  <p>
+    <a href="#" class="hide-advanced-search advanced-search-control hidden"
+      >Hide advanced search</a>
+    <a href="#" class="trigger-advanced-search advanced-search-control"
+      >Advanced search</a>
+  </p>
+  
+  <div class="advanced-search advanced-search-control hidden">
+    <%= render partial: 'search/advanced_search_box', locals: {
+        query: @query,
+        advanced_query_fields: @advanced_query_fields,
+        is_conjunction: @is_conjunction
+      } %>
+  </div>
+
+  <p>  
+    <a href="#" class="hide-advanced-search advanced-search-control hidden"
+      >Hide advanced search</a>
+  </p>
+
+
+
+  <h1>Search results</h1>
+
+  
+  
+  <!-- Verticals that can be searched. CSS will take care of showing which
+       was searched on the current SERP. -->
+  <div class="search-verticals serp-for-<%= @vertical %>">
+    <span data-vertical="all" class="all vertical-tab">All verticals</span>
+    <span data-vertical="assignments" 
+      class="assignments vertical-tab">Assignments</span>
+    <span data-vertical="analyses" class="analyses vertical-tab">Analyses</span>
+    <span data-vertical="software" class="software vertical-tab">Software</span>
+    <span data-vertical="datasets" class="datasets vertical-tab">Datasets</span>
+  </div>
+  
+  
+
+  
+
+  
+  <% if @advanced %>
+    <p>
+    Found <%= @search.total %> results in <%= @query_seconds.round(3) %> seconds for the advanced query:
+    </p>
+  
+    
+    <table class="advanced-search-summary">
+      <tr><th>Field</th><th>Keywords</th></tr>
+      <tr><td>All fields</td><td><%= @query %></td></tr>
+      <%= [:name, :summary, :description, :tags, :web_resources, :examples, 
+           :author, :assignment_results, :learning_curve].keep_if{|k| 
+            @advanced_query_fields[k].size > 0}.map{|k| 
+            name = k.to_s.gsub('_',' ')
+            name[0] = name[0].upcase
+            "<tr><td>#{name}</td><td>#{@advanced_query_fields[k]}</td></tr>"
+          }.join("\n").html_safe %>
+      <tr class="hr"><td colspan="2"><%= 
+        @is_conjunction ? "All fields had to match." 
+                        : "Any field could match." %>
+      </td></tr> 
+      <tr><td colspan="2"><%= 
+        @vertical == "all" ? "All verticals were searched." 
+                           : "Only the #{@vertical} vertical was searched." %> 
+      </td></tr>
+    </table>
+    
+  <% end %>
+  
+  
+  <% if @search.results.size == 0 %>
+  
+  <p class="no-results">
+    Oh no! No results were found for your search. Please try a different query.
+  </p>
+  
+  <% else %>
+  
+    <% if !@advanced %>
+    <p>
+    Found <%= @search.total %> results in <%= @query_seconds.round(3) %> seconds
+    for <strong><%= @query %></strong>.
+    </p>
+    <% end %>
+  
+  <ul class="results">
+    <%= render partial: 'result_set', locals: {search: @search} %>
+  </ul>
+
+  <div class="infinite-scroll" 
+    data-next-page-cursor="<%= @search.results.next_page_cursor %>"
+    data-vertical="<%= @vertical %>"
+    data-query="<%= @query %>"
+    data-next-rank="<%= @rank %>" >
+    
+    <div class="click-for-more-results">
+      <button class="btn btn-default-sm">Click to see more results</button>
+    </div>
+    <div class="message loading-more-results hidden">
+      Loading more results...
+    </div>
+    <div class="message no-more-results 
+      <%= @search.results.last_page? ? "" : "hidden" %>">
+      There are no more results to load.
+    </div>
+    <div class="message error hidden">
+      There was an error retrieving more results.
+    </div>
+  </div>
+  <% end %>
+</div>
