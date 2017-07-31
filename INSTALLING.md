@@ -59,10 +59,13 @@ Any time you want to run a test, do:
 
     ## Start Solr (this uses the development version; you can swap it out for
     ## your own version of Solr; see below).
-    bundle exec sunspot-solr start -p 8981
+    bundle exec sunspot:solr:run RAILS_ENV=test
+
+    ## In a separate terminal, run:
     bundle exec rake test
-    ## To stop Solr if you're using the dev version bundled with Sunspot.
-    bundle exec sunspot-solr stop
+
+    ## Ctr-C the solor instance in the first terminal when you're finished
+    ## running the tests.
 
 
 Start the Solr dev instance. You can do this by manually starting a Solr

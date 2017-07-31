@@ -106,7 +106,9 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     assert_select "input[name=\"nq\"][value=\"green\"]", count: 1
     assert_select "input[name=\"sq\"][value=\"green\"]", count: 1
     assert_select "input[name=\"dq\"][value=\"green\"]", count: 1
-    assert_select "input[name=\"vertical\"][value=\"software\"]:checked", count: 1
+    assert_select "input[name=\"vertical\"][value=\"software\"]" do |elm|
+        assert elm.attr("checked").present?
+    end
   end
   ##############################################################################
   
