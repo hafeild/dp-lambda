@@ -185,7 +185,7 @@ Switch to the alice user:
 
 Clone Alice and copy configuration files.
 
-    git clone https://github.com:hafeild/alice.git /var/www/alice
+    git clone https://github.com/hafeild/alice.git /var/www/alice
     cd /var/www/alice
     git checkout master
     bundle install
