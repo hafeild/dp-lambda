@@ -17,11 +17,6 @@
   <% end %>
   </h1>
 
-  <div class="summary-wrapper">
-    <h2>Summary</h2>
-    <span class="summary"><%= @assignment.summary %></span>
-  </div>
-
   <div class="metadata-wrapper">
     <h2>Metadata</h2>
     <table class="metadata">
@@ -38,6 +33,11 @@
         <td class="instruction_hours"><%= @assignment.instruction_hours %></td>
       </tr>
     </table>
+  </div>
+  
+  <div class="summary-wrapper">
+    <h2>Summary</h2>
+    <span class="summary"><%= @assignment.summary %></span>
   </div>
 
   <div class="description-wrapper">
