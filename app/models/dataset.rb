@@ -26,6 +26,28 @@ class Dataset < ApplicationRecord
   validates :summary, presence: true
   validates :description, presence: true
 
+  ## For search.
+  searchable do
+    text :name, :summary, :description
+
+    text :tags do
+      tags.map{|tag| tag.text}
+    end
+
+    text :web_resources do
+      web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
+    end
+
+    text :examples do
+      examples.map{|example| "#{example.title} #{example.description}"}
+    end
+    
+    ## For scoping and faceting.
+    integer :creator_facet do 
+      creator_id
+    end
+  end
+
   def delink
     tags.clear
     web_resources.clear

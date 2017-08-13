@@ -21,6 +21,8 @@ gem 'jquery-rails'
 gem 'rails-controller-testing', '1.0.1'
 gem 'bootsy'
 gem 'mini_magick'
+gem 'sunspot_rails'
+gem 'sunspot_solr'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
@@ -36,6 +38,11 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :production do
+  gem 'pg',      '0.21'
+  gem 'unicorn', '5.3.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

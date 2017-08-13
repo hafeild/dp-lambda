@@ -2,7 +2,7 @@ one:
   creator: foo
   author: Foo Bar
   name: Assignment 1
-  summary: A brief summary
+  summary: apple grapefruit
   description: A long description
   learning_curve: low
   instruction_hours: 3
@@ -15,9 +15,9 @@ one:
 two:
   creator: foo
   author: Foo Bar
-  name: Assignment 2
-  summary: A brief summary
-  description: A long description
+  name: Assignment lion
+  summary: lion tiger bear
+  description: lion lion lion
   examples: two
   web_resources: two
   tags: two, five
@@ -30,7 +30,7 @@ three:
   creator: bar
   author: Bar Car
   name: Assignment 3
-  summary: A brief summary
+  summary: television radio smartphone
   description: A long description
   # assignments_related_from: one
   # assignments_related_to: one

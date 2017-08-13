@@ -31,6 +31,20 @@ var embed_html = function(){
 
 }
 
+/**
+ * Returns the max scrollY of the page. This was snagged from stackoverflow:
+ * https://stackoverflow.com/a/17698713
+ *
+ * @return The max scroll y of the page.
+ */
+var scrollYMax = function(){
+  return Math.max( 
+    document.body.scrollHeight, 
+    document.body.offsetHeight, 
+    document.documentElement.clientHeight, 
+    document.documentElement.scrollHeight, 
+    document.documentElement.offsetHeight ) - window.innerHeight;
+}
 
 $(document).ready(function(){
   embed_html();

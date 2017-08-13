@@ -3,9 +3,9 @@
 one: 
   # dataset: 
   # analysis:
-  title: "Example 1"
-  description: "An example!"
+  title: Example 1
+  description: frog snake lizzard
 
 two:
-  title: "Example 2"
-  description: "Another example!"
+  title: Example 2
+  description: cloud sun rain

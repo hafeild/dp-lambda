@@ -1,0 +1,20 @@
+production:
+  solr:
+    hostname: <%= ENV["SOLR_HOST"] %>
+    port: <%= ENV["SOLR_PORT"] %>
+    log_level: <%= ENV["SOLR_LOG_LEVEL"] %>
+    path: <%= ENV["SOLR_PATH"] %>
+
+development:
+  solr:
+    hostname: <%= ENV["SOLR_HOST"] %>
+    port: <%= ENV["SOLR_PORT"] %>
+    log_level: <%= ENV["SOLR_LOG_LEVEL"] %>
+    path: <%= ENV["SOLR_PATH"] %>
+    
+test:
+  solr:
+    hostname: <%= ENV["SOLR_HOST"] %>
+    port: <%= ENV["SOLR_PORT"] %>
+    log_level: <%= ENV["SOLR_LOG_LEVEL"] %>
+    path: <%= ENV["SOLR_PATH"] %>

@@ -1,0 +1,162 @@
+
+
+.serp {
+
+  $all-color: white;
+  $assignment-color: #e9e1d5;
+  $analysis-color: #d7d5e9;
+  $software-color: #d6e5d6;
+  $dataset-color: #e9d5dd;
+  $vertical-color: white;
+  
+  .all {
+    background-color: $all-color;
+  }
+
+  .assignments, .assignment {
+    background-color: $assignment-color;
+  }  
+  
+  .analyses, .analysis {
+    background-color: $analysis-color;
+  }
+  
+  .software {
+    background-color: $software-color;
+  }
+  
+  .datasets, .dataset {
+    background-color: $dataset-color;
+  }
+
+  .search-verticals {
+    margin: 0;
+    border-bottom: 1px solid gray;
+    margin-bottom: 1em;
+  }
+  
+  .vertical-tab {
+    display: inline-block;
+    height: 2.5em;
+    padding: 0.5em;
+    border: 1px solid lightgray;
+    border-bottom-color: gray;
+    border-radius: 1em 1em 0 0;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+    margin-bottom: -1px;
+    cursor: pointer;
+    color: #999;
+    
+    &:hover {
+      color: black;
+    }
+  }
+  
+  .serp-for-all .all, 
+  .serp-for-software .software,
+  .serp-for-analyses .analyses, 
+  .serp-for-datasets .datasets, 
+  .serp-for-assignments .assignments {
+    color: black;
+    border-color: gray;
+  }
+  
+  .serp-for-all .all {
+    border-bottom-color: $all-color;
+  }
+
+  .serp-for-assignments .assignments {
+    border-bottom-color: $assignment-color;
+  }
+  
+  .serp-for-software .software {
+    border-bottom-color: $software-color;
+  }
+  
+  .serp-for-analyses .analyses {
+    border-bottom-color: $analysis-color;
+  }
+  
+  
+  .serp-for-datasets .datasets {
+    border-bottom-color: $dataset-color;
+  }
+  
+  .results {
+    margin-top: 1em;
+    padding: 0;
+    
+    .search-result {
+    
+      padding: 0;
+      list-style-type: none;
+      margin-bottom: 1em;
+      
+    
+      .vertical-result-data {
+        display: block;  
+        min-height: 3em;
+        width: 100%;
+        padding: 1em .5em 1em .5em;
+        border: 1px solid gray;
+
+        .name {
+          font-size: 150%;
+          font-weight: bold;
+          display: block;
+        }
+
+        .snippet {
+          /* See vertical.css.scss for defaults. */
+          display: block;
+        }
+        
+        .score {
+          color: #aaa;
+          font-style: italic;
+        }
+      }
+    }
+  }
+  
+
+  .infinite-scroll {
+  
+    .message {
+      min-width: 20em;
+      width: 33%;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #bbb;
+      text-align: center;
+      padding: .5em;
+      border-radius: 1em;
+    }
+    
+    .click-for-more-results {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  
+  .no-results {
+    margin-top: 2em;
+    font-size: 130%;
+    font-style: italic;    
+  }
+  
+  .advanced-search-summary {
+    margin-left: 2em;
+    margin-bottom: 1em;
+    border: 1px solid gray;
+    
+    th, td {
+      padding-left: .5em;
+      padding-right: .5em;
+    }
+  }
+}
+

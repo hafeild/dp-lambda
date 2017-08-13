@@ -53,10 +53,24 @@ production:
   DB_USERNAME: "a database user name"
   DB_PASSWORD: "a secret password"
 
+  ## Sunspot/Solr
+  SOLR_HOST: "localhost"
+  SOLR_PORT: "8983"
+  SOLR_LOG_LEVEL: "WARNING"
+  SOLR_PATH: "/solr/production"
+
 ## Development settings.
 development:
   ## Add development-specific settings here.
+  SOLR_HOST: "localhost"
+  SOLR_PORT: "8982"
+  SOLR_LOG_LEVEL: "INFO"
+  SOLR_PATH: "/solr/development"
 
 ## Test settings.
 test:
   ## Add test-specific settings here.
+  SOLR_HOST: "localhost"
+  SOLR_PORT: "8981"
+  SOLR_LOG_LEVEL: "WARNING"
+  SOLR_PATH: "/solr/test"
