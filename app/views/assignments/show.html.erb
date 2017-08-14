@@ -18,7 +18,7 @@
   </h1>
 
   <div class="metadata-wrapper">
-    <h2>Metadata</h2>
+    <!-- <h2>Metadata</h2> -->
     <table class="metadata">
       <tr>
         <th>Author</th>
@@ -31,6 +31,24 @@
       <tr>
         <th>Expected instruction hours</th>
         <td class="instruction_hours"><%= @assignment.instruction_hours %></td>
+      </tr>
+      <tr>
+        <th>Tags</th>
+        <td class="tags">
+          
+          <% if can_edit? %>
+            <a href="<%= new_vertical_tag_path @assignment %>"
+              ><button class="btn btn-sm btn-default">Add new</button
+            ></a>
+            <a href="<%= vertical_tag_index_path @assignment %>"
+              ><button class="btn btn-sm btn-default">Add existing</button
+            ></a>
+          <% end %>
+          <%= render(partial: "tags/tag_badge", 
+            collection: sort_by(@assignment.tags, :text), as: :tag,
+            locals: {print_header: true, vertical: @assignment}) || 
+            "There are currently no tags associated with this assignment." %>
+        </td>
       </tr>
     </table>
   </div>
@@ -61,7 +79,7 @@
              vertical_to: Assignment.new, 
              data: @assignment.assignments_related_from}) %>
 
-  <div class="tags">
+<!--   <div class="tags">
     <h2>Tags</h2>
     <% if can_edit? %>
       <a href="<%= new_vertical_tag_path @assignment %>"
@@ -77,7 +95,7 @@
         locals: {print_header: true, vertical: @assignment}) || 
         "There are currently no tags associated with this assignment." %>
     </ul>
-  </div>
+  </div> -->
 
   <div class="web-resources">
     <h2>Web resources</h2>

@@ -39,7 +39,7 @@
       ></a>
     <% end %>
     <ul>
-      <%= render(partial: "tags/tag_list_item", 
+      <%= render(partial: "tags/tag_badge", 
         collection: sort_by(@dataset.tags, :text), as: :tag,
         locals: {print_header: true, vertical: @dataset}) || 
         "There are currently no tags associated with this dataset." %>
