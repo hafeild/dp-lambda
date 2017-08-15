@@ -3,9 +3,13 @@
 
   <h1>Assignment</h1>
 
-  <button class="btn btn-sm btn-default"><%= link_to "Add an assignment", new_assignment_path %></button>
+  <% if can_edit? %>
+    <%= link_to(new_assignment_path) do 
+      %><button class="btn btn-sm btn-default">Add an assignment</button
+    ><% end %>
+  <% end %>
 
-  <div id="assignment-entries">
+  <div id="assignment-entries" class="entries">
     <%= render @assignments %>
   </div>
 
