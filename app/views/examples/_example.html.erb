@@ -1,6 +1,10 @@
 
+<% if not defined?(title_tag) %>
+  <% title_tag = :h2 %>
+<% end %>
+
 <% if print_header %>
-  <h3><span class="name"><%= example.title %></span>
+  <<%= title_tag %>><span class="name"><%= example.title %></span>
     (<%= link_to "details", example_path(example) %>)
 
     <% if can_edit? and defined? vertical %>
@@ -19,7 +23,7 @@
       </button>
       <% end %>
     <% end %>
-  </h3>
+  </<%=title_tag%>>
 <% end %>
 
 

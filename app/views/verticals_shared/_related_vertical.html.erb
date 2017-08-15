@@ -8,6 +8,7 @@ This is expecting the following local variables:
               next to the entry if the user has editing privileges. Defaults to
               false.
   data -- defaults to vertical_from.public_send(vertical_to_name)
+  title_tag -- defaults to h2; this is the tag to use for the title.
 %>
   <% vertical_from_name = vertical_from.class.to_s.downcase %>
   <% vertical_to_name = vertical_to.class.to_s.downcase %>
@@ -15,10 +16,13 @@ This is expecting the following local variables:
   <% if not defined?(data) or data.nil? %>
     <% data = vertical_from.public_send(vertical_to_names) %>
   <% end %>
+  <% if not defined?(title_tag) %>
+    <% title_tag = :h2 %>
+  <% end %>
 
-  <div class="related-<%= vertical_to_names %>">
-    <h2><%= title %></h2>
-    <% if can_edit? %>
+  <div class="related related-<%= vertical_to_names %>">
+    <<%=title_tag%>><%= title %></<%=title_tag%>>
+    <% if editable and can_edit? %>
       <a href="<%= vertical_vertical_index_path vertical_from, vertical_to %>"
         ><button class="btn btn-sm btn-default">Link to <%= vertical_to_name %></button
       ></a>

@@ -1,0 +1,34 @@
+<%# 
+This is expecting the following local variables:
+
+  title
+  vertical -- the vertical whose page this is being presented
+  editable -- if true, then a 'disassociate' and 'edit' button will appear 
+              next to the entry if the user has editing privileges. Defaults to
+              false.
+  title_tag -- defaults to h2; this is the tag to use for the title.
+%>
+<% vertical_name = vertical.class.to_s.downcase %>
+<% if not defined?(title_tag) %>
+  <% title_tag = :h2 %>
+<% end %>
+
+<div class="examples related">
+  <<%=title_tag%>><%= title %></<%=title_tag%>>
+  <% if editable and can_edit? %>
+    <a href="<%= new_vertical_example_path vertical %>"
+      ><button class="btn btn-sm btn-default">Add new</button
+    ></a>
+    <a href="<%= vertical_example_index_path vertical %>"
+      ><button class="btn btn-sm btn-default">Add existing</button
+    ></a>
+  <% end %>
+
+  <ul>
+    <%= render(partial: "examples/example_list_item", 
+      collection: sort_by(vertical.examples, :title), 
+      as: :example,
+      locals: {print_header: true, vertical: vertical}) || 
+      "<p>There are currently no examples associated with this #{vertical_name}.</p>".html_safe %>
+  </ul>
+</div>

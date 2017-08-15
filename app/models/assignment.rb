@@ -49,6 +49,10 @@ class Assignment < ApplicationRecord
   validates :description, presence: true, length: {minimum: 1}
   validates :author, presence: true, length: {minimum: 1}
 
+  def related_assignments
+    (assignments_related_to + assignments_related_from).uniq
+  end
+
   ## For search.
   searchable do
     text :author, :name, :summary, :description, :learning_curve
