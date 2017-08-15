@@ -17,13 +17,8 @@
   <% end %>
   </h1>
 
-  <div class="summary-wrapper">
-    <h2>Summary</h2>
-    <span class="summary"><%= @assignment.summary %></span>
-  </div>
-
   <div class="metadata-wrapper">
-    <h2>Metadata</h2>
+    <!-- <h2>Metadata</h2> -->
     <table class="metadata">
       <tr>
         <th>Author</th>
@@ -37,46 +32,36 @@
         <th>Expected instruction hours</th>
         <td class="instruction_hours"><%= @assignment.instruction_hours %></td>
       </tr>
+      <tr>
+        <th>Tags</th>
+        <td class="tags">
+          
+          <% if can_edit? %>
+            <a href="<%= new_vertical_tag_path @assignment %>"
+              ><button class="btn btn-sm btn-default">Add new</button
+            ></a>
+            <a href="<%= vertical_tag_index_path @assignment %>"
+              ><button class="btn btn-sm btn-default">Add existing</button
+            ></a>
+          <% end %>
+          <%= render(partial: "tags/tag_badge", 
+            collection: sort_by(@assignment.tags, :text), as: :tag,
+            locals: {print_header: true, vertical: @assignment}) || 
+            "There are currently no tags associated with this assignment." %>
+        </td>
+      </tr>
     </table>
+  </div>
+  
+  <div class="summary-wrapper">
+    <h2>Summary</h2>
+    <span class="summary"><%= @assignment.summary %></span>
   </div>
 
   <div class="description-wrapper">
     <h2>Description</h2>
     <iframe class="description embed-html" 
       data-html="<%= url_encode @assignment.description.html_safe %>"></iframe>
-  </div>
-
-
-  <%= render(partial: "verticals_shared/related_vertical",
-    locals: {title: "Assignments this assignment links to", 
-             vertical_from: @assignment, 
-             vertical_to: Assignment.new, 
-             data: @assignment.assignments_related_to,
-             editable: true }) %>
-
-
-  <%= render(partial: "verticals_shared/related_vertical",
-    locals: {title: "Assignments that link to this one", 
-             vertical_from: @assignment, 
-             vertical_to: Assignment.new, 
-             data: @assignment.assignments_related_from}) %>
-
-  <div class="tags">
-    <h2>Tags</h2>
-    <% if can_edit? %>
-      <a href="<%= new_vertical_tag_path @assignment %>"
-        ><button class="btn btn-sm btn-default">Add new</button
-      ></a>
-      <a href="<%= vertical_tag_index_path @assignment %>"
-        ><button class="btn btn-sm btn-default">Add existing</button
-      ></a>
-    <% end %>
-    <ul>
-      <%= render(partial: "tags/tag_list_item", 
-        collection: sort_by(@assignment.tags, :text), as: :tag,
-        locals: {print_header: true, vertical: @assignment}) || 
-        "There are currently no tags associated with this assignment." %>
-    </ul>
   </div>
 
   <div class="web-resources">
@@ -99,45 +84,6 @@
   </div>
 
 
-  <%= render(partial: "verticals_shared/related_vertical",
-    locals: {title: "Related software", 
-             vertical_from: @assignment, 
-             vertical_to: Software.new, 
-             editable: true }) %>
-
-
-  <%= render(partial: "verticals_shared/related_vertical",
-    locals: {title: "Related analyses", 
-             vertical_from: @assignment, 
-             vertical_to: Analysis.new, 
-             editable: true }) %>
-
-
-  <%= render(partial: "verticals_shared/related_vertical",
-    locals: {title: "Related datasets", 
-             vertical_from: @assignment, 
-             vertical_to: Dataset.new, 
-             editable: true }) %>
-
-
-  <div class="examples">
-    <h2>Examples</h2>
-    <% if can_edit? %>
-      <a href="<%= new_vertical_example_path @assignment %>"
-        ><button class="btn btn-sm btn-default">Add new</button
-      ></a>
-      <a href="<%= vertical_example_index_path @assignment %>"
-        ><button class="btn btn-sm btn-default">Add existing</button
-      ></a>
-    <% end %>
-
-    <%= render(partial: "examples/example", 
-      collection: sort_by(@assignment.examples, :title), 
-      locals: {print_header: true, vertical: @assignment}) || 
-      "<p>There are currently no examples associated with this assignment.</p>".html_safe %>
-  </div>
-
-
   <div class="assignment-results">
    <h2>Results</h2>
     <% if can_edit? %>
@@ -153,6 +99,54 @@
         "There are currently no results for this assignment." %>
     </ul>
   </div>
+
+
+  <div class="related-resources">
+    <h2>Related</h2>
+    
+    <%= render(partial: "verticals_shared/related_vertical",
+      locals: {title: "Other assignments", 
+               vertical_from: @assignment, 
+               vertical_to: Assignment.new, 
+               data: @assignment.related_assignments,
+               editable: true,
+               title_tag: :h3 }) %>
+
+<!--     <button class="expand-all-resources">Expand all</button>
+    <button class="collapse-all-resources">Collapse all</button> -->
+
+    <%= render(partial: "verticals_shared/related_vertical",
+      locals: {title: "Software", 
+               vertical_from: @assignment, 
+               vertical_to: Software.new, 
+               editable: true,
+               title_tag: :h3  }) %>
+
+
+    <%= render(partial: "verticals_shared/related_vertical",
+      locals: {title: "Analyses", 
+               vertical_from: @assignment, 
+               vertical_to: Analysis.new, 
+               editable: true,
+               title_tag: :h3  }) %>
+
+
+    <%= render(partial: "verticals_shared/related_vertical",
+      locals: {title: "Datasets", 
+               vertical_from: @assignment, 
+               vertical_to: Dataset.new, 
+               editable: true,
+               title_tag: :h3 }) %>
+
+    <%= render(partial: "examples/related_examples",
+      locals: {title: "Examples", 
+               vertical: @assignment, 
+               editable: true,
+               title_tag: :h3 }) %>
+
+  </div>
+
+
 
   </div>
 </div>

@@ -35,3 +35,30 @@
 li .snippet {
   color: #555;
 }
+
+.metadata {
+  td, th {
+    padding-right: 2em;
+  }
+}
+
+.tag-badge {
+  font-size: 85%;
+  border-radius: 2em;
+  background-color: lighten($brand-primary, 0%);
+  display: inline-block;
+  padding-left: .5em;
+  padding-right: .5em;
+  color: white;
+  a, a:active, a:hover, a:visited {
+    color: white;
+  }
+  
+  .edit:hover, .delete:hover {
+    color: #ccc;
+  }
+}
+
+div.entries {
+  margin-top: 1em;
+}

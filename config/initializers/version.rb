@@ -18,12 +18,11 @@ monthVersion  = "07" ## Month of release.
 numberVersion = "00" ## Number of release within Year-Month
 hotFixNo      = "00" ## Hot fix no. for release.
 
-
 VERSION = [
   yearVersion, 
   monthVersion,
   numberVersion,
-  isRelease ? hotFixNo : `git describe --always --tags`.strip
+  isRelease ? hotFixNo : "dev-#{`git rev-parse --short HEAD`}".strip
 ]
 
 VERSION_STRING = VERSION.join(".").sub(/(\.00)*$/, '')

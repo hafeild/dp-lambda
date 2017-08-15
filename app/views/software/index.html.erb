@@ -3,7 +3,13 @@
 
   <h1>Software</h1>
 
-  <div id="software-entries">
+  <% if can_edit? %>
+    <%= link_to(new_software_path) do 
+      %><button class="btn btn-sm btn-default">Add software</button
+    ><% end %>
+  <% end %>
+
+  <div id="software-entries" class="entries">
     <%= render @software %>
   </div>
 

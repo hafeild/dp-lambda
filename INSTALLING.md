@@ -57,7 +57,7 @@ Any time you want to run a test, do:
 
     ## Start Solr (this uses the development version; you can swap it out for
     ## your own version of Solr; see below).
-    bundle exec sunspot:solr:run RAILS_ENV=test
+    bundle exec rake sunspot:solr:run RAILS_ENV=test
 
     ## In a separate terminal, run:
     bundle exec rake test

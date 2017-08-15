@@ -6,6 +6,12 @@
   <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
   </p>
 
+  <%= link_to get_vertical_path(@vertical) do %>
+    <button class="btn btn-sm btn-default">
+      Back
+    </button>
+  <% end %>
+
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
       <% if @tags.empty? %>

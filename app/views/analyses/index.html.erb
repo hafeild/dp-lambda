@@ -3,7 +3,13 @@
 
   <h1>Analysis</h1>
 
-  <div id="analysis-entries">
+  <% if can_edit? %>
+    <%= link_to(new_analysis_path) do 
+      %><button class="btn btn-sm btn-default">Add an analysis</button
+    ><% end %>
+  <% end %>
+
+  <div id="analysis-entries" class="entries">
     <%= render @analyses %>
   </div>
 

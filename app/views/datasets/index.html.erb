@@ -3,7 +3,13 @@
 
   <h1>Dataset</h1>
 
-  <div id="dataset-entries">
+  <% if can_edit? %>
+    <%= link_to(new_dataset_path) do 
+      %><button class="btn btn-sm btn-default">Add a dataset</button
+    ><% end %>
+  <% end %>
+
+  <div id="dataset-entries" class="entries">
     <%= render @datasets %>
   </div>
 
