@@ -4,11 +4,15 @@ Changes made in each release are summarized below.
 
 ## 17.08
 
-A small incremental release. This includes some minimal UI polishing:
+A mostly small incremental release. This includes some minimal UI polishing:
 
     * refined vertical displays
     * "add page" buttons at the top of vertical listings
     * tag badges instead of bulleted lists
+
+For security, new users are not given editing permissions. There is currently
+no administration interface, however, so these permissions must be granted
+through the rails console.
 
 ## 17.07
 
