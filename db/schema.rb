@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608203937) do
+ActiveRecord::Schema.define(version: 20170816012843) do
 
   create_table "analyses", force: :cascade do |t|
     t.string   "name"
@@ -199,6 +199,8 @@ ActiveRecord::Schema.define(version: 20170608203937) do
     t.datetime "reset_sent_at"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.boolean  "can_edit"
+    t.boolean  "is_admin"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

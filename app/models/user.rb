@@ -17,6 +17,8 @@ class User < ApplicationRecord
   ## - reset_sent_at
   ## - created_on
   ## - updated_on
+  ## - can_edit
+  ## - is_admin
 
   attr_accessor :remember_token, :activation_token, :reset_token
   
@@ -125,6 +127,10 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}" 
+  end
+  
+  def can_edit?
+    can_edit == true
   end
 
   private
