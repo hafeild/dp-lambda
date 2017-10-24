@@ -1,16 +1,14 @@
-<% provide(:title, "Choose tag") %>
+<% provide(:title, "Apply tags") %>
 <div class="container resource-modification">
   <h1><%= yield :title %></h1>
   <p>
-  Choose a tag to associated with 
+  Choose tags to associate with 
   <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
   </p>
 
-  <%= link_to get_vertical_path(@vertical) do %>
-    <button class="btn btn-sm btn-default">
-      Back
-    </button>
-  <% end %>
+  <a href="<%= get_vertical_path(@vertical) %>"
+    ><button class="btn btn-md btn-default">Done</button
+  ></a>
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
@@ -25,4 +23,9 @@
       <% end %> 
     </div>
   </div>
+  
+  <a href="<%= get_vertical_path(@vertical) %>"
+    ><button class="btn btn-md btn-default">Done</button
+  ></a>
+  
 </div>

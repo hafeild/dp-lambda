@@ -1,18 +1,35 @@
-<div data-dataset-id="<%= dataset.id %>" class="dataset index-entry">
+<% ## This produces connections that can be interacted with via 
+   ## javascript + AJAX. 
+%>
+<% 
+if (@vertical.class == Dataset and 
+     @vertical.datasets_related_to.exists?(dataset.id)) or
+   (@vertical.class != Dataset and 
+     @vertical.datasets.exists?(dataset.id))
+  remove_classes = ""
+  add_classes = "hidden"
+  status = "added"  
+else
+  remove_classes = "hidden"
+  add_classes = ""
+  status = ""
+end
+%>
 
-  <div class="connect-resource">
-    <%= form_for(dataset, 
-        url: vertical_vertical_path(@vertical, dataset), 
-        method: :post, html: {style: 'display: inline'}) do |f| %>
-      <% if (@vertical.class == Dataset and 
-              @vertical.datasets_related_to.exists?(dataset.id)) or
-            (@vertical.class != Dataset and 
-              @vertical.datasets.exists?(dataset.id)) %>
-        <button class="btn btn-sm btn-default" disabled="disabled">Already added</button>
-      <% else %>
-        <button class="btn btn-sm btn-default">Add</button>
-      <% end %>
-    <% end %>
+
+
+
+<div data-dataset-id="<%= dataset.id %>" 
+    class="dataset index-entry <%= status %>">
+  <div class="connect-resource" 
+      data-url="<%= vertical_vertical_path(@vertical, dataset) %>">
+      
+    <button data-action="remove" 
+      class="btn btn-sm btn-default remove-connection <%= remove_classes %>"
+      >Remove</button>
+    <button data-action="add" 
+      class="btn btn-sm btn-default add-connection <%= add_classes %>"
+      >Add</button>
   </div>
 
   <span class="entry-data-wrapper">
