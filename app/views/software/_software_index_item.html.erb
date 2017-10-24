@@ -1,18 +1,33 @@
-<div data-software-id="<%= software.id %>" class="software index-entry">
-
-  <div class="connect-resource">
-    <%= form_for(software, 
-        url: vertical_vertical_path(@vertical, software), 
-        method: :post, html: {style: 'display: inline'}) do |f| %>
-      <% if (@vertical.class == Software and 
-              @vertical.software_related_to.exists?(software.id)) or
-            (@vertical.class != Software and 
-              @vertical.software.exists?(software.id)) %>
-        <button class="btn btn-sm btn-default" disabled="disabled">Already added</button>
-      <% else %>
-        <button class="btn btn-sm btn-default">Add</button>
-      <% end %>
-    <% end %>
+<% ## This produces connections that can be interacted with via 
+   ## javascript + AJAX. 
+%>
+<% 
+if (@vertical.class == Software and 
+        @vertical.software_related_to.exists?(software.id)) or
+      (@vertical.class != Software and 
+        @vertical.software.exists?(software.id))
+  remove_classes = ""
+  add_classes = "hidden"
+  status = "added"  
+else
+  remove_classes = "hidden"
+  add_classes = ""
+  status = ""
+end
+%>
+  
+  
+<div data-software-id="<%= software.id %>" 
+    class="software index-entry <%= status %>">
+  <div class="connect-resource" 
+      data-url="<%= vertical_vertical_path(@vertical, software) %>">
+      
+    <button data-action="remove" 
+      class="btn btn-sm btn-default remove-connection <%= remove_classes %>"
+      >Remove</button>
+    <button data-action="add" 
+      class="btn btn-sm btn-default add-connection <%= add_classes %>"
+      >Add</button>
   </div>
 
   <span class="entry-data-wrapper">
