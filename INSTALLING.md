@@ -18,7 +18,7 @@ uploads won't work properly (everything else should function).
 On any system, do the following after the initial clone or any subsequent pull
 to install any gems that were added to the Gemfile:
 
-    bundle install
+    bundle install --without=production
 
 After the initial clone, do the following:
 
@@ -46,7 +46,7 @@ Check for entire lines that exist in the former but not the latter.
 
 Install any new gems specified in the Gemfile:
 
-    bundle install
+    bundle install --without=production
 
 Run the migrations in the test and development environments:
 

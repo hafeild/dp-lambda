@@ -1,15 +1,30 @@
-<div data-web_resource-id="<%= web_resource.id %>" class="web_resource index-entry">
+<% ## This produces connections that can be interacted with via 
+   ## javascript + AJAX. 
+%>
+<% 
+if @vertical.web_resources.exists?(web_resource.id)
+  remove_classes = ""
+  add_classes = "hidden"
+  status = "added"  
+else
+  remove_classes = "hidden"
+  add_classes = ""
+  status = ""
+end
+%>
 
-  <div class="connect-resource">
-    <%= form_for(web_resource, 
-        url: vertical_web_resource_path(@vertical, web_resource), 
-        method: :post, html: {style: 'display: inline'}) do |f| %>
-      <% if @vertical.web_resources.exists?(web_resource.id) %>
-        <button class="btn btn-sm btn-default" disabled="disabled">Already added</button>
-      <% else %>
-        <button class="btn btn-sm btn-default">Add</button>
-      <% end %>
-    <% end %>
+
+<div data-web_resource-id="<%= web_resource.id %>" 
+    class="web_resource index-entry <%= status %>">
+  <div class="connect-resource" 
+      data-url="<%= vertical_web_resource_path(@vertical, web_resource) %>">
+      
+    <button data-action="remove" 
+      class="btn btn-sm btn-default remove-connection <%= remove_classes %>"
+      >Remove</button>
+    <button data-action="add" 
+      class="btn btn-sm btn-default add-connection <%= add_classes %>"
+      >Add</button>
   </div>
 
   <span class="entry-data-wrapper">

@@ -1,10 +1,14 @@
-<% provide(:title, "Choose analysis") %>
+<% provide(:title, "Connect analysises") %>
 <div class="container resource-modification">
   <h1><%= yield :title %></h1>
   <p>
-  Choose an analysis to link from
+  Choose analyses to associate with
   <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
   </p>
+
+  <a href="<%= get_vertical_path(@vertical) %>"
+    ><button class="btn btn-md btn-default">Done</button
+  ></a>
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
@@ -23,4 +27,9 @@
       <% end %> 
     </div>
   </div>
+  
+  <a href="<%= get_vertical_path(@vertical) %>"
+    ><button class="btn btn-md btn-default">Done</button
+  ></a>
+  
 </div>

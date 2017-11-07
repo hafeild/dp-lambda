@@ -75,10 +75,23 @@ will be used as the base for the new branch (as opposed to `master` or something
 else); if you wanted the base to be a different branch, checkout that branch
 before proceeding. To create the new feature branch, do:
 
-    git checkout -t origin/feature3
+    git checkout -b feature3
 
 Add, commit, push, and pull like usual, making sure to specify the feature 
-branch name for the latter two (e.g., `git push origin feature3`).
+branch name for the latter two (e.g., `git push origin feature3`). 
+
+After your first push, you can set the local branch to check the remote branch
+(then you can do `git push` and `git pull` to sync with the server):
+
+    git branch -u origin/feature3
+
+If you want to checkout a feature branch on another computer and track it,
+first do a `get fetch` to get updated branch refs. Then do:
+
+    git checkout -t origin/feature3
+
+Where `feature3` is the name of whatever branch you want to checkout.
+
 
 
 ## Release versioning
