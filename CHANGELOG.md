@@ -2,6 +2,18 @@
 
 Changes made in each release are summarized below.
 
+## NEXT
+
+New features:
+
+    * can now select multiple related vertical entries when linking two
+      verticals (e.g., tags, software, etc.)
+  
+Bug fixes:
+
+    * The cancel button on assignment forms now works (see
+      https://github.com/hafeild/alice/issues/13)
+
 ## 17.08
 
 A mostly small incremental release. This includes some minimal UI polishing:
