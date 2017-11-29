@@ -34,7 +34,7 @@ class AssignmentsController < ApplicationController
     ## Make sure we have the required fields.
     if get_with_default(@data, :name, "").empty? or 
         get_with_default(@data, :summary, "").empty? or
-        get_with_default(@data, :description, "").empty? or
+        #get_with_default(@data, :description, "").empty? or
         get_with_default(@data, :author, "").empty?
       respond_with_error "You must provide an author, name, summary, and description.",
         new_assignment_path
