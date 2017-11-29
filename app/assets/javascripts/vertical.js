@@ -10,10 +10,14 @@ $(document).ready(function(event){
     if($('.connect-resource').size() > 0){
         addConnectionListeners();
     }
+    
+    $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);
 });
 
-// Adds listeners to vertical connections (e.g., connect a software entry to
-// an assignment).
+/**
+ * Adds listeners to vertical connections (e.g., connect a software entry to
+ * an assignment).
+ */
 var addConnectionListeners = function(){
     // Wait for a click.
     $(document).on('click', '.connect-resource button', function(){
@@ -38,5 +42,14 @@ var addConnectionListeners = function(){
     })
 };
 
-
+/**
+ * Prevents a form from being submitted when a button click occurs, but 
+ * follows the link.
+ *
+ * @param event The click event that triggered this.
+ */
+var cancelFormSubmissionFollowLink = function(event){
+    event.preventDefault();
+    window.location = $(this).data('href');
+}
 
