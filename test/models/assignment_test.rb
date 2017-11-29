@@ -107,24 +107,24 @@ class AssignmentTest < ActiveSupport::TestCase
 
 
 
-  test "must have a description" do 
-    assignment = Assignment.new(
-      creator: users(:foo),
-      name: "A very unique name",
-      summary: "a summary",
-      author: "Foo Bar"
-    )
-    assert_not assignment.save, "Saved without error, but should not have" 
+  # test "must have a description" do 
+  #   assignment = Assignment.new(
+  #     creator: users(:foo),
+  #     name: "A very unique name",
+  #     summary: "a summary",
+  #     author: "Foo Bar"
+  #   )
+  #   assert_not assignment.save, "Saved without error, but should not have" 
 
-    assignment = Assignment.new(
-      creator: users(:foo),
-      name: "A very unique name",
-      summary: "a summary",
-      description: "",
-      author: "Foo Bar"
-    )
-    assert_not assignment.save, "Saved without error, but should not have" 
-  end
+  #   assignment = Assignment.new(
+  #     creator: users(:foo),
+  #     name: "A very unique name",
+  #     summary: "a summary",
+  #     description: "",
+  #     author: "Foo Bar"
+  #   )
+  #   assert_not assignment.save, "Saved without error, but should not have" 
+  # end
 
 
 

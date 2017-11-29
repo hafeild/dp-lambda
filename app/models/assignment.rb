@@ -46,7 +46,7 @@ class Assignment < ApplicationRecord
   validates :name, presence: true, length: {minimum: 1, maximum: 200}, 
     uniqueness: {case_sensitive: false}
   validates :summary, presence: true, length: {minimum: 1}
-  validates :description, presence: true, length: {minimum: 1}
+  #validates :description, presence: true, length: {minimum: 1}
   validates :author, presence: true, length: {minimum: 1}
 
   def related_assignments

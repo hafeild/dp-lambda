@@ -23,7 +23,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     end
   end
 
-  test "should break if don't include any of: author, name, summary, or description" do
+  test "should break if don't include any of: author, name, or summary" do
     log_in_as users(:foo)
 
     ## Exclude name.
@@ -43,12 +43,12 @@ class AssignmentsControllerTest < ActionController::TestCase
     end
 
     ## Exclude description.
-    assert_no_difference 'Assignment.count', 
-        "Excluding description should not have worked" do
-      response = post :create, params: { assignment: { 
-        author: "x", name: "x", summary: "x" } }
-      assert_redirected_to new_assignment_path, response.body
-    end
+    # assert_no_difference 'Assignment.count', 
+    #     "Excluding description should not have worked" do
+    #   response = post :create, params: { assignment: { 
+    #     author: "x", name: "x", summary: "x" } }
+    #   assert_redirected_to new_assignment_path, response.body
+    # end
 
     ## Exclude author.
     assert_no_difference 'Assignment.count', 
@@ -88,10 +88,10 @@ class AssignmentsControllerTest < ActionController::TestCase
     @request.env['CONTENT_TYPE'] = 'application/json'
     log_in_as users(:foo)
     post :create, format: :json, params: { assignment: { 
-        name: "x", summary: ""   } }
+        name: "x", summary: ""} }
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error']=="You must provide an author, name, summary, and description."
+    assert result['error']=="You must provide an author, name, and summary."
   end
 
   test "should return required params not supplied json error" do
