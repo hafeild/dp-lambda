@@ -1,9 +1,10 @@
 <% provide(:title, 'Sign up') %>
 <div class="container">
-  <h1>Sign up</h1>
 
   <div class="row">
   <div class="col-md-6 col-md-offset-3">
+    <h1>Sign up</h1>
+  
     <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
     
@@ -60,46 +61,44 @@
 
     <!-- Password (again). -->
     <div class="form-group">
-      <%= f.label :password_confirmation, "Confirmation" %><span 
+      <%= f.label :password_confirmation, "Confirm password" %><span 
         class="required-input">*</span>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
     </div>
 
 
 
-    <!-- Elevated privileges. -->
+    <!-- Permissions. -->
     <div class="form-group">
       <h3>Permissions</h3>
       <div class="radio">
         <label>
-          <input type="radio" name="permissions" value="view_only" checked="checked"/>
-          <strong>Viewing only</strong>
+          <%= f.radio_button :permission_level, :viewer %>
+          <strong>Viewer</strong>
           <p>
-            This option will give you the ability to
-            view other users and any content on the site. This does not require
-            review by a site admin.
+            This option will give you the ability to view other users and any
+            content on the site. This does not require review by a site admin.
           </p>
         </label>
       </div>
       <div class="radio">
         <label>
-          <input type="radio" name="permissions" value="edit"/>
-          <strong>Viewing and editing</strong>
+          <%= f.radio_button :permission_level, :editor %>
+          <strong>Editor</strong>
           <p>
-            This gives you the same ability as viewing only, but additionally
-            allows you to create new content and edit existing content. 
-            This requires review by a site admin.
+            This option allows you to view other users and create, view, and
+            edit site content. This requires review by a site admin.
           </p>      
         </label>
       </div>
       <div class="radio">
         <label>
-          <input type="radio" name="permissions" value="admin"/>
+          <%= f.radio_button :permission_level, :admin %>
           <strong>Administrator</strong>
           <p>
             This gives you the ability to view and edit content, as well as
-            grant permissions to other users. 
-            This requires review by a site admin.
+            grant permissions to other users. This requires review by a site
+            admin.
           </p>      
         </label>
       </div>

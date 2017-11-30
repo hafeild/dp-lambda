@@ -12,6 +12,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.activated = false
+    
+    ## TODO Check the permission level.
+    
     if @user.save
         @user.send_activation_email
 
@@ -72,7 +75,7 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:username, :email, :role, 
         :first_name, :last_name, :field_of_study, :password, 
-        :password_confirmation)
+        :password_confirmation, :permission_level)
     end
 
     def reauthenticate

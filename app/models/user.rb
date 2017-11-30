@@ -17,8 +17,9 @@ class User < ApplicationRecord
   ## - reset_sent_at
   ## - created_on
   ## - updated_on
-  ## - can_edit
-  ## - is_admin
+  ## - permission_level
+  ## - permission_granted_on
+  ## - permission_granted_by
 
   attr_accessor :remember_token, :activation_token, :reset_token
   
@@ -130,7 +131,11 @@ class User < ApplicationRecord
   end
   
   def can_edit?
-    can_edit == true
+    permission_level == :editor or permission_level == :admin
+  end
+  
+  def is_admin?
+    permission_level == :admin
   end
 
   private
@@ -144,4 +149,5 @@ class User < ApplicationRecord
       self.activation_token = User.new_token
       self.activation_digest = User.digest(activation_token)
     end
+    
 end
