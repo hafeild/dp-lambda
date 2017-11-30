@@ -35,11 +35,26 @@ class ApplicationController < ActionController::Base
     end
 
 
-    ## Checks if the logged in user can make edits. If not, redirect. and 
+    ## Checks if the logged in user can make edits. If not, redirect and 
     ## displays an error message.
     def user_can_edit
       unless can_edit?
         error = "You do not have permission to edit this content."
+        respond_to do |format|
+          format.json { render json: {success: false, error: error} }
+          format.html do
+            flash[:danger] = error 
+            redirect_back_or root_path
+          end
+        end
+      end
+    end
+
+    ## Checks if the logged in user is an admin. If not, redirect and 
+    ## displays an error message.
+    def user_is_admin
+      unless is_admin?
+        error = "You do not have permission to perform this action."
         respond_to do |format|
           format.json { render json: {success: false, error: error} }
           format.html do

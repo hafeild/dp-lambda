@@ -13,7 +13,14 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.activated = false
     
-    ## TODO Check the permission level.
+    ## Check the permission level -- editor and admin require adding a
+    ## permission request and sending an email.
+    if @user.permission_level != "viewer"
+      
+      
+      @user.permission_level = "viewer"
+    end
+    
     
     if @user.save
         @user.send_activation_email
@@ -79,7 +86,8 @@ class UsersController < ApplicationController
     end
 
     def reauthenticate
-      current_password = params.require(:user).permit(:current_password)[:current_password]
+      current_password = params.require(:user).permit(
+        :current_password)[:current_password]
       if current_password.nil? or not @user.authenticate(current_password)
         flash[:danger] = "Could not authenticate. Please check your password."
         redirect_to edit_user_path(current_user)

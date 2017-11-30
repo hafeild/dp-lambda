@@ -157,13 +157,15 @@ ActiveRecord::Schema.define(version: 20171130103839) do
     t.integer "example_id"
   end
 
-  create_table "permission_requests_tables", force: :cascade do |t|
+  create_table "permission_requests", force: :cascade do |t|
     t.string   "users"
     t.string   "level_requested"
-    t.boolean  "reviewed"
-    t.boolean  "granted"
+    t.boolean  "reviewed",        default: false
+    t.boolean  "granted",         default: false
     t.integer  "reviewed_by"
     t.datetime "reviewed_on"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "software", force: :cascade do |t|

@@ -5,5 +5,9 @@ module PermissionsHelper
   def can_edit?
     logged_in? and current_user.can_edit?
   end
+  
+  def is_admin?
+    logged_in? and current_user.is_admin?
+  end
 
 end
