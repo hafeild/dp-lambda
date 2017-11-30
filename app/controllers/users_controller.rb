@@ -21,23 +21,24 @@ class UsersController < ApplicationController
     
 
     ## Begin transaction.
-    ActiveRecord::Base.transaction do
-      @user.save!
-      @user.send_activation_email
+    begin
+      ActiveRecord::Base.transaction do
+        @user.save!
+        @user.send_activation_email
 
-      ## Check the requested permission level -- editor and admin require adding
-      ## a permission request and sending an email.
-      if requested_permission_level != "viewer"
-        permission_request = PermissionRequest.create!({
-          user: @user,
-          level_requested: requested_permission_level
-        })
-        permission_request.send_admin_notification_email
+        ## Check the requested permission level -- editor and admin require adding
+        ## a permission request and sending an email.
+        if requested_permission_level != "viewer"
+          permission_request = PermissionRequest.create!({
+            user: @user,
+            level_requested: requested_permission_level
+          })
+          send_admin_notification_email(permission_request)
+        end
+
+        flash[:success] = "Please check your email to activate your account."
+        redirect_to root_url
       end
-
-      flash[:success] = "Please check your email to activate your account."
-      redirect_to root_url
-   
     rescue => e
       render 'new'
     end

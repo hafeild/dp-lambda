@@ -131,11 +131,16 @@ class User < ApplicationRecord
   end
   
   def can_edit?
-    permission_level == :editor or permission_level == :admin
+    permission_level == "editor" or permission_level == "admin"
   end
   
   def is_admin?
-    permission_level == :admin
+    permission_level == "admin"
+  end
+
+  ## Gets a list of admins.
+  def User.admins
+    User.find_by({permission_level: "admin"})
   end
 
   private

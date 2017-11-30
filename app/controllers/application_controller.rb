@@ -66,14 +66,22 @@ class ApplicationController < ActionController::Base
     end
 
     ## Check if the given permission level is valid.
-    def valid_permission_level? level 
-      return level == "viewer" or level == "editor" or level == "admin"
+    def valid_permission_level?(level)
+      level == "viewer" or level == "editor" or level == "admin"
     end
 
     ## Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
+    end
+    
+    ## Sends a notification about a permission request to all admin users.
+    def send_admin_notification_email(permission_requested)
+      User.admins.each do |admin|
+        AdminMailer.permission_request_notification(
+          admin, permission_requested).deliver_now
+      end
     end
 
     ## Checks if every key in a list of keys is present in the given hash.
