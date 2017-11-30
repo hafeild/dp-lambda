@@ -44,7 +44,7 @@
         id: "form-submit", class: "btn btn-primary" %>
 
       
-      <button class="btn btn-danger link" 
+      <button class="btn btn-danger link no-submit" 
         data-href="<%= @dataset.id.nil? ? datasets_path : 
           dataset_path(@dataset) %>">Cancel</button>
 

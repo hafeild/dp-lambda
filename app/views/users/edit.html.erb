@@ -64,6 +64,10 @@
           </div>
 
           <%= f.submit "Update information", class: "btn btn-primary" %>
+          
+          <button class="btn btn-danger link no-submit" 
+            data-href="<%= root_path %>">Cancel</button>
+            
         <% end %>
     </div>
 
@@ -94,6 +98,10 @@
         </div>
 
         <%= f.submit "Change password", class: "btn btn-primary" %>
+        
+        <button class="btn btn-danger link no-submit" 
+          data-href="<%= root_path %>">Cancel</button>
+          
       <% end %>
     </div>
   </div>
