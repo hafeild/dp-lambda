@@ -65,6 +65,11 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    ## Check if the given permission level is valid.
+    def valid_permission_level? level 
+      return level == "viewer" or level == "editor" or level == "admin"
+    end
+
     ## Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])

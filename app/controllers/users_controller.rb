@@ -13,28 +13,41 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.activated = false
     
-    ## Check the permission level -- editor and admin require adding a
-    ## permission request and sending an email.
-    if @user.permission_level != "viewer"
-      
-      
-      @user.permission_level = "viewer"
-    end
+    ## All new users start off as viewers. Requests for other permission levels
+    ## are process in the transaction below.
+    requested_permission_level = get_sanitized_permission_level(
+                                   @user.permission_level)
+    @user.permission_level = "viewer"
     
-    
-    if @user.save
-        @user.send_activation_email
 
-        flash[:success] = "Please check your email to activate your account."
-        redirect_to root_url
-    else
-        render 'new'
+    ## Begin transaction.
+    ActiveRecord::Base.transaction do
+      @user.save!
+      @user.send_activation_email
+
+      ## Check the requested permission level -- editor and admin require adding
+      ## a permission request and sending an email.
+      if requested_permission_level != "viewer"
+        permission_request = PermissionRequest.create!({
+          user: @user,
+          level_requested: requested_permission_level
+        })
+        permission_request.send_admin_notification_email
+      end
+
+      flash[:success] = "Please check your email to activate your account."
+      redirect_to root_url
+   
+    rescue => e
+      render 'new'
     end
   end
+
 
   def destroy
     redirect_to :root
   end
+
 
   def update
     email_updated = false
@@ -83,6 +96,13 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :email, :role, 
         :first_name, :last_name, :field_of_study, :password, 
         :password_confirmation, :permission_level)
+    end
+
+    def get_sanitized_permission_level(level)
+      if valid_permission_level? level
+        return level
+      end
+      return "viewer"
     end
 
     def reauthenticate

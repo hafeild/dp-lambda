@@ -29,4 +29,8 @@ class PermissionRequest < ApplicationRecord
     save!
   end
 
+  def send_admin_notification_email
+
+  end
+
 end

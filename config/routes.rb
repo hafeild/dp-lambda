@@ -68,6 +68,8 @@ Rails.application.routes.draw do
   resources :email_verifications, only: [:edit]
   resources :password_resets, only: [:edit, :new, :create, :update]
   
+  resources :permission_requests, only: [:index, :new, :update]
+
   ## Search.
   get "search/:vertical" => "search#show"
 end
