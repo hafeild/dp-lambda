@@ -7,21 +7,25 @@
     <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
     
+    <!-- User name. -->
     <div class="form-group">
       <%= f.label :username %><span class="required-input">*</span> (1&ndash;50 characters)
       <%= f.text_field :username, class: 'form-control', placeholder: 'e.g., psmith' %>
     </div>
 
+    <!-- First name. -->
     <div class="form-group">
       <%= f.label :first_name %><span class="required-input">*</span> (1&ndash;50 characters)
       <%= f.text_field :first_name, class: 'form-control', placeholder: 'e.g., Pat' %>
     </div>
 
+    <!-- Last name. -->
     <div class="form-group">
       <%= f.label :last_name %><span class="required-input">*</span> (1&ndash;50 characters)
       <%= f.text_field :last_name, class: 'form-control', placeholder: 'e.g., Smith'%>
     </div>
 
+    <!-- Role. -->
     <div class="form-group">
       <%= f.label :role %><span class="required-input">*</span>
       <div class="radio">
@@ -36,29 +40,76 @@
       </div>
     </div>
 
+    <!-- Field of study. -->
     <div class="form-group">
       <%= f.label :primary_field_of_study %><span class="required-input">*</span>
       <%= f.text_field :field_of_study, class: 'form-control', placeholder: 'e.g., Criminal Justice' %>
     </div>
 
+    <!-- Email. -->
     <div class="form-group">
       <%= f.label :email %><span class="required-input">*</span>
       <%= f.email_field :email, class: 'form-control', placeholder: 'e.g., jsmith@mail.com' %>
     </div>
 
+    <!-- Password. -->
     <div class="form-group">
       <%= f.label :password %><span class="required-input">*</span> (8&ndash;50 characters)
       <%= f.password_field :password, class: 'form-control' %>
     </div>
 
+    <!-- Password (again). -->
     <div class="form-group">
       <%= f.label :password_confirmation, "Confirmation" %><span 
         class="required-input">*</span>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
     </div>
 
+
+
+    <!-- Elevated privileges. -->
+    <div class="form-group">
+      <h3>Permissions</h3>
+      <div class="radio">
+        <label>
+          <input type="radio" name="permissions" value="view_only" checked="checked"/>
+          <strong>Viewing only</strong>
+          <p>
+            This option will give you the ability to
+            view other users and any content on the site. This does not require
+            review by a site admin.
+          </p>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="permissions" value="edit"/>
+          <strong>Viewing and editing</strong>
+          <p>
+            This gives you the same ability as viewing only, but additionally
+            allows you to create new content and edit existing content. 
+            This requires review by a site admin.
+          </p>      
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="permissions" value="admin"/>
+          <strong>Administrator</strong>
+          <p>
+            This gives you the ability to view and edit content, as well as
+            grant permissions to other users. 
+            This requires review by a site admin.
+          </p>      
+        </label>
+      </div>
+    </div>
+
+
+    <!-- Sign up! -->
     <%= f.submit "Create my account", class: "btn btn-primary" %>
     
+    <!-- Cancel. -->
     <button class="btn btn-danger link no-submit" 
           data-href="<%= root_path %>">Cancel</button>
     <% end %>
