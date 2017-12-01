@@ -18,8 +18,8 @@ class User < ApplicationRecord
   ## - created_on
   ## - updated_on
   ## - permission_level
-  ## - permission_granted_on
-  ## - permission_granted_by
+  ## - permission_level_granted_on
+  ## - permission_level_granted_by
 
   attr_accessor :remember_token, :activation_token, :reset_token
   
