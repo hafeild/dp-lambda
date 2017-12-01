@@ -24,6 +24,7 @@ class UsersController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @user.save!
+        @user.reload
         @user.send_activation_email
 
         ## Check the requested permission level -- editor and admin require adding
@@ -35,11 +36,14 @@ class UsersController < ApplicationController
           })
           send_admin_notification_email(permission_request)
         end
-
-        flash[:success] = "Please check your email to activate your account."
-        redirect_to root_url
       end
+
+      flash[:success] = "Please check your email to activate your account."
+      redirect_to root_url
     rescue => e
+      Rails.logger.info(e)
+      Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
+      flash[:danger] = "There was an error! #{e}"
       render 'new'
     end
   end

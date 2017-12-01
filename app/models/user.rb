@@ -24,6 +24,9 @@ class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token
   
   has_secure_password
+  has_many :permission_requests
+  # has_many :reviewed_permission_requests, through: :permission_requests,
+  #   source: :reviewed_by 
 
   ## Emails will be lowercased.
   before_save :downcase_email
@@ -140,7 +143,7 @@ class User < ApplicationRecord
 
   ## Gets a list of admins.
   def User.admins
-    User.find_by({permission_level: "admin"})
+    User.find_by({permission_level: "admin"}) || []
   end
 
   private

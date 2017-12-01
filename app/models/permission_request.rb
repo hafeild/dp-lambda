@@ -11,7 +11,7 @@ class PermissionRequest < ApplicationRecord
   
   
   belongs_to :user
-  belongs_to :reviewed_by, class_name: "User"
+  # belongs_to :reviewed_by, class_name: "User"
   
   def grant_permission!(reviewer)
     set_grant_status(true, reviewer)
@@ -27,10 +27,6 @@ class PermissionRequest < ApplicationRecord
     reviewed = true
     reviewed_on = Time.now
     save!
-  end
-
-  def send_admin_notification_email
-
   end
 
 end

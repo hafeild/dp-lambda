@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(version: 20171130103839) do
   end
 
   create_table "permission_requests", force: :cascade do |t|
-    t.string   "users"
+    t.integer  "user_id"
     t.string   "level_requested"
     t.boolean  "reviewed",        default: false
     t.boolean  "granted",         default: false
