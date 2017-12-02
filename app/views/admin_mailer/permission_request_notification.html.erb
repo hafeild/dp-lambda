@@ -6,7 +6,7 @@
 As an admin, we are notifying you that the user <%= @user.username %> has
 requested to change their permission level from <%= @user.permission_level %> to 
 <%= @permission_request.level_requested %>. You can decline or grant this
-request <%= link_to "here", show_permission_request_url(@permission_request) %>
+request <%= link_to "here", permission_request_url(@permission_request) %>
 </p>
 
 <p>

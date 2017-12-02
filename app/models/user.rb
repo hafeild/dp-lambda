@@ -143,7 +143,7 @@ class User < ApplicationRecord
 
   ## Gets a list of admins.
   def User.admins
-    User.find_by({permission_level: "admin"}) || []
+    User.where({permission_level: "admin"}) || []
   end
 
   private

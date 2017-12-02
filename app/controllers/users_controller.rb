@@ -25,7 +25,6 @@ class UsersController < ApplicationController
       ActiveRecord::Base.transaction do
         @user.save!
         @user.reload
-        @user.send_activation_email
 
         ## Check the requested permission level -- editor and admin require adding
         ## a permission request and sending an email.
@@ -36,6 +35,8 @@ class UsersController < ApplicationController
           })
           send_admin_notification_email(permission_request)
         end
+        @user.send_activation_email
+        
       end
 
       flash[:success] = "Please check your email to activate your account."
