@@ -1,0 +1,8 @@
+<% provide(:title, "Permission requests") %>
+<div class="container permission-requests-page">
+
+  <%= render partial: 'permission_requests/requests', locals: {
+    requests: @permission_requests
+  } %>
+
+</div>

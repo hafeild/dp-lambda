@@ -1,0 +1,30 @@
+<table>
+  <tr>
+    <th>Username</th>
+    <th>Current permission level</th>
+    <th>Permission level requested</th>
+    <th>Action</th>
+  </tr>
+  
+  <% requests.each do |request| %>
+    <tr>
+      <td><%= request.user.username %></td>
+      <td><%= request.user.permission_level %></td>
+      <td><%= request.level_requested %></td>
+      <td>
+        <button class="btn btn-sm complex-button-link"
+          data-href="<%= permission_request_path request %>"
+          data-method="put"
+          data-data="permission_request[action=grant]">
+          Grant
+        </button>
+        <button class="btn btn-sm complex-button-link"
+          data-href="<%= permission_request_path request %>"
+          data-method="put"
+          data-data="permission_request[action=decline]">
+          Decline
+        </button>
+      </td>
+  <% end %>
+  
+</table>

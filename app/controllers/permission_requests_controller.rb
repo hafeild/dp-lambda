@@ -10,10 +10,14 @@ class PermissionRequestsController < ApplicationController
   ##    -- maybe that's the same thing? (we will make a request if 
   ##       one doesn't exist)
   
+  def show
+    @permission_request = PermissionRequest.find(params[:id])
+  end
+  
   
   ## Shows all pending requests.
   def index
-    
+    @permission_requests = PermissionRequest.where(reviewed: false)
   end
   
   ## For an admin to change a permission that wasn't requested.
