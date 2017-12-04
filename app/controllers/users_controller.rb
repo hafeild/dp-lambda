@@ -42,8 +42,8 @@ class UsersController < ApplicationController
       flash[:success] = "Please check your email to activate your account."
       redirect_to root_url
     rescue => e
-      Rails.logger.info(e)
-      Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
+      # Rails.logger.info(e)
+      # Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
       flash[:danger] = "There was an error! #{e}"
       render 'new'
     end

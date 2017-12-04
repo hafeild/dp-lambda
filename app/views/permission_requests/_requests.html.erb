@@ -1,4 +1,4 @@
-<table>
+<table class="permission-requests-table">
   <tr>
     <th>Username</th>
     <th>Current permission level</th>
@@ -7,23 +7,28 @@
   </tr>
   
   <% requests.each do |request| %>
-    <tr>
+    <tr id="permission_request_<%= request.id %>">
       <td><%= request.user.username %></td>
       <td><%= request.user.permission_level %></td>
       <td><%= request.level_requested %></td>
       <td>
-        <button class="btn btn-sm complex-button-link"
-          data-href="<%= permission_request_path request %>"
-          data-method="put"
-          data-data="permission_request[action=grant]">
-          Grant
-        </button>
-        <button class="btn btn-sm complex-button-link"
-          data-href="<%= permission_request_path request %>"
-          data-method="put"
-          data-data="permission_request[action=decline]">
-          Decline
-        </button>
+        <% if request.reviewed %>
+          Reviewed and <%= request.granted ? "granted" : "declined" %> by
+          by <%= request.reviewed_by.username %> on <%= request.reviewed_on %>.
+        <% else %>
+          <button class="btn btn-sm complex-button-link"
+            data-href="<%= permission_request_path request %>"
+            data-method="put"
+            data-data="format=json&permission_request[action=grant">
+            Grant
+          </button>
+          <button class="btn btn-sm complex-button-link"
+            data-href="<%= permission_request_path request %>"
+            data-method="put"
+            data-data="format=json&permission_request[action=decline">
+            Decline
+          </button>
+        <% end %>
       </td>
   <% end %>
   

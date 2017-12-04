@@ -46,6 +46,39 @@ var scrollYMax = function(){
     document.documentElement.offsetHeight ) - window.innerHeight;
 }
 
+/**
+ * Makes an ajax call based on a button with the following attributes:
+ *
+ *  - href (the url to submit to)
+ *  - method (get, post, put, or delete)
+ *  - data (the data to send)
+ *
+ * Non-get or post methods are sent as post and a _method key is added to
+ * the data
+ *
+ * @param buttonElm The button element.
+ * @param onSuccess The function for jQuery.ajax to call on success.
+ * @param onError The function for jQuery.ajax to call on error.
+ */
+var ajaxFromComplexButtonLink = function(buttonElm, onSuccess, onError){
+  var jElm = $(buttonElm);
+  var data = jElm.data('data');
+  
+  // Handle non get/post methods.
+  var method = jElm.data('method').toLowerCase();
+  if(method !== 'get' && method !== 'post'){
+    data += "&_method="+method;
+    method = 'post';
+  }
+  
+  $.ajax(jElm.data('href'), {
+    data: data,
+    method: method,
+    success: onSuccess,
+    error: onError
+  });
+};
+
 $(document).ready(function(){
   embed_html();
 
