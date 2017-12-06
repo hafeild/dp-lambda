@@ -32,8 +32,38 @@ var processPermissionRequestAction = function(event){
   ajaxFromComplexButtonLink(this, onSuccess, onError);
 }
 
+
+/**
+ * Handles clicks on permission levels on the user index page (admin view).
+ */
+var processUserPermissionChangeAction = function(event){
+  var jelm = $(this);
+  
+  var onError = function(jqXHR, textStatus, errorThrown){
+    alert('There was an error while processing your request: '+ errorThrown);
+  }
+
+  var onSuccess = function(data){
+    if(!data.success){
+      onError(null, null, data.error);
+      return;
+    }
+    
+    var request = data.permission_request;
+    var row = jelm.parents('tr')
+    row.find('.permission_level').html(request.permission_level);
+    row.find('.granted_by').html(request.reviewed_by_username);
+    row.find('.granted_on').html(request.reviewed_on);
+  }
+  
+  // From 00-general.js.
+  ajaxFromComplexButtonLink(this, onSuccess, onError);
+}
+
 $(document).ready(function(){
   $(document).on('click', '.permission-requests-table .complex-button-link', 
     processPermissionRequestAction);
   
+  $(document).on('click', '.users-table .complex-button-link', 
+    processUserPermissionChangeAction);
 });

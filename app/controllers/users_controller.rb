@@ -2,6 +2,11 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:edit, :update]
   before_action :correct_user,   only: [:edit, :update]
   before_action :reauthenticate,  only: [:update]
+  before_action :user_is_admin, only: [:index]
+
+  def index
+    @users = User.all
+  end
 
   def new
     @user = User.new
@@ -133,13 +138,6 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :email, :role, 
         :first_name, :last_name, :field_of_study, :password, 
         :password_confirmation, :permission_level)
-    end
-
-    def get_sanitized_permission_level(level)
-      if valid_permission_level? level
-        return level
-      end
-      return "viewer"
     end
 
     def reauthenticate

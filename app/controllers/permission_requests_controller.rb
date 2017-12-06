@@ -2,6 +2,8 @@ class PermissionRequestsController < ApplicationController
   before_action :logged_in_user
   before_action :user_is_admin
   before_action :get_permission_request, only: [:show, :update]
+  before_action :get_params, only: [:create]
+  before_action :get_user, only: [:create]
   
   
   ## Need to think about this...
@@ -21,8 +23,41 @@ class PermissionRequestsController < ApplicationController
   end
   
   ## For an admin to change a permission that wasn't requested.
-  def new
-    
+  def create
+    requested_permission_level = get_sanitized_permission_level(
+      @params[:permission_level])
+
+    begin
+      permission_request = PermissionRequest.create!({
+        user: @user,
+        level_requested: requested_permission_level,
+        reviewed: true,
+        granted: true,
+        reviewed_by: current_user,
+        reviewed_on: Time.now
+      })
+
+      @user.update!({
+        permission_level: requested_permission_level,
+        permission_level_granted_by: current_user,
+        permission_level_granted_on: permission_request.reviewed_on
+      })
+
+      respond_to do |format|
+        format.json { render json: {
+          success: true, 
+          permission_request: {
+            permission_level: @user.permission_level,
+            reviewed_by_username: current_user.username,
+            reviewed_on: permission_request.reviewed_on
+          }
+        } }
+        format.html { redirect_to users_path }
+      end
+    rescue => e
+      respond_with_error "There was an error saving this request: #{@user.username} #{e} : #{e.backtrace.join("<br/>")}.", 
+        users_path
+    end
   end
   
   ## For an admin to grant a permission.
@@ -73,6 +108,24 @@ class PermissionRequestsController < ApplicationController
   private
     def get_permission_request
       @permission_request = PermissionRequest.find(params[:id])
+    end
+
+    def get_params
+      begin
+        @params = params.require(:permission_request).permit(
+          :user_id, :permission_level)
+      rescue => e
+        respond_with_error "Parameters missing: #{params.to_unsafe_h.map{|x,v| "#{x}: #{v}"}.join(",")}.", users_path
+      end
+    end
+
+    def get_user
+      begin
+        @user = User.find(@params[:user_id])
+      rescue => e
+        respond_with_error "User with id #{@params[:user_id]} not found.",
+          users_path
+      end
     end
 
   

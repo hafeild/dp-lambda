@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get     'login'  => 'sessions#new'
   post    'login'  => 'sessions#create'
   delete  'logout' => 'sessions#destroy'
+  get     'users'  => 'users#index'
 
   ## Verticals.
   resources :software
@@ -68,7 +69,7 @@ Rails.application.routes.draw do
   resources :email_verifications, only: [:edit]
   resources :password_resets, only: [:edit, :new, :create, :update]
   
-  resources :permission_requests, only: [:show, :index, :new, :update]
+  resources :permission_requests, only: [:show, :index, :create, :update]
 
   ## Search.
   get "search/:vertical" => "search#show"
