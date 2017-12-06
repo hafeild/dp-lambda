@@ -27,7 +27,7 @@ class User < ApplicationRecord
   has_many :permission_requests
   # has_many :reviewed_permission_requests, through: :permission_requests,
   #   source: :reviewed_by 
-  belongs_to :permission_level_granted_by, class_name: "User"
+  belongs_to :permission_level_granted_by, class_name: "User", optional: true
 
   ## Emails will be lowercased.
   before_save :downcase_email

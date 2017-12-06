@@ -10,7 +10,7 @@ namespace :users do
 
   desc "Edits an existing user in the database."
   task edit: :environment do
-    
+    puts "Not yet implemented."
   end
 
   desc "Makes an existing user an admin."
@@ -29,7 +29,7 @@ namespace :users do
       else
         puts user.update!({
           permission_level: "admin", 
-          permission_level_granted_by: nil,
+          permission_level_granted_by_id: nil,
           permission_level_granted_on: Time.now
         })
         puts "Success!"
@@ -48,7 +48,7 @@ namespace :users do
 
   desc "Finds a user."
   task find: :environment do
-    
+    puts "Not yet implemented."
   end
   
   private
