@@ -57,7 +57,7 @@ class PermissionRequestsController < ApplicationController
         format.html { redirect_to users_path }
       end
     rescue => e
-      respond_with_error "There was an error saving this request: #{@user.username} #{e} : #{e.backtrace.join("<br/>")}.", 
+      respond_with_error "There was an error saving this request.", 
         users_path
     end
   end
@@ -119,7 +119,7 @@ class PermissionRequestsController < ApplicationController
         @params = params.require(:permission_request).permit(
           :user_id, :permission_level)
       rescue => e
-        respond_with_error "Parameters missing: #{params.to_unsafe_h.map{|x,v| "#{x}: #{v}"}.join(",")}.", users_path
+        respond_with_error "Parameters missing.", users_path
       end
     end
 

@@ -12,8 +12,7 @@ foo:
   activated: true
   activated_at: 2015-11-02 16:00:00
   remember_digest:
-  can_edit: true
-  is_admin: false
+  permission_level: editor
 
 bar:
   username: barster
@@ -25,5 +24,4 @@ bar:
   activated: true
   activated_at: 2015-11-02 16:00:00
   remember_digest:
-  can_edit: true
-  is_admin: false
+  permission_level: editor
