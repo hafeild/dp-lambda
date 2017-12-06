@@ -1,0 +1,52 @@
+<% provide(:title, "Settings") %>
+
+<div class="container users-index">
+
+  <table class="users-table table table-striped">
+    <tr>
+      <th>Username</th>
+      <th>Joined on</th>
+      <th>Permission level</th>
+      <% if current_user.is_admin? %>
+        <th>Permission granted by</th>
+        <th>Permission granted on</th>
+        <th>Change permission level</th>
+      <% end %>
+    </tr>
+
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.username %></td>
+        <td><%= user.created_at %></td>
+        <td class="permission_level"><%= user.permission_level %></td>
+        <% if current_user.is_admin? %>
+          <td class="granted_by"><%= user.permission_level_granted_by.nil? \
+            ? "-" : user.permission_level_granted_by.username %></td>
+          <td class="granted_on"><%= user.permission_level_granted_on %></td>
+          <td class="action">
+            
+            <button class="btn btn-sm complex-button-link"
+              data-href="<%= permission_requests_path %>"
+              data-method="post"
+              data-data="format=json&permission_request[permission_level=viewer&permission_request[user_id=<%= user.id %>">
+              Viewer
+            </button>
+            <button class="btn btn-sm complex-button-link"
+              data-href="<%= permission_requests_path %>"
+              data-method="post"
+              data-data="format=json&permission_request[permission_level=editor&permission_request[user_id=<%= user.id %>">
+              Editor
+            </button>
+            <button class="btn btn-sm complex-button-link"
+              data-href="<%= permission_requests_path %>"
+              data-method="post"
+              data-data="format=json&permission_request[permission_level=admin&permission_request[user_id=<%= user.id %>">
+              Admin
+            </button>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+
+</div>
