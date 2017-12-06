@@ -1,6 +1,11 @@
+require 'highline/import'
+
 namespace :users do
+  
   desc "Adds a new user to the database."
   task add: :environment do
+    user = User.new
+    update_user_from_gets user
   end
 
   desc "Edits an existing user in the database."
@@ -19,23 +24,9 @@ namespace :users do
       puts "==============="
       print_user user
       
+      puts
       puts "Enter values for each of the fields -- leave blank to ignore."
-      print "Username: "
-      username = gets.chomp
-      print "Email: "
-      email = gets.chomp
-      print "First name: "
-      first_name = gets.chomp
-      print "Last name: "
-      last_name = gets.chomp
-      print "Role (faculty/student): "
-      role = gets.chomp
-      print "Field of study: "
-      field_of_study = gets.chomp
-      print "Activate? (yes/no): "
-      activate = gets.chomp
-      print "Permission level (viewer/editor/admin): "
-      permission_level = gets.chomp
+      update_user_from_gets user
       
       
     rescue => e
@@ -60,7 +51,7 @@ namespace :users do
       else
         puts user.update!({
           permission_level: "admin", 
-          permission_level_granted_by: nil,
+          permission_level_granted_by_id: nil,
           permission_level_granted_on: Time.now
         })
         puts "Success!"
@@ -79,7 +70,7 @@ namespace :users do
 
   desc "Finds a user."
   task find: :environment do
-    
+    puts "Not yet implemented."
   end
 
 
@@ -89,6 +80,10 @@ namespace :users do
       puts "\tName:       #{user.first_name} #{user.last_name}"
       puts "\tUsername:   #{user.username}"
       puts "\tEmail:      #{user.email}"
+      puts "\tRole:       #{user.role}"
+      puts "\tField:      #{user.field_of_study}"
+      puts "\tActivated:  #{user.activated}"
+      puts "\tActivated at:#{user.activated_at}"
       puts "\tPer. level  #{user.permission_level}"
       puts "\tGranted on: #{user.permission_level_granted_on}"
       puts "\tGranted by: #{user.permission_level_granted_by.nil? \
@@ -99,7 +94,51 @@ namespace :users do
     end
     
     def gets_or_default(default)
-      val = gets.chomp
+      val = STDIN.gets.chomp
       val.size > 0 ? val : default
     end
+
+    def update_user_from_gets(user)
+      fields = [:username, :email, :first_name, :last_name, :role,
+        :field_of_study, :permission_level, :password, :password_confirmation]
+        
+      values = {}
+      
+      fields.each do |field|
+        if field == :password or field == :password_confirmation
+          data = ask("#{field}: ") {|q| q.echo = false}
+        else
+          print "#{field}: "
+          data = STDIN.gets.chomp
+        end
+        
+        if data.size > 0
+          values[field] = data
+        end
+      end
+      
+      if values.has_key? :permission_level
+        values[:permission_level_granted_on] = Time.now
+      end
+      
+      print "activated? (yes/no/<blank>): "
+      data = STDIN.gets.chomp
+      if data == "yes" && !user.activated
+        user.activate
+      elsif data == "no"
+        values[:activated] = false
+        values[:activated_at] = nil
+      end
+      
+      puts
+      puts "Adding these values:\n#{values.map{|k,v| "#{k}: #{v}"}.join("\n")}"
+      puts 
+           
+      user.update!(values)
+      
+      puts "User successfully updated:"
+      puts
+      print_user user
+    end
+
 end

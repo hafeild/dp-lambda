@@ -2,6 +2,11 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:edit, :update]
   before_action :correct_user,   only: [:edit, :update]
   before_action :reauthenticate,  only: [:update]
+  before_action :user_is_admin, only: [:index]
+
+  def index
+    @users = User.all
+  end
 
   def new
     @user = User.new
@@ -25,10 +30,9 @@ class UsersController < ApplicationController
       ActiveRecord::Base.transaction do
         @user.save!
         @user.reload
-        @user.send_activation_email
 
-        ## Check the requested permission level -- editor and admin require adding
-        ## a permission request and sending an email.
+        ## Check the requested permission level -- editor and admin require
+        ## adding a permission request and sending an email.
         if requested_permission_level != "viewer"
           permission_request = PermissionRequest.create!({
             user: @user,
@@ -36,13 +40,15 @@ class UsersController < ApplicationController
           })
           send_admin_notification_email(permission_request)
         end
+        @user.send_activation_email
+        
       end
 
       flash[:success] = "Please check your email to activate your account."
       redirect_to root_url
     rescue => e
-      Rails.logger.info(e)
-      Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
+      # Rails.logger.info(e)
+      # Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
       flash[:danger] = "There was an error! #{e}"
       render 'new'
     end
@@ -56,17 +62,47 @@ class UsersController < ApplicationController
 
   def update
     email_updated = false
+    permissions_updated = false
+    cur_params = user_params
+    
     @user = User.find(params[:id])
-    ## Authenticate password.
 
-
-    if user_params.key?(:email) and user_params[:email] != @user.email
+    if cur_params.key?(:email) and cur_params[:email] != @user.email
       email_updated = true
     end
+    
+    ## Check if a change was made to the user's permission level.
+    if(cur_params.key?(:permission_level) and 
+        cur_params[:permission_level] != @user.permission_level)
+      permissions_updated = true
+      requested_permission_level = get_sanitized_permission_level(
+        cur_params[:permission_level])
+      
+      Rails.logger.info("Requested permission level: #{requested_permission_level}")
+      
+      if requested_permission_level != "viewer"
+        Rails.logger.info('Removing permission_level from user_params')
+        cur_params = cur_params.except(:permission_level)
+      end
+    end
+
+    Rails.logger.info(cur_params.to_unsafe_h.map{|k,v| "#{k}: #{v}"}.join("\n"))
 
     ## If the update was successful...
-    if @user.update_attributes(user_params)
+    if @user.update_attributes(cur_params)
 
+      ## Check the requested permission level -- editor and admin require
+      ## adding a permission request and sending an email.
+      if permissions_updated and requested_permission_level != "viewer"
+        permission_request = PermissionRequest.create!({
+          user: @user,
+          level_requested: requested_permission_level
+        })
+        send_admin_notification_email(permission_request)
+        flash[:info] = ("Your requested permission change to "+
+          "#{requested_permission_level} is pending approval from an admin.")
+      end
+      
       ## If the user's email has been updated, send a verification email.
       if email_updated
         flash[:success] = "Please check your email to re-activate your "+
@@ -75,6 +111,7 @@ class UsersController < ApplicationController
       else
         flash[:success] = "Profile updated"
       end
+      
 
     ## If the update wasn't successful, find out why.
     else
@@ -101,13 +138,6 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :email, :role, 
         :first_name, :last_name, :field_of_study, :password, 
         :password_confirmation, :permission_level)
-    end
-
-    def get_sanitized_permission_level(level)
-      if valid_permission_level? level
-        return level
-      end
-      return "viewer"
     end
 
     def reauthenticate

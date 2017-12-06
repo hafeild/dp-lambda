@@ -47,6 +47,11 @@
                 <li><%= link_to "Add an analysis", new_analysis_path %></li>
                 <li><%= link_to "Add software", new_software_path %></li>
                 <li><%= link_to "Add a dataset", new_dataset_path %></li>
+                <% if current_user.is_admin? %>
+                  <li class="divider"></li>
+                  <li><%= link_to "Administer users", users_path %></li>
+                  <li><%= link_to "Review permission requests", permission_requests_path %></li>
+                <% end %>                
               </ul>
             </li>
           <% else %>

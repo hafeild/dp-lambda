@@ -1,9 +1,0 @@
-Alice Permission Request
-
-Hi <%= @admin.first_name %>,
-
-As an admin, we are notifying you that the user <%= @user.username %> has requested to change their permission level from <%= @user.permission_level %> to <%= @permission_request.level_requested %>. You can decline or grant this request by visiting: <%= show_permission_request_url(@permission_request) %>
-
-Thanks,
-The Alice team
-<%= root_url %>

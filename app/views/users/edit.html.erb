@@ -63,6 +63,44 @@
                 placeholder: "Enter your current password" %>
           </div>
 
+          <!-- Permissions. -->
+          <div class="form-group">
+            <h3>Permissions</h3>
+            <div class="radio">
+              <label>
+                <%= f.radio_button :permission_level, :viewer %>
+                <strong>Viewer</strong>
+                <p>
+                  This option will give you the ability to view other users and
+                  any content on the site. This does not require review by a
+                  site admin.
+                </p>
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <%= f.radio_button :permission_level, :editor %>
+                <strong>Editor</strong>
+                <p>
+                  This option allows you to view other users and create, view,
+                  and edit site content. This requires review by a site admin.
+                </p>      
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <%= f.radio_button :permission_level, :admin %>
+                <strong>Administrator</strong>
+                <p>
+                  This gives you the ability to view and edit content, as well
+                  as grant permissions to other users. This requires review by a
+                  site admin.
+                </p>      
+              </label>
+            </div>
+          </div>
+
+
           <%= f.submit "Update information", class: "btn btn-primary" %>
           
           <button class="btn btn-danger link no-submit" 

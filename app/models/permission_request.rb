@@ -11,7 +11,7 @@ class PermissionRequest < ApplicationRecord
   
   
   belongs_to :user
-  # belongs_to :reviewed_by, class_name: "User"
+  belongs_to :reviewed_by, class_name: "User", optional: true
   
   def grant_permission!(reviewer)
     set_grant_status(true, reviewer)

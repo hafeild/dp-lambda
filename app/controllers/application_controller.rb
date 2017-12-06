@@ -70,6 +70,16 @@ class ApplicationController < ActionController::Base
       level == "viewer" or level == "editor" or level == "admin"
     end
 
+    ## Returns a sanitized permission level.
+    def get_sanitized_permission_level(level)
+      level.downcase!
+      if valid_permission_level? level
+        return level
+      end
+      return "viewer"
+    end
+
+
     ## Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])
