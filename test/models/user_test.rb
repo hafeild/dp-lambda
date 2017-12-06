@@ -27,6 +27,13 @@ class UserTest < ActiveSupport::TestCase
     @user.password = @user.password_confirmation = "1"*51
     assert_not @user.valid?
   end
+  
+  test "password and password_confirmation should match" do
+    @user.password = "12345678"
+    @user.password_confirmation = ""
+    assert_not @user.valid?
+  end
+
 
   test "email should be present" do
     @user.email = "     "

@@ -15,21 +15,22 @@ class UsersController < ApplicationController
   ## Creates a new user and sends an activation email. The user cannot log in
   ## until they verify their email.
   def create
-    @user = User.new(user_params)
-    @user.activated = false
-    
-    ## All new users start off as viewers. Requests for other permission levels
-    ## are process in the transaction below.
-    requested_permission_level = get_sanitized_permission_level(
-                                   @user.permission_level)
-    @user.permission_level = "viewer"
-    
-
     ## Begin transaction.
     begin
-      ActiveRecord::Base.transaction do
+      User.transaction do
+        @user = User.new(user_params)
+        @user.activated = false
+        
+        ## All new users start off as viewers. Requests for other permission levels
+        ## are process in the transaction below.
+        requested_permission_level = get_sanitized_permission_level(
+                                       @user.permission_level)
+        @user.permission_level = "viewer"
+        
         @user.save!
         @user.reload
+        
+        
 
         ## Check the requested permission level -- editor and admin require
         ## adding a permission request and sending an email.

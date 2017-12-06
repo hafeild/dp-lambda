@@ -28,23 +28,25 @@ class PermissionRequestsController < ApplicationController
       @params[:permission_level])
 
     begin
-      permission_request = PermissionRequest.create!({
-        user: @user,
-        level_requested: requested_permission_level,
-        reviewed: true,
-        granted: true,
-        reviewed_by: current_user,
-        reviewed_on: Time.now
-      })
+      ActiveRecord::Base.transaction do
+        permission_request = PermissionRequest.create!({
+          user: @user,
+          level_requested: requested_permission_level,
+          reviewed: true,
+          granted: true,
+          reviewed_by: current_user,
+          reviewed_on: Time.now
+        })
 
-      @user.update!({
-        permission_level: requested_permission_level,
-        permission_level_granted_by: current_user,
-        permission_level_granted_on: permission_request.reviewed_on
-      })
+        @user.update!({
+          permission_level: requested_permission_level,
+          permission_level_granted_by: current_user,
+          permission_level_granted_on: permission_request.reviewed_on
+        })
 
-      @user.send_permissions_changed_email
-      
+        @user.send_permissions_changed_email
+      end
+        
       respond_to do |format|
         format.json { render json: {
           success: true, 
