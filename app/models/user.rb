@@ -102,7 +102,14 @@ class User < ApplicationRecord
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
-
+  
+  # Sends permissions changed email.
+  def send_permissions_changed_email
+    UserMailer.permissions_changed(self).deliver_now
+  end
+  
+  # Sends email verification email (to make sure their email address is 
+  # correct).
   def send_email_verification_email
     update_attribute(:activated, false)
     update_attribute(:activation_token, User.new_token)

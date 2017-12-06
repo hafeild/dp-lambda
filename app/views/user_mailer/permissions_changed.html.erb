@@ -1,0 +1,41 @@
+<h1>Alice Account Permission Change</h1>
+
+<p>Hi <%= @user.first_name %>,</p>
+
+<p>
+Your permissions for <%= link_to "Alice", root_url %> have changed. 
+</p>
+
+<table>
+  <td>New permission level: </td><td><%= @user.permission_level %></td>
+  <% if not @user.permission_level_granted_by.nil? %>
+    <td>Granted by: </td><td><%= @user.permission_level_granted_by.username %></td>
+  <% end %>
+</table>
+  
+<% if @user.permission_level == "admin" %>
+<p>
+As an admin, you will now be able to change permissions of other users. You
+will be notified via email of permission requests made by users and will have
+the opportunity to review those requests. Admin options are available at the
+bottom of the users menu in the upper right corner of any 
+<%= link_to "Alice", root_url%> page.
+</p>
+<% elsif @user.permission_level == "editor" %>
+<p>
+As an editor, you will be allowed to create new content pages and
+edit existing ones. To add new pages, use the options in the users menu
+in the upper right corner of any <%= link_to "Alice", root_url%> page, or
+use the "Add a ..." button at the top of any vertical listing page. Editing
+options will automatically appear on all content pages.
+</p>
+<% else %>
+<p>
+As a viewer, you will be able to view content across the site.
+</p>
+<% end %>
+
+<p>
+Thanks,<br/>
+The Alice team
+</p>

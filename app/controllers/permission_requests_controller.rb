@@ -43,6 +43,8 @@ class PermissionRequestsController < ApplicationController
         permission_level_granted_on: permission_request.reviewed_on
       })
 
+      @user.send_permissions_changed_email
+      
       respond_to do |format|
         format.json { render json: {
           success: true, 
@@ -85,6 +87,8 @@ class PermissionRequestsController < ApplicationController
             permission_level_granted_on: @permission_request.reviewed_on,
             permission_level_granted_by: current_user
           })
+          @user = @permission_request.user
+          @user.send_permissions_changed_email
         end
         
         respond_to do |format|

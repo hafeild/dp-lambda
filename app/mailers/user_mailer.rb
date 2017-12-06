@@ -19,4 +19,9 @@ class UserMailer < ApplicationMailer
     @user = user
     mail to: user.email, subject: "Alice password reset"
   end
+  
+  def permissions_changed(user)
+    @user = user
+    mail to: user.email, subject: "Alice permissions changed"
+  end
 end
