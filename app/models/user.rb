@@ -22,11 +22,12 @@ class User < ApplicationRecord
   ## - permission_level_granted_by
 
   attr_accessor :remember_token, :activation_token, :reset_token
-  
+
   has_secure_password
   has_many :permission_requests
   # has_many :reviewed_permission_requests, through: :permission_requests,
   #   source: :reviewed_by 
+  belongs_to :permission_level_granted_by, class_name: "User"
 
   ## Emails will be lowercased.
   before_save :downcase_email

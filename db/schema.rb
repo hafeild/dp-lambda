@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130103839) do
+ActiveRecord::Schema.define(version: 20171206012545) do
 
   create_table "analyses", force: :cascade do |t|
     t.string   "name"
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(version: 20171130103839) do
     t.string   "level_requested"
     t.boolean  "reviewed",        default: false
     t.boolean  "granted",         default: false
-    t.integer  "reviewed_by"
+    t.integer  "reviewed_by_id"
     t.datetime "reviewed_on"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -208,11 +208,11 @@ ActiveRecord::Schema.define(version: 20171130103839) do
     t.string   "remember_digest"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
-    t.string   "permission_level",            default: "viewer"
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.string   "permission_level",               default: "viewer"
     t.datetime "permission_level_granted_on"
-    t.integer  "permission_level_granted_by"
+    t.integer  "permission_level_granted_by_id"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
