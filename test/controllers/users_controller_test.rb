@@ -110,24 +110,57 @@ class UsersControllerTest < ActionController::TestCase
     assert bar.email != "x@mail.org"
   end
   
-  test "should update user settings" do
+  test "should update user settings and create permission request" do
     foo = users(:foo)
     log_in_as foo
-    post :update, params: { id: foo.id, user: { 
-        username: "x",
-        email: "x@mail.org",
-        role: "student",
-        first_name: "X",
-        last_name: "Y",
-        field_of_study: "XYZ",
-        current_password: "password",
-        permission_level: "admin",
-        password: "12345678",
-        password_confirmation: "12345678"
-      } }
-    foo.reload
-    assert foo.username == "x", "Username not updated: #{foo.username}"
-    assert foo.email == "x@mail.org", "Email not updated: #{foo.email}"
+    assert_difference "PermissionRequest.count", 1, "Permission request not created" do
+      post :update, params: { id: foo.id, user: { 
+          username: "x",
+          email: "x@mail.org",
+          role: "student",
+          first_name: "X",
+          last_name: "Y",
+          field_of_study: "XYZ",
+          current_password: "password",
+          permission_level: "admin",
+          password: "12345678",
+          password_confirmation: "12345678"
+        } }
+      foo.reload
+      assert foo.username == "x", "Username not updated: #{foo.username}"
+      assert foo.email == "x@mail.org", "Email not updated: #{foo.email}"
+      
+      assert foo.permission_level == "editor", 
+        "Permission level saved incorrectly."
+      permission_request = PermissionRequest.find_by(user: foo)
+      assert_not permission_request.nil?
+      assert permission_request.level_requested = "admin"
+    end
+  end
+  
+  test "should update user settings but not create permission request" do
+    foo = users(:foo)
+    log_in_as foo
+    assert_difference "PermissionRequest.count", 0, "Permission request created" do
+      post :update, params: { id: foo.id, user: { 
+          username: "x",
+          email: "x@mail.org",
+          role: "student",
+          first_name: "X",
+          last_name: "Y",
+          field_of_study: "XYZ",
+          current_password: "password",
+          permission_level: "viewer",
+          password: "12345678",
+          password_confirmation: "12345678"
+        } }
+      foo.reload
+      assert foo.username == "x", "Username not updated: #{foo.username}"
+      assert foo.email == "x@mail.org", "Email not updated: #{foo.email}"
+      
+      assert foo.permission_level == "viewer", 
+        "Permission level saved incorrectly."
+    end
   end
   
   test "shouldn't update user settings without correct password" do
@@ -147,5 +180,6 @@ class UsersControllerTest < ActionController::TestCase
     assert foo.username != "x", "Username updated"
     assert foo.email != "x@mail.org", "Email updated"
   end
+  
   
 end
