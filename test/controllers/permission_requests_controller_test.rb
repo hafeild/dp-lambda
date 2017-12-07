@@ -90,7 +90,7 @@ class PermissionRequestsControllerTest < ActionController::TestCase
 
     assert data["success"], "Response unsuccessful: #{@response.body}"
 
-    permission_request = PermissionRequest.last
+    permission_request.reload
     assert bar.permission_level == permission_request.level_requested, 
       "permission level not updated: #{bar.permission_level}"
     assert permission_request.reviewed, "Permission not marked as reviewed."
@@ -115,7 +115,7 @@ class PermissionRequestsControllerTest < ActionController::TestCase
 
     assert data["success"], "Response unsuccessful: #{@response.body}"
 
-    permission_request = PermissionRequest.last
+    permission_request.reload
     assert bar.permission_level == "editor", 
       "permission level not updated: #{bar.permission_level}"
     assert permission_request.reviewed, "Permission not marked as reviewed."
