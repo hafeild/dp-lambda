@@ -26,7 +26,7 @@ class PermissionRequestsController < ApplicationController
   def create
     requested_permission_level = get_sanitized_permission_level(
       @params[:permission_level])
-
+    permission_request = nil
     begin
       ActiveRecord::Base.transaction do
         permission_request = PermissionRequest.create!({
@@ -59,7 +59,7 @@ class PermissionRequestsController < ApplicationController
         format.html { redirect_to users_path }
       end
     rescue => e
-      respond_with_error "There was an error saving this request.", 
+      respond_with_error "There was an error saving this request. #{e}", 
         users_path
     end
   end
