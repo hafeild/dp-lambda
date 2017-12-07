@@ -1,6 +1,7 @@
 <table class="permission-requests-table table table-striped">
   <tr>
     <th>Username</th>
+    <th>Email</th>
     <th>Current permission level</th>
     <th>Permission level requested</th>
     <th>Action</th>
@@ -9,6 +10,7 @@
   <% requests.each do |request| %>
     <tr class="permission_request" id="permission_request-<%= request.id %>">
       <td><%= request.user.username %></td>
+      <td><%= request.user.email %></td>
       <td><%= request.user.permission_level %></td>
       <td class="level-requested"><%= request.level_requested %></td>
       <td>
