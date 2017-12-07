@@ -9,6 +9,8 @@ New features:
     * can now select multiple related vertical entries when linking two
       verticals (e.g., tags, software, etc.)
     * the description field for assignments is no longer mandatory
+    * users can request viewer (default), editor, and admin permissions
+    * admins can administer users and permission change requests
   
 Bug fixes:
 
