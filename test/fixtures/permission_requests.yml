@@ -1,4 +1,4 @@
-pr_1:
+pr1:
   user: bar
   level_requested: admin
   reviewed: false
