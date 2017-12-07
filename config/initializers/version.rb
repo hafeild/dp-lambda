@@ -12,9 +12,9 @@
 ## restart.
 
 ## Update these fields ##
-isRelease = false
+isRelease = true
 yearVersion   = "17" ## Year of release.
-monthVersion  = "08" ## Month of release.
+monthVersion  = "12" ## Month of release.
 numberVersion = "00" ## Number of release within Year-Month
 hotFixNo      = "00" ## Hot fix no. for release.
 
