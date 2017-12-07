@@ -7,9 +7,15 @@ Your permissions for <%= link_to "Alice", root_url %> have changed.
 </p>
 
 <table>
-  <td>New permission level: </td><td><%= @user.permission_level %></td>
+  <tr>
+    <td>New permission level: </td>
+    <td><%= @user.permission_level %></td>
+  </tr>
   <% if not @user.permission_level_granted_by.nil? %>
-    <td>Granted by: </td><td><%= @user.permission_level_granted_by.username %></td>
+    <tr>
+        <td>Granted by: </td>
+        <td><%= @user.permission_level_granted_by.username %></td>
+    </tr>
   <% end %>
 </table>
   
