@@ -15,7 +15,7 @@
     </tr>
 
     <% @users.each do |user| %>
-      <tr>
+      <tr class="user" id="user-<%= user.id %>">
         <td><%= user.username %></td>
         <td><%= user.created_at %></td>
         <td class="permission_level"><%= user.permission_level %></td>

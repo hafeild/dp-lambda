@@ -7,10 +7,10 @@
   </tr>
   
   <% requests.each do |request| %>
-    <tr id="permission_request_<%= request.id %>">
+    <tr class="permission_request" id="permission_request-<%= request.id %>">
       <td><%= request.user.username %></td>
       <td><%= request.user.permission_level %></td>
-      <td><%= request.level_requested %></td>
+      <td class="level-requested"><%= request.level_requested %></td>
       <td>
         <% if request.reviewed %>
           Reviewed and <%= request.granted ? "granted" : "declined" %> by

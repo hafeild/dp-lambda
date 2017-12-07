@@ -5,4 +5,10 @@ pr1:
   granted: false
   
   
+pr2:
+  user: foo
+  level_requested: editor
+  reviewed: false
+  granted: false
+  
   

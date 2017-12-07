@@ -17,51 +17,31 @@ class ApplicationController < ActionController::Base
     #   end
     # end
 
-
-
     ## Confirms a logged-in user.
     def logged_in_user
       unless logged_in?
-        error = "You must be logged in to modify content."
-        respond_to do |format|
-          format.json { render json: {success: false, error: error} }
-          format.html do
-            store_location
-            flash[:danger] = error
-            redirect_to login_path
-          end
-        end
+        respond_with_error "This action requires that you be logged in.", 
+          login_path
       end
     end
-
 
     ## Checks if the logged in user can make edits. If not, redirect and 
     ## displays an error message.
     def user_can_edit
-      unless can_edit?
-        error = "You do not have permission to edit this content."
-        respond_to do |format|
-          format.json { render json: {success: false, error: error} }
-          format.html do
-            flash[:danger] = error 
-            redirect_back_or root_path
-          end
-        end
+      unless logged_in? and can_edit?
+        respond_with_error(
+          "You must have editor permissions to edit this content.", 
+          root_path)
       end
     end
 
     ## Checks if the logged in user is an admin. If not, redirect and 
     ## displays an error message.
     def user_is_admin
-      unless is_admin?
-        error = "You do not have permission to perform this action."
-        respond_to do |format|
-          format.json { render json: {success: false, error: error} }
-          format.html do
-            flash[:danger] = error 
-            redirect_back_or root_path
-          end
-        end
+      unless logged_in? and is_admin?
+        respond_with_error(
+          "You must have admin permissions to perform this action.", 
+          root_path)
       end
     end
 
