@@ -26,7 +26,6 @@ class UserMailerTest < ActionMailer::TestCase
     assert_match CGI::escape(user.username), mail.body.encoded
   end
 
-
   test "password_reset" do
     user = users(:foo)
     user.reset_token = User.new_token
@@ -37,5 +36,15 @@ class UserMailerTest < ActionMailer::TestCase
     assert_match user.first_name,            mail.body.encoded
     assert_match user.reset_token,           mail.body.encoded
     assert_match CGI::escape(user.username), mail.body.encoded
+  end
+
+  test "permissions_changed" do
+    user = users(:foo)
+    mail = UserMailer.permissions_changed(user)
+    assert_equal "Alice permissions changed",     mail.subject
+    assert_equal [user.email],               mail.to
+    assert_equal [ENV['FROM_EMAIL']],        mail.from
+    assert_match user.first_name,            mail.body.encoded
+    assert_match user.permission_level,      mail.body.encoded
   end
 end

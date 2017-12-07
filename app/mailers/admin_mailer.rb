@@ -5,7 +5,7 @@ class AdminMailer < ApplicationMailer
     @user = permission_request.user
     @permission_request = permission_request
     @admin = admin
-    mail to: admin.email, subject: "New permission request"  
+    mail to: admin.email, subject: "Alice: new permission request"  
   end
   
 end
