@@ -1,6 +1,6 @@
 class Attachment < ApplicationRecord
   ## Attachments have:
-  ## - file_digest (hash of file contents)
+  ## - file_attachment_fingerprint (hash of file contents)
   ## - uploaded_by (user who uploaded it)
   ## - created_at
   ## - updated_at
