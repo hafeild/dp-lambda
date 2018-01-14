@@ -2,7 +2,7 @@ class AttachmentsController < ApplicationController
   before_action :logged_in_user, except: [:index]
   before_action :user_can_edit, except: [:index]
   before_action :get_redirect_path
-  before_action :get_attachment_file, only: [:create]
+  before_action :get_file_attachment, only: [:create]
   before_action :get_attachment_id, only: [:destroy]
   before_action :get_verticals_or_example
   
@@ -14,7 +14,7 @@ class AttachmentsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         ## Create the attachment.
-        attachment = Attachment.create!(attachment_file: @attachment_file)
+        attachment = Attachment.create!(file_attachment: @file_attachment)
         
         ## Link it to whichever vertical/example was input.
         @vertical.attachments << attachment 
@@ -48,9 +48,9 @@ class AttachmentsController < ApplicationController
       end
     end
   
-    def get_attachment_file
+    def get_file_attachment
       begin
-        @attachment_file = params.require(:attachment).require(:attachment_file)
+        @file_attachment = params.require(:attachment).require(:file_attachment)
       rescue => e 
         respond_with_error "Error: no attachment provide.", @redirect_path
       end
