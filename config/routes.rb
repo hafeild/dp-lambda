@@ -73,4 +73,9 @@ Rails.application.routes.draw do
 
   ## Search.
   get "search/:vertical" => "search#show"
+  
+  
+  ## Attachments.
+  resources :attachments, only: [:index, :create, :destroy]
+  
 end

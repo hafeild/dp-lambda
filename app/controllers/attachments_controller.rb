@@ -2,20 +2,59 @@ class AttachmentsController < ApplicationController
   before_action :logged_in_user, except: [:index]
   before_action :user_can_edit, except: [:index]
   before_action :get_redirect_path
+  before_action :get_attachment_file, only: [:create]
+  before_action :get_attachment_id, only: [:destroy]
   before_action :get_verticals_or_example
   
   def index
+    @attachments = Attachment.all()
   end
 
   def create
-    
+    begin
+      ActiveRecord::Base.transaction do
+        ## Create the attachment.
+        attachment = Attachment.create!(attachment_file: @attachment_file)
+        
+        ## Link it to whichever vertical/example was input.
+        @vertical.attachments << attachment 
+        @vertical.save!
+      end
+      
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "There was an error saving the attachment.", 
+        @redirect_path
+    end
   end
   
   def destroy
-    
+    begin
+      Attachment.find(@attachment_id).destroy!
+      respond_with_success @redirect_path
+    rescue => e
+      respond_with_error "There was an error removing the attachment.", 
+        @redirect_path
+    end
   end
   
   private
+  
+    def get_attachment_id
+      begin
+        @attachment_id = params.require(:id)
+      rescue => e
+        respond_with_error "Error: not attachment id specified.", @redirect_path
+      end
+    end
+  
+    def get_attachment_file
+      begin
+        @attachment_file = params.require(:attachment).require(:attachment_file)
+      rescue => e 
+        respond_with_error "Error: no attachment provide.", @redirect_path
+      end
+    end
   
     ## Checks for a parameter of the form <vertical>_id (e.g., software_id)
     ## or example_id. Renders an error if not found.
