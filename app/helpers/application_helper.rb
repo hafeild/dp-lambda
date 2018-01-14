@@ -92,8 +92,29 @@ module ApplicationHelper
   end
   ##############################################################################
 
+
   ##############################################################################
-  ## The following generate paths for vertical-tag.
+  ## The following generate paths for vertical-attachment.
+  def new_vertical_attachment_path(vertical)
+    "#{get_vertical_path(vertical)}/attachments/new"
+  end
+
+  def edit_vertical_attachment_path(vertical, attachment)
+    "#{get_vertical_path(vertical)}/attachments/#{attachment.id}/edit"
+  end
+
+  def vertical_attachment_path(vertical, attachment)
+    "#{get_vertical_path(vertical)}/attachments/#{attachment.id}"
+  end
+
+  def vertical_attachments_path(vertical)
+    "#{get_vertical_path(vertical)}/attachments"
+  end
+  ##############################################################################
+
+
+  ##############################################################################
+  ## The following generate paths for vertical-vertical.
   def vertical_vertical_path(vertical1, vertical2)
     [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
       vertical2.id

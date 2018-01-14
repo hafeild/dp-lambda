@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   resources :examples, except: [:index, :destroy]
   resources :web_resources, except: [:index, :destroy]
   resources :tags, except: [:index, :destroy]
-
+  
   verticals = [:software, :dataset, :analysis, :assignment]
 
   ## Configures all of the routes for interacting with resources attached to
@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 
     [:examples, :web_resources, :tags].each do |resource|
+      
       resource_base = "#{base}/#{resource}"
       get    resource_base               => "#{resource}#index"
       get    "#{resource_base}/new"      => "#{resource}#new"
@@ -42,6 +43,19 @@ Rails.application.routes.draw do
       post   "#{resource_base}/:id"      => "#{resource}#connect"
       delete "#{resource_base}/:id"      => "#{resource}#disconnect"
     end
+  end
+  
+  ## Attachments.
+  resources :attachments, only: [:index, :create, :destroy]
+  verticals.each do |vertical|
+    base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
+    resource_base = "#{base}/attachments"
+    
+    get    resource_base               => "attachments#index"
+    # get    "#{resource_base}/new"      => "attachments#new"
+    # get    "#{resource_base}/:id/edit" => "attachments#edit"
+    post   "#{resource_base}"          => "attachments#create"
+    delete "#{resource_base}/:id"      => "attachments#destroy"
   end
 
   ## Configures all of the routes for connecting two verticals together.
@@ -63,6 +77,7 @@ Rails.application.routes.draw do
   end
 
 
+
   ## Account management.
   resources :users, only: [:create,:update,:edit,:destroy]
   resources :account_activations, only: [:edit]
@@ -74,8 +89,6 @@ Rails.application.routes.draw do
   ## Search.
   get "search/:vertical" => "search#show"
   
-  
-  ## Attachments.
-  resources :attachments, only: [:index, :create, :destroy]
+
   
 end

@@ -66,6 +66,13 @@
           : @assignment.description.html_safe) %>"></iframe>
   </div>
 
+  <div class="file-attachments">
+    <h2>File attachments</h2>
+    <% if can_edit? %>
+      <%= render(partial: "attachments/new", locals: {vertical: @assignment}) %>
+    <% end %>
+  </div>
+
   <div class="web-resources">
     <h2>Web resources</h2>
     <% if can_edit? %>
