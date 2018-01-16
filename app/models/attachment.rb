@@ -15,6 +15,11 @@ class Attachment < ApplicationRecord
 
   validates_attachment :file_attachment, presence: true,
     size: { in: 0..5.megabytes }
+  
+  ## We may want to replace this with a list of accepted attachment types.
+  do_not_validate_attachment_file_type :file_attachment
+  
+  has_and_belongs_to_many :assignment
     
   
 end

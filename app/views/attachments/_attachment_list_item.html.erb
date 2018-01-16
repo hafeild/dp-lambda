@@ -1,0 +1,24 @@
+<%# 
+This is expecting the following local variables:
+
+  vertical_from -- the vertical whose page this is being presented
+  editable -- if true and can_edit is true, then a 'delete' button will appear 
+              next to  each attachment. Defaults to false.
+%>
+<li>
+  <span class="attachment-name"
+    ><%= link_to attachment.file_attachment_file_name, 
+      attachment.file_attachment.url %></span> 
+  <span class="size">
+    (<%= number_to_human_size attachment.file_attachment_file_size %>)
+  </span>
+  <% if can_edit? and editable and defined? vertical_from %>
+    <%= form_for(attachment, method: :delete,
+        url: vertical_attachment_path(vertical_from, attachment), 
+        html: {class: "inline"}) do |f| %>
+      <button type="submit" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
+        Remove</button>
+    <% end %>
+  <% end %>
+</li>

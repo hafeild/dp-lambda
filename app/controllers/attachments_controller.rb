@@ -14,16 +14,17 @@ class AttachmentsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         ## Create the attachment.
-        attachment = Attachment.create!(file_attachment: @file_attachment)
+        attachment = Attachment.create!(file_attachment: @file_attachment,
+          uploaded_by: @current_user)
         
         ## Link it to whichever vertical/example was input.
         @vertical.attachments << attachment 
         @vertical.save!
       end
       
-      respond_with_success @redirect_path
+      respond_with_success get_vertical_path(@vertical)
     rescue => e
-      respond_with_error "There was an error saving the attachment.", 
+      respond_with_error "There was an error saving the attachment. #{e}", 
         @redirect_path
     end
   end
@@ -31,7 +32,7 @@ class AttachmentsController < ApplicationController
   def destroy
     begin
       Attachment.find(@attachment_id).destroy!
-      respond_with_success @redirect_path
+      respond_with_success get_vertical_path @vertical
     rescue => e
       respond_with_error "There was an error removing the attachment.", 
         @redirect_path
@@ -60,10 +61,17 @@ class AttachmentsController < ApplicationController
     ## or example_id. Renders an error if not found.
     def get_verticals_or_example
       get_verticals
-      if @vertical_form_id.nil? and params.key? :example_id
-        @vertical = Example.find(params[:example_id])
-        @vertical_form_id = :example_id
-      else
+      
+      begin
+        if @vertical_form_id.nil? and params.key? :example_id
+          @vertical = Example.find(params[:example_id])
+          @vertical_form_id = :example_id
+        end
+      rescue
+        @vertical = nil
+      end
+      
+      if @vertical.nil?
         respond_with_error "Attachments must be associated with a vertical or example.", 
           @redirect_path
       end

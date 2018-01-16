@@ -31,6 +31,8 @@ module ApplicationHelper
       analysis_path(vertical)
     elsif vertical.class == Assignment
       assignment_path(vertical)
+    elsif vertical.class == Example
+      example_path(vertical)
     end
   end
 
@@ -158,4 +160,11 @@ module ApplicationHelper
   def sort_by(collection, key)
     collection.sort{|x,y| x[key] <=> y[key]}
   end
+
+
+################################################################################
+
+
+
 end
+
