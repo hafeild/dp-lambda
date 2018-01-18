@@ -79,7 +79,29 @@ var ajaxFromComplexButtonLink = function(buttonElm, onSuccess, onError){
   });
 };
 
+/**
+ * Disables a button if the field bound to this function is empty. Otherwise
+ * enables it.
+ *
+ * @param e The JavaScript event that triggered.
+ */
+var toggleSubmitOnFieldChange = function(e){
+  var fieldElm = $(this);
+  var submitElm = fieldElm.siblings('[type=submit]');
+  
+  // Disable the submit button if the field isn't set.
+  if(this.value === ''){
+    submitElm.prop('disabled', true);
+    
+  // Enable the submit button if the field is set.
+  } else {
+    submitElm.prop('disabled', false);
+    
+  }
+}
+
 $(document).ready(function(){
   embed_html();
-
+  
+  $(document).on('change', '.submit-toggle-field', toggleSubmitOnFieldChange);
 });
