@@ -14,7 +14,7 @@ class Attachment < ApplicationRecord
   has_attached_file :file_attachment
 
   validates_attachment :file_attachment, presence: true,
-    size: { in: 0..5.megabytes }
+    size: { in: 0..Rails.configuration.MAX_ATTACHMENT_SIZE }
   
   ## We may want to replace this with a list of accepted attachment types.
   do_not_validate_attachment_file_type :file_attachment

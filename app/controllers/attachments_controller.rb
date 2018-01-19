@@ -16,9 +16,12 @@ class AttachmentsController < ApplicationController
         ## Create the attachment.
         attachment = Attachment.create!(file_attachment: @file_attachment,
           uploaded_by: @current_user)
-        
         ## Link it to whichever vertical/example was input.
         @vertical.attachments << attachment 
+        if exceeds_project_max_attachment_size @vertical
+          raise "Maximum attachment size "+
+            "(#{ENV['VERTICAL_MAX_TOATAL_ATTACHMENTS_SIZE']}) MiB exceeded."
+        end
         @vertical.save!
       end
       
@@ -75,6 +78,14 @@ class AttachmentsController < ApplicationController
         respond_with_error "Attachments must be associated with a vertical or example.", 
           @redirect_path
       end
+    end
+    
+    def exceeds_project_max_attachment_size vertical
+      total_size = 0
+      vertical.attachments.each do |attachment|
+        total_size += attachment.file_attachment_file_size
+      end
+      total_size > Rails.configuration.VERTICAL_MAX_TOATAL_ATTACHMENTS_SIZE
     end
   
 end

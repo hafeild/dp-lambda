@@ -25,7 +25,6 @@ FROM_EMAIL: "noreply@localhost"
 ## Set this to the email address of the webmaster or site maintainer.
 WEBSITE_CONTACT: "webmaster@localhost:3000"
 
-
 ## Production settings.
 production:
   ## Set this to a very long, random string, like the result of running:
