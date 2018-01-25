@@ -10,12 +10,19 @@
     <% end %>
   </h1>
 
-
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
 
       <%= render(partial: 'example', locals: {
         print_header: false, example: @example}) %>
+        
+        <%= render(partial: "attachments/attachment_list",
+            locals: { 
+              vertical_from: @example, 
+              data: @example.attachments,
+              editable: true,
+              title_tag: :h2 }) %>
+
 
       <%= render(partial: "verticals_shared/related_vertical",
         locals: {title: "Associated assignments", vertical_from: Example.new, 

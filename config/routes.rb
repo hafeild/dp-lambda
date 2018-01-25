@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   
   ## Attachments.
   resources :attachments, only: [:index, :create, :destroy]
-  verticals.each do |vertical|
+  (verticals + ['example']).each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
     resource_base = "#{base}/attachments"
     
