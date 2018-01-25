@@ -5,6 +5,7 @@
   <table class="users-table table table-striped">
     <tr>
       <th>Username</th>
+      <th>Email</th>
       <th>Joined on</th>
       <th>Permission level</th>
       <% if current_user.is_admin? %>
@@ -17,6 +18,7 @@
     <% @users.each do |user| %>
       <tr class="user" id="user-<%= user.id %>">
         <td><%= user.username %></td>
+        <td><%= user.email %></td>
         <td><%= user.created_at %></td>
         <td class="permission_level"><%= user.permission_level %></td>
         <% if current_user.is_admin? %>

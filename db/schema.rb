@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171206012545) do
+ActiveRecord::Schema.define(version: 20180114014120) do
 
   create_table "analyses", force: :cascade do |t|
     t.string   "name"
@@ -24,6 +24,11 @@ ActiveRecord::Schema.define(version: 20171206012545) do
 
   create_table "analyses_assignments", id: false, force: :cascade do |t|
     t.integer "assignment_id", null: false
+    t.integer "analysis_id",   null: false
+  end
+
+  create_table "analyses_attachments", id: false, force: :cascade do |t|
+    t.integer "attachment_id", null: false
     t.integer "analysis_id",   null: false
   end
 
@@ -60,6 +65,11 @@ ActiveRecord::Schema.define(version: 20171206012545) do
     t.datetime "updated_at",                null: false
   end
 
+  create_table "assignment_results_attachments", id: false, force: :cascade do |t|
+    t.integer "attachment_id",        null: false
+    t.integer "assignment_result_id", null: false
+  end
+
   create_table "assignments", force: :cascade do |t|
     t.string   "author"
     t.string   "name"
@@ -76,6 +86,11 @@ ActiveRecord::Schema.define(version: 20171206012545) do
   create_table "assignments_assignments", force: :cascade do |t|
     t.integer "from_assignment_id"
     t.integer "to_assignment_id"
+  end
+
+  create_table "assignments_attachments", id: false, force: :cascade do |t|
+    t.integer "attachment_id", null: false
+    t.integer "assignment_id", null: false
   end
 
   create_table "assignments_datasets", id: false, force: :cascade do |t|
@@ -101,6 +116,32 @@ ActiveRecord::Schema.define(version: 20171206012545) do
   create_table "assignments_web_resources", force: :cascade do |t|
     t.integer "assignment_id"
     t.integer "web_resource_id"
+  end
+
+  create_table "attachments", force: :cascade do |t|
+    t.string   "file_attachment_file_name"
+    t.string   "file_attachment_content_type"
+    t.integer  "file_attachment_file_size"
+    t.datetime "file_attachment_updated_at"
+    t.string   "file_attachment_fingerprint"
+    t.integer  "uploaded_by_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  create_table "attachments_datasets", id: false, force: :cascade do |t|
+    t.integer "attachment_id", null: false
+    t.integer "dataset_id",    null: false
+  end
+
+  create_table "attachments_examples", id: false, force: :cascade do |t|
+    t.integer "attachment_id", null: false
+    t.integer "example_id",    null: false
+  end
+
+  create_table "attachments_software", id: false, force: :cascade do |t|
+    t.integer "attachment_id", null: false
+    t.integer "software_id",   null: false
   end
 
   create_table "bootsy_image_galleries", force: :cascade do |t|

@@ -25,6 +25,7 @@ gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'rb-readline'
 gem 'highline'
+gem "paperclip", "~> 5.0.0"
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 

@@ -66,6 +66,15 @@
           : @assignment.description.html_safe) %>"></iframe>
   </div>
 
+    
+  <%= render(partial: "attachments/attachment_list",
+  locals: { 
+     vertical_from: @assignment, 
+     data: @assignment.attachments,
+     editable: true,
+     title_tag: :h2 }) %>
+
+
   <div class="web-resources">
     <h2>Web resources</h2>
     <% if can_edit? %>

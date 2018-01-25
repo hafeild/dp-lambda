@@ -1,0 +1,16 @@
+<%# 
+This is expecting the following local variables:
+
+  vertical -- the vertical or example the attachment will be associated 
+              with.
+%>
+
+<div class="attachment-form-wrapper">
+  <h3>Upload a new attachment</h3>
+  <%= form_for Attachment.new, url: vertical_attachments_path(vertical), 
+        html: { multipart: true } do |f| %>
+    <%= f.file_field :file_attachment, id: "upload-attachment-field", class: "submit-toggle-field" %>
+    <%= f.submit "Upload", 
+       id: "upload-attachment-submit", class: "btn btn-sm btn-primary", disabled: "disabled" %>
+  <% end %>
+</div>

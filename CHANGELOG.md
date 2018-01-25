@@ -2,6 +2,14 @@
 
 Changes made in each release are summarized below.
 
+## 18.01
+
+New features:
+
+    * files can now be attached to all verticals and examples
+      - 5 MiB limit per upload
+      - 25 MiB limit per vertical
+
 ## 17.12
 
 New features:
