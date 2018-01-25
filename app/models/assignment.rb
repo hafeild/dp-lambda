@@ -17,6 +17,7 @@ class Assignment < ApplicationRecord
   ## - analyses
   ## - datasets
   ## - creator (user)
+  ## - attachments
 
   include Bootsy::Container
 
@@ -41,6 +42,8 @@ class Assignment < ApplicationRecord
   has_and_belongs_to_many :analyses
   has_and_belongs_to_many :datasets
   has_many :assignment_results
+  
+  has_and_belongs_to_many :attachments
 
   ## Ensure the presence of required fields. 
   validates :name, presence: true, length: {minimum: 1, maximum: 200}, 

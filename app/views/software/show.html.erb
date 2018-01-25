@@ -27,6 +27,13 @@
       data-html="<%= url_encode @software.description.html_safe %>"></iframe>
   </div>
 
+  <%= render(partial: "attachments/attachment_list",
+      locals: { 
+        vertical_from: @software, 
+        data: @software.attachments,
+        editable: true,
+        title_tag: :h2 }) %>
+
   <div class="tags">
     <h2>Tags</h2>
     <% if can_edit? %>

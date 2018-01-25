@@ -11,6 +11,7 @@ class Example < ApplicationRecord
   has_and_belongs_to_many :datasets
   has_and_belongs_to_many :analyses
   has_and_belongs_to_many :assignments
+  has_and_belongs_to_many :attachments
 
   ## Ensure the presence of required fields. 
   validates :title, presence: true, length: {maximum: 200}, 

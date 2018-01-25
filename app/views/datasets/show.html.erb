@@ -27,6 +27,13 @@
       data-html="<%= url_encode @dataset.description.html_safe %>"></iframe>
   </div>
 
+  <%= render(partial: "attachments/attachment_list",
+      locals: { 
+        vertical_from: @dataset, 
+        data: @dataset.attachments,
+        editable: true,
+        title_tag: :h2 }) %>
+
   <div class="tags">
     <h2>Tags</h2>
     <% if can_edit? %>
