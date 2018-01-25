@@ -26,6 +26,13 @@
     <iframe class="description embed-html" 
       data-html="<%= url_encode @analysis.description.html_safe %>"></iframe>
   </div>
+  
+  <%= render(partial: "attachments/attachment_list",
+      locals: { 
+        vertical_from: @analysis, 
+        data: @analysis.attachments,
+        editable: true,
+        title_tag: :h2 }) %>
 
   <div class="tags">
     <h2>Tags</h2>
