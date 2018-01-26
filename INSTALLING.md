@@ -203,12 +203,16 @@ Setup the necessary components:
 
 ### During the first install or after an update
 
+Update gems:
+
+    bundle install
+
 Run migrations:
 
     bundle exec rake db:migrate RAILS_ENV=production
     bundle exec rake assets:precompile RAILS_ENV=production
 
-Run the unicorn server:
+Run the unicorn server (restart it if it's already running):
 
     unicorn_rails -p 5000 -E production
 
