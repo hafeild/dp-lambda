@@ -15,8 +15,26 @@ Install [ImageMagick](https://www.imagemagick.org/script/binary-releases.php)
 (required for uploading photos). This needs to be done before moving on or else
 uploads won't work properly (everything else should function).
 
+Install Java 1.8 or above. Make sure that the `JAVA_HOME` environment variable
+is set up properly and points to the correct Java install. This is needed for
+the document indexer (Solr/Lucene) and without it, you won't be able to use the
+search feature.
+
+To clone, go into the desired parent directory in a terminal window. When
+changing directories, be sure to use the correct capitalization (e.g., if
+developing on Windows, if Desktop is your parent folder for Alice, do:
+`cd ~/Desktop`, not `cd ~/desktop`. This is true any time you navigate to
+the Alice directory in a terminal. Ruby will not interpret paths correctly
+if you use the incorrect capitalization, even if Windows is happy to let you
+do it from the terminal. Here's the command to clone:
+
+    git clone https://github.com/hafeild/alice.git
+
+That'll make a new directory called `alice` that you can decend into.
+
 On any system, do the following after the initial clone or any subsequent pull
-to install any gems that were added to the Gemfile:
+to install any gems that were added to the Gemfile; this should be done from
+within the `alice` directory:
 
     bundle install --without=production
 
