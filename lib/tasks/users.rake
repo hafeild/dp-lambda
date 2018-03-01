@@ -88,7 +88,7 @@ namespace :users do
       puts "\tGranted on: #{user.permission_level_granted_on}"
       puts "\tGranted by: #{user.permission_level_granted_by.nil? \
         ? "-" \
-        : user.permission_granted_by.username}"
+        : user.permission_level_granted_by.username}"
       puts "\tCreated on: #{user.created_at}"
       puts
     end

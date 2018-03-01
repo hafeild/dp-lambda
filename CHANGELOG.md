@@ -2,6 +2,15 @@
 
 Changes made in each release are summarized below.
 
+## NEXT
+
+New features:
+
+
+Bug fixes:
+
+
+
 ## 18.01
 
 New features:
