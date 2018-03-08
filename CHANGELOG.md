@@ -2,6 +2,13 @@
 
 Changes made in each release are summarized below.
 
+## NEXT RELEASE
+
+Bug fixes:
+
+    * cancel buttons now work
+    * links to non-existing pages have been removed
+
 ## 18.01
 
 New features:
