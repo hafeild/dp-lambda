@@ -6,6 +6,7 @@ Changes made in each release are summarized below.
 
 Bug fixes:
 
+    * trashcan delete button works on tag badges
     * cancel buttons now work
     * links to non-existing pages have been removed
 
