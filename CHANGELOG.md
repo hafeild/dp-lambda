@@ -9,7 +9,9 @@ New features:
 
 Bug fixes:
 
-
+    * trashcan delete button works on tag badges
+    * cancel buttons now work
+    * links to non-existing pages have been removed
 
 ## 18.01
 
