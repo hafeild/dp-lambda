@@ -2,7 +2,10 @@
 
 Changes made in each release are summarized below.
 
-## NEXT RELEASE
+## NEXT
+
+New features:
+
 
 Bug fixes:
 
