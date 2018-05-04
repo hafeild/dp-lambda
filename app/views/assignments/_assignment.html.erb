@@ -3,6 +3,8 @@
   data-assignment-id="<%= assignment.id %>" class="assignment index-entry">
 
   <span class="name"><%= assignment.name %></span>
-  <span class="summary"><%= assignment.summary %></span>
+  <span class="author">By: <%= assignment.author %></span>, created on <%= assignment.created_on %><br/> 
+  <span class="summary"><%= assignment.summary %></span><br/>
+  <span class="learning_curve">Learning curve: <%= assignment.learning_curve %></span>, <span class="years">Taught <%= assignment.assignment_results.size %> time(s)</span>
   
 </a>
