@@ -31,7 +31,29 @@
     display: block;
   }
 
+  .metadata {
+    display: block;
+    color: steelblue;
+  }
+
+  .author {
+    font-weight: bold;
+    color: #555;
+  }
+
+  .date {
+  }
+
+
+
+
   .snippet {
+  }
+
+  .summary {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 }
 
