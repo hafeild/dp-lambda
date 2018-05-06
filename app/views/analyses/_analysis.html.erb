@@ -1,8 +1,14 @@
+<div data-analysis-id="<%= analysis.id %>" class="analysis index-entry">
 
-<a href="<%= analysis_path(analysis.id) %>" 
-  data-analysis-id="<%= analysis.id %>" class="analysis index-entry">
+  <span class="name"><%= link_to analysis.name, analysis_path(analysis) %></span>
 
-  <span class="name"><%= analysis.name %></span>
   <span class="summary"><%= analysis.summary %></span>
+
+  <span class="metadata">
+    <span class="date">Added on <%= analysis.created_at.strftime('%B %d, %Y') %> by <%= analysis.creator.username %></span><br/>
+    <span class="used-in">Used in <%= analysis.assignments.size %> <%= 'assignment'.pluralize(analysis.assignments.size) %> and <%= analysis.examples.size %> <%= 'example'.pluralize(analysis.examples.size) %></span><br/>
+    <span class="tags"><%= render(partial: "tags/tag_badge", 
+    collection: sort_by(analysis.tags, :text), as: :tag) %></span>
+  </span>
   
-</a>
+</div>
