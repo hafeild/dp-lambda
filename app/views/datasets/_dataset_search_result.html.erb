@@ -5,8 +5,11 @@
   <span class="summary"><%= dataset.summary %></span>
 
   <span class="metadata">
-    <span class="date">Added on <%= dataset.created_at.strftime('%B %d, %Y') %> by <%= dataset.creator.username %></span><br/>
+    <span class="date">Added on <%= dataset.created_at.strftime('%B %d, %Y') %> by <%= dataset.creator.username %></span>
+    &mdash;
+
     <span class="used-in">Used in <%= dataset.assignments.size %> <%= 'assignment'.pluralize(dataset.assignments.size) %> and <%= dataset.examples.size %> <%= 'example'.pluralize(dataset.examples.size) %></span><br/>
+    
     <span class="tags"><%= render(partial: "tags/tag_badge", 
     collection: sort_by(dataset.tags, :text), as: :tag) %></span>
   </span>
