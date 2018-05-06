@@ -1,8 +1,14 @@
+<div data-software-id="<%= software.id %>" class="software index-entry">
 
-<a href="<%= software_path(software.id) %>" 
-  data-software-id="<%= software.id %>" class="software index-entry">
+  <span class="name"><%= link_to software.name, software_path(software) %></span>
 
-  <span class="name"><%= software.name %></span>
   <span class="summary"><%= software.summary %></span>
+
+  <span class="metadata">
+    <span class="date">Added on <%= software.created_at.strftime('%B %d, %Y') %> by <%= software.creator.username %></span><br/>
+    <span class="used-in">Used in <%= software.assignments.size %> <%= 'assignment'.pluralize(software.assignments.size) %> and <%= software.examples.size %> <%= 'example'.pluralize(software.examples.size) %></span><br/>
+    <span class="tags"><%= render(partial: "tags/tag_badge", 
+    collection: sort_by(software.tags, :text), as: :tag) %></span>
+  </span>
   
-</a>
+</div>
