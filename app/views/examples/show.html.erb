@@ -25,19 +25,19 @@
 
 
       <%= render(partial: "verticals_shared/related_vertical",
-        locals: {title: "Associated assignments", vertical_from: Example.new, 
+        locals: {title: "Assignments", vertical_from: @example, 
                  vertical_to: Assignment.new}) %>
 
       <%= render(partial: "verticals_shared/related_vertical",
-        locals: {title: "Associated analyses", vertical_from: Example.new, 
+        locals: {title: "Analyses", vertical_from: @example, 
                  vertical_to: Analysis.new}) %>
 
       <%= render(partial: "verticals_shared/related_vertical",
-        locals: {title: "Associated software", vertical_from: Example.new, 
+        locals: {title: "Software", vertical_from: @example, 
                  vertical_to: Software.new}) %>
 
       <%= render(partial: "verticals_shared/related_vertical",
-        locals: {title: "Associated datasets", vertical_from: Example.new, 
+        locals: {title: "Datasets", vertical_from: @example, 
                  vertical_to: Dataset.new}) %>
      
     </div>
