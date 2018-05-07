@@ -27,6 +27,12 @@
   <%= link_to web_resource.url, web_resource.url %>
 </p>
 
+<a href="/search/all?advanced=true&any=true&wrq=<%=u web_resource.url %>"
+><button class="btn btn-default btn-md">
+  Search for
+  <%= web_resource.url %>
+</button></a>
+
 <%= render(partial: "verticals_shared/related_vertical",
   locals: {title: "Assignments", vertical_from: web_resource, 
            vertical_to: Assignment.new}) %>
