@@ -2,6 +2,20 @@
 
 Changes made in each release are summarized below.
 
+## 18.05
+
+New features:
+
+    * snippets on index and search result pages include metadata
+
+Bug fixes:
+
+    * tag, web resource, and example pages now show the correct associated
+      verticals
+    * trashcan delete button works on tag badges
+    * cancel buttons now work
+    * links to non-existing pages have been removed
+
 ## 18.01
 
 New features:

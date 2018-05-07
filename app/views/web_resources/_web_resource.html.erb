@@ -27,18 +27,24 @@
   <%= link_to web_resource.url, web_resource.url %>
 </p>
 
+<a href="/search/all?advanced=true&any=true&wrq=<%=u web_resource.url %>"
+><button class="btn btn-default btn-md">
+  Search for
+  <%= web_resource.url %>
+</button></a>
+
 <%= render(partial: "verticals_shared/related_vertical",
-  locals: {title: "Associated assignments", vertical_from: WebResource.new, 
+  locals: {title: "Assignments", vertical_from: web_resource, 
            vertical_to: Assignment.new}) %>
 
 <%= render(partial: "verticals_shared/related_vertical",
-  locals: {title: "Associated analyses", vertical_from: WebResource.new, 
+  locals: {title: "Analyses", vertical_from: web_resource, 
            vertical_to: Analysis.new}) %>
 
 <%= render(partial: "verticals_shared/related_vertical",
-  locals: {title: "Associated software", vertical_from: WebResource.new, 
+  locals: {title: "Software", vertical_from: web_resource, 
            vertical_to: Software.new}) %>
 
 <%= render(partial: "verticals_shared/related_vertical",
-  locals: {title: "Associated datasets", vertical_from: WebResource.new, 
+  locals: {title: "Datasets", vertical_from: web_resource, 
            vertical_to: Dataset.new}) %>
