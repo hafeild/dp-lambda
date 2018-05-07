@@ -10,6 +10,11 @@
     <% end %>
   </h1>
 
+  <a href="/search/all?advanced=true&any=true&tq=<%=u @tag.text %>"
+    ><button class="btn btn-default btn-md">
+      Search for
+      <%= @tag.text %>
+  </button></a>
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">

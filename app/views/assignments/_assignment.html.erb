@@ -1,8 +1,21 @@
 
-<a href="<%= assignment_path(assignment.id) %>" 
-  data-assignment-id="<%= assignment.id %>" class="assignment index-entry">
+<div class="assignment index-entry">
+  <a href="<%= assignment_path(assignment.id) %>" 
+  data-assignment-id="<%= assignment.id %>"><span class="name"><%= assignment.name %></span></a>
 
-  <span class="name"><%= assignment.name %></span>
+  <span class="metadata"><span class="author"><%= assignment.author %></span> <span class="date">(<%= assignment.created_at.strftime('%B %Y') %>)</span></span>
+
   <span class="summary"><%= assignment.summary %></span>
-  
-</a>
+
+  <span class="metadata">
+    <span class="added-by">Added on <%= assignment.created_at.strftime('%B %d, %Y') %> by <%= assignment.creator.username %></span> 
+    &mdash;
+    <span class="learning_curve">Learning curve: <i><%= assignment.learning_curve == "" ? "unknown" : assignment.learning_curve %></i></span>
+   &mdash;
+    
+    <span class="years">Taught <%= assignment.assignment_results.size %> <%= 'time'.pluralize(assignment.assignment_results.size) %></span><br/>
+    
+    <span class="tags"><%= render(partial: "tags/tag_badge", 
+    collection: sort_by(assignment.tags, :text), as: :tag) %></span>
+  </span>
+</div>

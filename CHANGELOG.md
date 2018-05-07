@@ -6,9 +6,11 @@ Changes made in each release are summarized below.
 
 New features:
 
+    * snippets on index and search result pages include metadata
 
 Bug fixes:
 
+    * tag pages show the verticals tagged with the given tag
     * trashcan delete button works on tag badges
     * cancel buttons now work
     * links to non-existing pages have been removed
