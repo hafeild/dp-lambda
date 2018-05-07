@@ -2,7 +2,7 @@
 
 Changes made in each release are summarized below.
 
-## NEXT
+## 18.05
 
 New features:
 
@@ -10,7 +10,8 @@ New features:
 
 Bug fixes:
 
-    * tag pages show the verticals tagged with the given tag
+    * tag, web resource, and example pages now show the correct associated
+      verticals
     * trashcan delete button works on tag badges
     * cancel buttons now work
     * links to non-existing pages have been removed
