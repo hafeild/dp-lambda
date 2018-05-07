@@ -5,7 +5,9 @@
   <span class="summary"><%= software.summary %></span>
 
   <span class="metadata">
-    <span class="date">Added on <%= software.created_at.strftime('%B %d, %Y') %> by <%= software.creator.username %></span>
+    <span class="date">Added on <%= software.created_at.strftime('%B %d, %Y') %> 
+      by <%= software.creator.username %>
+    </span>
     &mdash;
 
     <span class="used-in">Used in <%= software.assignments.size %> <%= 'assignment'.pluralize(software.assignments.size) %> and <%= software.examples.size %> <%= 'example'.pluralize(software.examples.size) %></span><br/>
