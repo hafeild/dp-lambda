@@ -6,6 +6,8 @@ Changes made in each release are summarized below.
 
 New features:
 
+    * description and outcome summaries are no longer displayed in an iframe
+
 Bug fixes:
 
 ## 18.05

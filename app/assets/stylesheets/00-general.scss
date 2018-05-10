@@ -75,3 +75,7 @@ h3 {
 .hr td {
   border-top: 1px solid gray;
 }
+
+.description, .outcome_summary {
+   overflow: auto;
+}

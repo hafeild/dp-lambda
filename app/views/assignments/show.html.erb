@@ -59,11 +59,12 @@
 
   <div class="description-wrapper">
     <h2>Description</h2>
-    <iframe class="description embed-html" 
-      data-html="<%= url_encode(
-        @assignment.description.empty? \
-          ? "<em>None</em>" \
-          : @assignment.description.html_safe) %>"></iframe>
+    <div class="description">
+          <%= sanitize_text(@assignment.description).html_safe %>
+    </div>
+  
+
+
   </div>
 
     

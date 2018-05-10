@@ -27,6 +27,6 @@
 <% end %>
 
 
-<iframe class="html-value description embed-html"
-  data-html="<%= url_encode example.description.html_safe %>">
-</iframe>
+<div class="description">
+<%= sanitize_text(example.description).html_safe %>
+</div>

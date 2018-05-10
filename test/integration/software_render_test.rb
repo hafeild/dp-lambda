@@ -11,8 +11,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert_template "software/show"
     assert_select ".name", software.name
     assert_select ".summary", software.summary
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(software.description)
+    assert_select ".description", software.description
 
     assert_select "a[href=?]", edit_software_path(software.id), count: 0
     assert_select "a[href=?][data-method=delete]", software_path(software.id), 
@@ -27,8 +26,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
     assert_template "software/show"
     assert_select ".name", software.name
     assert_select ".summary", software.summary
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(software.description)
+    assert_select ".description", software.description
 
     assert_select "a[href=?]", edit_software_path(software.id), count: 1
     assert_select "a[href=?][data-method=delete]", software_path(software.id), 

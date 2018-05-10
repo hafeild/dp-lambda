@@ -23,8 +23,9 @@
 
   <div class="description-wrapper">
     <h2>Description</h2>
-    <iframe class="description embed-html" 
-      data-html="<%= url_encode @analysis.description.html_safe %>"></iframe>
+    <div class="description">
+          <%= sanitize_text(@analysis.description).html_safe %>
+    </div>
   </div>
   
   <%= render(partial: "attachments/attachment_list",
