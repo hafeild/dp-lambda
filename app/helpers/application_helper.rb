@@ -161,8 +161,14 @@ module ApplicationHelper
     collection.sort{|x,y| x[key] <=> y[key]}
   end
 
+  ## For sanitizing user input.
+  def sanitize_text(text)
+    tags = %w(a b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p)
+    sanitize(text, tags: tags, attributes: %w(href title))
+  end
 
 ################################################################################
+
 
 
 
