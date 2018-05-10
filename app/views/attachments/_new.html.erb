@@ -10,6 +10,7 @@ This is expecting the following local variables:
   <%= form_for Attachment.new, url: vertical_attachments_path(vertical), 
         html: { multipart: true } do |f| %>
     <%= f.file_field :file_attachment, id: "upload-attachment-field", class: "submit-toggle-field" %>
+    Brief description: <%= f.text_field :description %><br/>
     <%= f.submit "Upload", 
        id: "upload-attachment-submit", class: "btn btn-sm btn-primary", disabled: "disabled" %>
   <% end %>

@@ -12,6 +12,10 @@ This is expecting the following local variables:
   <span class="size">
     (<%= number_to_human_size attachment.file_attachment_file_size %>)
   </span>
+  <% if attachment.description.size > 0 %>
+    &mdash;<%= attachment.description %>
+  <% end %>
+
   <% if can_edit? and editable and defined? vertical_from %>
     <%= form_for(attachment, method: :delete,
         url: vertical_attachment_path(vertical_from, attachment), 

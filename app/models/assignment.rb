@@ -81,6 +81,10 @@ class Assignment < ApplicationRecord
       examples.map{|example| "#{example.title} #{example.description}"}
     end
 
+    text :attachments do 
+      attachments.map{|a| a.description}
+    end
+
     ## For scoping and faceting.
     double :instruction_hours_facet do 
       instruction_hours

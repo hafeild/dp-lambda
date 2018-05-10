@@ -10,6 +10,9 @@ $(document).ready(function(event){
     if($('.connect-resource').size() > 0){
         addConnectionListeners();
     }
+    if($('.attachment-form-wrapper').size() > 0){
+        $(document).on('change', '#upload-attachment-field', addFilesToForm);
+    }
     
     $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);
 });
@@ -53,3 +56,6 @@ var cancelFormSubmissionFollowLink = function(event){
     window.location = $(this).data('href');
 }
 
+var addFilesToForm = function(event){
+    console.log($('#upload-attachment-field')[0].files);
+}

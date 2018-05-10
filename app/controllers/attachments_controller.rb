@@ -5,6 +5,7 @@ class AttachmentsController < ApplicationController
   before_action :get_file_attachment, only: [:create]
   before_action :get_attachment_id, only: [:destroy]
   before_action :get_verticals_or_example
+  before_action :get_description, only: [:create]
   
   def index
     @attachments = Attachment.all()
@@ -15,7 +16,7 @@ class AttachmentsController < ApplicationController
       ActiveRecord::Base.transaction do
         ## Create the attachment.
         attachment = Attachment.create!(file_attachment: @file_attachment,
-          uploaded_by: @current_user)
+          uploaded_by: @current_user, description: @description)
         ## Link it to whichever vertical/example was input.
         @vertical.attachments << attachment 
         if exceeds_project_max_attachment_size @vertical
@@ -57,6 +58,14 @@ class AttachmentsController < ApplicationController
         @file_attachment = params.require(:attachment).require(:file_attachment)
       rescue => e 
         respond_with_error "Error: no attachment provide.", @redirect_path
+      end
+    end
+
+    def get_description
+      begin
+        @description = params.require(:attachment).require(:description)
+      rescue => e 
+        @description = ''
       end
     end
   
