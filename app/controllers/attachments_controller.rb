@@ -3,7 +3,7 @@ class AttachmentsController < ApplicationController
   before_action :user_can_edit, except: [:index]
   before_action :get_redirect_path
   before_action :get_file_attachment, only: [:create]
-  before_action :get_attachment_id, only: [:destroy]
+  before_action :get_attachment_id, only: [:destroy, :update]
   before_action :get_verticals_or_example
   before_action :get_description, only: [:create]
   
@@ -17,7 +17,8 @@ class AttachmentsController < ApplicationController
         ## Create the attachment.
         attachment = Attachment.create!(file_attachment: @file_attachment,
           uploaded_by: @current_user, description: @description)
-        ## Link it to whichever vertical/example was input.
+
+        ## Add attachment to the vertical.
         @vertical.attachments << attachment 
         if exceeds_project_max_attachment_size @vertical
           raise "Maximum attachment size "+
@@ -31,6 +32,45 @@ class AttachmentsController < ApplicationController
       respond_with_error "There was an error saving the attachment. #{e}", 
         @redirect_path
     end
+  end
+
+  def update
+    begin
+      ActiveRecord::Base.transaction do
+        ## Create the attachment.
+        attachment = Attachment.find(@attachment_id)
+        options = {}
+        p = params.require(:attachment)
+
+        if p.has_key?(:file_attachment)
+          options[:file_attachment] = p.require(:file_attachment)
+          options[:uploaded_by] = @current_user
+        end
+
+        if p.has_key?(:file_attachment_file_name)
+          options[:file_attachment_file_name] = p.require(:file_attachment_file_name)
+        end
+
+        if p.has_key?(:description)
+          options[:file_attachment_file_name] = p.require(:description)
+        end
+
+        attachment.update!(options)
+
+        if exceeds_project_max_attachment_size @vertical
+          raise "Maximum attachment size "+
+            "(#{ENV['VERTICAL_MAX_TOATAL_ATTACHMENTS_SIZE']}) MiB exceeded."
+        end
+        @vertical.save!
+      end
+
+      respond_with_success get_vertical_path(@vertical)
+
+    rescue => e
+    respond_with_error "There was an error updating the attachment. #{e}", 
+      @redirect_path
+    end
+
   end
   
   def destroy

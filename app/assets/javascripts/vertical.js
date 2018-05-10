@@ -12,6 +12,7 @@ $(document).ready(function(event){
     }
     if($('.attachment-form-wrapper').size() > 0){
         $(document).on('change', '#upload-attachment-field', addFilesToForm);
+        $(document).on('click', '.toggle-edit-file-attachment', toggleFileAttachmentEdit);
     }
     
     $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);
@@ -54,8 +55,14 @@ var addConnectionListeners = function(){
 var cancelFormSubmissionFollowLink = function(event){
     event.preventDefault();
     window.location = $(this).data('href');
-}
+};
 
 var addFilesToForm = function(event){
     console.log($('#upload-attachment-field')[0].files);
-}
+};
+
+
+var toggleFileAttachmentEdit = function(event){
+    event.preventDefault();    
+    $(this).parents('li').find('.file-attachment-wrapper').toggleClass('hidden');
+};
