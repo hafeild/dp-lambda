@@ -171,8 +171,7 @@ class AssignmentResultRenderTest < ActionDispatch::IntegrationTest
       assignment_result.instruction_hours.to_s
     assert_select ".average_student_score", 
       assignment_result.average_student_score.to_s
-    assert_select "iframe.outcome_summary[data-html=?]", 
-      ERB::Util.url_encode(assignment_result.outcome_summary)
+    assert_select ".outcome_summary", assignment_result.outcome_summary
   end
 
 

@@ -11,8 +11,7 @@ class DatasetRenderTest < ActionDispatch::IntegrationTest
     assert_template "datasets/show"
     assert_select ".name", dataset.name
     assert_select ".summary", dataset.summary
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(dataset.description)
+    assert_select ".description", dataset.description
 
     assert_select "a[href=?]", edit_dataset_path(dataset.id), count: 0
     assert_select "a[href=?][data-method=delete]", dataset_path(dataset.id), 
@@ -27,8 +26,7 @@ class DatasetRenderTest < ActionDispatch::IntegrationTest
     assert_template "datasets/show"
     assert_select ".name", dataset.name
     assert_select ".summary", dataset.summary
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(dataset.description)
+    assert_select ".description", dataset.description
 
     assert_select "a[href=?]", edit_dataset_path(dataset.id), count: 1
     assert_select "a[href=?][data-method=delete]", dataset_path(dataset.id), 
