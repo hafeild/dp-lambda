@@ -43,32 +43,32 @@ class AttachmentsController < ApplicationController
         p = params.require(:attachment)
 
         if p.has_key?(:file_attachment)
-          options[:file_attachment] = p.require(:file_attachment)
-          options[:uploaded_by] = @current_user
+          attachment.update!(
+            file_attachment: p.require(:file_attachment),
+            uploaded_by: @current_user
+          )
         end
 
         if p.has_key?(:file_attachment_file_name)
-          options[:file_attachment_file_name] = p.require(:file_attachment_file_name)
+          attachment.file_attachment.update!(file_name: p.require(:file_attachment_file_name))
         end
 
         if p.has_key?(:description)
-          options[:file_attachment_file_name] = p.require(:description)
-        end
+          attachment.update!(description: p.require(:description))
+      end
 
-        attachment.update!(options)
 
         if exceeds_project_max_attachment_size @vertical
           raise "Maximum attachment size "+
             "(#{ENV['VERTICAL_MAX_TOATAL_ATTACHMENTS_SIZE']}) MiB exceeded."
         end
-        @vertical.save!
       end
 
       respond_with_success get_vertical_path(@vertical)
 
     rescue => e
-    respond_with_error "There was an error updating the attachment. #{e}", 
-      @redirect_path
+      respond_with_error "There was an error updating the attachment. #{e}", 
+        @redirect_path
     end
 
   end

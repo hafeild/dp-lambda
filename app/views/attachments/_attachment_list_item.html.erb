@@ -45,11 +45,11 @@ This is expecting the following local variables:
           <tr><td>Filename</td><td>Description</td><td>Replace file</td><td></td></tr>
           <tr>
             <td><%= f.text_field :file_attachment_file_name, class: "submit-toggle-field" %></td>
-            <td><%= f.text_field :description %></td>
+            <td><%= f.text_field :description, class: "submit-toggle-field" %></td>
             <td><%= f.file_field :file_attachment, class: "submit-toggle-field" %></td>
             <td>
-              <button type="submit" class="btn btn-primary btn-sm">Save</button>
-              <button type="submit" class="btn btn-danger btn-sm toggle-edit-file-attachment"
+              <button type="submit" class="btn btn-primary btn-sm" disabled="disabled">Save</button>
+              <button class="btn btn-danger btn-sm toggle-edit-file-attachment"
                 >Cancel</button>
             </td>
           </tr>
