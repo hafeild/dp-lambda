@@ -50,7 +50,10 @@ class AttachmentsController < ApplicationController
         end
 
         if p.has_key?(:file_attachment_file_name)
-          attachment.file_attachment.update!(file_name: p.require(:file_attachment_file_name))
+          #attachment.file_attachment.file_name = p.require(:file_attachment_file_name)
+          attachment.file_attachment.instance_write(:file_name, p.require(:file_attachment_file_name))
+          attachment.save!
+          #attachment.file_attachment.update!(file_name: p.require(:file_attachment_file_name))
         end
 
         if p.has_key?(:description)
