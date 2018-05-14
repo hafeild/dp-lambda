@@ -87,3 +87,21 @@ li .snippet {
 div.entries {
   margin-top: 1em;
 }
+
+.file-attachment-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.attachment-form-wrapper {
+  td {
+    padding-right: 1em;
+  }
+  h3 {
+    margin-top: 0;
+  }
+
+  margin-bottom: .5em;
+  border: 1px solid gray;
+  padding: .5em;
+}
