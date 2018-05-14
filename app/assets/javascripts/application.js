@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap
 // require turbolinks
+//= require jquery-ui/widgets/sortable
 //= require_tree .
 //= require bootsy

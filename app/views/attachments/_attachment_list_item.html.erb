@@ -5,8 +5,10 @@ This is expecting the following local variables:
   editable -- if true and can_edit is true, then a 'delete' button will appear 
               next to  each attachment. Defaults to false.
 %>
-<li data-attachment-id="<%= attachment.id %>">
+<li data-attachment-id="<%= attachment.id %>" class="file-attachment">
   <span class="file-attachment-wrapper">
+    <span class="drag-handle"></span>
+
     <span class="attachment-name"
       ><%= link_to attachment.file_attachment_file_name, 
         attachment.file_attachment.url %></span> 
