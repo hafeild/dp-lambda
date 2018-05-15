@@ -16,7 +16,8 @@ class AttachmentsController < ApplicationController
       ActiveRecord::Base.transaction do
         ## Create the attachment.
         attachment = Attachment.create!(file_attachment: @file_attachment,
-          uploaded_by: @current_user, description: @description)
+          uploaded_by: @current_user, description: @description,
+          display_position: @vertical.attachments.size)
 
         ## Add attachment to the vertical.
         @vertical.attachments << attachment 
@@ -37,7 +38,7 @@ class AttachmentsController < ApplicationController
   def update
     begin
       ActiveRecord::Base.transaction do
-        ## Create the attachment.
+        ## Find the attachment.
         attachment = Attachment.find(@attachment_id)
         options = {}
         p = params.require(:attachment)
@@ -65,7 +66,26 @@ class AttachmentsController < ApplicationController
       respond_with_error "There was an error updating the attachment. #{e}", 
         @redirect_path
     end
+  end
 
+  def reorder
+    begin
+      ActiveRecord::Base.transaction do
+        ## Create the attachment.
+        params.require(:attachments).each_with_index |i, attachment_id| do
+          attachment = Attachment.find(@attachment_id)
+          if attachment.display_position != i
+            attachment.update!(display_position: i)
+          end
+        end
+      end
+
+      respond_with_success get_vertical_path(@vertical)
+
+    rescue => e
+      respond_with_error "There was an error updating the attachment. #{e}", 
+        @redirect_path
+    end
   end
   
   def destroy
