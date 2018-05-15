@@ -13,6 +13,9 @@ $(document).ready(function(event){
     if($('.attachment-form-wrapper').size() > 0){
         $(document).on('change', '#upload-attachment-field', addFilesToForm);
         $(document).on('click', '.toggle-edit-file-attachment', toggleFileAttachmentEdit);
+        $('.file-attachments').sortable({
+            handle: '.grip'
+        })
     }
     
     $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);

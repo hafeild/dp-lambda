@@ -7,8 +7,9 @@ This is expecting the following local variables:
 %>
 <li data-attachment-id="<%= attachment.id %>" class="file-attachment">
   <span class="file-attachment-wrapper">
-    <!-- <span class="drag-handle"></span> -->
-    <span class="ui-icon ui-icon-grip-dotted-vertical grip" style="display:inline-block"></span>
+    <% if can_edit? and editable %>
+      <span class="ui-icon ui-icon-grip-dotted-vertical grip" style="display:inline-block"></span>
+    <% end %>
 
     <span class="attachment-name"
       ><%= link_to attachment.file_attachment_file_name, 

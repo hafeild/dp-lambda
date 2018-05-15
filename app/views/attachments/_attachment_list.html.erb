@@ -23,7 +23,7 @@ This is expecting the following local variables:
       <%= render(partial: "attachments/new", locals: {vertical: vertical_from}) %>
     <% end %>
 
-    <ul>
+    <ul class="file-attachments">
       <%= render(partial: "attachments/attachment_list_item", 
         collection: data, as: :attachment,
         locals: {vertical_from: vertical_from, editable: editable}) || 
