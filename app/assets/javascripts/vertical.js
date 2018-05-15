@@ -11,11 +11,12 @@ $(document).ready(function(event){
         addConnectionListeners();
     }
     if($('.attachment-form-wrapper').size() > 0){
-        $(document).on('change', '#upload-attachment-field', addFilesToForm);
+        //$(document).on('change', '#upload-attachment-field', addFilesToForm);
         $(document).on('click', '.toggle-edit-file-attachment', toggleFileAttachmentEdit);
-        $('.file-attachments').sortable({
-            handle: '.grip'
-        })
+        $('.file-attachments-list').sortable({
+            handle: '.grip',
+            stop: reorderAttachments
+        });
     }
     
     $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);
@@ -60,12 +61,53 @@ var cancelFormSubmissionFollowLink = function(event){
     window.location = $(this).data('href');
 };
 
-var addFilesToForm = function(event){
-    console.log($('#upload-attachment-field')[0].files);
-};
-
-
+/**
+ * Hides or shows the file attachment information or edit form.
+ * 
+ * @param event The event that triggered this function.
+ */
 var toggleFileAttachmentEdit = function(event){
     event.preventDefault();    
     $(this).parents('li').find('.file-attachment-wrapper').toggleClass('hidden');
+};
+
+/**
+ * Checks if the attachments list has been reordered, and if it has, tells the
+ * server to update the database.
+ * 
+ * @param event 
+ * @param ui 
+ */
+var reorderAttachments = function(event, ui){
+    var changes = 0;
+    var attachmentsInOrder = [];
+    $('.file-attachment').each(function(i, elm){
+        elm = $(elm);
+        if(i != elm.data('display-position')){
+            changes++;
+        }
+        attachmentsInOrder.push(elm.data('attachment-id'));
+        elm.data('display-position', i);
+    });
+    if(changes > 0){
+        console.log('Making a call to:', $('.file-attachments').data('reorder-url'));
+        $.ajax($('.file-attachments').data('reorder-url'), {
+            method: 'post',
+            data: {
+                _method: 'put', 
+                format: 'json', 
+                attachments: attachmentsInOrder
+            },
+            error: function(jqXHR, textStatus, error){ 
+                alert("There was an error saving your reordering. Please try again later.")
+                console.log('Error: '+ textStatus +' '+ error);
+            },
+            success: function(data){
+                if(data.error){
+                    alert("There was an error saving your reordering. Please try again later.");
+                    return;
+                }
+            }
+        });
+    }
 };

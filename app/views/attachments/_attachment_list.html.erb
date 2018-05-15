@@ -10,22 +10,29 @@ This is expecting the following local variables:
   <% editable = false if not defined?(editable) %>
   <% vertical_from_name = vertical_from.class.to_s.downcase %>
   <% if not defined?(data) or data.nil? %>
-    <% data = vertical_from.attachments.sort{|x,y| x.display_position <=> y.display_position } %>
+    <% data = vertical_from.attachments %>
   <% end %>
   <% if not defined?(title_tag) %>
     <% title_tag = :h2 %>
   <% end %>
 
-  <div class="file-attachments">
+
+
+  <div class="file-attachments" 
+    <% if can_edit? %>
+      data-reorder-url="<%= reorder_vertical_attachments_path(vertical_from) %>"
+    <% end %>
+  >
     <<%=title_tag%>>File attachments</<%=title_tag%>>
     
     <% if can_edit? %>
       <%= render(partial: "attachments/new", locals: {vertical: vertical_from}) %>
     <% end %>
 
-    <ul class="file-attachments">
+    <ul class="file-attachments-list">
       <%= render(partial: "attachments/attachment_list_item", 
-        collection: data, as: :attachment,
+        collection: data.sort{|x,y| x.display_position <=> y.display_position }, 
+        as: :attachment,
         locals: {vertical_from: vertical_from, editable: editable}) || 
         "This #{vertical_from_name} does not have any attachments." %>
     </ul>

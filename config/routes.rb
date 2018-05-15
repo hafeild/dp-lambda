@@ -57,7 +57,7 @@ Rails.application.routes.draw do
     post   "#{resource_base}"          => "attachments#create"
     delete "#{resource_base}/:id"      => "attachments#destroy"
     post "#{resource_base}/:id"        => "attachments#update"
-    post "#{resource_base}/reorder"    => "attachments#reorder"
+    put "#{resource_base}/reorder"    => "attachments#reorder"
   end
 
   ## Configures all of the routes for connecting two verticals together.

@@ -72,8 +72,9 @@ class AttachmentsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         ## Create the attachment.
-        params.require(:attachments).each_with_index |i, attachment_id| do
-          attachment = Attachment.find(@attachment_id)
+        p = params.permit(attachments: []).to_h
+        p['attachments'].each_with_index do |attachment_id, i|
+          attachment = Attachment.find(attachment_id)
           if attachment.display_position != i
             attachment.update!(display_position: i)
           end
