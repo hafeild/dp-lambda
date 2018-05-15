@@ -10,7 +10,7 @@ This is expecting the following local variables:
   <% editable = false if not defined?(editable) %>
   <% vertical_from_name = vertical_from.class.to_s.downcase %>
   <% if not defined?(data) or data.nil? %>
-    <% data = vertical_from.attachments %>
+    <% data = vertical_from.attachments.sort{|x,y| x.display_position <=> y.display_position } %>
   <% end %>
   <% if not defined?(title_tag) %>
     <% title_tag = :h2 %>

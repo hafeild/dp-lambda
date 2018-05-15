@@ -5,6 +5,7 @@ class Attachment < ApplicationRecord
   ## - created_at
   ## - updated_at
   ## - description
+  ## - display_position
   ## - file_attachment (A paperclip object)
   ##   * file_name
   ##   * file_size
@@ -24,6 +25,4 @@ class Attachment < ApplicationRecord
   has_and_belongs_to_many :analysis
   has_and_belongs_to_many :software
   has_and_belongs_to_many :example
-    
-  
 end

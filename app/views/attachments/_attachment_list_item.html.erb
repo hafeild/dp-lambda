@@ -5,10 +5,10 @@ This is expecting the following local variables:
   editable -- if true and can_edit is true, then a 'delete' button will appear 
               next to  each attachment. Defaults to false.
 %>
-<li data-attachment-id="<%= attachment.id %>" class="file-attachment">
+<li data-attachment-id="<%= attachment.id %>" class="file-attachment" data-display-position="<%= attachment.display_position %>">
   <span class="file-attachment-wrapper">
     <% if can_edit? and editable %>
-      <span class="ui-icon ui-icon-grip-dotted-vertical grip" style="display:inline-block"></span>
+      <span class="ui-icon ui-icon-grip-dotted-vertical grip" style="display:inline-block" title="Reorder attachments."></span>
     <% end %>
 
     <span class="attachment-name"
