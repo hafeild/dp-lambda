@@ -72,12 +72,18 @@
   </div>
 
   <%= render(partial: "verticals_shared/related_vertical",
-    locals: {title: "Assignments", vertical_from: @analysis, 
+    locals: {title: "Implemented in the following software", vertical_from: @analysis, 
+             vertical_to: Software.new, editable: true}) %>
+
+
+
+  <%= render(partial: "verticals_shared/related_vertical",
+    locals: {title: "Assignments used in", vertical_from: @analysis, 
              vertical_to: Assignment.new}) %>
 
 
   <div class="examples">
-    <h2>Examples</h2>
+    <h2>Examples used in</h2>
     <% if can_edit? %>
       <a href="<%= new_vertical_example_path @analysis %>"
         ><button class="btn btn-sm btn-default">Add new</button

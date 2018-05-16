@@ -17,7 +17,7 @@
       <%= 'example'.pluralize(software.examples.size) %></span><br/>
     <% if software.analyses.size > 0 %>
       <span class="implements">Analyses implemented: 
-      <%= software.analyses.map{|a| link_to show_analysis(a), a.name}.join(',') 
+      <%= software.analyses.map{|a|link_to  a.name, get_vertical_path(a)}.join(',').html_safe 
       %></span><br/>
     <% end %>
 
