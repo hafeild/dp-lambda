@@ -87,7 +87,7 @@ var ajaxFromComplexButtonLink = function(buttonElm, onSuccess, onError){
  */
 var toggleSubmitOnFieldChange = function(e){
   var fieldElm = $(this);
-  var submitElm = fieldElm.siblings('[type=submit]');
+  var submitElm = fieldElm.parents('form').find('[type=submit]');
   
   // Disable the submit button if the field isn't set.
   if(this.value === ''){
@@ -104,4 +104,5 @@ $(document).ready(function(){
   embed_html();
   
   $(document).on('change', '.submit-toggle-field', toggleSubmitOnFieldChange);
+  $(document).on('keyup', '.submit-toggle-field', toggleSubmitOnFieldChange);
 });

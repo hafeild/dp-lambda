@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180114014120) do
+ActiveRecord::Schema.define(version: 20180515170355) do
 
   create_table "analyses", force: :cascade do |t|
     t.string   "name"
@@ -125,8 +125,10 @@ ActiveRecord::Schema.define(version: 20180114014120) do
     t.datetime "file_attachment_updated_at"
     t.string   "file_attachment_fingerprint"
     t.integer  "uploaded_by_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "description",                  default: ""
+    t.integer  "display_position",             default: 0
   end
 
   create_table "attachments_datasets", id: false, force: :cascade do |t|

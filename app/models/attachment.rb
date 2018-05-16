@@ -4,6 +4,8 @@ class Attachment < ApplicationRecord
   ## - uploaded_by (user who uploaded it)
   ## - created_at
   ## - updated_at
+  ## - description
+  ## - display_position
   ## - file_attachment (A paperclip object)
   ##   * file_name
   ##   * file_size
@@ -20,6 +22,7 @@ class Attachment < ApplicationRecord
   do_not_validate_attachment_file_type :file_attachment
   
   has_and_belongs_to_many :assignment
-    
-  
+  has_and_belongs_to_many :analysis
+  has_and_belongs_to_many :software
+  has_and_belongs_to_many :example
 end

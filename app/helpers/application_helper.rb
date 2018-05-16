@@ -112,6 +112,10 @@ module ApplicationHelper
   def vertical_attachments_path(vertical)
     "#{get_vertical_path(vertical)}/attachments"
   end
+
+  def reorder_vertical_attachments_path(vertical)
+    "#{get_vertical_path(vertical)}/attachments/reorder"
+  end
   ##############################################################################
 
 

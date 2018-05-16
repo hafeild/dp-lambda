@@ -42,6 +42,10 @@ class Dataset < ApplicationRecord
     text :examples do
       examples.map{|example| "#{example.title} #{example.description}"}
     end
+
+    text :attachments do 
+      attachments.map{|a| a.description}
+    end
     
     ## For scoping and faceting.
     integer :creator_facet do 

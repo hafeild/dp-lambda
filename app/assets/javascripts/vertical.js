@@ -10,6 +10,15 @@ $(document).ready(function(event){
     if($('.connect-resource').size() > 0){
         addConnectionListeners();
     }
+    if($('.attachment-form-wrapper').size() > 0){
+        //$(document).on('change', '#upload-attachment-field', addFilesToForm);
+        $(document).on('click', '.toggle-edit-file-attachment', toggleFileAttachmentEdit);
+        $('.file-attachments-list').sortable({
+            handle: '.grip',
+            stop: reorderAttachments,
+            start: function(event, ui){ ui.helper.addClass('dragging'); }
+        });
+    }
     
     $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);
 });
@@ -51,5 +60,64 @@ var addConnectionListeners = function(){
 var cancelFormSubmissionFollowLink = function(event){
     event.preventDefault();
     window.location = $(this).data('href');
-}
+};
 
+/**
+ * Hides or shows the file attachment information or edit form.
+ * 
+ * @param event The event that triggered this function.
+ */
+var toggleFileAttachmentEdit = function(event){
+    event.preventDefault();    
+    $(this).parents('li').find('.file-attachment-wrapper').toggleClass('hidden');
+};
+
+/**
+ * Checks if the attachments list has been reordered, and if it has, tells the
+ * server to update the database.
+ * 
+ * @param event An event object.
+ * @param ui A jQuery UI object specifying what element moved and where.
+ */
+var reorderAttachments = function(event, ui){
+    var changes = 0;
+    var attachmentsInOrder = [];
+
+    // Hide the decoration of the moving assignment.
+    ui.item.removeClass('dragging');
+
+    // See what has changed (or did the user drop the attachment where it
+    // started?).
+    $('.file-attachment').each(function(i, elm){
+        elm = $(elm);
+        if(i != elm.data('display-position')){
+            changes++;
+        }
+        attachmentsInOrder.push(elm.data('attachment-id'));
+        elm.data('display-position', i);
+    });
+
+    // If something has changed, send the new ordering to the server so the DB
+    // can be updated.
+    if(changes > 0){
+        console.log('Making a call to:', $('.file-attachments').data('reorder-url'));
+        $.ajax($('.file-attachments').data('reorder-url'), {
+            method: 'post',
+            data: {
+                _method: 'put', 
+                format: 'json', 
+                attachments: attachmentsInOrder
+            },
+            error: function(jqXHR, textStatus, error){ 
+                alert("There was an error saving your reordering. Please try again later.")
+                console.log('Error: '+ textStatus +' '+ error);
+            },
+            success: function(data){
+                if(data.error){
+                    alert("There was an error saving your reordering. Please try again later.");
+                    return;
+                }
+            }
+        });
+    }
+};

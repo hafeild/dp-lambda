@@ -7,6 +7,10 @@ Changes made in each release are summarized below.
 New features:
 
     * description and outcome summaries are no longer displayed in an iframe
+    * file attachment updates:
+        - users can now provide descriptions
+        - files and their descriptions can be edited
+        - attachments can be reordered
 
 Bug fixes:
 
