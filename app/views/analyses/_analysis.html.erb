@@ -8,7 +8,15 @@
     <span class="date">Added on <%= analysis.created_at.strftime('%B %d, %Y') %> by <%= analysis.creator.username %></span>
     &mdash;
 
-    <span class="used-in">Used in <%= analysis.assignments.size %> <%= 'assignment'.pluralize(analysis.assignments.size) %> and <%= analysis.examples.size %> <%= 'example'.pluralize(analysis.examples.size) %></span><br/>
+    <span class="used-in">Used in <%= analysis.assignments.size %> 
+      <%= 'assignment'.pluralize(analysis.assignments.size) %> and 
+      <%= analysis.examples.size %> 
+      <%= 'example'.pluralize(analysis.examples.size) %></span><br/>
+    <% if analysis.software.size > 0 %>
+      <span class="implemented-in">Implemented in 
+      <%= analysis.software.map{|s|link_to  s.name, get_vertical_path(s)}.join(',').html_safe 
+      %></span><br/>
+    <% end %>
     
     <span class="tags"><%= render(partial: "tags/tag_badge", 
     collection: sort_by(analysis.tags, :text), as: :tag) %></span>

@@ -17,7 +17,7 @@ class Analysis < ApplicationRecord
   has_and_belongs_to_many :web_resources
   has_and_belongs_to_many :examples
   has_and_belongs_to_many :assignments
-  # has_and_belongs_to_many :software
+  has_and_belongs_to_many :software
   # has_and_belongs_to_many :datasets
   # has_and_belongs_to_many :analyses
 
@@ -33,6 +33,11 @@ class Analysis < ApplicationRecord
   ## For search.
   searchable do
     text :name, :summary, :description
+
+    text :software do
+      software.map{|a| "#{a.name} #{a.summary} #{a.description}"} 
+    end
+
 
     text :tags do
       tags.map{|tag| tag.text}

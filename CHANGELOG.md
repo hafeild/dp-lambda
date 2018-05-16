@@ -11,6 +11,9 @@ New features:
         - users can now provide descriptions
         - files and their descriptions can be edited
         - attachments can be reordered
+    * analyses and software can be linked
+    * index and result snippets for software and analyses show related 
+        analyses and software
 
 Bug fixes:
 
