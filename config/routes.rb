@@ -30,7 +30,6 @@ Rails.application.routes.draw do
   ## Configures all of the routes for interacting with resources attached to
   ## a particular vertical. E.g.,
   ##  get 'software/:software_id/examples' => 'examples#index'
-  ## Go through each vertical (with)
   verticals.each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 
@@ -67,7 +66,8 @@ Rails.application.routes.draw do
     verticals.each do |vertical2|
       ## Right now, we only want to make connections between assignments and
       ## other verticals, not between arbitrary verticals.
-      next unless vertical == :assignment or vertical2 == :assignment
+      #next unless vertical == :assignment or vertical2 == :assignment
+      next if vertical == :dataset or (vertical2 == :dataset and vertical != :assignment)
 
       vertical2 = vertical2.to_s.pluralize(2)
       expanded_base = "#{base}/#{vertical2}"
