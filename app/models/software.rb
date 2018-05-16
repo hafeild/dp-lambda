@@ -18,7 +18,7 @@ class Software < ApplicationRecord
   has_and_belongs_to_many :assignments
   # has_and_belongs_to_many :software
   # has_and_belongs_to_many :datasets
-  # has_and_belongs_to_many :analyses
+  has_and_belongs_to_many :analyses
   has_and_belongs_to_many :attachments
 
   ## Ensure the presence of required fields. 
@@ -33,6 +33,10 @@ class Software < ApplicationRecord
 
     text :tags do
       tags.map{|tag| tag.text}
+    end
+
+    text :analyses do
+      analyses.map{|a| "#{a.name} #{a.summary} #{a.description}"} 
     end
 
     text :web_resources do
