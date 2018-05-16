@@ -15,7 +15,8 @@ $(document).ready(function(event){
         $(document).on('click', '.toggle-edit-file-attachment', toggleFileAttachmentEdit);
         $('.file-attachments-list').sortable({
             handle: '.grip',
-            stop: reorderAttachments
+            stop: reorderAttachments,
+            start: function(event, ui){ ui.helper.addClass('dragging'); }
         });
     }
     
@@ -75,12 +76,18 @@ var toggleFileAttachmentEdit = function(event){
  * Checks if the attachments list has been reordered, and if it has, tells the
  * server to update the database.
  * 
- * @param event 
- * @param ui 
+ * @param event An event object.
+ * @param ui A jQuery UI object specifying what element moved and where.
  */
 var reorderAttachments = function(event, ui){
     var changes = 0;
     var attachmentsInOrder = [];
+
+    // Hide the decoration of the moving assignment.
+    ui.item.removeClass('dragging');
+
+    // See what has changed (or did the user drop the attachment where it
+    // started?).
     $('.file-attachment').each(function(i, elm){
         elm = $(elm);
         if(i != elm.data('display-position')){
@@ -89,6 +96,9 @@ var reorderAttachments = function(event, ui){
         attachmentsInOrder.push(elm.data('attachment-id'));
         elm.data('display-position', i);
     });
+
+    // If something has changed, send the new ordering to the server so the DB
+    // can be updated.
     if(changes > 0){
         console.log('Making a call to:', $('.file-attachments').data('reorder-url'));
         $.ajax($('.file-attachments').data('reorder-url'), {
