@@ -41,7 +41,8 @@ class ExamplesController < ApplicationController
   def update
     begin
       @example.update_attributes! @params
-      respond_with_success @redirect_path
+
+      respond_with_success get_redirect_path(example_path(@example))
     rescue
       respond_with_error "The example could not be updated.", @redirect_path
     end

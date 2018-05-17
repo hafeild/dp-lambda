@@ -47,17 +47,15 @@ class ExamplesControllerTest < ActionController::TestCase
     log_in_as users(:foo)
     software = software(:one)
     assert_no_difference "Example.count", "Example created" do
-      post :create, params: { software_id: software.id, 
-        example: { description: "hi" } }
-      assert_redirected_to software_path(software), @response.body
+      post :create, params: { example: { description: "hi" } }
+      assert_redirected_to root_path, @response.body
 
-      post :create, params: { software_id: software.id,
-        example: { title: "xyz", description: "" } }
-      assert_redirected_to software_path(software), @response.body
+      post :create, params: { example: { title: "xyz", description: "" } }
+      assert_redirected_to root_path, @response.body
 
-      post :create, params: { software_id: software.id,
+      post :create, params: { 
         example: { title: "", summary: "", description: "xyz" } }
-      assert_redirected_to software_path(software), @response.body
+      assert_redirected_to root_path, @response.body
     end
   end
 
@@ -168,7 +166,7 @@ class ExamplesControllerTest < ActionController::TestCase
   ##############################################################################
   ## Testing updating an example.
 
-  test "should update the example of redirect to a software page" do
+  test "should update the example and redirect to a software page" do
     log_in_as users(:foo)
     software = software(:two)
     example = examples(:one)
@@ -179,7 +177,7 @@ class ExamplesControllerTest < ActionController::TestCase
     assert example.title == "A better example!"
   end
 
-  test "should update the example of redirect to a dataset page" do
+  test "should update the example and redirect to a dataset page" do
     log_in_as users(:foo)
     dataset = datasets(:two)
     example = examples(:two)
@@ -190,7 +188,7 @@ class ExamplesControllerTest < ActionController::TestCase
     assert example.title == "A better example!"
   end
 
-  test "should update the example of redirect to a analysis page" do
+  test "should update the example and redirect to a analysis page" do
     log_in_as users(:foo)
     analysis = analyses(:two)
     example = examples(:two)
@@ -200,6 +198,35 @@ class ExamplesControllerTest < ActionController::TestCase
     example.reload
     assert example.title == "A better example!"
   end
+
+  test "should update the example and redirect to the example page" do
+    log_in_as users(:foo)
+    analysis = analyses(:two)
+    example = examples(:two)
+    patch :update, params: { id: example.id,
+      example: { title: "A better example!" } }
+    assert_redirected_to example_path(example), @response.body
+    example.reload
+    assert example.title == "A better example!"
+  end
+
+  ##############################################################################
+
+  ##############################################################################
+  ## Test deleting an example.
+
+  test "should delete the example and redirect to a the examples index" do
+    log_in_as users(:foo)
+    dataset = datasets(:two)
+    example = examples(:two)
+    assert_difference "dataset.examples.size", -1, "Example not deleted" do
+      delete :destroy, params: { id: example.id }
+      assert_redirected_to examples_path, @response.body
+      assert Example.find_by(id: example.id).nil?
+      dataset.reload
+    end
+  end
+
 
   ##############################################################################
 
