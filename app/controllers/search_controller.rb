@@ -83,7 +83,7 @@ class SearchController < ApplicationController
       
       if @vertical == 'all'
         @search = Sunspot.search( Assignment, Analysis, Software, Dataset, 
-          &query_body )
+          Example, &query_body )
       else
         @search = Sunspot.search @vertical_map[@vertical], &query_body
       end

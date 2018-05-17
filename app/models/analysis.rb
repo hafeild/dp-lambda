@@ -52,7 +52,7 @@ class Analysis < ApplicationRecord
     end
 
     text :attachments do
-      attachments.map{|a| "#{a.file_attachment.file_name} #{a.description}"}
+      attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
     end
 
     ## For scoping and faceting.

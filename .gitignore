@@ -29,3 +29,6 @@ public/system
 
 # Ignore search stuff.
 /solr
+
+# VS Code config file.
+.vscode
