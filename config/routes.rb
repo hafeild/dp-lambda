@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :software
   resources :datasets
   resources :analyses
+  resources :examples
   resources :assignments do 
     resources :assignment_results, only: [:create, :new]
   end
@@ -21,11 +22,10 @@ Rails.application.routes.draw do
 
 
   ## Resources.
-  resources :examples, except: [:destroy]
   resources :web_resources, except: [:index, :destroy]
   resources :tags, except: [:index, :destroy]
   
-  verticals = [:software, :dataset, :analysis, :assignment]
+  verticals = [:software, :dataset, :analysis, :assignment, :example]
 
   ## Configures all of the routes for interacting with resources attached to
   ## a particular vertical. E.g.,
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   verticals.each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 
-    [:examples, :web_resources, :tags].each do |resource|
+    [:web_resources, :tags].each do |resource|
       
       resource_base = "#{base}/#{resource}"
       get    resource_base               => "#{resource}#index"
@@ -46,7 +46,8 @@ Rails.application.routes.draw do
   
   ## Attachments.
   resources :attachments, only: [:index, :create, :destroy]
-  (verticals + ['example']).each do |vertical|
+  # (verticals + ['example']).each do |vertical|
+  verticals.each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
     resource_base = "#{base}/attachments"
     
