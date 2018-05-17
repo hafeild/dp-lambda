@@ -68,7 +68,7 @@ Rails.application.routes.draw do
       ## Right now, we only want to make connections between assignments and
       ## other verticals, not between arbitrary verticals.
       #next unless vertical == :assignment or vertical2 == :assignment
-      next if vertical == :dataset or (vertical2 == :dataset and vertical != :assignment)
+      next if (vertical == :dataset and vertical2 != :example) or (vertical2 == :dataset and vertical != :assignment and vertical != :example)
 
       vertical2 = vertical2.to_s.pluralize(2)
       expanded_base = "#{base}/#{vertical2}"

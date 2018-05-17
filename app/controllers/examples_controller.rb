@@ -80,7 +80,6 @@ class ExamplesController < ApplicationController
   def disconnect
     begin
       if @vertical.examples.exists?(id: @example.id)
-        @example.destroy_if_isolated(1)
         @vertical.examples.delete(@example)
         @vertical.save! 
       end

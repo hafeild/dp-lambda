@@ -134,7 +134,7 @@ class ExamplesControllerTest < ActionController::TestCase
     assert_difference "software.examples.size", -1, "Example not unlinked" do
       delete :disconnect, params: { software_id: software.id, id: example.id }
       assert_redirected_to software_path(software), @response.body
-      assert Example.find_by(id: example.id).nil?
+      assert_not Example.find_by(id: example.id).nil?
       software.reload
     end
   end
