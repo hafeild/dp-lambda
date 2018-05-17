@@ -19,6 +19,11 @@ $(document).ready(function(event){
             start: function(event, ui){ ui.helper.addClass('dragging'); }
         });
     }
+    if($('.edit-toggle').size() > 0){
+        initializeEditMode();
+        $(document).on('click', '.enable-editing', toggleEditMode);
+        $(document).on('click', '.disable-editing', toggleEditMode);
+    }
     
     $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);
 });
@@ -121,3 +126,20 @@ var reorderAttachments = function(event, ui){
         });
     }
 };
+
+var initializeEditMode = function(){
+    var inEditMode = (window.localStorage.editMode === 'true');
+    console.log('Edit mode:', inEditMode, window.localStorage.editMode);
+    if(inEditMode){
+        $('.edit-toggle').show();
+        $('.enable-editing').hide();
+    } else {
+        $('.enable-editing').show();
+    }
+    window.localStorage.editMode = inEditMode;
+};
+
+var toggleEditMode = function(event){
+    window.localStorage.editMode = (window.localStorage.editMode!=='true');
+    $('.edit-toggle').toggle();
+}

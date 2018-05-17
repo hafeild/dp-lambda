@@ -26,9 +26,11 @@ This is expecting the following local variables:
   <div class="related related-<%= vertical_to_names %>">
     <<%=title_tag%>><%= title %></<%=title_tag%>>
     <% if editable and can_edit? %>
-      <a href="<%= vertical_vertical_index_path vertical_from, vertical_to %>"
-        ><button class="btn btn-sm btn-default">Link to <%= vertical_to_name %></button
-      ></a>
+      <span class="edit-toggle">
+        <a href="<%= vertical_vertical_index_path vertical_from, vertical_to %>"
+          ><button class="btn btn-sm btn-default">Link to <%= vertical_to_name %></button
+        ></a>
+      </span>
     <% end %>
     <ul>
       <%= render(partial: "verticals_shared/vertical_list_item", 

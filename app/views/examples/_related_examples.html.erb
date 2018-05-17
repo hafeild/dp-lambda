@@ -16,12 +16,14 @@ This is expecting the following local variables:
 <div class="examples related">
   <<%=title_tag%>><%= title %></<%=title_tag%>>
   <% if editable and can_edit? %>
-    <a href="<%= new_vertical_example_path vertical %>"
-      ><button class="btn btn-sm btn-default">Add new</button
-    ></a>
-    <a href="<%= vertical_example_index_path vertical %>"
-      ><button class="btn btn-sm btn-default">Add existing</button
-    ></a>
+    <span class="edit-toggle">
+      <a href="<%= new_vertical_example_path vertical %>"
+        ><button class="btn btn-sm btn-default">Add new</button
+      ></a>
+      <a href="<%= vertical_example_index_path vertical %>"
+        ><button class="btn btn-sm btn-default">Add existing</button
+      ></a>
+    </span>
   <% end %>
 
   <ul>
