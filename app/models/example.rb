@@ -37,4 +37,35 @@ class Example < ApplicationRecord
   #     destroy!
   #   end
   # end
+
+  ## For search.
+  searchable do
+    text :title, :summary, :description
+
+    text :attachments do
+      attachments.map{|a| "#{a.file_attachment.file_name} #{a.description}"}
+    end
+
+    text :tags do
+      tags.map{|tag| tag.text}
+    end
+
+    text :analyses do
+      analyses.map{|a| "#{a.name} #{a.summary} #{a.description}"} 
+    end
+
+    text :web_resources do
+      web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
+    end
+
+    text :software do
+      software.map{|s| "#{s.name} #{s.summary} #{s.description}"}
+    end
+    
+    ## For scoping and faceting.
+    integer :creator_facet do 
+      creator_id
+    end
+  end
+
 end

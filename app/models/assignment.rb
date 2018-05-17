@@ -78,11 +78,11 @@ class Assignment < ApplicationRecord
     end
 
     text :examples do
-      examples.map{|example| "#{example.title} #{example.description}"}
+      examples.map{|example| "#{example.title} #{example.summary} #{example.description}"}
     end
 
-    text :attachments do 
-      attachments.map{|a| a.description}
+    text :attachments do
+      attachments.map{|a| "#{a.file_attachment.file_name} #{a.description}"}
     end
 
     ## For scoping and faceting.

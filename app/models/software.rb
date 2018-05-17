@@ -31,6 +31,10 @@ class Software < ApplicationRecord
   searchable do
     text :name, :summary, :description
 
+    text :attachments do
+      attachments.map{|a| "#{a.file_attachment.file_name} #{a.description}"}
+    end
+
     text :tags do
       tags.map{|tag| tag.text}
     end
@@ -44,7 +48,7 @@ class Software < ApplicationRecord
     end
 
     text :examples do
-      examples.map{|example| "#{example.title} #{example.description}"}
+      examples.map{|example| "#{example.title} #{example.summary} #{example.description}"}
     end
     
     ## For scoping and faceting.
