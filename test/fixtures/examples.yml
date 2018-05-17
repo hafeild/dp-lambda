@@ -4,8 +4,13 @@ one:
   # dataset: 
   # analysis:
   title: Example 1
+  summary: who who who
   description: frog snake lizzard
+  creator: foo
 
 two:
   title: Example 2
+  summary: what what what
   description: cloud sun rain
+  creator: foo
+  

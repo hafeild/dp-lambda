@@ -18,7 +18,7 @@ class ExamplesControllerTest < ActionController::TestCase
     analysis = analyses(:one)
     assert_difference "Example.count", 1, "Example not created" do
       post :create, params: { analysis_id: analysis.id, example: { 
-        title: "x", description: "x" } }
+        title: "x", summary: "x" } }
       assert_redirected_to analysis_path(analysis), @response.body
     end
   end
@@ -28,7 +28,7 @@ class ExamplesControllerTest < ActionController::TestCase
     dataset = datasets(:one)
     assert_difference "Example.count", 1, "Example not created" do
       post :create, params: { dataset_id: dataset.id, example: { 
-        title: "x", description: "x" } }
+        title: "x", summary: "x" } }
       assert_redirected_to dataset_path(dataset), @response.body
     end
   end
@@ -38,17 +38,17 @@ class ExamplesControllerTest < ActionController::TestCase
     software = software(:one)
     assert_difference "Example.count", 1, "Example not created" do
       post :create, params: { software_id: software.id, example: { 
-        title: "x", description: "x" } }
+        title: "x", summary: "x" } }
       assert_redirected_to software_path(software), @response.body
     end
   end
 
-  test "should break when creating an example with no title or description" do
+  test "should break when creating an example with no title or summary" do
     log_in_as users(:foo)
     software = software(:one)
     assert_no_difference "Example.count", "Example created" do
       post :create, params: { software_id: software.id, 
-        example: { title: "", description: "" } }
+        example: { description: "hi" } }
       assert_redirected_to software_path(software), @response.body
 
       post :create, params: { software_id: software.id,
@@ -56,7 +56,7 @@ class ExamplesControllerTest < ActionController::TestCase
       assert_redirected_to software_path(software), @response.body
 
       post :create, params: { software_id: software.id,
-        example: { title: "", description: "xyz" } }
+        example: { title: "", summary: "", description: "xyz" } }
       assert_redirected_to software_path(software), @response.body
     end
   end
@@ -67,7 +67,7 @@ class ExamplesControllerTest < ActionController::TestCase
     example = examples(:one)
     assert_no_difference "Example.count", "Example created" do
       post :create, params: { software_id: software.id,
-        example: { title: example.title, description: "xyz" } }
+        example: { title: example.title, summary: "xyz" } }
       assert_redirected_to software_path(software), @response.body
     end
   end
@@ -77,7 +77,7 @@ class ExamplesControllerTest < ActionController::TestCase
     software = software(:one)
     assert_no_difference "Example.count", "Example created" do
       post :create, params: { software_id: software.id,
-        example: { title: "x"*201, description: "xyz" } }
+        example: { title: "x"*201, summary: "xyz" } }
       assert_redirected_to software_path(software), @response.body
     end
   end
