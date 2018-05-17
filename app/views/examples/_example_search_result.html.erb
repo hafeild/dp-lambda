@@ -1,20 +1,19 @@
-<div class="example index-entry">
-<a href="<%= example_path(example) %>" 
-  data-example-id="<%= example.id %>">
-  <span class="name"><%= example.title %></span>
-</a>
-<span class="metadata"></span>
+<div data-example-id="<%= example.id %>" class="example index-entry vertical-result-data">
 
-<% if example.summary.nil? %>
-  <% clean_description = strip_tags example.description %>
-  <% clean_description = clean_description[0..100] + '...' if 
-    clean_description.size > 100 %>
-<% else %>
-  <% clean_description = example.summary %>
-<% end %>
-<span class="summary"><%= clean_description %></span>
+  <span class="name"><%= link_to example.title, example_path(example) %></span>
 
-<span class="metadata">
+  <span class="metadata"></span>
+
+  <% if example.summary.nil? %>
+    <% clean_description = strip_tags example.description %>
+    <% clean_description = clean_description[0..100] + '...' if 
+      clean_description.size > 100 %>
+  <% else %>
+    <% clean_description = example.summary %>
+  <% end %>
+  <span class="summary"><%= clean_description %></span>
+
+  <span class="metadata">
   <span class="date">Added on <%= example.created_at.strftime('%B %d, %Y') %> 
   <% unless example.creator.nil? %>
     by <%= example.creator.username %></span>
@@ -40,6 +39,6 @@
   <br/>
   <span class="tags"><%= render(partial: "tags/tag_badge", 
   collection: sort_by(example.tags, :text), as: :tag) %></span>
-</span>
+  </span>
 
 </div>

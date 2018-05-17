@@ -14,7 +14,7 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
 
-  test "valid with a all fields" do 
+  test "valid with all fields" do 
     assignment = Assignment.new(
       creator: users(:foo),
       name: "A very unique name",

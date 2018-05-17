@@ -18,7 +18,6 @@ module ApplicationHelper
   def destroy_isolated_resources(entry)
     entry.tags.each{|tag| tag.destroy_if_isolated(1)}
     entry.web_resources.each{|resource| resource.destroy_if_isolated(1)}
-    entry.examples.each{|example| example.destroy_if_isolated(1)}
   end
 
   ## Returns the path to the given vertical.
