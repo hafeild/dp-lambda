@@ -1,32 +1,45 @@
+<div class="example index-entry">
+<a href="<%= example_path(example) %>" 
+  data-example-id="<%= example.id %>">
+  <span class="name"><%= example.title %></span>
+</a>
+<span class="metadata"></span>
 
-<% if not defined?(title_tag) %>
-  <% title_tag = :h2 %>
+<% if example.summary.nil? %>
+  <% clean_description = strip_tags example.description %>
+  <% clean_description = clean_description[0..100] + '...' if 
+    clean_description.size > 100 %>
+<% else %>
+  <% clean_description = example.summary %>
 <% end %>
+<span class="summary"><%= clean_description %></span>
 
-<% if print_header %>
-  <<%= title_tag %>><span class="name"><%= example.title %></span>
-    (<%= link_to "details", example_path(example) %>)
+<span class="metadata">
+  <span class="date">Added on <%= example.created_at.strftime('%B %d, %Y') %> 
+  <% unless example.creator.nil? %>
+    by <%= example.creator.username %></span>
+  <% end %>
+  &mdash;
 
-    <% if can_edit? and defined? vertical %>
-      <%= form_for(example, method: :delete,
-          url: vertical_example_path(vertical, example), 
-          html: {class: "inline"}) do |f| %>
-        <button type="submit" class="btn btn-default btn-sm">
-          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
-          Disassociate</button>
-      <% end %>
-      <%= form_for(example, method: :get,
-         url: edit_vertical_example_path(vertical, example),
-         html: {class: "inline"}) do |f| %>
-        <button type="submit" class="btn btn-default btn-sm">
-          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
-      </button>
-      <% end %>
-    <% end %>
-  </<%=title_tag%>>
-<% end %>
+  <span class="used-in">Referenced by <%= example.assignments.size %> <%= 'assignment'.pluralize(example.assignments.size) %>.</span><br/>
+  <% if example.analyses.size > 0 %>
+    <span class="demonstrates">Analyses demonstrated: 
+    <%= example.analyses.map{|a|link_to  a.name, get_vertical_path(a)}.join(',').html_safe 
+    %>.</span>
+  <% end %>
+  <% if example.software.size > 0 %>
+    <span class="demonstrates">Software demonstrated: 
+    <%= example.software.map{|s|link_to  s.name, get_vertical_path(s)}.join(',').html_safe 
+    %>.</span>
+  <% end %>
+  <% if example.datasets.size > 0 %>
+    <span class="demonstrates">Datasets used: 
+    <%= example.datasets.map{|d|link_to  d.name, get_vertical_path(d)}.join(',').html_safe 
+    %>.</span>
+  <% end %>
+  <br/>
+  <span class="tags"><%= render(partial: "tags/tag_badge", 
+  collection: sort_by(example.tags, :text), as: :tag) %></span>
+</span>
 
-
-<div class="description">
-<%= sanitize_text(example.description).html_safe %>
 </div>

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
 
   ## Resources.
-  resources :examples, except: [:index, :destroy]
+  resources :examples, except: [:destroy]
   resources :web_resources, except: [:index, :destroy]
   resources :tags, except: [:index, :destroy]
   
