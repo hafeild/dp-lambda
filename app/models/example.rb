@@ -1,10 +1,13 @@
 class Example < ApplicationRecord
   ## Examples have...
   ## - title -- must be present, <= 200 chars, and unique
+  ## - summary
   ## - description -- must be present
-  ## - software_id
-  ## - analysis_id
-  ## - dataset_id
+  ## - software
+  ## - analyses
+  ## - datasets
+  ## - tags
+  ## - web_resources
 
   include Bootsy::Container
   has_and_belongs_to_many :software
@@ -13,6 +16,7 @@ class Example < ApplicationRecord
   has_and_belongs_to_many :assignments
   has_and_belongs_to_many :attachments
   has_and_belongs_to_many :tags
+  has_and_belongs_to_many :web_resources
   belongs_to :creator, class_name: "User"
 
   ## Ensure the presence of required fields. 
@@ -22,7 +26,7 @@ class Example < ApplicationRecord
 
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
-    software.size + datasets.size + analyses.size + assignments.size + tags.size
+    software.size + datasets.size + analyses.size + assignments.size + tags.size + web_resources.size
   end
 
   ## Destroys this resource if it's connected to target_count entries.
