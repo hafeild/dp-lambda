@@ -23,6 +23,7 @@ class Assignment < ApplicationRecord
 
   ## Destroys all assignment results when destroyed.
   before_destroy :destroy_assignment_results
+  after_destroy :reload_connections
 
   belongs_to :creator, class_name: "User"
 
@@ -111,6 +112,15 @@ class Assignment < ApplicationRecord
     def destroy_assignment_results
       assignment_results.each do |assignment_result|
         assignment_result.destroy!
+      end
+    end
+
+    def reload_connections
+      [analyses, datasets, software, tags, web_resources, examples].each do |connectionSet|
+        connectionSet.each do |connection|
+          connection.assignments.delete(self)
+          connection.save!
+        end
       end
     end
 end

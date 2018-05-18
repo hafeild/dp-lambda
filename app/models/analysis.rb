@@ -12,6 +12,8 @@ class Analysis < ApplicationRecord
 
   include Bootsy::Container
 
+  after_destroy :reload_connections
+
   belongs_to :creator, class_name: "User"
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources
@@ -67,4 +69,13 @@ class Analysis < ApplicationRecord
     examples.clear
   end
 
+  private
+    def reload_connections
+      [assignments, software, tags, web_resources, examples].each do |connectionSet|
+        connectionSet.each do |connection|
+          connection.analysis.delete(self)
+          connection.save!
+        end
+      end
+    end
 end

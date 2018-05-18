@@ -97,6 +97,9 @@ class AssignmentsController < ApplicationController
         @vertical.assignments << @assignment
       end
       @vertical.save!
+      @assignment.reload
+      @assignment.save!
+      
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "These assignments could not be linked.", 
@@ -116,6 +119,9 @@ class AssignmentsController < ApplicationController
         end
       end
       @vertical.save! 
+      @assignment.reload
+      @assignment.save!
+
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "These assignments could not be unlinked.", 

@@ -19,7 +19,7 @@ class Example < ApplicationRecord
   has_and_belongs_to_many :web_resources
   belongs_to :creator, class_name: "User"
 
-  after_destroy :reload_connections
+  before_destroy :reload_connections
 
   ## Ensure the presence of required fields. 
   validates :title, presence: true, length: {maximum: 200}, 
@@ -76,9 +76,9 @@ class Example < ApplicationRecord
 
   private
     def reload_connections
-      [assignments, analyses, :datasets, :software, :tags, :web_resources].each do |connectionSet|
+      [assignments, analyses, datasets, software, tags, web_resources].each do |connectionSet|
         connectionSet.each do |connection|
-          connection.reload 
+          connection.examples.delete(self)
           connection.save!
         end
       end

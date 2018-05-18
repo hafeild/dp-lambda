@@ -84,7 +84,6 @@ class AnalysesController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@analysis)
-
         @analysis.destroy!
 
         flash[:success] = "Page removed."

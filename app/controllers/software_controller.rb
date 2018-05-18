@@ -100,6 +100,9 @@ class SoftwareController < ApplicationController
     begin
       @vertical.software << @software
       @vertical.save!
+      @software.reload
+      @software.save!
+
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The software could not be associated with the "+

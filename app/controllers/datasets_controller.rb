@@ -100,6 +100,9 @@ class DatasetsController < ApplicationController
     begin
       @vertical.datasets << @dataset
       @vertical.save!
+      @dataset.reload
+      @dataset.save!
+
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The dataset could not be associated with the "+
@@ -112,8 +115,8 @@ class DatasetsController < ApplicationController
       if @vertical.datasets.exists?(id: @dataset.id)
         @vertical.datasets.delete(@dataset)
         @vertical.save! 
-        # @dataset.reload
-        # @dataset.save!
+        @dataset.reload
+        @dataset.save!
       end
       respond_with_success @redirect_path
     rescue => e

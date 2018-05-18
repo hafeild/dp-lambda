@@ -64,13 +64,13 @@ class ExamplesController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@example)
-
         @example.destroy!
 
         flash[:success] = "Page removed."
         redirect_to examples_path
       end
     rescue => e
+      puts "#{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error removing the example entry.",
         example_path(@example)
     end
