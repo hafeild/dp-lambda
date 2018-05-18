@@ -2,9 +2,8 @@ class ExamplesController < ApplicationController
   before_action :logged_in_user, except: [:show]
   before_action :user_can_edit, except: [:show]
   before_action :get_simple_params, only: [:new, :edit]
-  before_action :get_params, except: [:index, :show, :edit, :new, 
-    :connect, :disconnect, :destroy]
-  before_action :get_example, except: [:index]
+  before_action :get_params, only: [:create, :update]
+  before_action :get_example, except: [:index, :connect_index]
   before_action :get_verticals
   before_action :get_redirect_path
 
@@ -19,6 +18,13 @@ class ExamplesController < ApplicationController
 
   def index
     @examples = Example.all.sort_by{|e| e.title}
+  end
+
+  def connect_index
+    @examples = Example.all.sort_by { |e| e.title }
+    if @vertical.class == Example
+      @examples.delete(@vertical)
+    end
   end
 
   def create

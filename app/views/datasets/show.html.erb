@@ -89,23 +89,10 @@
              vertical_to: Assignment.new}) %>
 
 
-  <div class="examples">
-    <h2>Examples</h2>
-    <% if can_edit? %>
-      <span class="edit-toggle">
-        <a href="<%= new_vertical_example_path @dataset %>"
-          ><button class="btn btn-sm btn-default">Add new</button
-        ></a>
-        <a href="<%= vertical_example_index_path @dataset %>"
-          ><button class="btn btn-sm btn-default">Add existing</button
-        ></a>
-      </span>
-    <% end %>
-
-    <%= render(partial: "examples/example", 
-      collection: sort_by(@dataset.examples, :title), 
-      locals: {print_header: true, vertical: @dataset}) || 
-      "<p>There are currently no examples associated with this dataset.</p>".html_safe %>
-  </div>
+    <%= render(partial: "examples/related_examples",
+      locals: {title: "Examples used in", 
+               vertical: @dataset, 
+               editable: true,
+               title_tag: :h3 }) %>
 
 </div>
