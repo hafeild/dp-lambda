@@ -100,6 +100,8 @@ class AnalysesController < ApplicationController
     begin
       @vertical.analyses << @analysis
       @vertical.save!
+      @analysis.reload
+      @analysis.save!
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The analysis could not be associated with the "+
@@ -112,6 +114,8 @@ class AnalysesController < ApplicationController
       if @vertical.analyses.exists?(id: @analysis.id)
         @vertical.analyses.delete(@analysis)
         @vertical.save! 
+        @analysis.reload
+        @analysis.save!
       end
       respond_with_success @redirect_path
     rescue => e

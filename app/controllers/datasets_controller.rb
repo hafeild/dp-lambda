@@ -112,6 +112,8 @@ class DatasetsController < ApplicationController
       if @vertical.datasets.exists?(id: @dataset.id)
         @vertical.datasets.delete(@dataset)
         @vertical.save! 
+        # @dataset.reload
+        # @dataset.save!
       end
       respond_with_success @redirect_path
     rescue => e

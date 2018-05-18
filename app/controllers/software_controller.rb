@@ -112,6 +112,8 @@ class SoftwareController < ApplicationController
       if @vertical.software.exists?(id: @software.id)
         @vertical.software.delete(@software)
         @vertical.save! 
+        @software.reload
+        @software.save!
       end
       respond_with_success @redirect_path
     rescue => e

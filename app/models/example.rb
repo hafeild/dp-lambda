@@ -22,7 +22,7 @@ class Example < ApplicationRecord
   ## Ensure the presence of required fields. 
   validates :title, presence: true, length: {maximum: 200}, 
     uniqueness: {case_sensitive: false}
-  validates :summary, presence: true
+  # validates :summary, presence: true
 
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
@@ -37,6 +37,10 @@ class Example < ApplicationRecord
   #     destroy!
   #   end
   # end
+
+  def name
+    title
+  end
 
   ## For search.
   searchable do

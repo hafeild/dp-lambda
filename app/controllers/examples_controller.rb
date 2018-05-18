@@ -29,6 +29,10 @@ class ExamplesController < ApplicationController
 
   def create
     begin
+        if  @params[:summary].nil? or  @params[:summary].size == 0
+          raise "Summary must be present and non-empty."
+        end
+
         @example = Example.create!(title: @params[:title], 
           summary: @params[:summary], description: @params[:description],
           creator: current_user)
@@ -74,8 +78,12 @@ class ExamplesController < ApplicationController
 
   def connect
     begin
-      @vertical.examples << @example
-      @vertical.save!
+      unless @vertical.examples.exists?(id: @example.id)
+        @vertical.examples << @example
+        @vertical.save!
+        @example.reload
+        @example.save!
+      end
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The example could not be associated with the "+
@@ -89,9 +97,12 @@ class ExamplesController < ApplicationController
       if @vertical.examples.exists?(id: @example.id)
         @vertical.examples.delete(@example)
         @vertical.save! 
+        @example.reload
+        @example.save!
       end
       respond_with_success @redirect_path
     rescue => e
+      puts "#{e.backtrace}: #{e.message} (#{e.class})"
       respond_with_error "The example could not be disassociated with the "+
         "requested vertical.", @redirect_path
     end
