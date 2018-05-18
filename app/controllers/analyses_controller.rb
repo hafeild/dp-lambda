@@ -68,10 +68,12 @@ class AnalysesController < ApplicationController
       ActiveRecord::Base.transaction do
         @analysis.update(@data.permit(:name, :description, :summary))
         @analysis.save!
+        @analysis.reload_connections
 
         respond_with_success get_redirect_path(analysis_path(@analysis))
       end
     rescue => e
+      puts "#{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error updating the analysis entry.",
         new_analysis_path
     end  
@@ -85,6 +87,7 @@ class AnalysesController < ApplicationController
         ## Remove connected resources.
         destroy_isolated_resources(@analysis)
         @analysis.destroy!
+        # @analysis.reload_connections
 
         flash[:success] = "Page removed."
         redirect_to analyses_path

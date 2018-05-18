@@ -22,8 +22,11 @@ New features:
         - the last selected mode persists across page loads
     * the vertical type being viewed is highlighted in the header
         - this helps a user tell what kind of vertical they're looking at
+    
 
 Bug fixes:
+    * linked verticals resources are now re-indexed when a vertical is updated
+      or deleted
 
 ## 18.05
 
