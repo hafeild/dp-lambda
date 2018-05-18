@@ -63,4 +63,5 @@ class Software < ApplicationRecord
     examples.clear
   end
 
+  
 end
