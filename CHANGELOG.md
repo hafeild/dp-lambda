@@ -2,7 +2,7 @@
 
 Changes made in each release are summarized below.
 
-## Next
+## 18.05.01
 
 New features:
 
