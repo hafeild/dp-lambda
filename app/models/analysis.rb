@@ -17,7 +17,8 @@ class Analysis < ApplicationRecord
   has_and_belongs_to_many :web_resources
   has_and_belongs_to_many :examples
   has_and_belongs_to_many :assignments
-  has_and_belongs_to_many :software
+  has_and_belongs_to_many :software, after_remove: :reload_and_save
+
   # has_and_belongs_to_many :datasets
   # has_and_belongs_to_many :analyses
 
@@ -38,7 +39,10 @@ class Analysis < ApplicationRecord
       software.map{|a| "#{a.name} #{a.summary} #{a.description}"} 
     end
 
-
+    text :assignments do
+      assignments.map{|a| "#{a.name} #{a.summary}"} 
+    end
+    
     text :tags do
       tags.map{|tag| tag.text}
     end
@@ -65,6 +69,24 @@ class Analysis < ApplicationRecord
     tags.clear
     web_resources.clear
     examples.clear
+  end
+
+  def delete_from_connection
+    [assignments, software, examples].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.analyses.delete(self)
+        connection.save!
+      end
+    end
+  end
+
+  def reindex_associations
+    [assignments, examples, software].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.reload
+        connection.save!
+      end
+    end
   end
 
 end

@@ -76,6 +76,11 @@ Rails.application.routes.draw do
       get    "#{expanded_base}/:id/edit" => "#{vertical2}#edit"
       post   "#{expanded_base}/:id"      => "#{vertical2}#connect"
       delete "#{expanded_base}/:id"      => "#{vertical2}#disconnect"
+
+      if vertical2 == "examples"
+        get    "#{expanded_base}/new" => "#{vertical2}#new"
+      end
+      
     end
   end
 

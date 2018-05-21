@@ -5,7 +5,7 @@ This is expecting the following local variables:
               with.
 %>
 
-<div class="attachment-form-wrapper">
+<div class="attachment-form-wrapper edit-toggle">
   <h3>Upload a new attachment</h3>
   <%= form_for Attachment.new, url: vertical_attachments_path(vertical), 
         html: { multipart: true } do |f| %>

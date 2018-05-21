@@ -2,9 +2,8 @@ class ExamplesController < ApplicationController
   before_action :logged_in_user, except: [:show]
   before_action :user_can_edit, except: [:show]
   before_action :get_simple_params, only: [:new, :edit]
-  before_action :get_params, except: [:index, :show, :edit, :new, 
-    :connect, :disconnect, :destroy]
-  before_action :get_example, except: [:index]
+  before_action :get_params, only: [:create, :update]
+  before_action :get_example, except: [:index, :connect_index]
   before_action :get_verticals
   before_action :get_redirect_path
 
@@ -21,8 +20,19 @@ class ExamplesController < ApplicationController
     @examples = Example.all.sort_by{|e| e.title}
   end
 
+  def connect_index
+    @examples = Example.all.sort_by { |e| e.title }
+    if @vertical.class == Example
+      @examples.delete(@vertical)
+    end
+  end
+
   def create
     begin
+        if  @params[:summary].nil? or  @params[:summary].size == 0
+          raise "Summary must be present and non-empty."
+        end
+
         @example = Example.create!(title: @params[:title], 
           summary: @params[:summary], description: @params[:description],
           creator: current_user)
@@ -41,7 +51,7 @@ class ExamplesController < ApplicationController
   def update
     begin
       @example.update_attributes! @params
-
+      @example.reindex_associations
       respond_with_success get_redirect_path(example_path(@example))
     rescue
       respond_with_error "The example could not be updated.", @redirect_path
@@ -54,13 +64,14 @@ class ExamplesController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@example)
-
+        @example.delete_from_connection
         @example.destroy!
 
         flash[:success] = "Page removed."
         redirect_to examples_path
       end
     rescue => e
+      #puts "#{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error removing the example entry.",
         example_path(@example)
     end
@@ -68,8 +79,12 @@ class ExamplesController < ApplicationController
 
   def connect
     begin
-      @vertical.examples << @example
-      @vertical.save!
+      unless @vertical.examples.exists?(id: @example.id)
+        @vertical.examples << @example
+        @vertical.save!
+        @example.reload
+        @example.save!
+      end
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The example could not be associated with the "+
@@ -83,9 +98,12 @@ class ExamplesController < ApplicationController
       if @vertical.examples.exists?(id: @example.id)
         @vertical.examples.delete(@example)
         @vertical.save! 
+        @example.reload
+        @example.save!
       end
       respond_with_success @redirect_path
     rescue => e
+      puts "#{e.backtrace}: #{e.message} (#{e.class})"
       respond_with_error "The example could not be disassociated with the "+
         "requested vertical.", @redirect_path
     end

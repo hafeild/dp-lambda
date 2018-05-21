@@ -107,7 +107,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
       name: "A VERY NEW NAME!"
     }}
     result = JSON.parse(@response.body)
-    assert result['success']
+    assert result['success'], result['error']
     assert result['redirect'] == software_path(software.id)
     
     get result['redirect']

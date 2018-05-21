@@ -5,6 +5,8 @@ class Tag < ApplicationRecord
   has_and_belongs_to_many :assignments
   has_and_belongs_to_many :examples
 
+  after_destroy :reload_connections
+
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
     software.size + datasets.size + analyses.size + assignments.size + examples.size
@@ -22,4 +24,16 @@ class Tag < ApplicationRecord
       destroy!
     end
   end
+
+
+  private
+    def reload_connections
+      [assignments, analyses, datasets, software, examples].each do |connectionSet|
+        connectionSet.each do |connection|
+          connection.tags.delete(self)
+          connection.save!
+        end
+      end
+    end
+
 end

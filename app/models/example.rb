@@ -22,7 +22,7 @@ class Example < ApplicationRecord
   ## Ensure the presence of required fields. 
   validates :title, presence: true, length: {maximum: 200}, 
     uniqueness: {case_sensitive: false}
-  validates :summary, presence: true
+  # validates :summary, presence: true
 
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
@@ -38,9 +38,17 @@ class Example < ApplicationRecord
   #   end
   # end
 
+  def name
+    title
+  end
+
   ## For search.
   searchable do
-    text :title, :summary, :description
+    text :summary, :description
+
+    text :name do
+      :title
+    end
 
     text :attachments do
       attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
@@ -50,8 +58,12 @@ class Example < ApplicationRecord
       tags.map{|tag| tag.text}
     end
 
+    text :assignments do
+      assignments.map{|a| "#{a.name} #{a.summary}"} 
+    end
+
     text :analyses do
-      analyses.map{|a| "#{a.name} #{a.summary} #{a.description}"} 
+      analyses.map{|a| "#{a.name} #{a.summary}"} 
     end
 
     text :web_resources do
@@ -59,12 +71,30 @@ class Example < ApplicationRecord
     end
 
     text :software do
-      software.map{|s| "#{s.name} #{s.summary} #{s.description}"}
+      software.map{|s| "#{s.name} #{s.summary}"}
     end
     
     ## For scoping and faceting.
     integer :creator_facet do 
       creator_id
+    end
+  end
+
+  def delete_from_connection
+    [assignments, analyses, datasets, software].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.examples.delete(self)
+        connection.save!
+      end
+    end
+  end
+
+  def reindex_associations
+    [assignments, analyses, datasets, software].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.reload
+        connection.save!
+      end
     end
   end
 

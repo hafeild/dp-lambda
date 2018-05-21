@@ -10,6 +10,9 @@ class WebResource < ApplicationRecord
 
 
   include Bootsy::Container
+
+  after_destroy 
+
   has_and_belongs_to_many :software
   has_and_belongs_to_many :datasets
   has_and_belongs_to_many :analyses
@@ -35,4 +38,14 @@ class WebResource < ApplicationRecord
       destroy!
     end
   end
+
+  private
+    def reload_connections
+      [assignments, analyses, datasets, software, tags, examples].each do |connectionSet|
+        connectionSet.each do |connection|
+          connection.web_resources.delete(self)
+          connection.save!
+        end
+      end
+    end
 end

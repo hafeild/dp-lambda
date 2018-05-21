@@ -42,7 +42,7 @@ class AnalysisRenderTest < ActionDispatch::IntegrationTest
 
   ## Tests for index.
   test "should display all analysis entries" do 
-    analyses = [analyses(:one), analyses(:two)]
+    analyses = [analyses(:one), analyses(:two), analyses(:three)]
 
     get analyses_path
     assert_template "analyses/index"

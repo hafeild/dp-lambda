@@ -17,3 +17,9 @@ two:
   examples: two
   web_resources: two
   tags: two, three
+
+three:
+  name: analysis3
+  summary: analysis3analysis3
+  description: analysis 3
+  creator: bar

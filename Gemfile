@@ -29,6 +29,7 @@ gem "paperclip", "~> 5.0.0"
 gem 'rails-html-sanitizer', '~> 1.0.4'
 gem 'loofah', '~> 2.2.1'
 gem 'jquery-ui-rails', '6.0.1'
+gem 'minitest', '5.10.3'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 

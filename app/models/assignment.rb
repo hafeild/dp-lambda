@@ -23,6 +23,7 @@ class Assignment < ApplicationRecord
 
   ## Destroys all assignment results when destroyed.
   before_destroy :destroy_assignment_results
+  #after_destroy :reload_connections
 
   belongs_to :creator, class_name: "User"
 
@@ -72,13 +73,28 @@ class Assignment < ApplicationRecord
       assignment_results.map{ |res| res.to_s}
     end
 
+    text :assignments do
+      related_assignments.map{|a| "#{a.name} #{a.summary}"} 
+    end
 
     text :web_resources do
       web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
     end
 
     text :examples do
-      examples.map{|example| "#{example.title} #{example.summary} #{example.description}"}
+      examples.map{|example| "#{example.title} #{example.summary}"}
+    end
+
+    text :analyses do
+      analyses.map{|a| "#{a.name} #{a.summary}"}
+    end
+
+    text :datasets do
+      datasets.map{|d| "#{d.name} #{d.summary}"}
+    end
+
+    text :software do
+      software.map{|s| "#{s.name} #{s.summary}"}
     end
 
     text :attachments do
@@ -105,6 +121,29 @@ class Assignment < ApplicationRecord
     tags.clear
     web_resources.clear
     examples.clear
+  end
+
+  def delete_from_connection
+    [assignments_related_to, assignments_related_from, analyses, datasets, software, examples].each do |connectionSet|
+      connectionSet.each do |connection|
+        if connection.class == Assignment
+          connection.assignments_related_from.delete(self)
+          connection.assignments_related_to.delete(self)
+        else
+          connection.assignments.delete(self)
+        end
+        connection.save!
+      end
+    end
+  end
+
+  def reindex_associations
+    [assignments_related_to, assignments_related_from, analyses, datasets, software, examples].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.reload
+        connection.save!
+      end
+    end
   end
 
   private

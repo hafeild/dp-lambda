@@ -14,3 +14,9 @@ two:
   description: cloud sun rain
   creator: foo
   
+
+three:
+  title: Example 3
+  summary: ttttt oh yeah
+  description: three is the magic number
+  creator: foo

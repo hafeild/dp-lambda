@@ -91,9 +91,13 @@ class AttachmentsController < ApplicationController
   
   def destroy
     begin
-      Attachment.find(@attachment_id).destroy!
+      attachment = Attachment.find(@attachment_id).destroy!
+      ## This will ensure the Solr index is updated properly.
+      @vertical.reload
+      @vertical.save!
       respond_with_success get_vertical_path @vertical
     rescue => e
+      puts e.backtrace
       respond_with_error "There was an error removing the attachment.", 
         @redirect_path
     end

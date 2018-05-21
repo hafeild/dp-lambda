@@ -34,3 +34,10 @@ three:
   description: A long description
   # assignments_related_from: one
   # assignments_related_to: one
+
+four:
+  creator: bar
+  author: Bar Car
+  name: Assignment 4
+  summary: assignmentassignment
+  description: Yuck

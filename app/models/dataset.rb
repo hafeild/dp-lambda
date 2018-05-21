@@ -35,12 +35,16 @@ class Dataset < ApplicationRecord
       tags.map{|tag| tag.text}
     end
 
+    text :assignments do
+      assignments.map{|a| "#{a.name} #{a.summary}"} 
+    end
+
     text :web_resources do
       web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
     end
 
     text :examples do
-      examples.map{|example| "#{example.title} #{example.summary} #{example.description}"}
+      examples.map{|example| "#{example.title} #{example.summary}"}
     end
 
     text :attachments do
@@ -59,4 +63,21 @@ class Dataset < ApplicationRecord
     examples.clear
   end
 
+  def delete_from_connection
+    [assignments, examples].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.datasets.delete(self)
+        connection.save!
+      end
+    end
+  end
+
+  def reindex_associations
+    [assignments, examples].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.reload
+        connection.save!
+      end
+    end
+  end
 end

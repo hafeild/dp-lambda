@@ -138,6 +138,9 @@ class ApplicationController < ActionController::Base
         elsif params.key? :assignment_id
           @vertical = Assignment.find(params[:assignment_id]) 
           @vertical_form_id = :assignment_id
+        elsif params.key? :example_id
+          @vertical = Example.find(params[:example_id]) 
+          @vertical_form_id = :example_id
         end
 
       rescue

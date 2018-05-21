@@ -48,28 +48,28 @@ h3 {
 }
 
 .vertical-launch:link {
-    display: inline-block;
-    width: 10em;
-    padding-top: 3em;
-    padding-bottom: 3em;
-    color: DimGrey;
-    background-color: WhiteSmoke;
-    text-align: center;
-    margin: 1em;
-    font-size: 125%;
-    border: 1px solid lightGrey;
-    text-decoration: none;
+  display: inline-block;
+  width: 10em;
+  padding-top: 3em;
+  padding-bottom: 3em;
+  color: DimGrey;
+  background-color: WhiteSmoke;
+  text-align: center;
+  margin: 1em;
+  font-size: 125%;
+  border: 1px solid lightGrey;
+  text-decoration: none;
 }
 
 .vertical-launch:visited {
-    text-decoration: none;
-    color: DarkBlue;
-    border: 5px solid LightGrey;
+  text-decoration: none;
+  color: DarkBlue;
+  border: 5px solid LightGrey;
 }
 
 .vertical-launch:hover, .vertical-launch:active{
-    text-decoration: none;
-    background-color: LightGray;
+  text-decoration: none;
+  background-color: LightGray;
 }
 
 .hr td {
@@ -77,5 +77,9 @@ h3 {
 }
 
 .description, .outcome_summary {
-   overflow: auto;
+  overflow: auto;
+}
+
+.selected-vertical {
+  border-bottom: 2px solid steelblue;
 }
