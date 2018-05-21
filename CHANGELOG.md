@@ -25,6 +25,7 @@ New features:
     
 
 Bug fixes:
+
     * linked verticals resources are now re-indexed when a vertical is updated
       or deleted
 
