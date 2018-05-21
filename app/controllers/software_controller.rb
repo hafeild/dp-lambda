@@ -68,7 +68,8 @@ class SoftwareController < ApplicationController
       ActiveRecord::Base.transaction do
         @software.update(@data.permit(:name, :description, :summary))
         @software.save!
-
+        @software.reindex_associations
+        
         respond_with_success get_redirect_path(software_path(@software))
       end
     rescue => e
@@ -84,7 +85,7 @@ class SoftwareController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@software)
-
+        @software.delete_from_connection
         @software.destroy!
 
         flash[:success] = "Page removed."
@@ -100,6 +101,9 @@ class SoftwareController < ApplicationController
     begin
       @vertical.software << @software
       @vertical.save!
+      @software.reload
+      @software.save!
+
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The software could not be associated with the "+
@@ -112,6 +116,8 @@ class SoftwareController < ApplicationController
       if @vertical.software.exists?(id: @software.id)
         @vertical.software.delete(@software)
         @vertical.save! 
+        @software.reload
+        @software.save!
       end
       respond_with_success @redirect_path
     rescue => e

@@ -21,9 +21,18 @@
             placeholder: "e.g., Creating a simple NodeXL graph" %>
         </div>    
 
+        <!-- Summary -->
+        <div class="form-group">
+          <label>Summary</label><span class="required-input">*</span> 
+
+          <%= f.text_field :summary,
+                class: "form-control ignore unchanged",
+                placeholder: "e.g., Demonstrates how to create and anlayze a simple network using NodeXL and a dataset of movie stars."  %>    
+        </div>
+
         <!-- Description -->
         <div class="form-group">
-          <label>Description</label><span class="required-input">*</span> 
+          <label>Details</label> 
 
           <%= f.bootsy_area :description, rows: 10,
                 class: "form-control ignore unchanged",

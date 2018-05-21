@@ -11,8 +11,7 @@ class AnalysisRenderTest < ActionDispatch::IntegrationTest
     assert_template "analyses/show"
     assert_select ".name", analysis.name
     assert_select ".summary", analysis.summary
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(analysis.description)
+    assert_select ".description", analysis.description
 
     assert_select "a[href=?]", edit_analysis_path(analysis.id), count: 0
     assert_select "a[href=?][data-method=delete]", analysis_path(analysis.id), 
@@ -27,8 +26,7 @@ class AnalysisRenderTest < ActionDispatch::IntegrationTest
     assert_template "analyses/show"
     assert_select ".name", analysis.name
     assert_select ".summary", analysis.summary
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(analysis.description)
+    assert_select ".description", analysis.description
 
     assert_select "a[href=?]", edit_analysis_path(analysis.id), count: 1
     assert_select "a[href=?][data-method=delete]", analysis_path(analysis.id), 
@@ -44,7 +42,7 @@ class AnalysisRenderTest < ActionDispatch::IntegrationTest
 
   ## Tests for index.
   test "should display all analysis entries" do 
-    analyses = [analyses(:one), analyses(:two)]
+    analyses = [analyses(:one), analyses(:two), analyses(:three)]
 
     get analyses_path
     assert_template "analyses/index"

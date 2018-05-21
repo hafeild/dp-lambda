@@ -3,8 +3,9 @@ class AttachmentsController < ApplicationController
   before_action :user_can_edit, except: [:index]
   before_action :get_redirect_path
   before_action :get_file_attachment, only: [:create]
-  before_action :get_attachment_id, only: [:destroy]
+  before_action :get_attachment_id, only: [:destroy, :update]
   before_action :get_verticals_or_example
+  before_action :get_description, only: [:create]
   
   def index
     @attachments = Attachment.all()
@@ -15,8 +16,10 @@ class AttachmentsController < ApplicationController
       ActiveRecord::Base.transaction do
         ## Create the attachment.
         attachment = Attachment.create!(file_attachment: @file_attachment,
-          uploaded_by: @current_user)
-        ## Link it to whichever vertical/example was input.
+          uploaded_by: @current_user, description: @description,
+          display_position: @vertical.attachments.size)
+
+        ## Add attachment to the vertical.
         @vertical.attachments << attachment 
         if exceeds_project_max_attachment_size @vertical
           raise "Maximum attachment size "+
@@ -31,12 +34,70 @@ class AttachmentsController < ApplicationController
         @redirect_path
     end
   end
+
+  def update
+    begin
+      ActiveRecord::Base.transaction do
+        ## Find the attachment.
+        attachment = Attachment.find(@attachment_id)
+        options = {}
+        p = params.require(:attachment)
+
+        if p.has_key?(:file_attachment)
+          attachment.update!(
+            file_attachment: p.require(:file_attachment),
+            uploaded_by: @current_user
+          )
+        end
+
+        if p.has_key?(:description)
+          attachment.update!(description: p.require(:description))
+        end
+
+        if exceeds_project_max_attachment_size @vertical
+          raise "Maximum attachment size "+
+            "(#{ENV['VERTICAL_MAX_TOATAL_ATTACHMENTS_SIZE']}) MiB exceeded."
+        end
+      end
+
+      respond_with_success get_vertical_path(@vertical)
+
+    rescue => e
+      respond_with_error "There was an error updating the attachment. #{e}", 
+        @redirect_path
+    end
+  end
+
+  def reorder
+    begin
+      ActiveRecord::Base.transaction do
+        ## Create the attachment.
+        p = params.permit(attachments: []).to_h
+        p['attachments'].each_with_index do |attachment_id, i|
+          attachment = Attachment.find(attachment_id)
+          if attachment.display_position != i
+            attachment.update!(display_position: i)
+          end
+        end
+      end
+
+      respond_with_success get_vertical_path(@vertical)
+
+    rescue => e
+      respond_with_error "There was an error updating the attachment. #{e}", 
+        @redirect_path
+    end
+  end
   
   def destroy
     begin
-      Attachment.find(@attachment_id).destroy!
+      attachment = Attachment.find(@attachment_id).destroy!
+      ## This will ensure the Solr index is updated properly.
+      @vertical.reload
+      @vertical.save!
       respond_with_success get_vertical_path @vertical
     rescue => e
+      puts e.backtrace
       respond_with_error "There was an error removing the attachment.", 
         @redirect_path
     end
@@ -57,6 +118,14 @@ class AttachmentsController < ApplicationController
         @file_attachment = params.require(:attachment).require(:file_attachment)
       rescue => e 
         respond_with_error "Error: no attachment provide.", @redirect_path
+      end
+    end
+
+    def get_description
+      begin
+        @description = params.require(:attachment).require(:description)
+      rescue => e 
+        @description = ''
       end
     end
   

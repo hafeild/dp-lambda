@@ -4,6 +4,17 @@
  * Created by hfeild on 30-May-2017.
  */
 
+/**
+ * Initializes listeners when the document loads.
+ */
+$(document).ready(function(){
+  embed_html();
+  
+  $(document).on('change', '.submit-toggle-field', toggleSubmitOnFieldChange);
+  $(document).on('keyup', '.submit-toggle-field', toggleSubmitOnFieldChange);
+
+  highlightVerticalHeaderLink();
+});
 
 /**
  * Finds all iframe tags with the class 'embed-html', then creates a document
@@ -28,7 +39,6 @@ var embed_html = function(){
     $(this).height(this.contentWindow.document.body.scrollHeight);
 
   });
-
 }
 
 /**
@@ -87,7 +97,7 @@ var ajaxFromComplexButtonLink = function(buttonElm, onSuccess, onError){
  */
 var toggleSubmitOnFieldChange = function(e){
   var fieldElm = $(this);
-  var submitElm = fieldElm.siblings('[type=submit]');
+  var submitElm = fieldElm.parents('form').find('[type=submit]');
   
   // Disable the submit button if the field isn't set.
   if(this.value === ''){
@@ -100,8 +110,14 @@ var toggleSubmitOnFieldChange = function(e){
   }
 }
 
-$(document).ready(function(){
-  embed_html();
-  
-  $(document).on('change', '.submit-toggle-field', toggleSubmitOnFieldChange);
-});
+/**
+ * Detects if a vertical page is loaded and applies a class to that vertical's
+ * header link.
+ */
+var highlightVerticalHeaderLink = function(){
+  var vertical = window.location.pathname.match(/^\/(\w*)/)[1];
+  var elm = $('#header-'+ vertical +'-link');
+  if(elm.size() > 0){
+    elm.addClass('selected-vertical');
+  }
+}

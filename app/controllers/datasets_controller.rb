@@ -68,6 +68,7 @@ class DatasetsController < ApplicationController
       ActiveRecord::Base.transaction do
         @dataset.update(@data.permit(:name, :description, :summary))
         @dataset.save!
+        @dataset.reindex_associations
 
         respond_with_success get_redirect_path(dataset_path(@dataset))
       end
@@ -84,7 +85,7 @@ class DatasetsController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@dataset)
-
+        @dataset.delete_from_connection
         @dataset.destroy!
 
         flash[:success] = "Page removed."
@@ -100,6 +101,9 @@ class DatasetsController < ApplicationController
     begin
       @vertical.datasets << @dataset
       @vertical.save!
+      @dataset.reload
+      @dataset.save!
+
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The dataset could not be associated with the "+
@@ -112,6 +116,8 @@ class DatasetsController < ApplicationController
       if @vertical.datasets.exists?(id: @dataset.id)
         @vertical.datasets.delete(@dataset)
         @vertical.save! 
+        @dataset.reload
+        @dataset.save!
       end
       respond_with_success @redirect_path
     rescue => e

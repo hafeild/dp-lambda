@@ -16,16 +16,23 @@ This is expecting the following local variables:
     <% title_tag = :h2 %>
   <% end %>
 
-  <div class="file-attachments">
+
+
+  <div class="file-attachments" 
+    <% if can_edit? %>
+      data-reorder-url="<%= reorder_vertical_attachments_path(vertical_from) %>"
+    <% end %>
+  >
     <<%=title_tag%>>File attachments</<%=title_tag%>>
     
     <% if can_edit? %>
       <%= render(partial: "attachments/new", locals: {vertical: vertical_from}) %>
     <% end %>
 
-    <ul>
+    <ul class="file-attachments-list">
       <%= render(partial: "attachments/attachment_list_item", 
-        collection: data, as: :attachment,
+        collection: data.sort{|x,y| x.display_position <=> y.display_position }, 
+        as: :attachment,
         locals: {vertical_from: vertical_from, editable: editable}) || 
         "This #{vertical_from_name} does not have any attachments." %>
     </ul>

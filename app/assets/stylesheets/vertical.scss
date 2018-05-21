@@ -87,3 +87,59 @@ li .snippet {
 div.entries {
   margin-top: 1em;
 }
+
+.file-attachment-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.attachment-form-wrapper {
+  td {
+    padding-right: 1em;
+  }
+  h3 {
+    margin-top: 0;
+  }
+
+  margin-bottom: .5em;
+  border: 1px solid gray;
+  padding: .5em;
+}
+
+.grip {
+  vertical-align: middle;
+  transform: scale(1.5, 1.5);
+  margin-top: -.5em;
+  cursor: grab; 
+}
+
+.file-attachment {
+  margin-bottom: .5em;
+}
+
+.dragging {
+  // border: 2px solid steelblue;
+  // border-radius: 10px;
+  // padding: .5em;
+  // box-shadow: 1px 1px 1px 1px #aaa;
+  // background: white;
+  // height: 3.5em !important;
+  // vertical-align: middle;
+  // //display: block;
+  // box-sizing: border-box;
+  background: #eee;
+  border: 1px solid #aaa;
+}
+
+.vertical-banner {
+  font-size: 175%;
+  color: #555;
+  font-style: italic;
+  margin-top: -.5em;
+  padding-top: 0;
+  display: block;
+}
+
+.edit-toggle {
+  display: none;
+}

@@ -51,7 +51,7 @@
 
 <div class="outcome_summary-wrapper">
   <h2>Outcome summary</h2>
-  <iframe class="html-value outcome_summary embed-html"
-    data-html="<%= url_encode assignment_result.outcome_summary.html_safe %>">
-  </iframe>
+  <div class="outcome_summary">
+    <%= sanitize_text(assignment_result.outcome_summary).html_safe %>
+  </div>
 </div>

@@ -2,6 +2,33 @@
 
 Changes made in each release are summarized below.
 
+## 18.05.01
+
+New features:
+
+    * description and outcome summaries are no longer displayed in an iframe
+    * file attachment updates:
+        - users can now provide descriptions
+        - files and their descriptions can be edited
+        - attachments can be reordered
+    * analyses and software can be linked
+    * index and result snippets for software and analyses show related 
+        analyses and software
+    * examples are now treated like other vertical; they can be...
+        - browsed
+        - searched
+        - added directly from the user menu if an editor
+    * edit buttons are now hidden by default, but can be toggled
+        - the last selected mode persists across page loads
+    * the vertical type being viewed is highlighted in the header
+        - this helps a user tell what kind of vertical they're looking at
+    
+
+Bug fixes:
+
+    * linked verticals resources are now re-indexed when a vertical is updated
+      or deleted
+
 ## 18.05
 
 New features:

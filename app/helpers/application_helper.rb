@@ -18,7 +18,6 @@ module ApplicationHelper
   def destroy_isolated_resources(entry)
     entry.tags.each{|tag| tag.destroy_if_isolated(1)}
     entry.web_resources.each{|resource| resource.destroy_if_isolated(1)}
-    entry.examples.each{|example| example.destroy_if_isolated(1)}
   end
 
   ## Returns the path to the given vertical.
@@ -112,6 +111,10 @@ module ApplicationHelper
   def vertical_attachments_path(vertical)
     "#{get_vertical_path(vertical)}/attachments"
   end
+
+  def reorder_vertical_attachments_path(vertical)
+    "#{get_vertical_path(vertical)}/attachments/reorder"
+  end
   ##############################################################################
 
 
@@ -161,8 +164,15 @@ module ApplicationHelper
     collection.sort{|x,y| x[key] <=> y[key]}
   end
 
+  ## For sanitizing user input.
+  def sanitize_text(text)
+    tags = %w(a b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub 
+      sup ins p pre code span div img)
+    sanitize(text, tags: tags, attributes: %w(href title src style class alt))
+  end
 
 ################################################################################
+
 
 
 

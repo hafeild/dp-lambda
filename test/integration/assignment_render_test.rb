@@ -14,8 +14,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assert_select ".summary", assignment.summary
     assert_select ".learning_curve", assignment.learning_curve
     assert_select ".instruction_hours", assignment.instruction_hours.to_s
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(assignment.description)
+    assert_select ".description", assignment.description
 
     assert_select "a[href=?]", edit_assignment_path(assignment.id), count: 0
     assert_select "a[href=?][data-method=delete]", assignment_path(assignment.id), 
@@ -33,8 +32,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assert_select ".summary", assignment.summary
     assert_select ".learning_curve", assignment.learning_curve
     assert_select ".instruction_hours", assignment.instruction_hours.to_s
-    assert_select "iframe.description[data-html=?]", 
-      ERB::Util.url_encode(assignment.description)
+    assert_select ".description", assignment.description
 
     assert_select "a[href=?]", edit_assignment_path(assignment.id), count: 1
     assert_select "a[href=?][data-method=delete]", assignment_path(assignment.id), 
@@ -50,7 +48,8 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
 
   ## Tests for index.
   test "should display all assignment entries" do 
-    assignments = [assignments(:one), assignments(:two), assignments(:three)]
+    assignments = [assignments(:one), assignments(:two), assignments(:three), 
+                   assignments(:four)]
 
     get assignments_path
     assert_template "assignments/index"

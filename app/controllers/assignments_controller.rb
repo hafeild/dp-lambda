@@ -63,6 +63,7 @@ class AssignmentsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @assignment.update!(@data)
+        @assignment.reindex_associations
         respond_with_success get_redirect_path(assignment_path(@assignment))
       end
     rescue => e
@@ -78,12 +79,14 @@ class AssignmentsController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@assignment)
+        @assignment.delete_from_connection
         @assignment.destroy!
 
         flash[:success] = "Page removed."
         redirect_to assignments_path
       end
     rescue => e
+      puts "#{e.message}"
       respond_with_error "There was an error removing the assignment entry. #{e}",
         new_assignment_path
     end
@@ -97,6 +100,9 @@ class AssignmentsController < ApplicationController
         @vertical.assignments << @assignment
       end
       @vertical.save!
+      @assignment.reload
+      @assignment.save!
+      
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "These assignments could not be linked.", 
@@ -116,6 +122,9 @@ class AssignmentsController < ApplicationController
         end
       end
       @vertical.save! 
+      @assignment.reload
+      @assignment.save!
+
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "These assignments could not be unlinked.", 

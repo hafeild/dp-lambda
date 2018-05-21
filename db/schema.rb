@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180114014120) do
+ActiveRecord::Schema.define(version: 20180517093429) do
 
   create_table "analyses", force: :cascade do |t|
     t.string   "name"
@@ -35,6 +35,11 @@ ActiveRecord::Schema.define(version: 20180114014120) do
   create_table "analyses_examples", force: :cascade do |t|
     t.integer "analysis_id"
     t.integer "example_id"
+  end
+
+  create_table "analyses_software", force: :cascade do |t|
+    t.integer "analysis_id"
+    t.integer "software_id"
   end
 
   create_table "analyses_tags", force: :cascade do |t|
@@ -125,8 +130,10 @@ ActiveRecord::Schema.define(version: 20180114014120) do
     t.datetime "file_attachment_updated_at"
     t.string   "file_attachment_fingerprint"
     t.integer  "uploaded_by_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "description",                  default: ""
+    t.integer  "display_position",             default: 0
   end
 
   create_table "attachments_datasets", id: false, force: :cascade do |t|
@@ -191,11 +198,23 @@ ActiveRecord::Schema.define(version: 20180114014120) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "creator_id"
+    t.string   "summary"
   end
 
   create_table "examples_software", force: :cascade do |t|
     t.integer "software_id"
     t.integer "example_id"
+  end
+
+  create_table "examples_tags", force: :cascade do |t|
+    t.integer "example_id"
+    t.integer "tag_id"
+  end
+
+  create_table "examples_web_resources", force: :cascade do |t|
+    t.integer "example_id"
+    t.integer "web_resource_id"
   end
 
   create_table "permission_requests", force: :cascade do |t|

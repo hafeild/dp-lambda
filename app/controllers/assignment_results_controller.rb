@@ -21,6 +21,8 @@ class AssignmentResultsController < ApplicationController
       @params[:creator] = current_user
       @params[:assignment] = @assignment
       @assignment_result = AssignmentResult.create! @params
+      @assignment.reload
+      @assignment.save!
       respond_with_success @redirect_path
     rescue => e
       respond_with_error("The assignment result could not be created; check "+
@@ -31,6 +33,8 @@ class AssignmentResultsController < ApplicationController
   def update
     begin
       @assignment_result.update_attributes! @params
+      @assignment_result.assignment.reload
+      @assignment_result.assignment.save!
       respond_with_success @redirect_path
     rescue => e
       respond_with_error "The assignment result could not be updated.", 
