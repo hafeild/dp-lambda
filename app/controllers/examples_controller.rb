@@ -1,6 +1,6 @@
 class ExamplesController < ApplicationController
-  before_action :logged_in_user, except: [:show]
-  before_action :user_can_edit, except: [:show]
+  before_action :logged_in_user, except: [:show,:index]
+  before_action :user_can_edit, except: [:show,:index]
   before_action :get_simple_params, only: [:new, :edit]
   before_action :get_params, only: [:create, :update]
   before_action :get_example, except: [:index, :connect_index]
