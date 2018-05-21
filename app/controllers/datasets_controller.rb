@@ -68,6 +68,7 @@ class DatasetsController < ApplicationController
       ActiveRecord::Base.transaction do
         @dataset.update(@data.permit(:name, :description, :summary))
         @dataset.save!
+        @dataset.reindex_associations
 
         respond_with_success get_redirect_path(dataset_path(@dataset))
       end
@@ -84,7 +85,7 @@ class DatasetsController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@dataset)
-
+        @dataset.delete_from_connection
         @dataset.destroy!
 
         flash[:success] = "Page removed."

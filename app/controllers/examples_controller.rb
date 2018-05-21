@@ -51,7 +51,7 @@ class ExamplesController < ApplicationController
   def update
     begin
       @example.update_attributes! @params
-
+      @example.reindex_associations
       respond_with_success get_redirect_path(example_path(@example))
     rescue
       respond_with_error "The example could not be updated.", @redirect_path
@@ -64,13 +64,14 @@ class ExamplesController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@example)
+        @example.delete_from_connection
         @example.destroy!
 
         flash[:success] = "Page removed."
         redirect_to examples_path
       end
     rescue => e
-      puts "#{e.message} #{e.backtrace.join("\n")}"
+      #puts "#{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error removing the example entry.",
         example_path(@example)
     end

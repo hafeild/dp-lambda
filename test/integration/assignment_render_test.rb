@@ -48,7 +48,8 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
 
   ## Tests for index.
   test "should display all assignment entries" do 
-    assignments = [assignments(:one), assignments(:two), assignments(:three)]
+    assignments = [assignments(:one), assignments(:two), assignments(:three), 
+                   assignments(:four)]
 
     get assignments_path
     assert_template "assignments/index"

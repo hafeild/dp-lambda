@@ -11,7 +11,7 @@ class Software < ApplicationRecord
 
   include Bootsy::Container
 
-  after_destroy :reload_connections
+  #after_destroy :reload_connections
 
   belongs_to :creator, class_name: "User"
   has_and_belongs_to_many :tags
@@ -37,12 +37,16 @@ class Software < ApplicationRecord
       attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
     end
 
+    text :assignments do
+      assignments.map{|a| "#{a.name} #{a.summary}"} 
+    end
+
     text :tags do
       tags.map{|tag| tag.text}
     end
 
     text :analyses do
-      analyses.map{|a| "#{a.name} #{a.summary} #{a.description}"} 
+      analyses.map{|a| "#{a.name} #{a.summary}"} 
     end
 
     text :web_resources do
@@ -50,7 +54,7 @@ class Software < ApplicationRecord
     end
 
     text :examples do
-      examples.map{|example| "#{example.title} #{example.summary} #{example.description}"}
+      examples.map{|example| "#{example.title} #{example.summary}"}
     end
     
     ## For scoping and faceting.
@@ -65,13 +69,21 @@ class Software < ApplicationRecord
     examples.clear
   end
 
-  private
-    def reload_connections
-      [assignments, analyses, tags, web_resources, examples].each do |connectionSet|
-        connectionSet.each do |connection|
-          connection.software.delete(self)
-          connection.save!
-        end
+  def delete_from_connection
+    [assignments, analyses, examples].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.software.delete(self)
+        connection.save!
       end
     end
+  end
+
+  def reindex_associations
+    [assignments, examples, analyses].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.reload
+        connection.save!
+      end
+    end
+  end
 end

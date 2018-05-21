@@ -63,6 +63,7 @@ class AssignmentsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @assignment.update!(@data)
+        @assignment.reindex_associations
         respond_with_success get_redirect_path(assignment_path(@assignment))
       end
     rescue => e
@@ -78,12 +79,14 @@ class AssignmentsController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@assignment)
+        @assignment.delete_from_connection
         @assignment.destroy!
 
         flash[:success] = "Page removed."
         redirect_to assignments_path
       end
     rescue => e
+      puts "#{e.message}"
       respond_with_error "There was an error removing the assignment entry. #{e}",
         new_assignment_path
     end

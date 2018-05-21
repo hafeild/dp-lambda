@@ -19,8 +19,6 @@ class Example < ApplicationRecord
   has_and_belongs_to_many :web_resources
   belongs_to :creator, class_name: "User"
 
-  before_destroy :reload_connections
-
   ## Ensure the presence of required fields. 
   validates :title, presence: true, length: {maximum: 200}, 
     uniqueness: {case_sensitive: false}
@@ -46,7 +44,11 @@ class Example < ApplicationRecord
 
   ## For search.
   searchable do
-    text :title, :summary, :description
+    text :summary, :description
+
+    text :name do
+      :title
+    end
 
     text :attachments do
       attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
@@ -56,8 +58,12 @@ class Example < ApplicationRecord
       tags.map{|tag| tag.text}
     end
 
+    text :assignments do
+      assignments.map{|a| "#{a.name} #{a.summary}"} 
+    end
+
     text :analyses do
-      analyses.map{|a| "#{a.name} #{a.summary} #{a.description}"} 
+      analyses.map{|a| "#{a.name} #{a.summary}"} 
     end
 
     text :web_resources do
@@ -65,7 +71,7 @@ class Example < ApplicationRecord
     end
 
     text :software do
-      software.map{|s| "#{s.name} #{s.summary} #{s.description}"}
+      software.map{|s| "#{s.name} #{s.summary}"}
     end
     
     ## For scoping and faceting.
@@ -74,13 +80,22 @@ class Example < ApplicationRecord
     end
   end
 
-  private
-    def reload_connections
-      [assignments, analyses, datasets, software, tags, web_resources].each do |connectionSet|
-        connectionSet.each do |connection|
-          connection.examples.delete(self)
-          connection.save!
-        end
+  def delete_from_connection
+    [assignments, analyses, datasets, software].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.examples.delete(self)
+        connection.save!
       end
     end
+  end
+
+  def reindex_associations
+    [assignments, analyses, datasets, software].each do |connectionSet|
+      connectionSet.each do |connection|
+        connection.reload
+        connection.save!
+      end
+    end
+  end
+
 end
