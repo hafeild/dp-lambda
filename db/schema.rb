@@ -273,6 +273,7 @@ ActiveRecord::Schema.define(version: 20180517093429) do
     t.string   "permission_level",               default: "viewer"
     t.datetime "permission_level_granted_on"
     t.integer  "permission_level_granted_by_id"
+    t.boolean  "deleted"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
