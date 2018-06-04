@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update]
+  before_action :logged_in_user, only: [:index, :edit, :update, :delete]
   before_action :correct_user,   only: [:edit, :update]
   before_action :reauthenticate,  only: [:update]
   before_action :user_is_admin, only: [:index]
@@ -60,6 +60,30 @@ class UsersController < ApplicationController
     redirect_to :root
   end
 
+  # delete all information EXCEPT for the username
+  def delete
+	@user = User.find(params[:id])
+	user_params[:email] = nil
+    user_params[:first_name] = nil
+	user_params[:last_name] = nil
+	user_params[:role] = nil
+	user_params[:field_of_study] = nil
+	user_params[:password_digest] = nil
+	user_params[:activation_digest] = nil
+	user_params[:activated] = nil
+	user_params[:activated_at] = nil
+	user_params[:remember_digest] = nil
+	user_params[:reset_digest] = nil
+	user_params[:reset_sent_at] = nil
+	user_params[:created_at] = nil
+	user_params[:updated_at] = nil
+	user_params[:permission_level] = nil
+	user_params[:permission_level_granted_on] = nil
+	user_params[:permission_level_by_id] = nil
+	user_params[:deleted] = true
+	
+	redirect_to root
+  end
 
   def update
     email_updated = false

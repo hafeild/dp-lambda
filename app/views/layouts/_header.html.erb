@@ -48,6 +48,10 @@
                 <li><%= link_to "Add software", new_software_path %></li>
                 <li><%= link_to "Add a dataset", new_dataset_path %></li>
                 <li><%= link_to "Add an example", new_example_path %></li>
+				<li class="divider"></li>
+				<li>
+                  <%= link_to "Delete account", delete_path, method: "delete" %>
+                </li>
                 <% if current_user.is_admin? %>
                   <li class="divider"></li>
                   <li><%= link_to "Administer users", users_path %></li>
