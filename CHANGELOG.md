@@ -10,6 +10,16 @@ New features:
 Bug fixes:
 
 
+## 18.08
+
+New features:
+
+    * more descriptive section labels on the new assignment form
+
+Bug fixes:
+
+    * none
+
 ## 18.05.01
 
 New features:
