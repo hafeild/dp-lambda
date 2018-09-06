@@ -14,9 +14,9 @@
 ## Update these fields ##
 isRelease = false
 yearVersion   = "18" ## Year of release.
-monthVersion  = "05" ## Month of release.
-numberVersion = "01" ## Number of release within Year-Month
-hotFixNo      = "01" ## Hot fix no. for release.
+monthVersion  = "08" ## Month of release.
+numberVersion = "00" ## Number of release within Year-Month
+hotFixNo      = "00" ## Hot fix no. for release.
 
 VERSION = [
   yearVersion, 
