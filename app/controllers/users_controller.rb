@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :delete]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :correct_user,   only: [:edit, :update, :delete]
   before_action :reauthenticate,  only: [:update]
   before_action :user_is_admin, only: [:index]
 
@@ -55,35 +55,33 @@ class UsersController < ApplicationController
     end
   end
 
-
-  def destroy
-    redirect_to :root
-  end
-
   # delete all information EXCEPT for the username
-  def delete
-	@user = User.find(params[:id])
-	user_params[:email] = nil
-    user_params[:first_name] = nil
-	user_params[:last_name] = nil
-	user_params[:role] = nil
-	user_params[:field_of_study] = nil
-	user_params[:password_digest] = nil
-	user_params[:activation_digest] = nil
-	user_params[:activated] = nil
-	user_params[:activated_at] = nil
-	user_params[:remember_digest] = nil
-	user_params[:reset_digest] = nil
-	user_params[:reset_sent_at] = nil
-	user_params[:created_at] = nil
-	user_params[:updated_at] = nil
-	user_params[:permission_level] = nil
-	user_params[:permission_level_granted_on] = nil
-	user_params[:permission_level_by_id] = nil
-	user_params[:deleted] = true
-	
-	redirect_to root
-  end
+  def destroy
+   
+    @user = User.find(params[:id])
+    @user.email = ""
+    @user.first_name = nil
+    @user.last_name = nil
+    @user.role = nil
+    @user.field_of_study = nil
+    @user.password_digest = nil
+    @user.activation_digest = nil
+    @user.activated = nil
+    @user.activated_at = nil
+    @user.remember_digest = nil
+    @user.reset_digest = nil
+    @user.reset_sent_at = nil
+    # @user.created_at = nil
+    # @user.updated_at = nil
+    @user.permission_level = nil
+    @user.permission_level_granted_on = nil
+    @user.permission_level_granted_by_id = nil
+    @user.deleted = true
+    @user.save(validate: false)
+    log_out
+    
+    redirect_to root_url
+   end
 
   def update
     email_updated = false

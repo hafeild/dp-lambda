@@ -20,6 +20,7 @@ class User < ApplicationRecord
   ## - permission_level
   ## - permission_level_granted_on
   ## - permission_level_granted_by
+  ## - deleted
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -152,6 +153,10 @@ class User < ApplicationRecord
   ## Gets a list of admins.
   def User.admins
     User.where({permission_level: "admin"}) || []
+  end
+  
+  def is_deleted?
+    deleted != false
   end
 
   private
