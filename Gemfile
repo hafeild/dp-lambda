@@ -33,6 +33,10 @@ gem 'minitest', '5.10.3'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
+# ## To help with security issues.
+# gem 'sprockets', '~> 3.7.2'
+# gem 'ffi', '~> 1.9.24'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
