@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+  before_action :correct_user,   only: [:edit, :update, :destroy]
   before_action :reauthenticate,  only: [:update]
   before_action :user_is_admin, only: [:index]
 
@@ -55,11 +55,33 @@ class UsersController < ApplicationController
     end
   end
 
-
+  # delete all information EXCEPT for the username
   def destroy
-    redirect_to :root
-  end
-
+   
+    @user = User.find(params[:id])
+    @user.email = ""
+    @user.first_name = nil
+    @user.last_name = nil
+    @user.role = nil
+    @user.field_of_study = nil
+    @user.password_digest = nil
+    @user.activation_digest = nil
+    @user.activated = nil
+    @user.activated_at = nil
+    @user.remember_digest = nil
+    @user.reset_digest = nil
+    @user.reset_sent_at = nil
+    # @user.created_at = nil
+    # @user.updated_at = nil
+    @user.permission_level = nil
+    @user.permission_level_granted_on = nil
+    @user.permission_level_granted_by_id = nil
+    @user.deleted = true
+    @user.save(validate: false)
+    log_out
+    
+    redirect_to root_url
+   end
 
   def update
     email_updated = false

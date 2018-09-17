@@ -92,6 +92,59 @@ class UsersControllerTest < ActionController::TestCase
   ##############################################################################
   ## Testing update
   
+  test "should delete user" do
+    user = users(:foo)
+    log_in_as user
+    post :destroy, params: { id: user.id }
+    user.reload
+    assert_not user.username.nil?, "Username nill"
+    assert user.email == "", "Email not blank"
+    assert user.first_name == nil, "First name not nill"
+    assert user.last_name == nil, "Last name not nill"
+    assert user.role == nil, "Role not nill"
+    assert user.field_of_study == nil, "Field of study not nill"
+    assert user.password_digest == nil, "Password digest not nill"
+    assert user.activation_digest == nil, "Activation digest not nill"
+    assert user.activated == nil, "Activated not nill"
+    assert user.activated_at == nil, "Activated at not nill"
+    assert user.remember_digest == nil, "Remember digest not nill"
+    assert user.reset_digest == nil, "Reset digest not nill"
+    assert user.reset_sent_at == nil, "Reset sent at not nill"
+    assert user.permission_level == nil, "Permission level not nill"
+    assert user.permission_level_granted_on == nil, "Permission level granted on not nill"
+    assert user.permission_level_granted_by_id == nil, "Permission level granted by ID not nill"
+    assert user.deleted, "Deleted flag not set"
+  end
+
+  ## test that a non-logged in user can't delete anyone
+  test "cant delete unless logged in" do
+    user = users(:foo)
+    post :destroy, params: { id: user.id }
+    user.reload
+    assert_not user.deleted, "Unlogged in user deleted"
+  end
+  
+  ## test that a user cannot delete another user
+  ## FIX LATER -- ADMINS CAN DELETE OTHER USERS
+  test "can only delete yourself" do
+    user = users(:foo)
+    user2 = users(:bar)
+    log_in_as user
+    post :destroy, params: { id: user2.id }
+	user2.reload
+    assert_not user2.deleted, "User deleted by other user"
+  end
+  
+  ## test that a deleted user cannot login
+  test "cannot log in after deleted" do
+    user = users(:foo)
+	log_in_as user
+	post :destroy, params: { id: user.id }
+    user.reload
+	log_in_as user
+    assert user.deleted, "User logged in after being deleted"
+  end
+  
   test "can't update user settings unless logged in as user" do
     log_in_as users(:foo)
     bar = users(:bar)
