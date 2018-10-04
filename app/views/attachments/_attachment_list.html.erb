@@ -23,7 +23,7 @@ This is expecting the following local variables:
       data-reorder-url="<%= reorder_vertical_attachments_path(vertical_from) %>"
     <% end %>
   >
-    <<%=title_tag%>>File attachments</<%=title_tag%>>
+    <<%=title_tag%>>Handouts</<%=title_tag%>>
     
     <% if can_edit? %>
       <%= render(partial: "attachments/new", locals: {vertical: vertical_from}) %>
