@@ -12,7 +12,7 @@
 
   <%= render 'layouts/header' %>
   
-  <div class="main-view-container">
+  <div class="main-view-container container">
     <div id="alerts">
       <% flash.each do |message_type, message| %>
         <% if message %>
@@ -54,3 +54,10 @@
   </div>
 </body>
 </html>
+
+<!-- i bet theres a better way to do this -->
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>

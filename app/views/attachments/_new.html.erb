@@ -6,22 +6,18 @@ This is expecting the following local variables:
 %>
 
 <div class="attachment-form-wrapper edit-toggle">
-  <h3>Upload a new attachment</h3>
+  <h4>Upload a new Handout</h4>
   <%= form_for Attachment.new, url: vertical_attachments_path(vertical), 
         html: { multipart: true } do |f| %>
-    <div>
-      <div>
-        <div>
-          <%= f.file_field :file_attachment, id: "upload-attachment-field", class: "submit-toggle-field" %>
-        </div>
-		<div>
-          Brief description: <%= f.text_field :description %>
-        </div>
-		<div>
-          <%= f.submit "Upload", 
-            id: "upload-attachment-submit", class: "btn btn-sm btn-primary", disabled: "disabled" %>
-        </div>
-      </div>
-    </div>
+	<div>
+	  <%= f.file_field :file_attachment, id: "upload-attachment-field", class: "submit-toggle-field" %>
+	</div>
+	<div>
+	  Brief description: <%= f.text_field :description %>
+	</div>
+	<div>
+	  <%= f.submit "Upload", 
+		id: "upload-attachment-submit", class: "btn btn-sm btn-primary", disabled: "disabled" %>
+	</div>
   <% end %>
 </div>

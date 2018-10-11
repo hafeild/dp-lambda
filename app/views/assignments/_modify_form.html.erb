@@ -41,16 +41,16 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :learning_curve %><br/>
-        Expected learning curve (high, medium, low, or something more descriptive).
-        <%= f.text_field :learning_curve, class: "form-control", 
-          placeholder: "e.g., medium" %>
+	  <%= f.label :learning_curve %> <br/>
+		<%= f.radio_button :learning_curve, 'Low' %> Low
+		<%= f.radio_button :learning_curve, 'Medium' %> Medium
+		<%= f.radio_button :learning_curve, 'High' %> High
       </div>
 
       <div class="form-group">
         <%= f.label :hours_of_instruction_required %> <br/>
         How many hours of in-class instruction is this assignment expected to require?
-        <%= f.text_field :instruction_hours, class: "form-control", 
+        <%= f.number_field :instruction_hours, class: "form-control", 
           placeholder: "e.g., 5" %>
       </div>
 

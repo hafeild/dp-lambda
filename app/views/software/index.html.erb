@@ -1,14 +1,16 @@
 <% provide(:title, "Software") %>
 <div class="container">
 
-  <h1>Software</h1>
+  <h1>Software
 
   <% if can_edit? %>
     <%= link_to(new_software_path) do 
-      %><button class="btn btn-sm btn-default">Add software</button
-    ><% end %>
+      %><button class="btn btn-sm btn-light" data-toggle="tooltip" title="New Software">
+		  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	  </button>
+    <% end %>
   <% end %>
-
+  </h1>
   <div id="software-entries" class="entries">
     <%= render @software %>
   </div>
