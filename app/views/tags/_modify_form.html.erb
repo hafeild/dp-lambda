@@ -32,38 +32,3 @@
   </div>
 </div>
 
-<% ## This produces connections that can be interacted with via 
-   ## javascript + AJAX. 
-%>
-<% 
-if @vertical.tags.exists?(tag.id)
-  remove_classes = ""
-  add_classes = "hidden"
-  status = "added"  
-else
-  remove_classes = "hidden"
-  add_classes = ""
-  status = ""
-end
-%>
-
-
-
-<div data-tag-id="<%= tag.id %>" 
-    class="tag index-entry <%= status %>">
-  <div class="connect-resource" 
-      data-url="<%= vertical_tag_path(@vertical, tag) %>">
-      
-    <button data-action="remove" 
-      class="btn btn-sm btn-default remove-connection <%= remove_classes %>"
-      >Remove</button>
-    <button data-action="add" 
-      class="btn btn-sm btn-default add-connection <%= add_classes %>"
-      >Add</button>
-  </div>
-
-  <span class="entry-data-wrapper">
-    <span class="name"><%= 
-      link_to tag.text, tag_path(tag) %></span>
-  </span>
-</div>
