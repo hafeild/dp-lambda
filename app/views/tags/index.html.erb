@@ -44,7 +44,7 @@
       <% if @tags.empty? %>
         No tags exist yet!
       <% else %>
-        <h2>Existing tags</h2>
+        <h2>Add Existing tags</h2>
         <div class="connection-index">
           <%= render partial: 'tag_index_item', 
             collection: @tags, as: :tag %>

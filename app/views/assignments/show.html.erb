@@ -28,16 +28,14 @@
   <div class="tags">
 	  <% if can_edit? %>
 		<span class="edit-toggle">
-		  <a href="<%= new_vertical_tag_path @assignment %>">
+		  <a href="<%= vertical_tag_index_path @assignment %>">
 			<button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add Tags">
 			  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 			</button>
 		  </a>
-		  <!-- MERGE THIS PAGE INTO THE FIRST ONE
-		  <a href="<%= vertical_tag_index_path @assignment %>"
-			><button class="btn btn-sm btn-default">Add existing</button
-		  ></a>
-		  -->
+		   <!-- got merged into ^^
+		   <%-# new_vertical_tag_path @assignment -%>
+		   -->
 		</span>
 	  <% end %>
 	  Tags:
@@ -108,15 +106,13 @@
 		<h3>From the web
 		  <% if can_edit? %>
 		    <span class="edit-toggle">
-			  <a href="<%= new_vertical_web_resource_path @assignment %>">
+			  <a href="<%= vertical_web_resource_index_path @assignment %>">
 			    <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
 				  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 				</button>
 			  </a>
-			  <!-- MERGE THESE PAGES
-			  <a href="<%= vertical_web_resource_index_path @assignment %>"
-			    ><button class="btn btn-sm btn-default">Add existing</button
-			  ></a>
+			  <!-- got merged into ^^
+			  <%-# new_vertical_web_resource_path @assignment -%>
 			  -->
 		    </span>
 		  <% end %>

@@ -4,7 +4,7 @@ class WebResourcesController < ApplicationController
   before_action :get_simple_params, only: [:new, :edit]
   before_action :get_params, except: [:index, :show, :edit, :new, 
     :connect, :disconnect]
-  before_action :get_web_resource, except: [:index]
+  before_action :get_web_resource
   before_action :get_verticals
   before_action :get_redirect_path
 
