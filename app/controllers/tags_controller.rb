@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   before_action :get_simple_params, only: [:new, :edit]
   before_action :get_params, except: [:index, :show, :edit, :new, 
     :connect, :disconnect]
-  before_action :get_tag, except: [:index, :create]
+  before_action :get_tag, except: [:create]
   before_action :get_verticals
   before_action :get_redirect_path
 

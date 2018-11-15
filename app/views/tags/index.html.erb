@@ -12,10 +12,39 @@
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
+
+      <h2>Create new tags</h2>
+      <%= form_for(@tag, url: :tags, method: :post, 
+        html: {class: "vertical-form"}) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        
+        <% unless @vertical.nil? %>
+          <%= f.hidden_field @vertical_form_id, name: @vertical_form_id, 
+            value: @vertical.id %>
+        <% end %>
+
+
+        <!-- Tags -->
+        <div class="form-group">
+          Separate tags with a comma
+          <%= f.text_field :text, 
+            class: "form-control ignore unchanged",
+            placeholder: "e.g., social networking, graphs" %>
+        </div>    
+
+        <%= f.submit "Save", id: "form-submit", class: "btn btn-primary" %>
+
+        
+        <button class="btn btn-danger link no-submit" 
+          data-href="<%= url_for :back %>">Cancel</button>
+      <% end %>
+    
+
+
       <% if @tags.empty? %>
         No tags exist yet!
       <% else %>
-        <h2>Tags</h2>
+        <h2>Existing tags</h2>
         <div class="connection-index">
           <%= render partial: 'tag_index_item', 
             collection: @tags, as: :tag %>
