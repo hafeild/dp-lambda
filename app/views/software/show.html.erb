@@ -74,15 +74,15 @@
 		  <span class="edit-toggle">
 			  <a href="<%= vertical_web_resource_index_path @software %>">
 			    <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
-				  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				</button>
+				    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				  </button>
 			  </a>
 			  <!-- got merged into ^^
 			  <%-# new_vertical_web_resource_path @software -%>
 			  -->
-		    </span>
-		</h3>
+		  </span>
 		<% end %>
+		</h3>
 		<ul>
 		  <%= render(partial: "web_resources/web_resource_list_item", 
 			collection: sort_by(@software.web_resources, :description), 
