@@ -1,7 +1,7 @@
 <% provide(:title, @assignment.name) %>
 <div class="container-fluid assignment-page" data-assignment-id="<%= @assignment.id %>">
   
-  <h1 class="name"><%= @assignment.name %>
+  <h1 class="name"><span class="name-text"><%= @assignment.name %></span>
   <% if can_edit? %>
 	<button type="button" class="btn btn-primary btn-sm edit-toggle enable-editing">
 	  Enable editing

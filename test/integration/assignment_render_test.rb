@@ -27,7 +27,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
 
     get assignment_path(assignment.id)
     assert_template "assignments/show"
-    assert_select ".name", assignment.name
+    assert_select ".name-text", assignment.name
     assert_select ".author", assignment.author
     assert_select ".summary", assignment.summary
     assert_select ".learning_curve", assignment.learning_curve
@@ -120,7 +120,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     get result['redirect']
     assert_template "assignments/show"
 
-    assert_select ".name", "A VERY NEW NAME!"
+    assert_select ".name-text", "A VERY NEW NAME!"
   end
 
 
@@ -158,7 +158,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assert result['success']
     get result['redirect']
     assert_template "assignments/show"
-    assert_select ".name", assignment.name
+    assert_select ".name-text", assignment.name
     assert_select "a", href: assignments_path
 
     ## "Click" on the Assignment link.
