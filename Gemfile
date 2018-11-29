@@ -27,7 +27,8 @@ gem 'rb-readline'
 gem 'highline'
 gem "paperclip", "~> 5.0.0"
 gem 'rails-html-sanitizer', '~> 1.0.4'
-gem 'loofah', '~> 2.2.1'
+gem 'loofah', '>= 2.2.3'
+gem 'rack', '>= 2.0.6'
 gem 'jquery-ui-rails', '6.0.1'
 gem 'minitest', '5.10.3'
 
