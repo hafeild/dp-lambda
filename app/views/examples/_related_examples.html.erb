@@ -14,18 +14,18 @@ This is expecting the following local variables:
 <% end %>
 
 <div class="examples related">
-  <<%=title_tag%>><%= title %></<%=title_tag%>>
+  <<%=title_tag%>><%= title %>
   <% if editable and can_edit? %>
     <span class="edit-toggle">
-      <a href="<%= new_vertical_example_path vertical %>"
-        ><button class="btn btn-sm btn-default">Add new</button
-      ></a>
-      <a href="<%= vertical_example_index_path vertical %>"
-        ><button class="btn btn-sm btn-default">Add existing</button
-      ></a>
-    </span>
+      <a href="<%= vertical_example_index_path vertical %>">
+		<button class="btn btn-sm btn-link" data-toggle="tooltip" title="Link to Example">
+		  <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+		</button>
+	  </a>
+	  <!-- got merged into ^^ -->
+	  <%-# new_vertical_example_path vertical -%>
   <% end %>
-
+  </<%=title_tag%>>
   <ul>
     <%= render(partial: "examples/example_list_item", 
       collection: sort_by(vertical.examples, :title), 

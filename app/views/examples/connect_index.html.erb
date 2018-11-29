@@ -1,22 +1,31 @@
 <% provide(:title, "Connect examples") %>
 <div class="container resource-modification">
-  <h1><%= yield :title %></h1>
+  
+  <h2>Add a New Example</h2>
+  
+  <a href="<%= new_vertical_example_path @vertical %>">
+    <button class="btn btn-md btn-default">
+      <span>&#43;</span> New Example
+    </button>
+  </a>
+  
+  <h2>Add an Existing Example</h2>
+  
   <p>
   Choose examples to associated with 
   <%= link_to @vertical.name, get_vertical_path(@vertical) %>.
   </p>
-  
+  <p>
   <a href="<%= get_vertical_path(@vertical) %>"
     ><button class="btn btn-md btn-default">Done</button
   ></a>
-
+  </p>
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
       <% if @examples.empty? %>
         No examples exist yet!
       <% else %>
-        <h2>Examples</h2>
         <div class="connection-index">
           <%= render partial: 'example_index_item', collection: @examples, 
             as: :example %>

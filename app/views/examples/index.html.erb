@@ -1,12 +1,15 @@
 <% provide(:title, "Examples") %>
 <div class="container">
-  <h1>Examples</h1>
+  <h1>Examples
 
   <% if can_edit? %>
     <%= link_to(new_example_path) do 
-      %><button class="btn btn-sm btn-default">Add Example</button
-    ><% end %>
+      %><button class="btn btn-sm btn-link" data-toggle="tooltip" title="New Example">
+		  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	  </button>
+	  <% end %>
   <% end %>
+  </h1>
   
   <div id="example-entries" class="entries">
     <%= render @examples %>

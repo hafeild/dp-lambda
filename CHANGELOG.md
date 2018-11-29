@@ -6,6 +6,8 @@ Changes made in each release are summarized below.
 
 New features:
 
+    * new interface for verticals
+    * verticals can now be linked to assignments
 
 Bug fixes:
 

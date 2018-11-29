@@ -20,18 +20,21 @@ This is expecting the following local variables:
     <% data = vertical_from.public_send(vertical_to_names) %>
   <% end %>
   <% if not defined?(title_tag) %>
-    <% title_tag = :h2 %>
+    <% title_tag = :h3 %>
   <% end %>
 
   <div class="related related-<%= vertical_to_names %>">
-    <<%=title_tag%>><%= title %></<%=title_tag%>>
+    <<%=title_tag%>><%= title %>
     <% if editable and can_edit? %>
       <span class="edit-toggle">
-        <a href="<%= vertical_vertical_index_path vertical_from, vertical_to %>"
-          ><button class="btn btn-sm btn-default">Link to <%= vertical_to_name %></button
-        ></a>
+        <a href="<%= vertical_vertical_index_path vertical_from, vertical_to %>">
+		  <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Link to <%= vertical_to_name %>">
+			<span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+		  </button>
+		</a>
       </span>
     <% end %>
+	  </<%=title_tag%>>
     <ul>
       <%= render(partial: "verticals_shared/vertical_list_item", 
         collection: sort_by_name(data), as: :vertical_to,
