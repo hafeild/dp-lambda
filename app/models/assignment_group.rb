@@ -6,7 +6,7 @@ class AssignmentGroup < ApplicationRecord
   ## - thumbnail
   ## - tags
   ## - web_resources
-  ## - authors (user)
+  ## - authors (users)
   ## - creator (user)
   ##
   ## Derived from assignments within the group:
@@ -23,23 +23,20 @@ class AssignmentGroup < ApplicationRecord
   #after_destroy :reload_connections
 
   belongs_to :creator, class_name: "User"
+  has_and_belongs_to_many :authors, class_name: "User"
+
+  has_many :assignments
 
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :web_resources
-  # has_and_belongs_to_many :examples
-  # has_and_belongs_to_many :software
-  # has_and_belongs_to_many :analyses
-  # has_and_belongs_to_many :datasets
-  has_many :assignments
   
-  has_and_belongs_to_many :attachments
 
   ## Ensure the presence of required fields. 
   validates :name, presence: true, length: {minimum: 1, maximum: 200}, 
     uniqueness: {case_sensitive: false}
   validates :summary, presence: true, length: {minimum: 1}
   #validates :description, presence: true, length: {minimum: 1}
-  validates :author, presence: true, length: {minimum: 1}
+  #validates :author, presence: true, length: {minimum: 1}
 
   def related_assignments
     (assignments_related_to + assignments_related_from).uniq
@@ -47,47 +44,28 @@ class AssignmentGroup < ApplicationRecord
 
   ## For search.
   searchable do
-    text :author, :name, :summary, :description, :learning_curve
+    text :name, :summary, :description, :learning_curve
     
     text :creator do 
       creator.username
+    end
+
+    text :authors do 
+      authors.map{|author| [author.username, author.full_name].join(" ")}
     end
 
     text :tags do
       tags.map{|tag| tag.text}
     end
 
-    text :assignment_results do
-      assignment_results.map{ |res| res.to_s}
-    end
-
-    text :assignments do
-      related_assignments.map{|a| "#{a.name} #{a.summary}"} 
-    end
-
     text :web_resources do
       web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
     end
 
-    text :examples do
-      examples.map{|example| "#{example.title} #{example.summary}"}
+    text :assignments do
+      assignments.map{ |a| a.to_s}
     end
 
-    text :analyses do
-      analyses.map{|a| "#{a.name} #{a.summary}"}
-    end
-
-    text :datasets do
-      datasets.map{|d| "#{d.name} #{d.summary}"}
-    end
-
-    text :software do
-      software.map{|s| "#{s.name} #{s.summary}"}
-    end
-
-    text :attachments do
-      attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
-    end
 
     ## For scoping and faceting.
     double :instruction_hours_facet do 
@@ -97,7 +75,7 @@ class AssignmentGroup < ApplicationRecord
       creator_id
     end
     string :author_facet do 
-      author
+      authors.map{|author| author.username, author.full_name].join(" ")}.join(" ")
     end
     string :learning_curve_facet do
       learning_curve
@@ -108,36 +86,12 @@ class AssignmentGroup < ApplicationRecord
   def delink
     tags.clear
     web_resources.clear
-    examples.clear
-  end
-
-  def delete_from_connection
-    [assignments_related_to, assignments_related_from, analyses, datasets, software, examples].each do |connectionSet|
-      connectionSet.each do |connection|
-        if connection.class == OldAssignment
-          connection.assignments_related_from.delete(self)
-          connection.assignments_related_to.delete(self)
-        else
-          connection.assignments.delete(self)
-        end
-        connection.save!
-      end
-    end
-  end
-
-  def reindex_associations
-    [assignments_related_to, assignments_related_from, analyses, datasets, software, examples].each do |connectionSet|
-      connectionSet.each do |connection|
-        connection.reload
-        connection.save!
-      end
-    end
   end
 
   private
     def destroy_assignment_results
-      assignment_results.each do |assignment_result|
-        assignment_result.destroy!
+      assignments.each do |assignment|
+        assignment.destroy!
       end
     end
 end
