@@ -1,155 +1,47 @@
 class Assignment < ApplicationRecord
   ## Assignment has...
-  ## - author
-  ## - name
-  ## - summary
-  ## - description
-  ## - thumbnail_url
+  ## - assignment_group
+  ## - notes
+  ## - course
+  ## - course_prefix
+  ## - course_number
+  ## - course_title
+  ## - semester
   ## - learning_curve
+  ## - field_of_study
+  ## - project_length_weeks
+  ## - students_given_assignment
   ## - instruction_hours
-  ## - assignments_related_to
-  ## - assignments_related_from
-  ## - tags
-  ## - web_resources
-  ## - examples
-  ## - assignment_results
-  ## - software
-  ## - analyses
-  ## - datasets
+  ## - average_student_score
+  ## - outcome_summary
+  ## - attachements
+  ## - thumbnail
+  ## - instructors (user)
   ## - creator (user)
-  ## - attachments
 
   include Bootsy::Container
 
-  ## Destroys all assignment results when destroyed.
-  before_destroy :destroy_assignment_results
-  #after_destroy :reload_connections
-
   belongs_to :creator, class_name: "User"
-
-  has_and_belongs_to_many :assignments_related_to, class_name: 'Assignment',
-    join_table: :assignments_assignments,
-    foreign_key: :to_assignment_id,
-    association_foreign_key: :from_assignment_id
-  has_and_belongs_to_many :assignments_related_from, class_name: 'Assignment',
-    join_table: :assignments_assignments,
-    foreign_key: :from_assignment_id,
-    association_foreign_key: :to_assignment_id
-
-  has_and_belongs_to_many :tags
-  has_and_belongs_to_many :web_resources
-  has_and_belongs_to_many :examples
-  has_and_belongs_to_many :software
-  has_and_belongs_to_many :analyses
-  has_and_belongs_to_many :datasets
-  has_many :assignment_results
-  
-  has_and_belongs_to_many :attachments
+  has_and_belongs_to_many :instructors, class_name: "User"
+  belongs_to :assignment_group
 
   ## Ensure the presence of required fields. 
-  validates :name, presence: true, length: {minimum: 1, maximum: 200}, 
-    uniqueness: {case_sensitive: false}
-  validates :summary, presence: true, length: {minimum: 1}
-  #validates :description, presence: true, length: {minimum: 1}
-  validates :author, presence: true, length: {minimum: 1}
+  # validates :instructor, presence: true, length: {minimum: 1, maximum: 200}
+  validates :course_prefix, presence: true, length: {minimum: 1, maximum: 3}
+  validates :course_number, presence: true, length: {minimum: 1, maximum: 3}
+  validates :course_title, presence: true, length: {minimum: 1, maximum: 200}
+  validates :field_of_study, presence: true, length: {minimum: 1, maximum: 200}
+  validates :semester, presence: true, length: {minimum: 1, maximum: 15}
 
-  def related_assignments
-    (assignments_related_to + assignments_related_from).uniq
+  def course
+    "#{:course_prefix}#{:course_number}"
   end
 
-  ## For search.
-  searchable do
-    text :author, :name, :summary, :description, :learning_curve
-    
-    text :creator do 
-      creator.username
-    end
-
-    text :tags do
-      tags.map{|tag| tag.text}
-    end
-
-    text :assignment_results do
-      assignment_results.map{ |res| res.to_s}
-    end
-
-    text :assignments do
-      related_assignments.map{|a| "#{a.name} #{a.summary}"} 
-    end
-
-    text :web_resources do
-      web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
-    end
-
-    text :examples do
-      examples.map{|example| "#{example.title} #{example.summary}"}
-    end
-
-    text :analyses do
-      analyses.map{|a| "#{a.name} #{a.summary}"}
-    end
-
-    text :datasets do
-      datasets.map{|d| "#{d.name} #{d.summary}"}
-    end
-
-    text :software do
-      software.map{|s| "#{s.name} #{s.summary}"}
-    end
-
-    text :attachments do
-      attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
-    end
-
-    ## For scoping and faceting.
-    double :instruction_hours_facet do 
-      instruction_hours
-    end
-    integer :creator_facet do 
-      creator_id
-    end
-    string :author_facet do 
-      author
-    end
-    string :learning_curve_facet do
-      learning_curve
-    end
-
+  def to_s
+    [instructor, course, course_prefix, course_number, course_title,
+     semester, field_of_study, project_length_weeks, students_given_assignment,
+     instruction_hours, average_student_score, outcome_summary, creator
+    ].join(" ")
   end
 
-  def delink
-    tags.clear
-    web_resources.clear
-    examples.clear
-  end
-
-  def delete_from_connection
-    [assignments_related_to, assignments_related_from, analyses, datasets, software, examples].each do |connectionSet|
-      connectionSet.each do |connection|
-        if connection.class == Assignment
-          connection.assignments_related_from.delete(self)
-          connection.assignments_related_to.delete(self)
-        else
-          connection.assignments.delete(self)
-        end
-        connection.save!
-      end
-    end
-  end
-
-  def reindex_associations
-    [assignments_related_to, assignments_related_from, analyses, datasets, software, examples].each do |connectionSet|
-      connectionSet.each do |connection|
-        connection.reload
-        connection.save!
-      end
-    end
-  end
-
-  private
-    def destroy_assignment_results
-      assignment_results.each do |assignment_result|
-        assignment_result.destroy!
-      end
-    end
 end
