@@ -40,7 +40,7 @@
                   <%= link_to "Log out", logout_path, method: "delete" %>
                 </li>
                 <li class="divider"></li>
-                <li><%= link_to "Add an assignment", new_assignment_path %></li>
+                <li><%= link_to "Add an assignment", new_assignment_group_path %></li>
                 <li><%= link_to "Add an analysis", new_analysis_path %></li>
                 <li><%= link_to "Add software", new_software_path %></li>
                 <li><%= link_to "Add a dataset", new_dataset_path %></li>
@@ -67,7 +67,7 @@
       <!-- Search bar and vertical browsing -->
       <div id="verticals-nav" class="">
         <ul class="nav navbar-nav">
-          <li id="header-assignments-link"><%= link_to "Assignments", assignments_path %></li>      
+          <li id="header-assignments-link"><%= link_to "Assignments", assignment_groups_path %></li>      
           <li id="header-analyses-link"><%= link_to "Analyses", analyses_path %></li>      
           <li id="header-software-link"><%= link_to "Software", software_index_path %></li>      
           <li id="header-datasets-link"><%= link_to "Datasets", datasets_path %></li>      
