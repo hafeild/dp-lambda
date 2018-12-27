@@ -8,11 +8,11 @@ class AssignmentGroupsController < ApplicationController
   before_action :get_redirect_path
 
   def index
-    @assignment_groups = Assignment.all.sort_by { |e| e.name }
+    @assignment_groups = AssignmentGroup.all.sort_by { |e| e.name }
   end
 
   def connect_index
-    @assignment_groups = Assignment.all.sort_by { |e| e.name }
+    @assignment_groups = AssignmentGroup.all.sort_by { |e| e.name }
     if @vertical.class == AssignmentGroup
       @assignment_groups.delete(@vertical)
     end
@@ -120,8 +120,8 @@ class AssignmentGroupsController < ApplicationController
     ## exist, a 404 page is displayed.
     def get_assignment_group
       @assignment_group = AssignmentGroup.find_by(id: params.require(:id))
-      if @assignment.nil?
-        error = "No assignment with the specified id exists."
+      if @assignment_group.nil?
+        error = "No assignment group with the specified id exists."
         respond_to do |format|
           format.json {render json: {success: false, error: error}}
           format.html do
