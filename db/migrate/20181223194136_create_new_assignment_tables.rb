@@ -42,13 +42,16 @@ class CreateNewAssignmentTables < ActiveRecord::Migration[5.0]
     create_join_table :assignments, :users, table_name: :assignments_instructors
     create_join_table :assignments, :tags
     create_join_table :assignments, :web_resources
-    create_join_table :assignments, :assignments
     create_join_table :assignments, :software
     create_join_table :assignments, :analyses
     create_join_table :assignments, :datasets
     create_join_table :assignments, :examples
     create_join_table :assignments, :attachments
-
+    create_table :assignments_assignments do |t|
+      t.integer :from_assignment_id
+      t.integer :to_assignment_id
+    end
+    
     ## Update the User table to handle unregistered users being added
     ## as authors and instructors to verticals.
     add_column :users, :is_registered, :boolean

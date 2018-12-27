@@ -124,8 +124,9 @@ ActiveRecord::Schema.define(version: 20181223194136) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "assignments_assignments", id: false, force: :cascade do |t|
-    t.integer "assignment_id", null: false
+  create_table "assignments_assignments", force: :cascade do |t|
+    t.integer "from_assignment_id"
+    t.integer "to_assignment_id"
   end
 
   create_table "assignments_attachments", id: false, force: :cascade do |t|
