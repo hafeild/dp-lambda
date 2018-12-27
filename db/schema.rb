@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20181223194136) do
     t.float    "instruction_hours"
     t.float    "average_student_score"
     t.text     "outcome_summary"
-    t.integer  "assignment__group_id"
+    t.integer  "assignment_group_id"
     t.integer  "creator_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false

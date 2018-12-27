@@ -3,7 +3,7 @@ class AssignmentGroup < ApplicationRecord
   ## - name
   ## - summary
   ## - description
-  ## - thumbnail
+  ## - thumbnail_url
   ## - tags
   ## - web_resources
   ## - authors (users)
@@ -23,7 +23,7 @@ class AssignmentGroup < ApplicationRecord
   #after_destroy :reload_connections
 
   belongs_to :creator, class_name: "User"
-  has_and_belongs_to_many :authors, class_name: "User"
+  has_and_belongs_to_many :authors, class_name: "User", join_table: "assignment_groups_authors"
 
   has_many :assignments
 
@@ -44,7 +44,7 @@ class AssignmentGroup < ApplicationRecord
 
   ## For search.
   searchable do
-    text :name, :summary, :description, :learning_curve
+    text :name, :summary, :description
     
     text :creator do 
       creator.username
@@ -68,18 +68,13 @@ class AssignmentGroup < ApplicationRecord
 
 
     ## For scoping and faceting.
-    double :instruction_hours_facet do 
-      instruction_hours
-    end
     integer :creator_facet do 
       creator_id
     end
     string :author_facet do 
-      authors.map{|author| author.username, author.full_name].join(" ")}.join(" ")
+      authors.map{|author| [author.username, author.full_name].join(" ")}.join(" ")
     end
-    string :learning_curve_facet do
-      learning_curve
-    end
+
 
   end
 

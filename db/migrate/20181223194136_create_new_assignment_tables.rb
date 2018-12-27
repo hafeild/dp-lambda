@@ -28,7 +28,7 @@ class CreateNewAssignmentTables < ActiveRecord::Migration[5.0]
       t.text :outcome_summary
 
       ## Links to other records.
-      t.integer :assignment__group_id
+      t.integer :assignment_group_id
       t.integer :creator_id
       t.timestamps
     end
