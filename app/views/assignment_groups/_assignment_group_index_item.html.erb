@@ -1,0 +1,36 @@
+<% ## This produces connections that can be interacted with via 
+   ## javascript + AJAX. 
+%>
+<% 
+if (@vertical.class == AssignmentGroup and 
+              @vertical.assignments_related_to.exists?(assignment_group.id)) or
+            (@vertical.class != AssignmentGroup and 
+              @vertical.assignments.exists?(assignment_group.id))
+  remove_classes = ""
+  add_classes = "hidden"
+  status = "added"  
+else
+  remove_classes = "hidden"
+  add_classes = ""
+  status = ""
+end
+%>
+
+<div data-assignment_group-id="<%= assignment_group.id %>" 
+    class="assignment_group index-entry <%= status %>">
+  <div class="connect-resource" 
+      data-url="<%= vertical_vertical_path(@vertical, assignment_group) %>">
+      
+    <button data-action="remove" 
+      class="btn btn-sm btn-default remove-connection <%= remove_classes %>"
+      >Remove</button>
+    <button data-action="add" 
+      class="btn btn-sm btn-default add-connection <%= add_classes %>"
+      >Add</button>
+  </div>
+
+  <span class="entry-data-wrapper">
+    <span class="name"><%= assignment_group.name %></span>
+    <span class="snippet"><%= assignment_group.summary %></span>
+  </span>
+</div>
