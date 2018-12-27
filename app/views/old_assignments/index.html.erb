@@ -1,0 +1,19 @@
+<% provide(:title, "Assignments") %>
+<div class="container">
+
+  <h1>Assignments
+
+  <% if can_edit? %>
+    <%= link_to(new_assignment_path) do 
+      %>
+	  <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New Assignment">
+		  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	  </button>
+    <% end %>
+  <% end %>
+  </h1>
+  <div id="assignment-entries" class="entries">
+    <%= render @assignments %>
+  </div>
+
+</div>
