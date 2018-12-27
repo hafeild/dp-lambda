@@ -1,7 +1,7 @@
 class CreateNewAssignmentTables < ActiveRecord::Migration[5.0]
   def change
     ## The new AssignmentGroup model.
-    create_table :assignment_group do |t|
+    create_table :assignment_groups do |t|
       #t.integer :author_id
       t.string :name
       t.text :summary

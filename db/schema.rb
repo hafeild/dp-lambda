@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20181223194136) do
     t.integer "web_resource_id"
   end
 
-  create_table "assignment_group", force: :cascade do |t|
+  create_table "assignment_groups", force: :cascade do |t|
     t.string   "name"
     t.text     "summary"
     t.text     "description"
