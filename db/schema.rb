@@ -257,7 +257,7 @@ ActiveRecord::Schema.define(version: 20181223194136) do
     t.integer "web_resource_id"
   end
 
-  create_table "old_assignemnts", force: :cascade do |t|
+  create_table "old_assignments", force: :cascade do |t|
     t.string   "author"
     t.string   "name"
     t.text     "summary"
@@ -270,19 +270,14 @@ ActiveRecord::Schema.define(version: 20181223194136) do
     t.datetime "updated_at",        null: false
   end
 
-  create_table "old_assignemnts_datasets", id: false, force: :cascade do |t|
-    t.integer "assignment_id", null: false
-    t.integer "dataset_id",    null: false
-  end
-
-  create_table "old_assignemnts_software", id: false, force: :cascade do |t|
-    t.integer "assignment_id", null: false
-    t.integer "software_id",   null: false
-  end
-
   create_table "old_assignments_attachments", id: false, force: :cascade do |t|
     t.integer "attachment_id", null: false
     t.integer "assignment_id", null: false
+  end
+
+  create_table "old_assignments_datasets", id: false, force: :cascade do |t|
+    t.integer "assignment_id", null: false
+    t.integer "dataset_id",    null: false
   end
 
   create_table "old_assignments_examples", force: :cascade do |t|
@@ -293,6 +288,11 @@ ActiveRecord::Schema.define(version: 20181223194136) do
   create_table "old_assignments_old_assignments", force: :cascade do |t|
     t.integer "from_assignment_id"
     t.integer "to_assignment_id"
+  end
+
+  create_table "old_assignments_software", id: false, force: :cascade do |t|
+    t.integer "assignment_id", null: false
+    t.integer "software_id",   null: false
   end
 
   create_table "old_assignments_tags", force: :cascade do |t|
