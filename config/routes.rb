@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   ## Configures all of the routes for interacting with resources attached to
   ## a particular vertical. E.g.,
   ##  get 'software/:software_id/examples' => 'examples#index'
-  verticals.each do |vertical|
+  (verticals + [[:assignment_group]]).each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
 
     [:web_resources, :tags].each do |resource|
