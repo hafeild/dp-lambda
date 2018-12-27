@@ -33,12 +33,12 @@ class AssignmentGroupsController < ApplicationController
 
     ## Make sure we have the required fields.
     if get_with_default(@data, :name, "").empty? or 
-        get_with_default(@data, :summary, "").empty? or
+        get_with_default(@data, :summary, "").empty?# or
         #get_with_default(@data, :description, "").empty? or
 
         ## TODO Need to figure out this out. Should allow one or more
         ## author ids.
-        get_with_default(@data, :authors, "").empty?
+        #get_with_default(@data, :authors, "").empty?
 
       respond_with_error "You must provide a name and summary.",
         new_assignment_group_path
@@ -50,10 +50,10 @@ class AssignmentGroupsController < ApplicationController
       ActiveRecord::Base.transaction do
         @data[:creator] = current_user
         assignment_group = AssignmentGroup.create!(@data)
-        respond_with_success get_redirect_path(assignment_group_path(assignment))
+        respond_with_success get_redirect_path(assignment_group_path(assignment_group))
       end
     rescue => e
-      respond_with_error "There was an error saving the assignment group entry.",
+      respond_with_error "There was an error saving the assignment group entry: #{e}",
         new_assignment_group_path
     end
   end
@@ -107,7 +107,7 @@ class AssignmentGroupsController < ApplicationController
     ## Extracts the allowed parameters into a global named @data.
     def get_params
       begin
-        @data = params.require(:assignment).permit(
+        @data = params.require(:assignment_group).permit(
           :name, :summary, :description, :thumbnail_url
         )
       rescue => e

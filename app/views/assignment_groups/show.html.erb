@@ -48,11 +48,13 @@
   <div class="row"> <%# Start row. %>
 
     <div class="col-sm-9">
+
       <div class="row">
         <div class="col-sm-12 summary-wrapper">
             <span class="summary"><%= @assignment_group.summary %></span>
         </div>
       </div>
+
       <div class="row">
         <div class="col-sm-12 description-wrapper">
           <h2>Overview</h2>
@@ -61,6 +63,32 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="assignments">
+            <h2>Versions of assignment by class
+              <% if can_edit? %>
+                <span class="edit-toggle">
+                <a href="<%= new_assignment_group_assignment_path @assignment_group %>">
+                  <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add a new class">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  </button>
+                </a>
+                </span>
+              <% end %>
+            </h2>
+            <ul>
+              <%= render(partial: "assignments/assignment_list_item", 
+              collection: sort_by(@assignment_group.assignments, :semester), 
+              as: :assignment_result, 
+              locals: {print_header: true, assignment_group: @assignment_group}) || 
+              "There are currently no assignments." %>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="col-sm-3">
@@ -144,28 +172,8 @@
       </div>
     </div>
 
-    <div class="col-sm-4">
-      <div class="assignments">
-        <h3>Assignments
-          <% if can_edit? %>
-            <span class="edit-toggle">
-            <a href="<%= new_assignment_group_assignment_path @assignment_group %>">
-              <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New result">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              </button>
-            </a>
-            </span>
-          <% end %>
-        </h3>
-        <ul>
-          <%= render(partial: "assignments/assignment_list_item", 
-          collection: sort_by(@assignment_group.assignments, :semester), 
-          as: :assignment_result, 
-          locals: {print_header: true, assignment_group: @assignment_group}) || 
-          "There are currently no assignments." %>
-        </ul>
-      </div>
-    </div>
+
+
   </div>
    
   <%# Commented out for now. %>
