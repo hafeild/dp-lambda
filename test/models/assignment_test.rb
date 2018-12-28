@@ -30,6 +30,7 @@ class AssignmentTest < ActiveSupport::TestCase
       semester: "Fall 2018",
       assignment_group: assignment_groups(:one),
       ## Optional fields.
+      notes: "some notes....",
       learning_curve: "low",
       instruction_hours: 4,
       outcome_summary: "very good",
