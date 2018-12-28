@@ -53,3 +53,12 @@ four:
   course_title: Writing Essays
   field_of_study: English
   semester: Winter 2017
+
+five:
+  creator: bar
+  instructors: foo, bar
+  course_prefix: ENG
+  course_number: 302
+  course_title: Writing Essays
+  field_of_study: English
+  semester: Winter 2017

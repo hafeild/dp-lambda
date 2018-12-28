@@ -2,175 +2,161 @@ require 'test_helper'
 
 class AssignmentGroupTest < ActiveSupport::TestCase
 
-  test "blah" do
-    assert true
+  test "valid with a creator, a unique name, a summary, author, and a description" do 
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      name: "A very unique name",
+      summary: "a summary",
+      description: "a description",
+      authors: [users(:foo), users(:bar)]
+    )
+    assert assignment_group.save, "Couldn't save"
+    assert assignment_group.authors.exists?(id: users(:foo).id), 
+      "First author not saved."
+    assert assignment_group.authors.exists?(id: users(:bar).id), 
+      "Second author not saved."
+    assert users(:foo).authored_assignment_groups.exists?(id: assignment_group.id), 
+      "First author not recipricated."
+    assert users(:bar).authored_assignment_groups.exists?(id: assignment_group.id), 
+      "Second author not recipricated."  
+    assert users(:foo).created_assignment_groups.exists?(id: assignment_group.id), 
+      "Creator not recipricated."
   end
 
-#   test "valid with a creator, a unique name, a summary, author, and a description" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert assignment.save, "Couldn't save"
-#   end
+
+  test "valid with all fields" do 
+    assignment_group = AssignmentGroup.new(
+      creator: users(:bar),
+      name: "A very unique name",
+      summary: "a summary",
+      description: "a description",
+      authors: [users(:foo)],
+      web_resources: [web_resources(:one)],
+      tags: [tags(:one)],
+      assignments: [assignments(:five)]
+    )
+    assert assignment_group.save, "Couldn't save"
+    assignment_group.reload
+
+    assert assignment_group.name == "A very unique name", "Name not saved."
+    assert assignment_group.summary == "a summary", "Summary not saved."
+    assert assignment_group.description == "a description", "Description not saved."
+
+    assert users(:bar).created_assignment_groups.exists?(id: assignment_group.id), 
+      "Creator not recipricated."
+    assert users(:foo).authored_assignment_groups.exists?(id: assignment_group.id), 
+      "First author not recipricated."
+    assert web_resources(:one).assignment_groups.exists?(id: assignment_group.id),
+      "Web resource not recipricated"
+    assert tags(:one).assignment_groups.exists?(id: assignment_group.id), 
+      "Tag not recipricated"
+    assert assignments(:five).assignment_group == assignment_group, 
+      "Assignment not recipricated"
+  end
 
 
-#   test "valid with all fields" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar",
-#       thumbnail_url: "http://google.com",
-#       learning_curve: "low",
-#       instruction_hours: 4,
-#       examples: [examples(:one)],
-#       web_resources: [web_resources(:one)],
-#       tags: [tags(:one)],
-#       assignments_related_to: [assignments(:one), assignments(:two)],
-#       assignment_results: [assignment_results(:two)],
-#       software: [software(:one)],
-#       datasets: [datasets(:one)],
-#       analyses: [analyses(:one)]
-#     )
-#     assert assignment.save, "Couldn't save"
+  test "must have a creator" do 
+    assignment_group = AssignmentGroup.new(
+      name: "A very unique name",
+      summary: "a summary",
+      description: "a description",
+      authors: [users(:foo)]
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating presence of creator."
+  end
 
 
-#     assert assignments(:one).assignments_related_from.exists?(id: assignment.id),
-#       "Inverse of assignments_related_to not held"
-#     assert examples(:one).assignments.exists?(id: assignment.id),
-#       "Example not saved"
-#     assert web_resources(:one).assignments.exists?(id: assignment.id),
-#       "Web resource not saved"
-#     assert tags(:one).assignments.exists?(id: assignment.id), "Tag not saved"
-#     assert software(:one).assignments.exists?(id: assignment.id), 
-#       "Software not saved"
-#     assert datasets(:one).assignments.exists?(id: assignment.id), 
-#       "Dataset not saved"
-#     assert analyses(:one).assignments.exists?(id: assignment.id), 
-#       "Analysis not saved"
-#     assert assignment_results(:two).assignment == assignment, 
-#       "Assignment not saved"
-#   end
+  test "must have a name" do
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      summary: "a summary",
+      description: "a description",
+      authors: [users(:foo)]
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating presence of name."
 
-
-#   test "must have a creator" do 
-#     assignment = Assignment.new(
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
-
-
-#   test "must have a name" do
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      name: "",
+      summary: "a summary",
+      description: "a description",
+      authors: [users(:foo)]
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating length of name."
+  end
 
 
 
-#   test "must have a summary" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
+  test "must have a summary" do 
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      name: "a name",
+      description: "a description",
+      authors: [users(:foo)]
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating presence of summary."
 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
-
-
-
-#   # test "must have a description" do 
-#   #   assignment = Assignment.new(
-#   #     creator: users(:foo),
-#   #     name: "A very unique name",
-#   #     summary: "a summary",
-#   #     author: "Foo Bar"
-#   #   )
-#   #   assert_not assignment.save, "Saved without error, but should not have" 
-
-#   #   assignment = Assignment.new(
-#   #     creator: users(:foo),
-#   #     name: "A very unique name",
-#   #     summary: "a summary",
-#   #     description: "",
-#   #     author: "Foo Bar"
-#   #   )
-#   #   assert_not assignment.save, "Saved without error, but should not have" 
-#   # end
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      name: "a name",
+      summary: "",
+      description: "a description",
+      authors: [users(:foo)]
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating length of summary."
+  end
 
 
 
-#   test "must have an author" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
+  test "must have one or more authors" do 
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      name: "a name",
+      summary: "a summary",
+      description: "a description",
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating presence of authors."
 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: ""
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have" 
-#   end
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      name: "a name",
+      summary: "a summary",
+      description: "a description",
+      authors: []
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating length of authors."
+  end
 
 
+  test "name must be unique" do
+    assignment_group = AssignmentGroup.new(
+      creator: users(:foo),
+      name: assignment_groups(:one).name,
+      summary: "a summary",
+      description: "a description",
+      authors: [users(:foo)]
+    )
+    assert_not assignment_group.save, 
+      "Saved without validating name uniqueness."
+  end
 
-#   test "name must be unique" do
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: assignments(:one).name,
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
+  test "destroying an assignment_group destroys all associated assignments" do
+    assignment_group = assignment_groups(:one)    
+    assignment_ids = assignment_group.assignments.map{|a| a.id}
 
-#   test "destroying an assignment destroys all associated assignment results" do
-#     assignment_result_id = assignment_results(:one)
-#     assignment = assignments(:one)
-
-#     assignment.destroy
-
-#     assert AssignmentResult.find_by(id: assignment_result_id).nil?
-#   end
+    assert_difference 'Assignment.count', -(assignment_ids.size), "Assignments not removed" do
+      assignment_group.destroy
+      assignment_ids.each do |id|
+        assert Assignment.find_by(id: id).nil?, "Assignment not destroyed."
+      end
+    end
+  end
 
 end
