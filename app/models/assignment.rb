@@ -55,6 +55,10 @@ class Assignment < ApplicationRecord
     "#{:course_prefix}#{:course_number}"
   end
 
+  def related_assignments
+    (assignments_related_to + assignments_related_from).uniq
+  end
+
   def to_s
     [instructors.map{|i| [i.username, i.full_name].join(" ")}.join(" "), 
      course, course_prefix, course_number, course_title,
@@ -72,20 +76,37 @@ class Assignment < ApplicationRecord
       instructors.map{|instructor| [instructor.username, instructor.full_name].join(" ")}
     end
 
+    text :authors do 
+      assignment_group.authors.map{|author| [author.username, author.full_name].join(" ")}
+    end
+
     text :creator do 
       creator.username
     end
 
     text :tags do
-      tags.map{|tag| tag.text}
+      (tags + assignment_group.tags).map{|tag| tag.text}.uniq
     end
 
-    text :assignment_group do
-      [assignment_group.name, assignment_group.summary].join(" ") 
+    text :name do 
+      assignment_group.name
     end
+
+    text :summary do
+      assignment_group.summary
+    end
+
+    text :description do
+      assignment_group.description
+    end
+
+    # text :assignment_group do
+    #   [assignment_group.name, assignment_group.summary].join(" ") 
+    # end
+
 
     text :web_resources do
-      web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
+      (web_resources + assignment_group.web_resources).map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
     end
 
     text :examples do

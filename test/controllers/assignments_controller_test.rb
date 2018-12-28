@@ -1,324 +1,182 @@
-require 'test_helper'
+require "test_helper"
 
-class AssignmentsControllerTest < ActionController::TestCase
+class AssignmentControllerTest < ActionController::TestCase
 
-  ##############################################################################
-  ## Testing create
-
-  test "should break when creating a page without being logging in" do
-    #log_in_as users(:foo)
-    assert_no_difference 'Assignment.count', "Assignment page created" do
-      reponse = post :create, params: { assignment: { 
-        author: "x", name: "x", summary: "x", description: "x" } }
-      assert_redirected_to login_path, response.body
-    end
+  test "should do nothing" do
+    assert true
   end
 
-  test "should create a assignment page as a logged in user" do
-    log_in_as users(:foo)
-    assert_difference 'Assignment.count', 1, "Assignment page not created" do
-      response = post :create, params: { assignment: { 
-        author: "x", name: "x", summary: "x", description: "x" } }
-      assert_redirected_to assignment_path(Assignment.last.id), response.body
-    end
-  end
+#   ##############################################################################
+#   ## Testing create
 
-  test "should break if don't include any of: author, name, or summary" do
-    log_in_as users(:foo)
+#   test "should break when creating an assignment result without being logging in" do
+#     assignment = assignments(:one)
+#     assert_no_difference "AssignmentResult.count", "AssignmentResult created" do
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to login_path, @response.body
+#     end
+#   end
 
-    ## Exclude name.
-    assert_no_difference 'Assignment.count', 
-        "Excluding name should not have worked" do
-      response = post :create, params: { assignment: { 
-        author: "x", summary: "x", description: "x" } }
-      assert_redirected_to new_assignment_path, response.body
-    end
+#   test "should create assignment result and link to assignment page" do
+#     log_in_as users(:foo)
+#     assignment = assignments(:one)
+#     assert_difference "assignment.assignment_results.count", 1, "AssignmentResult not added to assignment" do
+#     assert_difference "AssignmentResult.count", 1, "AssignmentResult not created" do
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to assignment_path(assignment), @response.body
 
-    ## Exclude summary.
-    assert_no_difference 'Assignment.count', 
-        "Excluding summary should not have worked" do
-      response = post :create, params: { assignment: { 
-        author: "x", name: "x", description: "x" } }
-      assert_redirected_to new_assignment_path, response.body
-    end
+#       assignment.reload
+#       assert assignment.assignment_results.exists?(id: AssignmentResult.last.id)
+#     end
+#     end
+#   end
 
-    ## Exclude description.
-    # assert_no_difference 'Assignment.count', 
-    #     "Excluding description should not have worked" do
-    #   response = post :create, params: { assignment: { 
-    #     author: "x", name: "x", summary: "x" } }
-    #   assert_redirected_to new_assignment_path, response.body
-    # end
+#   test "should break when creating an assignment result without required fields" do
+#     log_in_as users(:foo)
+#     assignment = assignments(:one)
+#     assert_no_difference "AssignmentResult.count", "AssignmentResult created" do
 
-    ## Exclude author.
-    assert_no_difference 'Assignment.count', 
-        "Excluding name should not have worked" do
-      response = post :create, params: { assignment: { 
-        name: "x", summary: "x", description: "x" } }
-      assert_redirected_to new_assignment_path, response.body
-    end
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "", course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
 
-  end
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
 
-  ## JSON response errors.
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "",
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
 
-  test "should return must be logged in json error" do
-    ## Not logged in.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    post :create, format: :json, params: { assignment: { 
-        author: "x", name: "x", summary: "x", description: "x" } }
-    result = JSON.parse(@response.body)
-    assert_not result['success']
-    assert result['error'] = "You must be logged in to modify content."
-  end
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
 
-  test "should return success json on basic create" do
-    ## Logged in, successful create.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    log_in_as users(:foo)
-    post :create, format: :json, params: { assignment: { 
-      author: "x", name: "x", summary: "x", description: "x" } }
-    result = JSON.parse(@response.body)
-    assert result['success'], @response.body
-    assert result['redirect'] == assignment_path(Assignment.last.id), @response.body
-  end
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
 
-  test "should return missing params json error message" do
-    ## Missing required field.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    log_in_as users(:foo)
-    post :create, format: :json, params: { assignment: { 
-        name: "x", summary: ""} }
-    result = JSON.parse(@response.body)
-    assert_not result['success']
-    assert result['error']=="You must provide an author, name, and summary."
-  end
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
+#     end
+#   end
 
-  test "should return required params not supplied json error" do
-    ## No assignment parameter.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    log_in_as users(:foo)
-    post :create, format: :json, params: {}
-    result = JSON.parse(@response.body)
-    assert_not result['success']
-    assert result['error'] == "Required parameters not supplied."
-  end
+#   test "should break when creating an assignment result with a too long instructor name" do
+#     log_in_as users(:foo)
+#     assignment = assignments(:one)
+#     assert_no_difference "AssignmentResult.count", "AssignmentResult created" do
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x"*201, course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
+#     end
+#   end
 
-  test "should return saving assignment json error" do
-    ## No assignment parameter.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    log_in_as users(:foo)
-    post :create, format: :json, params: {assignment: { 
-      author: "x", name: assignments(:one).name, summary: "x", description: "x" }}
-    result = JSON.parse(@response.body)
-    assert_not result['success']
-    assert result['error'] == "There was an error saving the assignment entry."
-  end
+#   test "should break when creating an assignment result with a too long course prefix, number, or title" do
+#     log_in_as users(:foo)
+#     assignment = assignments(:one)
+#     assert_no_difference "AssignmentResult.count", "AssignmentResult created" do
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x"*4, course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
 
-  ## End create tests
-  ##############################################################################
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x"*4,
+#         course_title: "x", field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
 
-
-  ##############################################################################
-  ## Update tests.
-
-  test "shouldn't update assignment entry when not logged in" do 
-    assignment = assignments(:one)
-    assignment_name = "MY ANALYSIS"
-    assignment_description = "YABBA DABBA DOO"
-    assignment_summary = "A ANALYSIS SUMMARY"
-
-    patch :update, params: { id:assignment.id,
-      assignment: {name: assignment_name, summary: assignment_summary,
-        description: assignment_description}}
-
-    assignment.reload
-    assert_not assignment.name == assignment_name
-    assert_not assignment.summary == assignment_summary
-    assert_not assignment.description == assignment_description
-  end
-
-  test "should update assignment entry when logged in" do 
-    log_in_as users(:foo)
-    assignment = assignments(:one)
-    assignment_name = "MY ANALYSIS"
-    assignment_description = "YABBA DABBA DOO"
-    assignment_summary = "A ANALYSIS SUMMARY"
-
-    patch :update, params: { id:assignment.id,
-      assignment: {name: assignment_name, summary: assignment_summary,
-        description: assignment_description}}
-
-    assignment.reload
-    assert assignment.name == assignment_name
-    assert assignment.summary == assignment_summary
-    assert assignment.description == assignment_description
-  end
-
-  test "shouldn't update assignment entry with a non-unique name" do
-    log_in_as users(:foo)
-    assignment = assignments(:one)
-    assignment_name = assignments(:two).name
-    assignment_description = "YABBA DABBA DOO"
-    assignment_summary = "A ANALYSIS SUMMARY"
-
-    patch :update, params: { id:assignment.id,
-      assignment: {name: assignment_name, summary: assignment_summary,
-        description: assignment_description}}
-
-    assignment.reload
-    assert_not assignment.name == assignment_name, "#{assignment.name} | #{assignment_name}"
-    assert_not assignment.summary == assignment_summary, assignment.summary
-    assert_not assignment.description == assignment_description, assignment.description
-  end
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "x"*201, field_of_study: "x", semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
+#     end
+#   end
 
 
-  ## JSON response on update tests.
+#   test "should break when creating an assignment result with a too long field of study" do
+#     log_in_as users(:foo)
+#     assignment = assignments(:one)
+#     assert_no_difference "AssignmentResult.count", "AssignmentResult created" do
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x"*201, semester: "x" } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
+#     end
+#   end
 
-  test "should return unknown assignment json error on update" do
-    ## No assignment parameter.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    log_in_as users(:foo)
-    patch :update, format: :json, params: {id: 0, assignment: { 
-      name: "x", summary: "x", description: "x" }}
-    result = JSON.parse(@response.body)
-    assert_not result['success']
-    assert result['error'] == "No assignment with the specified id exists."
-  end
+#   test "should break when creating an assignment result with a too long semester" do
+#     log_in_as users(:foo)
+#     assignment = assignments(:one)
+#     assert_no_difference "AssignmentResult.count", "AssignmentResult created" do
+#       post :create, params: { assignment_id: assignment.id, assignment_result: { 
+#         instructor: "x", course_prefix: "x", course_number: "x",
+#         course_title: "x", field_of_study: "x", semester: "x"*16 } }
+#       assert_redirected_to new_assignment_assignment_result_path(assignment), 
+#         @response.body
+#     end
+#   end
 
-  test "should return success json message with redirect to assignment "+
-      " page on update" do
-    ## No assignment parameter.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    log_in_as users(:foo)
-    assignment = assignments(:one)
-    assignment_name = "MY ANALYSIS"
-    assignment_description = "YABBA DABBA DOO"
-    assignment_summary = "A ANALYSIS SUMMARY"
+#   ##############################################################################
 
-    patch :update, format: :json, params: { id:assignment.id,
-      assignment: {name: assignment_name, summary: assignment_summary,
-        description: assignment_description}}
 
-    result = JSON.parse(@response.body)
-    assert result['success']
-    assert result['redirect'] == assignment_path(assignment.id)
-  end
+#   ##############################################################################
+#   ## Testing updating an assignment_result.
 
-  test "should return error updating assignment json message on update" do
-    ## No assignment parameter.
-    @request.env['CONTENT_TYPE'] = 'application/json'
-    log_in_as users(:foo)
-    assignment = assignments(:one)
-    assignment_name = assignments(:two).name
-    assignment_description = "YABBA DABBA DOO"
-    assignment_summary = "A ANALYSIS SUMMARY"
+#   test "should update the assignment_result and redirect to its assignment page" do
+#     log_in_as users(:foo)
+#     assignment_result = assignment_results(:one)
+#     patch :update, params: { id: assignment_result.id, assignment_result: { 
+#       course_title: "x", field_of_study: "x", semester: "x"} }
+#     assert_redirected_to assignment_path(assignment_result.assignment), 
+#       @response.body
+#     assignment_result.reload
+#     assert assignment_result.course_title == "x"
+#   end
 
-    patch :update, format: :json, params: { id:assignment.id,
-      assignment: {name: assignment_name, summary: assignment_summary,
-        description: assignment_description}}
+#   ##############################################################################
 
-    result = JSON.parse(@response.body)
-    assert_not result['success']
-    assert result['error'] == "There was an error updating the assignment entry."
-  end
+#   ##############################################################################
+#   ## Testing deleting an assignment_result.
 
-  ## End update tests.
-  ##############################################################################
+#   test "should delete the assignment_result and redirect to its assignment page" do
+#     log_in_as users(:foo)
+#     assignment = assignments(:one)
+#     assignment_result = assignment_results(:one)
 
-  ##############################################################################
-  ## Destroy tests.
+#     assert_difference "assignment.assignment_results.count", -1, "AssignmentResult not removed from assignment" do
+#     assert_difference "AssignmentResult.count", -1, "AssignmentResult not deleted" do
+#       delete :destroy, params: { id: assignment_result.id }
+#       assert_redirected_to assignment_path(assignment), @response.body
+#       assignment.reload
+#       assert_not assignment.assignment_results.exists?(id: AssignmentResult.last.id)
+#     end
+#     end
+#   end
 
-  test "should destroy a assignment page and any resources unique to it" do 
-    log_in_as users(:foo)
-    assignment = assignments(:two)
-    tag1 = tags(:two)
-    tag2 = tags(:five)
-    example = assignment.examples.first
-    web_resource = assignment.web_resources.first
-
-    assert_not example.nil?, assignment.examples.size
-
-    assert_difference 'Assignment.count', -1, "Assignment page not removed" do
-    assert_difference 'WebResource.count', 0, "Web resource removed" do
-    assert_difference 'Example.count', 0, "Example removed" do
-    assert_difference 'Tag.count', -1, "Tag not removed" do
-
-      delete :destroy, params: {id: assignment.id}, format: :json
-
-      assert Assignment.find_by(id: assignment.id).nil?, @response.body #{}"Assignment not removed"
-      assert_not Tag.find_by(id: tag1.id).nil?, "Tag removed"
-      assert Tag.find_by(id: tag2.id).nil?, "Tag not removed"
-      assert_not Example.find_by(id: example.id).nil?, "Example removed"
-      assert_not WebResource.find_by(id: web_resource.id).nil?, 
-        "Web resource removed"
-
-    end
-    end
-    end
-    end
-
-  end
-
-  ## End destroy tests.
-  ##############################################################################
-
-  ##############################################################################
-  ## Connection tests.
-
-  test "should connect an assignment to an assignment" do
-    log_in_as users(:foo)
-    assignment1 = assignments(:two)
-    assignment2 = assignments(:three)
-
-    assert_difference "assignment1.assignments_related_to.count", 1, "Assignment not linked" do
-    assert_difference "assignment2.assignments_related_from.count", 1, "Assignment not linked" do
-      post :connect, params: {assignment_id: assignment1.id, id: assignment2.id}
-      assert_redirected_to assignment_path(assignment1), @response.body
-      assignment1.reload
-      assignment2.reload
-      assert assignment1.assignments_related_to.exists?(id: assignment2.id), 
-        "Assignment not in list of assignments related to"
-      assert assignment2.assignments_related_from.exists?(id: assignment1.id), 
-        "Assignment not in list of assignments related from"
-    end
-    end
-
-  end
-
-  ## End connection tests.
-  ##############################################################################
-
-  ##############################################################################
-  ## Removing a connection tests.
-
-  test "should remove the connection between an assignment and assignment" do
-    log_in_as users(:foo)
-    assignment1 = assignments(:one)
-    assignment2 = assignments(:two)
-
-    assert assignment1.assignments_related_to.exists?(id: assignment2.id), 
-      "Assignment not in list of assignments related to"
-    assert assignment2.assignments_related_from.exists?(id: assignment1.id), 
-      "Assignment not in list of assignments related from"
-
-    assert_difference "assignment1.assignments_related_to.count", -1, "Assignment not unlinked" do
-    assert_difference "assignment2.assignments_related_from.count", -1, "Assignment not unlinked" do
-      delete :disconnect, params: {assignment_id: assignment1.id, id: assignment2.id}
-      assert_redirected_to assignment_path(assignment1), @response.body
-      assignment1.reload
-      assignment2.reload
-      assert_not assignment1.assignments_related_to.exists?(id: assignment2.id), 
-        "Assignment not removed from list of assignments related to"
-      assert_not assignment2.assignments_related_from.exists?(id: assignment1.id), 
-        "Assignment not removed from list of assignments related from"
-    end
-    end
-
-  end
-
-  ## End connection removal tests.
-  ##############################################################################
+#   ##############################################################################
 
 
 

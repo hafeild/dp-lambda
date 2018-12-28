@@ -38,45 +38,43 @@ class AssignmentGroup < ApplicationRecord
   #validates :description, presence: true, length: {minimum: 1}
   #validates :author, presence: true, length: {minimum: 1}
 
-  def related_assignments
-    (assignments_related_to + assignments_related_from).uniq
-  end
 
-  ## For search.
-  searchable do
-    text :name, :summary, :description
+
+  # ## For search.
+  # searchable do
+  #   text :name, :summary, :description
     
-    text :creator do 
-      creator.username
-    end
+  #   text :creator do 
+  #     creator.username
+  #   end
 
-    text :authors do 
-      authors.map{|author| [author.username, author.full_name].join(" ")}.join(" ")
-    end
+  #   text :authors do 
+  #     authors.map{|author| [author.username, author.full_name].join(" ")}.join(" ")
+  #   end
 
-    text :tags do
-      tags.map{|tag| tag.text}
-    end
+  #   text :tags do
+  #     tags.map{|tag| tag.text}
+  #   end
 
-    text :web_resources do
-      web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
-    end
+  #   text :web_resources do
+  #     web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
+  #   end
 
-    text :assignments do
-      assignments.map{ |a| a.to_s}
-    end
-
-
-    ## For scoping and faceting.
-    integer :creator_facet do 
-      creator_id
-    end
-    string :author_facet do 
-      authors.map{|author| [author.username, author.full_name].join(" ")}.join(" ")
-    end
+  #   text :assignments do
+  #     assignments.map{ |a| a.to_s}
+  #   end
 
 
-  end
+  #   ## For scoping and faceting.
+  #   integer :creator_facet do 
+  #     creator_id
+  #   end
+  #   string :author_facet do 
+  #     authors.map{|author| [author.username, author.full_name].join(" ")}.join(" ")
+  #   end
+
+
+  # end
 
   def delink
     tags.clear

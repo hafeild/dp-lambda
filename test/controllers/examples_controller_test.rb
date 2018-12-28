@@ -174,7 +174,7 @@ class ExamplesControllerTest < ActionController::TestCase
       example: { title: "A better example!" } }
     assert_redirected_to software_path(software), @response.body
     example.reload
-    assert example.title == "A better example!"
+    assert example.title == "A better example!", example.title
   end
 
   test "should update the example and redirect to a dataset page" do
@@ -185,7 +185,7 @@ class ExamplesControllerTest < ActionController::TestCase
       example: { title: "A better example!" } }
     assert_redirected_to dataset_path(dataset), @response.body
     example.reload
-    assert example.title == "A better example!"
+    assert example.title == "A better example!", example.title
   end
 
   test "should update the example and redirect to a analysis page" do
@@ -196,7 +196,7 @@ class ExamplesControllerTest < ActionController::TestCase
       example: { title: "A better example!" } }
     assert_redirected_to analysis_path(analysis), @response.body
     example.reload
-    assert example.title == "A better example!"
+    assert example.title == "A better example!", example.title
   end
 
   test "should update the example and redirect to the example page" do
@@ -207,7 +207,7 @@ class ExamplesControllerTest < ActionController::TestCase
       example: { title: "A better example!" } }
     assert_redirected_to example_path(example), @response.body
     example.reload
-    assert example.title == "A better example!"
+    assert example.title == "A better example!", example.title
   end
 
   ##############################################################################

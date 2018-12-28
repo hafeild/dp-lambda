@@ -5,7 +5,7 @@ class SearchControllerTest < ActionController::TestCase
   ##############################################################################
   ## Testing basic search
 
-  test "basic searchshould break when searching an invalid vertical" do
+  test "basic search should break when searching an invalid vertical" do
     get :show, params: { vertical: "", q: "test" }
     assert_redirected_to root_path, @response.body
   end
@@ -62,7 +62,7 @@ class SearchControllerTest < ActionController::TestCase
       " vertical" do
     get :show, params: { vertical: "all", advanced: "true", q: "test",
       nq: "test", dq: "test", sq: "test", tq: "test", eq: "test", wrq: "test",
-      aq: "test", arq: "test", lcq: "test", all: "true" }
+      aq: "test", agq: "test", lcq: "test", all: "true" }
     assert_response :success, @response.body
     
     get :show, params: { vertical: "assignments", advanced: "true",  q: "test" }

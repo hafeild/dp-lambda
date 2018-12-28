@@ -1,9 +1,8 @@
 one:
+  assignment_group: one
   creator: foo
-  author: Foo Bar
-  name: Assignment 1
-  summary: apple grapefruit
-  description: A long description
+  instructors: foo, bar
+  notes: no notes
   learning_curve: low
   instruction_hours: 3
   examples: two
@@ -11,33 +10,46 @@ one:
   web_resources: two
   assignments_related_to: two, three
   assignments_related_from: three
+  course_prefix: ACC
+  course_number: 101
+  course_title: Intro to Numbers
+  field_of_study: Accounting
+  semester: Spring 2018
 
 two:
+  assignment_group: one
   creator: foo
-  author: Foo Bar
-  name: Assignment lion
-  summary: lion tiger bear
-  description: lion lion lion
+  instructors: foo
   examples: two
   web_resources: two
   tags: two, five
   datasets: one
   software: one
   analyses: one
-  # assignments_related_from: one
+  course_prefix: ACC
+  course_number: 101
+  course_title: Intro to Numbers
+  field_of_study: Accounting
+  semester: Fall 2018
 
 three:
+  assignment_group: two
   creator: bar
-  author: Bar Car
-  name: Assignment 3
-  summary: television radio smartphone
-  description: A long description
-  # assignments_related_from: one
-  # assignments_related_to: one
+  instructors: bar
+  assignments_related_from: one
+  assignments_related_to: one
+  course_prefix: ENG
+  course_number: 302
+  course_title: Writing Essays
+  field_of_study: English
+  semester: Winter 2017
 
 four:
+  assignment_group: two
   creator: bar
-  author: Bar Car
-  name: Assignment 4
-  summary: assignmentassignment
-  description: Yuck
+  instructors: foo, bar
+  course_prefix: ENG
+  course_number: 302
+  course_title: Writing Essays
+  field_of_study: English
+  semester: Winter 2017

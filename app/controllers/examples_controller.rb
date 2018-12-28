@@ -53,7 +53,8 @@ class ExamplesController < ApplicationController
       @example.update_attributes! @params
       @example.reindex_associations
       respond_with_success get_redirect_path(example_path(@example))
-    rescue
+    rescue => e
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "The example could not be updated.", @redirect_path
     end
   end

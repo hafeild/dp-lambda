@@ -1,0 +1,15 @@
+one:
+  name: assignment group 1
+  summary: a short summary
+  description: a long description
+  tags: one, two
+  authors: foo
+  creator: foo
+
+two:
+  name: Assignment lion
+  summary: lion tiger bear
+  description: lion lion lion
+  tags: three, four
+  authors: foo, bar
+  creator: bar

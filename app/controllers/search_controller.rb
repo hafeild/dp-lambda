@@ -8,7 +8,7 @@ class SearchController < ApplicationController
       start_time = Time.now
     
       @search_params = params.permit(:vertical, :q, :cursor, :full_json,
-        :advanced, :nq, :sq, :dq, :tq, :eq, :wrq, :aq, :arq, :lcq, :all, :sr)
+        :advanced, :nq, :sq, :dq, :tq, :eq, :wrq, :aq, :lcq, :all, :sr)
       @vertical = @search_params.require(:vertical)
       
       ## Check that vertical is valid:
@@ -28,7 +28,7 @@ class SearchController < ApplicationController
       extract_advanced_query()
       
       
-      
+      ## Advanced queries.
       if @advanced
         @query = get_with_default(@search_params, :q, "").downcase.chomp
         
@@ -67,6 +67,8 @@ class SearchController < ApplicationController
             end
           end
         end
+
+      ## Simple keyword queries.
       else
         
         @query = @search_params.require(:q).to_s.downcase
@@ -111,6 +113,8 @@ class SearchController < ApplicationController
       end
     rescue => e 
       # render text: e
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
+
       
       respond_with_error "There was an error while executing your search: #{e}.", 
         @redirect_path
@@ -147,8 +151,9 @@ class SearchController < ApplicationController
         tags: get_with_default(@search_params, :tq, ''),
         examples: get_with_default(@search_params, :eq, ''),
         web_resources: get_with_default(@search_params, :wrq, ''),
-        author: get_with_default(@search_params, :aq, ''),
-        assignment_results: get_with_default(@search_params, :arq, ''),
+        authors: get_with_default(@search_params, :aq, ''),
+        # instructor: get_with_default(@search_params, :iq, ''),
+        # assignment_results: get_with_default(@search_params, :arq, ''),
         learning_curve: get_with_default(@search_params, :lcq, '')
       }
       @advanced_query_fields.each{|k,v| 
