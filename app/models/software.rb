@@ -38,7 +38,7 @@ class Software < ApplicationRecord
     end
 
     text :assignments do
-      assignments.map{|a| "#{a.name} #{a.summary}"} 
+      assignments.map{|a| "#{a.assignment_group.name} #{a.assignment_group.summary} #{a.notes}"} 
     end
 
     text :tags do

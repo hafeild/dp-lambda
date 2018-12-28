@@ -51,7 +51,7 @@ class AssignmentGroup < ApplicationRecord
     end
 
     text :authors do 
-      authors.map{|author| [author.username, author.full_name].join(" ")}
+      authors.map{|author| [author.username, author.full_name].join(" ")}.join(" ")
     end
 
     text :tags do
