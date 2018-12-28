@@ -39,7 +39,7 @@ class AssignmentGroup < ApplicationRecord
   #validates :author, presence: true, length: {minimum: 1}
 
 
-
+  ## ! For now, assignment groups cannot be searched.
   # ## For search.
   # searchable do
   #   text :name, :summary, :description
@@ -72,7 +72,6 @@ class AssignmentGroup < ApplicationRecord
   #   string :author_facet do 
   #     authors.map{|author| [author.username, author.full_name].join(" ")}.join(" ")
   #   end
-
 
   # end
 
