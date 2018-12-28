@@ -3,6 +3,7 @@ class AssignmentsController < ApplicationController
   before_action :logged_in_user, except: [:show, :index]
   before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
+  before_action :get_instructors, only: [:create, :update]
   before_action :get_assignment,  except: [:connect_index, :index, :new, :create] 
   before_action :get_verticals
   before_action :get_redirect_path
@@ -143,9 +144,13 @@ class AssignmentsController < ApplicationController
     def get_params
       begin
         @data = params.require(:assignment).permit(
-          :author, :name, :summary, :description, :thumbnail_url,
-          :learning_curve, :instruction_hours
+          :notes, :course, :course_prefix, :course_number, :course_title,
+          :semester, :learning_curve, :field_of_study, :project_length_weeks, 
+          :students_given_assignment, :instruction_hours, :average_student_score,
+          :outcome_summary
         )
+        @instructor_ids = get_with_default(
+          params.require(:assignment).permit(:instructors), :instructors, "")
       rescue => e
         respond_with_error "Required parameters not supplied.", root_path
       end
@@ -164,6 +169,22 @@ class AssignmentsController < ApplicationController
             render file: "#{Rails.root}/public/404.html" , status: 404
           end
         end
+      end
+    end
+
+
+    ## Extracts the instructors corresponding to the provided author ids.
+    def get_instructors
+      begin
+        if @instructor_ids.empty?
+          @instructors = []
+        else
+          @instructors = @instructor_ids.split(",").map{|instructor_id| 
+            User.find_by(id: instructor_id)}
+        end
+      rescue => e 
+        # puts "#{@instructor_ids} #{e.message}"
+        respond_with_error "One or more instructors do not exist.", root_path
       end
     end
 end
