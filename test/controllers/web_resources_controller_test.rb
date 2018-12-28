@@ -168,7 +168,7 @@ class WebResourcesControllerTest < ActionController::TestCase
   ##############################################################################
   ## Testing updating an web_resource.
 
-  test "should update the web_resource of redirect to a software page" do
+  test "should update the web_resource and redirect to a software page" do
     log_in_as users(:foo)
     software = software(:two)
     web_resource = web_resources(:one)
@@ -180,7 +180,7 @@ class WebResourcesControllerTest < ActionController::TestCase
   end
 
 
-  test "should update the web_resource of redirect to a dataset page" do
+  test "should update the web_resource and redirect to a dataset page" do
     log_in_as users(:foo)
     dataset = datasets(:two)
     web_resource = web_resources(:two)
@@ -191,7 +191,7 @@ class WebResourcesControllerTest < ActionController::TestCase
     assert web_resource.url == "A better web_resource!"
   end
 
-  test "should update the web_resource of redirect to a analysis page" do
+  test "should update the web_resource and redirect to a analysis page" do
     log_in_as users(:foo)
     analysis = analyses(:two)
     web_resource = web_resources(:two)

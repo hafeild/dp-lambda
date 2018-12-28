@@ -3,6 +3,7 @@ class AssignmentGroupsController < ApplicationController
   before_action :logged_in_user, except: [:show, :index]
   before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
+  before_action :get_authors, only: [:create, :update]
   before_action :get_assignment_group,  except: [:connect_index, :index, :new, :create] 
   before_action :get_verticals
   before_action :get_redirect_path
@@ -33,14 +34,10 @@ class AssignmentGroupsController < ApplicationController
 
     ## Make sure we have the required fields.
     if get_with_default(@data, :name, "").empty? or 
-        get_with_default(@data, :summary, "").empty?# or
-        #get_with_default(@data, :description, "").empty? or
+        get_with_default(@data, :summary, "").empty? or
+        @authors.empty?
 
-        ## TODO Need to figure out this out. Should allow one or more
-        ## author ids.
-        #get_with_default(@data, :authors, "").empty?
-
-      respond_with_error "You must provide a name and summary.",
+      respond_with_error "You must provide a name, summary, and at least one author.",
         new_assignment_group_path
       return
     end
@@ -49,28 +46,32 @@ class AssignmentGroupsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @data[:creator] = current_user
+        @data[:authors] = @authors
         assignment_group = AssignmentGroup.create!(@data)
         respond_with_success get_redirect_path(assignment_group_path(assignment_group))
       end
     rescue => e
+      # puts "#{@author_ids} #{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error saving the assignment group entry: #{e}",
         new_assignment_group_path
     end
   end
 
-  ## Updates a assignment_group entry. Takes all the usual parameters. The tags,
-  ## web_resources, and examples may include "remove" fields along with an
+  ## Updates a assignment_group entry. Takes all the usual parameters. The tags
+  ## and web_resources may include "remove" fields along with an
   ## id, which will cause the resource to be disassociated with this project
   ## and deleted altogether if the resource isn't associated with another
   ## vertical entry.
   def update
     begin
       ActiveRecord::Base.transaction do
-        @assignment.update!(@data)
-        @assignment.reindex_associations
-        respond_with_success get_redirect_path(assignment_group_path(@assignment))
+        @data[:authors] = @authors if params.require(:assignment_group).has_key?(:authors)
+        @assignment_group.update!(@data)
+        @assignment_group.reindex_associations
+        respond_with_success get_redirect_path(assignment_group_path(@assignment_group))
       end
     rescue => e
+      # puts e.message
       respond_with_error "There was an error updating the assignment group entry.",
         new_assignment_group_path
     end  
@@ -83,14 +84,13 @@ class AssignmentGroupsController < ApplicationController
 
         ## Remove connected resources.
         destroy_isolated_resources(@assignment_group)
-        @assignment_group.delete_from_connection
         @assignment_group.destroy!
 
         flash[:success] = "Page removed."
         redirect_to assignment_groups_path
       end
     rescue => e
-      puts "#{e.message}"
+      # puts "#{e.message}"
       respond_with_error "There was an error removing the assignment group entry. #{e}",
         new_assignment_group_path
     end
@@ -110,6 +110,8 @@ class AssignmentGroupsController < ApplicationController
         @data = params.require(:assignment_group).permit(
           :name, :summary, :description, :thumbnail_url
         )
+        @author_ids = get_with_default(
+          params.require(:assignment_group).permit(:authors), :authors, "")
       rescue => e
         respond_with_error "Required parameters not supplied.", root_path
       end
@@ -128,6 +130,20 @@ class AssignmentGroupsController < ApplicationController
             render file: "#{Rails.root}/public/404.html" , status: 404
           end
         end
+      end
+    end
+
+    ## Extracts the authors corresponding to the provided author ids.
+    def get_authors
+      begin
+        if @author_ids.empty?
+          @authors = []
+        else
+          @authors = @author_ids.split(",").map{|author_id| User.find_by(id: author_id)}
+        end
+      rescue => e 
+        # puts "#{@author_ids} #{e.message}"
+        respond_with_error "One or more authors do not exist.", root_path
       end
     end
 end

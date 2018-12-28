@@ -81,9 +81,18 @@ class AssignmentGroup < ApplicationRecord
     web_resources.clear
   end
 
+  def reindex_associations
+    assignments.each do |assignment|
+      assignment.reload
+      assignment.save!
+      assignment.reindex_associations
+    end
+  end
+
   private
     def destroy_assignments
       assignments.each do |assignment|
+        ApplicationController.helpers.destroy_isolated_resources(assignment)
         assignment.destroy!
       end
     end

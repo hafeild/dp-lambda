@@ -23,3 +23,12 @@ three:
   summary: analysis3analysis3
   description: analysis 3
   creator: bar
+
+four:
+  name: analysis4
+  summary: analysis4analysis4
+  description: analysis 4
+  examples: two
+  creator: bar
+  web_resources: mutliWebResource2
+  tags: soloTag_AnalysisFour, multiTag1

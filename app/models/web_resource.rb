@@ -29,7 +29,8 @@ class WebResource < ApplicationRecord
 
   ## Reports the number of entries this resource is connected to.
   def belongs_to_count
-    software.size + datasets.size + analyses.size + assignments.size + examples.size
+    software.size + datasets.size + analyses.size + assignment_groups.size +
+      assignments.size + examples.size
   end
 
   ## Destroys this resource if it's connected to target_count entries.

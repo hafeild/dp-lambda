@@ -2,7 +2,7 @@ one:
   name: assignment group 1
   summary: a short summary
   description: a long description
-  tags: one, two
+  tags: multiTag1
   authors: foo
   creator: foo
 
@@ -13,3 +13,12 @@ two:
   tags: three, four
   authors: foo, bar
   creator: bar
+
+three:
+  name: assignment group 3
+  summary: whatever
+  description: blah blah blah
+  tags: multiTag1, multiTag2, soloTag_AssignmentGroupThree
+  creator: foo
+  authors: foo
+  web_resources: soloWebResource_AssignmentGroupThree

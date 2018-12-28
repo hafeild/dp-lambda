@@ -6,7 +6,7 @@ one:
   learning_curve: low
   instruction_hours: 3
   examples: two
-  tags: two
+  tags: two 
   web_resources: two
   assignments_related_to: two, three
   assignments_related_from: three
@@ -22,7 +22,6 @@ two:
   instructors: foo
   examples: two
   web_resources: two
-  tags: two, five
   datasets: one
   software: one
   analyses: one
@@ -62,3 +61,16 @@ five:
   course_title: Writing Essays
   field_of_study: English
   semester: Winter 2017
+  web_resources: mutliWebResource2
+
+six:
+  assignment_group: three
+  creator: bar
+  instructors: foo
+  course_prefix: ENG
+  course_number: 302
+  course_title: Writing Essays
+  field_of_study: English
+  semester: Winter 2017
+  tags: soloTag_AssignmentSix
+  web_resources: mutliWebResource2

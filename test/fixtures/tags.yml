@@ -14,3 +14,27 @@ four:
 
 five:
   text: computer science
+
+six:
+  text: more english
+
+multiTag1:
+  text: multiTag1
+
+multiTag2:
+  text: multiTag2
+
+soloTag_AssignmentGroupThree:
+  text: soloTag_AssignmentGroupThree
+
+soloTag_AssignmentSix:
+  text: soloTag_AssignmentSix
+
+soloTag_DatasetSix:
+  text: soloTag_DatasetSix
+
+soloTag_DatasetThree:
+  text: soloTag_DatasetThree
+
+soloTag_AnalysisFour:
+  text: soloTag_AnalysisFour

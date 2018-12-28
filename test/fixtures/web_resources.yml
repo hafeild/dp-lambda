@@ -7,3 +7,11 @@ one:
 two: 
   url: http://www.bing.com
   description: Another search engine
+
+soloWebResource_AssignmentGroupThree:
+  url: http://foobar.com
+  description: foo and bar together.
+
+mutliWebResource2:
+  url: http://www.bing3.com
+  description: Another search engine 2

@@ -222,9 +222,9 @@ class DatasetsControllerTest < ActionController::TestCase
 
   test "should destroy a dataset page and any resources unique to it" do 
     log_in_as users(:foo)
-    dataset = datasets(:two)
-    tag1 = tags(:two)
-    tag2 = tags(:four)
+    dataset = datasets(:three)
+    multiTag2 = tags(:multiTag2)
+    soloTag_DatasetSix = tags(:soloTag_DatasetSix)
     example = dataset.examples.first
     web_resource = dataset.web_resources.first
 
@@ -238,8 +238,8 @@ class DatasetsControllerTest < ActionController::TestCase
       delete :destroy, params: {id: dataset.id}
 
       assert Dataset.find_by(id: dataset.id).nil?, "Dataset not removed"
-      assert_not Tag.find_by(id: tag1.id).nil?, "Tag removed"
-      assert Tag.find_by(id: tag2.id).nil?, "Tag not removed"
+      assert_not Tag.find_by(id: multiTag2.id).nil?, "Tag removed"
+      assert Tag.find_by(id: soloTag_DatasetSix.id).nil?, "Tag not removed"
       assert_not Example.find_by(id: example.id).nil?, "Example removed"
       assert_not WebResource.find_by(id: web_resource.id).nil?, 
         "Web resource removed"

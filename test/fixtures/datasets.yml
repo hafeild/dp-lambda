@@ -17,3 +17,13 @@ two:
   examples: two
   web_resources: two
   tags: two, four
+
+three:
+  name: Another name 2
+  summary: xyz
+  description: xzy
+  thumbnail_url: another.url
+  creator: bar
+  examples: two
+  web_resources: mutliWebResource2
+  tags: multiTag2, soloTag_DatasetSix

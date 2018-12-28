@@ -222,11 +222,11 @@ class AnalysesControllerTest < ActionController::TestCase
 
   test "should destroy a analysis page and any resources unique to it" do 
     log_in_as users(:foo)
-    analysis = analyses(:two)
-    tag1 = tags(:two)
-    tag2 = tags(:three)
+    analysis = analyses(:four)
+    multiTag1 = tags(:multiTag1)
+    soloTag_AnalysisFour = tags(:soloTag_AnalysisFour)
     example = analysis.examples.first
-    web_resource = analysis.web_resources.first
+    mutliWebResource2 = web_resources(:mutliWebResource2)
 
     assert_not example.nil?, analysis.examples.size
 
@@ -238,10 +238,10 @@ class AnalysesControllerTest < ActionController::TestCase
       delete :destroy, params: {id: analysis.id}
 
       assert Analysis.find_by(id: analysis.id).nil?, "Analysis not removed"
-      assert_not Tag.find_by(id: tag1.id).nil?, "Tag removed"
-      assert Tag.find_by(id: tag2.id).nil?, "Tag not removed"
+      assert_not Tag.find_by(id: multiTag1.id).nil?, "Tag removed"
+      assert Tag.find_by(id: soloTag_AnalysisFour.id).nil?, "Tag not removed"
       assert_not Example.find_by(id: example.id).nil?, "Example removed"
-      assert_not WebResource.find_by(id: web_resource.id).nil?, 
+      assert_not WebResource.find_by(id: mutliWebResource2.id).nil?, 
         "Web resource removed"
 
     end
