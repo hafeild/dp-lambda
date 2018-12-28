@@ -21,8 +21,17 @@ class User < ApplicationRecord
   ## - permission_level_granted_on
   ## - permission_level_granted_by
   ## - deleted
+  ## - authored_assignment_groups (AssignmentGroups)
+  ## - instructed_assignments (Assignments)
+  ## - created_assignment_groups (AssignmentGroups)
+  ## - created_assignments (Assignments)
 
   attr_accessor :remember_token, :activation_token, :reset_token
+
+  has_and_belongs_to_many :authored_assignment_groups, class_name: "AssignmentGroup", join_table: "assignment_groups_authors"
+  has_and_belongs_to_many :instructed_assignments, class_name: "Assignment", join_table: "assignment_instructors"
+  has_many :created_assignment_groups, class_name: "AssignmentGroup", foreign_key: "creator_id"
+  has_many :created_assignments, class_name: "Assignment", foreign_key: "creator_id"
 
   has_secure_password
   has_many :permission_requests
