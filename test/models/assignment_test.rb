@@ -1,426 +1,277 @@
 require 'test_helper'
 
 class AssignmentTest < ActiveSupport::TestCase
-  test "ignore me" do
-    assert true
+
+
+  test "valid with required fields" do 
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert assignment.save, "Couldn't save"
   end
+
+
+  test "valid with all fields" do 
+    assignment = Assignment.new(
+      ## Required fields.
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one),
+      ## Optional fields.
+      learning_curve: "low",
+      instruction_hours: 4,
+      outcome_summary: "very good",
+      project_length_weeks: 2,
+      students_given_assignment: 25,
+      average_student_score: 5.3,
+      examples: [examples(:one)],
+      web_resources: [web_resources(:one)],
+      tags: [tags(:one)],
+      assignments_related_to: [assignments(:one), assignments(:two)],
+      software: [software(:one)],
+      datasets: [datasets(:one)],
+      analyses: [analyses(:one)]
+      ## TODO Once attachments tests are created, add in attachments here.
+    )
+    assert assignment.save, "Couldn't save"
+
+    assert assignments(:one).assignments_related_from.exists?(id: assignment.id),
+      "Inverse of assignments_related_to not held"
+    assert assignments(:two).assignments_related_from.exists?(id: assignment.id),
+      "Inverse of assignments_related_to not held"
+    assert examples(:one).assignments.exists?(id: assignment.id),
+      "Example not reciprocated"
+    assert web_resources(:one).assignments.exists?(id: assignment.id),
+      "Web resource not reciprocated"
+    assert tags(:one).assignments.exists?(id: assignment.id), "Tag not saved"
+    assert software(:one).assignments.exists?(id: assignment.id), 
+      "Software not reciprocated"
+    assert datasets(:one).assignments.exists?(id: assignment.id), 
+      "Dataset not reciprocated"
+    assert analyses(:one).assignments.exists?(id: assignment.id), 
+      "Analysis not reciprocated"
+    assert assignment_groups(:one).assignments.exists?(id: assignment.id),
+      "Assignment not connected to assignment group"
+  end
+
+
+  test "must have all required fields" do 
+    ## Missing creator.
+    assignment = Assignment.new(
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with missing creator"
+
+    ## Missing instructors.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with missing instructor"
+
+    ## Missing course_prefix.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with missing course_prefix"
+
+    ## Missing course_number.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with missing course_number"
+
+    ## Missing course_title.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with missing course_title"
+
+    ## Missing field_of-study.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with missing field_of-study"
+
+    ## Missing semester.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with missing semester"
+
+    ## Missing assignment_group.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018"
+    )
+    assert_not assignment.save, "Saved with missing assignment_group"
+
+  end
+
+
+  test "all required fields must be non-empty" do 
+    ## Empty creator.
+    assignment = Assignment.new(
+      creator: nil,
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with empty creator"
+
+    ## Empty instructors.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with empty instructor"
+
+    ## Empty course_prefix.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with empty course_prefix"
+
+    ## Empty course_number.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with empty course_number"
+
+    ## Empty course_title.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with empty course_title"
+
+    ## Empty field_of-study.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "",
+      semester: "Fall 2018",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with empty field_of-study"
+
+    ## Empty semester.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "",
+      assignment_group: assignment_groups(:one)
+    )
+    assert_not assignment.save, "Saved with empty semester"
+
+    ## Empty assignment_group.
+    assignment = Assignment.new(
+      creator: users(:foo),
+      instructors: [users(:bar)],
+      course_prefix: "CSC",
+      course_number: "101",
+      course_title: "Intro to Computer Science",
+      field_of_study: "Computer Science",
+      semester: "Fall 2018",
+      assignment_group: nil
+    )
+    assert_not assignment.save, "Saved with empty assignment_group"
+
+  end
+
 end
-
-#   test "valid with a creator, a unique name, a summary, author, and a description" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert assignment.save, "Couldn't save"
-#   end
-
-
-#   test "valid with all fields" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar",
-#       thumbnail_url: "http://google.com",
-#       learning_curve: "low",
-#       instruction_hours: 4,
-#       examples: [examples(:one)],
-#       web_resources: [web_resources(:one)],
-#       tags: [tags(:one)],
-#       assignments_related_to: [assignments(:one), assignments(:two)],
-#       assignment_results: [assignment_results(:two)],
-#       software: [software(:one)],
-#       datasets: [datasets(:one)],
-#       analyses: [analyses(:one)]
-#     )
-#     assert assignment.save, "Couldn't save"
-
-
-#     assert assignments(:one).assignments_related_from.exists?(id: assignment.id),
-#       "Inverse of assignments_related_to not held"
-#     assert examples(:one).assignments.exists?(id: assignment.id),
-#       "Example not saved"
-#     assert web_resources(:one).assignments.exists?(id: assignment.id),
-#       "Web resource not saved"
-#     assert tags(:one).assignments.exists?(id: assignment.id), "Tag not saved"
-#     assert software(:one).assignments.exists?(id: assignment.id), 
-#       "Software not saved"
-#     assert datasets(:one).assignments.exists?(id: assignment.id), 
-#       "Dataset not saved"
-#     assert analyses(:one).assignments.exists?(id: assignment.id), 
-#       "Analysis not saved"
-#     assert assignment_results(:two).assignment == assignment, 
-#       "Assignment not saved"
-#   end
-
-
-#   test "must have a creator" do 
-#     assignment = Assignment.new(
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
-
-
-#   test "must have a name" do
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "",
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
-
-
-
-#   test "must have a summary" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
-
-
-
-#   # test "must have a description" do 
-#   #   assignment = Assignment.new(
-#   #     creator: users(:foo),
-#   #     name: "A very unique name",
-#   #     summary: "a summary",
-#   #     author: "Foo Bar"
-#   #   )
-#   #   assert_not assignment.save, "Saved without error, but should not have" 
-
-#   #   assignment = Assignment.new(
-#   #     creator: users(:foo),
-#   #     name: "A very unique name",
-#   #     summary: "a summary",
-#   #     description: "",
-#   #     author: "Foo Bar"
-#   #   )
-#   #   assert_not assignment.save, "Saved without error, but should not have" 
-#   # end
-
-
-
-#   test "must have an author" do 
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: "A very unique name",
-#       summary: "a summary",
-#       description: "a description",
-#       author: ""
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have" 
-#   end
-
-
-
-#   test "name must be unique" do
-#     assignment = Assignment.new(
-#       creator: users(:foo),
-#       name: assignments(:one).name,
-#       summary: "a summary",
-#       description: "a description",
-#       author: "Foo Bar"
-#     )
-#     assert_not assignment.save, "Saved without error, but should not have"
-#   end
-
-#   test "destroying an assignment destroys all associated assignment results" do
-#     assignment_result_id = assignment_results(:one)
-#     assignment = assignments(:one)
-
-#     assignment.destroy
-
-#     assert AssignmentResult.find_by(id: assignment_result_id).nil?
-#   end
-
-# end
-
-
-
-
-
-
-
-
-
-
-# require 'test_helper'
-
-# class AssignmentResultTest < ActiveSupport::TestCase
-
-#   test "valid with only required fields" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert assignment_result.save, "Couldn't save"
-#   end
-
-
-#   test "valid with all fields" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017",
-#       project_length_weeks: 5,
-#       students_given_assignment: 30,
-#       instruction_hours: 6,
-#       average_student_score: 2.9,
-#       outcome_summary: "All is good"
-#     )
-#     assert assignment_result.save, "Couldn't save"
-
-
-#     assert assignments(:one).assignment_results.exists?(id: assignment_result.id),
-#       "Assignment result not associated with assignment"
-#   end
-
-
-#   test "must have a creator" do 
-#     assignment_result = AssignmentResult.new(
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-#   end
-
-
-#   test "must have an assignment" do
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: nil,
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-#   end
-
-
-
-#   test "must have a course prefix" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-#   end
-
-
-
-#   test "must have a course number" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have" 
-
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have" 
-#   end
-
-
-
-#   test "must have a course title" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have" 
-#   end
-
-
-#   test "must have a field of study" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "",
-#       instructor: "Foo Bar",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have" 
-#   end
-
-#   test "must have an instructor" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "",
-#       semester: "Summer 2017"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have" 
-#   end
-
-#   test "must have a semester" do 
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Pat Smith"
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have"
-
-#     assignment_result = AssignmentResult.new(
-#       creator: users(:foo),
-#       assignment: assignments(:one),
-#       course_prefix: "ART",
-#       course_number: "490",
-#       course_title: "Senior Thesis I",
-#       field_of_study: "Visual and Performing Art",
-#       instructor: "Path Smith",
-#       semester: ""
-#     )
-#     assert_not assignment_result.save, "Saved without error, but should not have" 
-#   end
-
-# end

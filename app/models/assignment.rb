@@ -44,12 +44,13 @@ class Assignment < ApplicationRecord
     association_foreign_key: :to_assignment_id
 
   ## Ensure the presence of required fields. 
-  # validates :instructor, presence: true, length: {minimum: 1, maximum: 200}
-  # validates :course_prefix, presence: true, length: {minimum: 1, maximum: 3}
-  # validates :course_number, presence: true, length: {minimum: 1, maximum: 3}
-  # validates :course_title, presence: true, length: {minimum: 1, maximum: 200}
-  # validates :field_of_study, presence: true, length: {minimum: 1, maximum: 200}
-  # validates :semester, presence: true, length: {minimum: 1, maximum: 15}
+  validates :assignment_group, presence: true
+  validates :instructors, presence: true, length: {minimum: 1, maximum: 200}
+  validates :course_prefix, presence: true, length: {minimum: 1, maximum: 3}
+  validates :course_number, presence: true, length: {minimum: 1, maximum: 3}
+  validates :course_title, presence: true, length: {minimum: 1, maximum: 200}
+  validates :field_of_study, presence: true, length: {minimum: 1, maximum: 200}
+  validates :semester, presence: true, length: {minimum: 1, maximum: 15}
 
   def course
     "#{:course_prefix}#{:course_number}"
