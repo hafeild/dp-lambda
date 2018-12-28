@@ -47,6 +47,7 @@ class CreateNewAssignmentTables < ActiveRecord::Migration[5.0]
     create_join_table :assignments, :datasets
     create_join_table :assignments, :examples
     create_join_table :assignments, :attachments
+    
     create_table :assignments_assignments do |t|
       t.integer :from_assignment_id
       t.integer :to_assignment_id
