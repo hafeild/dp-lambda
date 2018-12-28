@@ -30,6 +30,8 @@ module ApplicationHelper
       analysis_path(vertical)
     elsif vertical.class == Assignment
       assignment_path(vertical)
+    elsif vertical.class == AssignmentGroup
+      assignment_group_path(vertical)
     elsif vertical.class == Example
       example_path(vertical)
     end
