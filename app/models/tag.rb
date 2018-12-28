@@ -1,8 +1,20 @@
 class Tag < ApplicationRecord
+  ## Tag has...
+  ## - text
+  ## - software
+  ## - datasets
+  ## - analyses
+  ## - assignments
+  ## - assignment_groups
+  ## - examples
+  ## - created_at
+  ## - updated_at
+
   has_and_belongs_to_many :software
   has_and_belongs_to_many :datasets
   has_and_belongs_to_many :analyses
   has_and_belongs_to_many :assignments
+  has_and_belongs_to_many :assignment_groups
   has_and_belongs_to_many :examples
 
   after_destroy :reload_connections
@@ -28,7 +40,8 @@ class Tag < ApplicationRecord
 
   private
     def reload_connections
-      [assignments, analyses, datasets, software, examples].each do |connectionSet|
+      [assignment_groups, assignments, analyses, datasets, 
+       software, examples].each do |connectionSet|
         connectionSet.each do |connection|
           connection.tags.delete(self)
           connection.save!

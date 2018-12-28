@@ -6,6 +6,7 @@ class WebResource < ApplicationRecord
   ## - datasets
   ## - analyses
   ## - assignments
+  ## - assignment_groups
   ## - examples
 
 
@@ -17,6 +18,7 @@ class WebResource < ApplicationRecord
   has_and_belongs_to_many :datasets
   has_and_belongs_to_many :analyses
   has_and_belongs_to_many :assignments
+  has_and_belongs_to_many :assignment_groups
   has_and_belongs_to_many :examples
 
   ## Ensure the presence of required fields. 
