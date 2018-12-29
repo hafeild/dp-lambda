@@ -45,7 +45,7 @@ class Assignment < ApplicationRecord
 
   ## Ensure the presence of required fields. 
   validates :assignment_group, presence: true
-  validates :instructors, presence: true, length: {minimum: 1, maximum: 200}
+  validates :instructors, presence: true, length: {minimum: 1}
   validates :course_prefix, presence: true, length: {minimum: 1, maximum: 3}
   validates :course_number, presence: true, length: {minimum: 1, maximum: 3}
   validates :course_title, presence: true, length: {minimum: 1, maximum: 200}

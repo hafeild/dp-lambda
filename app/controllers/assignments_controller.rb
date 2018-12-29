@@ -4,7 +4,8 @@ class AssignmentsController < ApplicationController
   before_action :user_can_edit, except: [:show, :index]
   before_action :get_params, only: [:create, :update]
   before_action :get_instructors, only: [:create, :update]
-  before_action :get_assignment,  except: [:connect_index, :index, :new, :create] 
+  before_action :get_assignment,  except: [:connect_index, :index, :new, :create]
+  before_action :get_assignment_group, only: [:create, :update] 
   before_action :get_verticals
   before_action :get_redirect_path
 
@@ -33,12 +34,14 @@ class AssignmentsController < ApplicationController
   def create
 
     ## Make sure we have the required fields.
-    if get_with_default(@data, :name, "").empty? or 
-        get_with_default(@data, :summary, "").empty? or
-        #get_with_default(@data, :description, "").empty? or
-        get_with_default(@data, :author, "").empty?
-      respond_with_error "You must provide an author, name, and summary.",
-        new_assignment_path
+      if get_with_default(@data, :course_prefix, "").empty? or 
+        get_with_default(@data, :course_number, "").empty? or 
+        get_with_default(@data, :course_title, "").empty? or 
+        get_with_default(@data, :field_of_study, "").empty? or
+        get_with_default(@data, :semester, "").empty? or
+        @instructors.empty?
+      respond_with_error "You must provide a course prefix, number, and title, a field of study, a semester, and one or more instructors.",
+        new_assignment_group_assignment_path
       return
     end
 
@@ -46,12 +49,15 @@ class AssignmentsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @data[:creator] = current_user
+        @data[:assignment_group] = @assignment_group
+        @data[:instructors] = @instructors
         assignment = Assignment.create!(@data)
         respond_with_success get_redirect_path(assignment_path(assignment))
       end
     rescue => e
+      # puts e.message
       respond_with_error "There was an error saving the assignment entry.",
-        new_assignment_path
+        new_assignment_group_assignment_path
     end
   end
 
@@ -63,13 +69,14 @@ class AssignmentsController < ApplicationController
   def update
     begin
       ActiveRecord::Base.transaction do
+        @data[:instructors] = @instructors if params.require(:assignment).has_key?(:instructors)
         @assignment.update!(@data)
         @assignment.reindex_associations
         respond_with_success get_redirect_path(assignment_path(@assignment))
       end
     rescue => e
       respond_with_error "There was an error updating the assignment entry.",
-        new_assignment_path
+        new_assignment_group_assignment_path
     end  
   end
 
@@ -84,12 +91,12 @@ class AssignmentsController < ApplicationController
         @assignment.destroy!
 
         flash[:success] = "Page removed."
-        redirect_to assignments_path
+        redirect_to assignment_group_path(@assignment.assignment_group)
       end
     rescue => e
       puts "#{e.message}"
       respond_with_error "There was an error removing the assignment entry. #{e}",
-        new_assignment_path
+        new_assignment_group_assignment_path
     end
   end
 
@@ -172,6 +179,18 @@ class AssignmentsController < ApplicationController
       end
     end
 
+    def get_assignment_group
+      if params.key? :assignment_group_id
+        @assignment_group = AssignmentGroup.find_by(id: params[:assignment_group_id])
+        if @assignment_group.nil?
+          respond_with_error "A valid assignment_group id must be provided."
+        end
+      elsif not @assignment.assignment_group.nil?
+        @assignment_group = @assignment.assignment_group
+      else
+        respond_with_error "An assignment_group id must be provided."
+      end
+    end
 
     ## Extracts the instructors corresponding to the provided author ids.
     def get_instructors
