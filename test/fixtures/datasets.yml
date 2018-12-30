@@ -7,7 +7,6 @@ one:
   thumbnail_url: a.url
   creator: foo
 
-  
 two:
   name: Another name
   summary: lion tiger bear lion
@@ -27,3 +26,15 @@ three:
   examples: two
   web_resources: mutliWebResource2
   tags: multiTag2, soloTag_DatasetSix
+
+soloDataset_AssignmentSix:
+  name: soloDataset_AssignmentSix
+  summary: a summary
+  creator: foo
+  description: a description
+
+multiDataset1:
+  name: multiDataset1
+  summary: a summary
+  creator: foo
+  description: a description

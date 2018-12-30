@@ -15,3 +15,7 @@ soloWebResource_AssignmentGroupThree:
 mutliWebResource2:
   url: http://www.bing3.com
   description: Another search engine 2
+
+soloWebResource_AssignmentSix:
+  url: http://foobar.commmm
+  description: foo and bar togetherrrr.

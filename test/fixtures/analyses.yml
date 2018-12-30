@@ -32,3 +32,15 @@ four:
   creator: bar
   web_resources: mutliWebResource2
   tags: soloTag_AnalysisFour, multiTag1
+
+soloAnalysis_AssignmentSix:
+  name: soloAnalysis_AssignmentSix
+  summary: a summary
+  description: a description
+  creator: bar
+
+multiAnalysis1:
+  name: multiAnalysis1
+  summary: a summary
+  description: a description
+  creator: bar

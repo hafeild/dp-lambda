@@ -76,7 +76,7 @@ class AssignmentsController < ApplicationController
       end
     rescue => e
       respond_with_error "There was an error updating the assignment entry.",
-        new_assignment_group_assignment_path
+        edit_assignment_path(@assignment)
     end  
   end
 

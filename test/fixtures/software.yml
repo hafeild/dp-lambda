@@ -95,3 +95,15 @@ fifteen:
   summary: software 15
   creator: bar
   description: software 15
+
+soloSoftware_AssignmentSix:
+  name: soloSoftware_AssignmentSix
+  summary: a summary
+  creator: foo
+  description: a description
+
+multiSoftware1:
+  name: multiSoftware1
+  summary: a summary
+  creator: foo
+  description: a description

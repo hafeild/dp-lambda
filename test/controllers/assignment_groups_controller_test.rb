@@ -291,6 +291,7 @@ class AssignmentGroupsControllerTest < ActionController::TestCase
     multiTag2 = tags(:multiTag2)
     soloTag_AssignmentGroupThree = tags(:soloTag_AssignmentGroupThree)
     soloWebResource_AssignmentGroupThree = web_resources(:soloWebResource_AssignmentGroupThree)
+    soloWebResource_AssignmentSix = web_resources(:soloWebResource_AssignmentSix)
     assignment = assignments(:six)
 
     ## Unique to the assignment.
@@ -300,7 +301,7 @@ class AssignmentGroupsControllerTest < ActionController::TestCase
 
     assert_difference 'AssignmentGroup.count', -1, "AssignmentGroup page not removed" do
     assert_difference 'Assignment.count', -1, "Assignment page not removed" do
-    assert_difference 'WebResource.count', -1, "Web resource removed" do
+    assert_difference 'WebResource.count', -2, "Web resource removed" do
     assert_difference 'Tag.count', -2, "Tag not removed" do
 
       delete :destroy, params: {id: assignment_group.id}, format: :json
@@ -319,6 +320,8 @@ class AssignmentGroupsControllerTest < ActionController::TestCase
       assert_not WebResource.find_by(id: mutliWebResource2.id).nil?, 
         "Web resource removed"
       assert WebResource.find_by(id: soloWebResource_AssignmentGroupThree.id).nil?, 
+        "Web resource not removed"
+      assert WebResource.find_by(id: soloWebResource_AssignmentSix.id).nil?, 
         "Web resource not removed"
 
     end

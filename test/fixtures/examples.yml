@@ -20,3 +20,15 @@ three:
   summary: ttttt oh yeah
   description: three is the magic number
   creator: foo
+
+soloExample_AssignmentSix:
+  title: soloExample_AssignmentSix
+  summary: a summary
+  description: a description
+  creator: foo
+
+multiExample1:
+  title: multiExample1
+  summary: a summary
+  description: a description
+  creator: foo

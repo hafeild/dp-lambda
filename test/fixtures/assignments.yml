@@ -72,5 +72,9 @@ six:
   course_title: Writing Essays
   field_of_study: English
   semester: Winter 2017
-  tags: soloTag_AssignmentSix
-  web_resources: mutliWebResource2
+  tags: soloTag_AssignmentSix, multiTag1
+  web_resources: mutliWebResource2, soloWebResource_AssignmentSix
+  examples: soloExample_AssignmentSix, multiExample1
+  analyses: soloAnalysis_AssignmentSix, multiAnalysis1
+  software: multiSoftware1, soloSoftware_AssignmentSix
+  datasets: soloDataset_AssignmentSix, multiDataset1
