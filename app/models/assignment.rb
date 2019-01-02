@@ -1,6 +1,10 @@
 class Assignment < ApplicationRecord
   ## Assignment has...
   ## - assignment_group
+  ## - name (alias for assignment_group.name)
+  ## - summary (alias for assignment_group.summary)
+  ## - description (alias for assignment_group.description)
+  ## - authors (users) (alias for assignment_group.authors)
   ## - notes
   ## - course
   ## - course_prefix
@@ -52,8 +56,34 @@ class Assignment < ApplicationRecord
   validates :field_of_study, presence: true, length: {minimum: 1, maximum: 200}
   validates :semester, presence: true, length: {minimum: 1, maximum: 15}
 
+  ## Aliases for assignment group fields.
+  def description
+    assignment_group.description
+  end
+
+  def summary
+    assignment_group.summary
+  end
+
+  def name
+    assignment_group.name
+  end
+
+  def authors
+    assignment_group.authors
+  end
+  #### End aliases
+
   def course
     "#{course_prefix}#{course_number}"
+  end
+
+  def full_title
+    "#{course}—#{course_title}"
+  end
+
+  def full_title_with_semester
+    "#{full_title} (#{semester})"
   end
 
   def related_assignments

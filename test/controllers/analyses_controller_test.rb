@@ -264,7 +264,7 @@ class AnalysesControllerTest < ActionController::TestCase
 
     assert_difference "assignment.analyses.count", 1, "Analysis not linked" do
     assert_difference "analysis.assignments.count", 1, "Assignment not linked" do
-      post :connect, params: {assignment_id: assignment.id, id: analysis.id}
+      post :connect, params: {assignment_group_id: assignment.assignment_group.id, assignment_id: assignment.id, id: analysis.id}
       assert_redirected_to assignment_path(assignment), @response.body
       assignment.reload
       analysis.reload
@@ -311,7 +311,7 @@ class AnalysesControllerTest < ActionController::TestCase
 
     assert_difference "assignment.analyses.count", -1, "Analysis not linked" do
     assert_difference "analysis.assignments.count", -1, "Assignment not linked" do
-      delete :disconnect, params: {assignment_id: assignment.id, id: analysis.id}
+      delete :disconnect, params: {assignment_group_id: assignment.assignment_group.id, assignment_id: assignment.id, id: analysis.id}
       assert_redirected_to assignment_path(assignment), @response.body
       assignment.reload
       analysis.reload

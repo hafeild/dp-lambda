@@ -176,7 +176,31 @@ module ApplicationHelper
 ################################################################################
 
 
+  ## Lists the given strings as a comma separated list, with the final string
+  ## separated by an ampersand.
+  ## Examples:
+  ## Single string:         Jones
+  ## Two strings:           Smith & Jones
+  ## Three or more strings: Jahn, Mutton, & Smith
+  def oxford_comma_list(strings)
+    if strings.size == 0
+      ""
+    elsif strings.size == 1
+      strings.first
+    else
+      strings[0...-1].join(", ") + (strings.size > 2 ? "," : "") +
+        " & "+ strings.last
+    end
+  end
 
+
+  ## Shortcuts for assignment paths.
+  def assignment_path(assignment)
+    if assignment.class != "Assignment"
+      assignment = Assignment.find_by(id: assignment)
+    end
+    assignment_group_assignment_path(assignment.assignment_group, assignment)
+  end
 
 end
 

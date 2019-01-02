@@ -5,16 +5,16 @@ class AssignmentsController < ApplicationController
   before_action :get_params, only: [:create, :update]
   before_action :get_instructors, only: [:create, :update]
   before_action :get_assignment,  except: [:connect_index, :index, :new, :create]
-  before_action :get_assignment_group, only: [:create, :update] 
+  before_action :get_assignment_group, only: [:create, :update, :show] 
   before_action :get_verticals
   before_action :get_redirect_path
 
   def index
-    @assignments = Assignment.all.sort_by { |e| e.name }
+    @assignments = Assignment.all.sort_by { |e| e.assignment_group.name }
   end
 
   def connect_index
-    @assignments = Assignment.all.sort_by { |e| e.name }
+    @assignments = Assignment.all.sort_by { |e| e.assignment_group.name }
     if @vertical.class == Assignment
       @assignments.delete(@vertical)
     end
@@ -52,10 +52,10 @@ class AssignmentsController < ApplicationController
         @data[:assignment_group] = @assignment_group
         @data[:instructors] = @instructors
         assignment = Assignment.create!(@data)
-        respond_with_success get_redirect_path(assignment_path(assignment))
+        assignment.reload
+        respond_with_success assignment_group_assignment_path(@assignment_group, assignment)
       end
     rescue => e
-      # puts e.message
       respond_with_error "There was an error saving the assignment entry.",
         new_assignment_group_assignment_path
     end
@@ -72,7 +72,7 @@ class AssignmentsController < ApplicationController
         @data[:instructors] = @instructors if params.require(:assignment).has_key?(:instructors)
         @assignment.update!(@data)
         @assignment.reindex_associations
-        respond_with_success get_redirect_path(assignment_path(@assignment))
+        respond_with_success assignment_group_assignment_path(@assignment.assignment_group,@assignment)
       end
     rescue => e
       respond_with_error "There was an error updating the assignment entry.",

@@ -17,9 +17,9 @@ Rails.application.routes.draw do
   resources :examples
 
   resources :assignment_groups do
-    resources :assignments, only: [:create, :new]
+    resources :assignments, only: [:create, :new, :show]
   end
-  resources :assignments, except: [:create, :new]
+  resources :assignments, except: [:create, :new, :show]
 
   ## Resources.
   resources :web_resources, except: [:index, :destroy]
@@ -30,8 +30,13 @@ Rails.application.routes.draw do
   ## Configures all of the routes for interacting with resources attached to
   ## a particular vertical. E.g.,
   ##  get 'software/:software_id/examples' => 'examples#index'
-  (verticals + [[:assignment_group]]).each do |vertical|
+  (verticals + [:assignment_group]).each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
+    if vertical == :assignment_group
+      base = "#{vertical}s/:#{vertical}_id/"
+    elsif vertical == :assignment
+      base = "#{vertical}_groups/:#{vertical}_group_id/#{vertical}s/:#{vertical}_id/"
+    end
 
     [:web_resources, :tags].each do |resource|
       
@@ -49,6 +54,10 @@ Rails.application.routes.draw do
   # (verticals + ['example']).each do |vertical|
   verticals.each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
+    if vertical == :assignment
+      base = "#{vertical}_groups/:#{vertical}_group_id/#{vertical}s/:#{vertical}_id/"
+    end
+
     resource_base = "#{base}/attachments"
     
     get    resource_base               => "attachments#index"
@@ -63,6 +72,10 @@ Rails.application.routes.draw do
   ## Configures all of the routes for connecting two verticals together.
   verticals.each do |vertical|
     base = "#{vertical.to_s.pluralize(2)}/:#{vertical}_id/"
+    if vertical == :assignment
+      base = "#{vertical}_groups/:#{vertical}_group_id/#{vertical}s/:#{vertical}_id/"
+    end
+
 
     verticals.each do |vertical2|
       ## Right now, we only want to make connections between assignments and
