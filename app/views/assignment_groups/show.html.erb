@@ -81,7 +81,7 @@
             <ul>
               <%= render(partial: "assignments/assignment_list_item", 
               collection: sort_by(@assignment_group.assignments, :semester), 
-              as: :assignment_result, 
+              as: :assignment, 
               locals: {print_header: true, assignment_group: @assignment_group}) || 
               "There are currently no assignments." %>
             </ul>

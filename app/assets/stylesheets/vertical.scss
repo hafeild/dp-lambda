@@ -67,6 +67,11 @@ li .snippet {
   }
 }
 
+.tags {
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
 .tag-badge {
   font-size: 85%;
   border-radius: 2em;
@@ -152,6 +157,6 @@ ul {
   list-style: none;
 }
 
-ul.authors {
-  margin-left: 1em;
+ul.authors, ul.instructors {
+  margin-left: 1.5em;
 }

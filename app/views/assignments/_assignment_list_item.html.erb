@@ -19,9 +19,13 @@
     </span>
   <% end %>
   
-  <span class="name"><%=
-    "#{assignment.course_title} (#{assignment.instructors.map{|i| i.last_name}.join(", ")}&mdash;#{assignment.semester})"
-  %></span>
+  <span class="name"><%= assignment.course_title %> 
+  <%# Quite ugly, but this gives us a list of instructors like this:
+    Single instructor:         Jones
+    Two instructors:           Smith & Jones
+    Three or more instructors: Jahn, Mutton, & Smith
+  %>
+  (<% if assignment.instructors.size == 1 %><%= assignment.instructors.first.last_name %><% else %><%= assignment.instructors[0...-1].map{|i| i.last_name}.join(", ")%><%= "," if assignment.instructors.size > 2 %> &amp; <%= assignment.instructors.last.last_name %>&mdash;<%= assignment.semester %><% end %>)</span>
 
   (<%= link_to "details", assignment_path(assignment) %>)
 

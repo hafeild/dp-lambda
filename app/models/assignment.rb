@@ -53,7 +53,7 @@ class Assignment < ApplicationRecord
   validates :semester, presence: true, length: {minimum: 1, maximum: 15}
 
   def course
-    "#{:course_prefix}#{:course_number}"
+    "#{course_prefix}#{course_number}"
   end
 
   def related_assignments
