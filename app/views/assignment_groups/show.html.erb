@@ -1,3 +1,9 @@
+<%#
+Allows the following:
+  @assignment_group
+  @assignment -- if included, embeds the assignment page.
+%>
+
 <% provide(:title, @assignment_group.name) %>
 <div class="container-fluid assignment-page" data-assignment_group-id="<%= @assignment_group.id %>">
   
@@ -47,7 +53,7 @@
 
   <div class="row"> <%# Start row. %>
 
-    <div class="col-sm-9">
+    <div class="col-sm-6">
 
       <div class="row">
         <div class="col-sm-12 summary-wrapper">
@@ -64,7 +70,8 @@
         </div>
       </div>
 
-      <div class="row">
+      <% if false %>
+<div class="row">
         <div class="col-sm-12">
           <div class="assignments">
             <h2>Versions of assignment by class
@@ -88,10 +95,11 @@
           </div>
         </div>
       </div>
+      <% end %>
 
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-6">
       <div class="metadata-wrapper">
         <!-- <h2>Metadata</h2> -->
         <div class="metadata">
@@ -121,122 +129,73 @@
               <% end %>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col">
+              <b>Web links:
+                <% if can_edit? %>
+                  <span class="edit-toggle">
+                  <a href="<%= vertical_web_resource_index_path @assignment_group %>">
+                    <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  </button>
+                  </a>
+                  <!-- got merged into ^^
+                  <%-# new_vertical_web_resource_path @assignment -%>
+                  -->
+                  </span>
+                <% end %>
+              </b>
+              <ul>
+                <%= render(partial: "web_resources/web_resource_list_item", 
+                collection: sort_by(@assignment_group.web_resources, :description), 
+                as: :web_resource, 
+                locals: {print_header: true, vertical: @assignment_group}) || 
+                "<i>There are currently no web resources associated with this assignment group.</i>".html_safe %>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="assignments">
+                <b>Versions of assignment by class:
+                  <% if can_edit? %>
+                    <span class="edit-toggle">
+                    <a href="<%= new_assignment_group_assignment_path @assignment_group %>">
+                      <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add a new class">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                      </button>
+                    </a>
+                    </span>
+                  <% end %>
+                </b>
+                <ul>
+                  <%= render(partial: "assignments/assignment_list_item", 
+                  collection: sort_by(@assignment_group.assignments, :semester), 
+                  as: :assignment, 
+                  locals: {print_header: true, assignment_group: @assignment_group}) || 
+                  "<i>There are currently no assignments.</i>".html_safe %>
+                </ul>
+              </div>
+            </div>
+          </div>
             
-            <%# Commented out for now. %>
-            <% if false %>
-                    <div class="row">
-                    <div class="col">
-                      <b>Learning curve: </b><span class="learning_curve"><%= @assignment_group.learning_curve %></span>
-                    </div>
-                    </div>
-                    <div class="row">
-                    <div class="col">
-                      <b>Expected instruction hours: </b><span class="instruction_hours"><%= @assignment_group.instruction_hours %></span>
-                    </div>
-                    </div>
-            <% end %>
         </div>
       </div>
     </div>
 
   </div> <%# End row. %>
 
-  <hr>
-  <h2 class="m-1">Materials</h2>
-   
+  <% if defined? @assignment %>
+  <hr>   
   <div class="row"> <%# Start row. %>
 
-    <div class="col-sm-4">
-      <div class="web-resources">
-        <h3>From the web
-          <% if can_edit? %>
-            <span class="edit-toggle">
-            <a href="<%= vertical_web_resource_index_path @assignment_group %>">
-              <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </button>
-            </a>
-            <!-- got merged into ^^
-            <%-# new_vertical_web_resource_path @assignment -%>
-            -->
-            </span>
-          <% end %>
-        </h3>
-        <ul>
-          <%= render(partial: "web_resources/web_resource_list_item", 
-          collection: sort_by(@assignment_group.web_resources, :description), 
-          as: :web_resource, 
-          locals: {print_header: true, vertical: @assignment_group}) || 
-          "There are currently no web resources associated with this assignment group." %>
-        </ul>
-      </div>
-    </div>
+  <%= render @assignment %>
 
 
-
-  </div>
-   
-  <%# Commented out for now. %>
-  <% if false %>
-  <hr>
-  <div class="related-resources">
-    <h2 class="m-1">Related</h2>
-    <div class="row"> <%# Start row. %>
-
-      <div class="col-sm-4">
-        <%= render(partial: "verticals_shared/related_vertical",
-          locals: {title: "Other assignments", 
-                  vertical_from: @assignment, 
-                  vertical_to: Assignment.new, 
-                  data: @assignment.related_assignments,
-                  editable: true,
-                  title_tag: :h3 }) %>
-
-      <!--     <button class="expand-all-resources">Expand all</button>
-      <button class="collapse-all-resources">Collapse all</button> -->
-      </div>
-
-      <div class="col-sm-4">
-        <%= render(partial: "verticals_shared/related_vertical",
-          locals: {title: "Analyses", 
-                  vertical_from: @assignment, 
-                  vertical_to: Analysis.new, 
-                  editable: true,
-                  title_tag: :h3  }) %>
-      </div>
-
-      <div class="col-sm-4">
-        <%= render(partial: "verticals_shared/related_vertical",
-          locals: {title: "Software", 
-                  vertical_from: @assignment, 
-                  vertical_to: Software.new, 
-                  editable: true,
-                  title_tag: :h3  }) %>
-      </div>
-    </div> <%# End row. %>
-    
-    <div class="row"> <%# Start row. %>
-
-      <div class="col-sm-4">
-        <%= render(partial: "verticals_shared/related_vertical",
-          locals: {title: "Datasets", 
-                  vertical_from: @assignment, 
-                  vertical_to: Dataset.new, 
-                  editable: true,
-                  title_tag: :h3 }) %>
-      </div>
-
-      <div class="col-sm-4">
-        <%= render(partial: "examples/related_examples",
-          locals: {title: "Examples", 
-                  vertical: @assignment, 
-                  editable: true,
-                  title_tag: :h3 }) %>
-      </div>
-
-    </div> <%# End row. %>
-  </div>
-  <% end # End commented out code. %>
+  </div> <%# End row. %>
+  <% end %>
 
 </div>
 

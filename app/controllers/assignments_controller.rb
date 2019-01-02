@@ -21,6 +21,7 @@ class AssignmentsController < ApplicationController
   end
 
   def show
+    render "assignment_groups/show"
   end
 
   def new

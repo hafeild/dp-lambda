@@ -1,0 +1,299 @@
+<div class="container-fluid assignment-page" data-assignment-id="<%= @assignment.id %>">
+  <h2>Version:  <%= @assignment.course %> <%= @assignment.course_title %>, <%= @assignment.semester %></h2>
+
+  <%# link_to "See other versions of this assignment.",  assignment_group_path(@assignment.assignment_group) %>
+
+  <div class="tags">
+    <% if can_edit? %>
+    <span class="edit-toggle">
+      <a href="<%= vertical_tag_index_path @assignment %>">
+      <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add Tags">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </button>
+      </a>
+       <!-- got merged into ^^
+       <%-# new_vertical_tag_path @assignment -%>
+       -->
+    </span>
+    <% end %>
+    Tags:
+    <%= render(partial: "tags/tag_badge", 
+    collection: sort_by(@assignment.tags, :text), as: :tag,
+    locals: {print_header: true, vertical: @assignment}) || 
+    "<i>There are currently no tags associated with this assignment.</i>".html_safe %>
+  </div>
+  
+
+  <div class="row">
+    <div class="col-sm-12">
+
+      <%# Notes %>
+      <div class="row">
+        <div class="col-sm-12 notes-wrapper">
+          <h2>Notes</h2>
+          <div class="notes">
+              <%= (@assignment.notes.nil? ? "<i>No notes yet.</i>" : sanitize_text(@assignment.notes)).html_safe %>
+          </div>
+        </div>
+      </div>
+
+      <%# Outcome summary %>
+      <div class="row">
+        <div class="col-sm-12 outcome_summary-wrapper">
+          <h2>Outcome summary</h2>
+          <div class="outcome_summary">
+              <%= (@assignment.outcome_summary.nil? ? "<i>No outcome summary yet.</i>" : sanitize_text(@assignment.outcome_summary)).html_safe %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 metadata-wrapper">
+          <table class="metadata">
+            <tr>
+              <% if @assignment.instructors.size <= 1 %>
+                <th>Instructor:</th> 
+                <td>
+                  <%# No instructor (not good!!) %>
+                  <% if @assignment.instructors.size == 0 %>
+                    No instructor assigned!
+
+                  <%# One instructdor. %>
+                  <% else %>
+                    <span class="instructor"><%= @assignment.instructors.first.full_name %></span>
+                  <% end %>
+                </td>
+              <%# Multiple instrucdtors. %>
+              <% else %>
+                <th>Instructors:</th>
+                <td>
+                  <%= oxford_comma_list(assignment.instructors.map{|i| "<span class=\"isntructor\">#{sanitize_text i.full_name}</span>"}).html_safe %>
+                </td>
+              <% end %>
+
+              <th>Field of study: </th><td><span class="field_of_study"><%= @assignment.field_of_study %></span></td>
+
+            </tr><tr>
+
+              <th>Learning curve:</th><td><span class="learning_curve"><%= @assignment.learning_curve %></span></td>
+              <th>Hours of instruction: </th><td><span class="instruction_hours"><%= @assignment.instruction_hours %></span></td>
+
+            </tr><tr>
+
+              <th>Assignment duration (weeks): </th><td><span class="project_length_weeks"><%= @assignment.project_length_weeks %></span></td>
+              <th>Students given assignment: </th><td><span class="students_given_assignment"><%= @assignment.students_given_assignment %></span></td>
+
+            </tr>
+
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<% if false %>
+    <div class="col-sm-3">
+      <div class="metadata-wrapper">
+      <!-- <h2>Metadata</h2> -->
+        <div class="metadata">
+
+          <%# Authors %>
+          <div class="row">
+            <div class="col">
+
+              <% if @assignment.assignment_group.authors.size <= 1 %>
+                <b>Author:</b> 
+
+                <%# No authors (not good!!) %>
+                <% if @assignment.assignment_group.authors.size == 0 %>
+                  No author assigned!
+
+                <%# One author. %>
+                <% else %>
+                  <span class="author"><%= @assignment.assignment_group.authors.first.full_name %></span>
+                <% end %>
+
+              <%# Multiple authors. %>
+              <% else %>
+                <b>Authors:</b>
+                <ul class="authors">
+                  <% @assignment.assignment_group.authors.each do |author| %>
+                    <li><span class=\"author\"><%= author.full_name %></span></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+          </div>
+
+
+          <%# Instructors %>
+          <div class="row">
+            <div class="col">
+
+              <% if @assignment.instructors.size <= 1 %>
+                <b>Instructor:</b> 
+
+                <%# No instructor (not good!!) %>
+                <% if @assignment.instructors.size == 0 %>
+                  No instructor assigned!
+
+                <%# One instructdor. %>
+                <% else %>
+                  <span class="instructor"><%= @assignment.instructors.first.full_name %></span>
+                <% end %>
+
+              <%# Multiple instrucdtors. %>
+              <% else %>
+                <b>Instructors:</b>
+                <ul class="instructors">
+                  <% @assignment.instructors.each do |instructor| %>
+                    <li><span class=\"instructor\"><%= instructor.full_name %></span></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+          </div>
+
+          <%# Learning curve %>
+          <div class="row">
+            <div class="col">
+              <b>Learning curve: </b><span class="learning_curve"><%= @assignment.learning_curve %></span>
+            </div>
+          </div>
+          
+          <%# Instruction hours %>
+          <div class="row">
+            <div class="col">
+              <b>Expected instruction hours: </b><span class="instruction_hours"><%= @assignment.instruction_hours %></span>
+            </div>
+          </div>
+
+          <%# Field of study %>
+          <div class="row">
+            <div class="col">
+              <b>Field of study: </b><span class="field_of_study"><%= @assignment.field_of_study %></span>
+            </div>
+          </div>
+
+          <%# Project length %>
+          <div class="row">
+            <div class="col">
+              <b>Assignment duration (weeks): </b><span class="project_length_weeks"><%= @assignment.project_length_weeks %></span>
+            </div>
+          </div>
+
+          <%# Students given assignment %>
+          <div class="row">
+            <div class="col">
+              <b>Students given assignment: </b><span class="students_given_assignment"><%= @assignment.students_given_assignment %></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+  <hr>
+  <h2 class="m-1">Materials</h2>
+   
+  <div class="row">
+    <div class="col-sm-4">
+      <%= render(partial: "attachments/attachment_list",
+      locals: { 
+        vertical_from: @assignment, 
+        data: @assignment.attachments,
+        editable: true,
+        title_tag: :h3 }) %>
+    </div>
+    <div class="col-sm-4">
+      <div class="web-resources">
+        <h3>From the web
+          <% if can_edit? %>
+            <span class="edit-toggle">
+              <a href="<%= vertical_web_resource_index_path @assignment %>">
+                <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              </button>
+              </a>
+              <!-- got merged into ^^
+              <%-# new_vertical_web_resource_path @assignment -%>
+              -->
+            </span>
+          <% end %>
+        </h3>
+        <ul>
+          <%= render(partial: "web_resources/web_resource_list_item", 
+            collection: sort_by(@assignment.web_resources, :description), 
+            as: :web_resource, 
+            locals: {print_header: true, vertical: @assignment}) || 
+            "There are currently no web resources associated with this assignment." %>
+        </ul>
+      </div>
+    </div>
+  </div>
+   
+   
+  <hr>
+  <div class="related-resources">
+    <h2 class="m-1">Related</h2>
+    <div class="row">
+      <div class="col-sm-4">
+        <%= render(partial: "verticals_shared/related_vertical",
+          locals: {title: "Other assignments", 
+                  vertical_from: @assignment, 
+                  vertical_to: Assignment.new, 
+                  data: @assignment.related_assignments,
+                  editable: true,
+                  title_tag: :h3 }) %>
+
+  <!--     <button class="expand-all-resources">Expand all</button>
+      <button class="collapse-all-resources">Collapse all</button> -->
+      </div>
+
+      <div class="col-sm-4">
+        <%= render(partial: "verticals_shared/related_vertical",
+          locals: {title: "Analyses", 
+                  vertical_from: @assignment, 
+                  vertical_to: Analysis.new, 
+                  editable: true,
+                  title_tag: :h3  }) %>
+      </div>
+
+      <div class="col-sm-4">
+        <%= render(partial: "verticals_shared/related_vertical",
+          locals: {title: "Software", 
+                  vertical_from: @assignment, 
+                  vertical_to: Software.new, 
+                  editable: true,
+                  title_tag: :h3  }) %>
+      </div>
+
+    </div>
+   
+    <div class="row">
+      <div class="col-sm-4">
+        <%= render(partial: "verticals_shared/related_vertical",
+          locals: {title: "Datasets", 
+                  vertical_from: @assignment, 
+                  vertical_to: Dataset.new, 
+                  editable: true,
+                  title_tag: :h3 }) %>
+      </div>
+
+      <div class="col-sm-4">
+        <%= render(partial: "examples/related_examples",
+          locals: {title: "Examples", 
+                  vertical: @assignment, 
+                  editable: true,
+                  title_tag: :h3 }) %>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</div>

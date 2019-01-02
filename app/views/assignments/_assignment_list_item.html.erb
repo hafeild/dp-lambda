@@ -1,5 +1,6 @@
 <div class="resource vertical-li">
 
+  <% if false %>
   <% if can_edit? %>
     <span class="edit-toggle">
 	  <%= form_for(assignment, method: :get,
@@ -18,15 +19,16 @@
       <% end %>
     </span>
   <% end %>
+  <% end %>
   
-  <span class="name"><%= assignment.course_title %> 
-  <%# Gives us a list of instructors like this:
-    Single instructor:         Jones
-    Two instructors:           Smith & Jones
-    Three or more instructors: Jahn, Mutton, & Smith
-  %>
-  (<%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %>)</span>
-
-  (<%= link_to "details", assignment_path(assignment) %>)
-
+  <%= link_to assignment_path(assignment) do %>
+  <span class="name"><%= assignment.full_title %> 
+    <%# Gives us a list of instructors like this:
+      Single instructor:         Jones
+      Two instructors:           Smith & Jones
+      Three or more instructors: Jahn, Mutton, & Smith
+    %>
+    (<%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %>,
+    <%= assignment.semester %>)</span>
+  <% end %>
 </li>
