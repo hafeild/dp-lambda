@@ -40,6 +40,6 @@ This is expecting the following local variables:
         collection: sort_by_name(data), as: :vertical_to,
         locals: {print_header: true, vertical_from: vertical_from, 
           editable: (defined? editable) ? editable : false}) || 
-        "This #{vertical_from_name} does not link to any #{vertical_to_names}." %>
+        "<span class=\"no-data\">This #{vertical_from_name} does not link to any #{vertical_to_names}.</span>".html_safe %>
     </ul>
   </div>

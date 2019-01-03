@@ -93,11 +93,28 @@ li .snippet {
   }
 }
 
+span.tag-title, span.summary-title {
+  font-weight: bold;
+}
+
+li.assignment-list-item {
+  margin-top: 0;
+  margin-bottom: 0em;
+}
+
 .assignment-list-item.selected {
   // color: orange;
   color: #555;
 }
 
+.no-data {
+  color: #aaa;
+  font-style: italic;
+}
+
+table.metadata {
+  margin-top: 1em;
+}
 
 div.entries {
   margin-top: 1em;

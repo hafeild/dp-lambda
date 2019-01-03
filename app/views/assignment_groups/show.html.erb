@@ -33,25 +33,13 @@ Allows the following:
   </span>
   <% end %>
   </h1>
-  <div class="tags">
-    <% if can_edit? %>
-    <span class="edit-toggle">
-      <a href="<%= vertical_tag_index_path @assignment_group %>">
-      <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add Tags">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-      </button>
-      </a>
-       <!-- got merged into ^^
-       <%-# new_vertical_tag_path @assignment -%>
-       -->
-    </span>
-    <% end %>
-    Tags:
-    <%= render(partial: "tags/tag_badge", 
-    collection: sort_by(@assignment_group.tags, :text), as: :tag,
-    locals: {print_header: true, vertical: @assignment_group}) || 
-    "There are currently no tags associated with this assignment group." %>
-  </div>
+
+
+  <%= render(partial: "tags/tag_list",
+    locals: {title: "Tags:", 
+            vertical_from: @assignment_group, 
+            editable: true,
+            title_tag: :span  }) %>
 
   <div class="row"> <%# Start row. %>
 
@@ -59,6 +47,7 @@ Allows the following:
 
       <div class="row">
         <div class="col-sm-12 summary-wrapper">
+            <%# <span class="summary-title">Summary:</span> %>
             <span class="summary"><%= @assignment_group.summary %></span>
         </div>
       </div>

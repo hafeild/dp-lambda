@@ -3,26 +3,11 @@
 
   <%# link_to "See other versions of this assignment.",  assignment_group_path(@assignment.assignment_group) %>
 
-  <div class="tags">
-    <% if can_edit? %>
-    <span class="edit-toggle">
-      <a href="<%= vertical_tag_index_path @assignment %>">
-      <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add Tags">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-      </button>
-      </a>
-       <!-- got merged into ^^
-       <%-# new_vertical_tag_path @assignment -%>
-       -->
-    </span>
-    <% end %>
-    Tags:
-    <%= render(partial: "tags/tag_badge", 
-    collection: sort_by(@assignment.tags, :text), as: :tag,
-    locals: {print_header: true, vertical: @assignment}) || 
-    "<i>There are currently no tags associated with this assignment.</i>".html_safe %>
-  </div>
-  
+  <%= render(partial: "tags/tag_list",
+    locals: {title: "Tags:", 
+            vertical_from: @assignment, 
+            editable: true,
+            title_tag: :span  }) %>
 
   <div class="row">
     <div class="col-sm-12">
@@ -32,7 +17,7 @@
         <div class="col-sm-12 notes-wrapper">
           <h2>Notes</h2>
           <div class="notes">
-              <%= (@assignment.notes.nil? ? "<i>No notes yet.</i>" : sanitize_text(@assignment.notes)).html_safe %>
+              <%= ((@assignment.notes.nil? or @assignment.notes.empty?) ? "<span class=\"no-data\">No notes yet.</span>" : sanitize_text(@assignment.notes)).html_safe %>
           </div>
         </div>
       </div>
@@ -42,7 +27,7 @@
         <div class="col-sm-12 outcome_summary-wrapper">
           <h2>Outcome summary</h2>
           <div class="outcome_summary">
-              <%= (@assignment.outcome_summary.nil? ? "<i>No outcome summary yet.</i>" : sanitize_text(@assignment.outcome_summary)).html_safe %>
+              <%= ((@assignment.outcome_summary.nil? or @assignment.outcome_summary.empty?) ? "<span class=\"no-data\">No outcome summary yet.</span>" : sanitize_text(@assignment.outcome_summary)).html_safe %>
           </div>
         </div>
       </div>
@@ -56,7 +41,7 @@
                 <td>
                   <%# No instructor (not good!!) %>
                   <% if @assignment.instructors.size == 0 %>
-                    No instructor assigned!
+                    <span class=\"no-data\">No instructor assigned.</span>
 
                   <%# One instructdor. %>
                   <% else %>
@@ -71,17 +56,19 @@
                 </td>
               <% end %>
 
-              <th>Field of study: </th><td><span class="field_of_study"><%= @assignment.field_of_study %></span></td>
+              <th>Field of study: </th><td><span class="field_of_study"><%= @assignment.field_of_study || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr><tr>
 
-              <th>Learning curve:</th><td><span class="learning_curve"><%= @assignment.learning_curve %></span></td>
-              <th>Hours of instruction: </th><td><span class="instruction_hours"><%= @assignment.instruction_hours %></span></td>
+              <th>Learning curve:</th><td><span class="learning_curve"><%= @assignment.learning_curve || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Hours of instruction: </th><td><span class="instruction_hours"><%= @assignment.instruction_hours || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr><tr>
 
-              <th>Assignment duration (weeks): </th><td><span class="project_length_weeks"><%= @assignment.project_length_weeks %></span></td>
-              <th>Students given assignment: </th><td><span class="students_given_assignment"><%= @assignment.students_given_assignment %></span></td>
+              <th>Assignment duration (weeks): </th>
+              <td><span class="project_length_weeks"><%= @assignment.project_length_weeks || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Students given assignment: </th>
+              <td><span class="students_given_assignment"><%= @assignment.students_given_assignment || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr>
 
@@ -200,6 +187,8 @@
   <h2 class="m-1">Materials</h2>
    
   <div class="row">
+
+
     <div class="col-sm-4">
       <%= render(partial: "attachments/attachment_list",
       locals: { 
@@ -208,6 +197,8 @@
         editable: true,
         title_tag: :h3 }) %>
     </div>
+
+
     <div class="col-sm-4">
       <div class="web-resources">
         <h3>From the web
@@ -229,7 +220,7 @@
             collection: sort_by(@assignment.web_resources, :description), 
             as: :web_resource, 
             locals: {print_header: true, vertical: @assignment}) || 
-            "There are currently no web resources associated with this assignment." %>
+            "<span class=\"no-data\">There are currently no web resources associated with this assignment.</span>".html_safe %>
         </ul>
       </div>
     </div>

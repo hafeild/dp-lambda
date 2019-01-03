@@ -34,6 +34,6 @@ This is expecting the following local variables:
         collection: data.sort{|x,y| x.display_position <=> y.display_position }, 
         as: :attachment,
         locals: {vertical_from: vertical_from, editable: editable}) || 
-        "This #{vertical_from_name} does not have any attachments." %>
+        "<span class=\"no-data\">This #{vertical_from_name} does not have any attachments</span>.".html_safe %>
     </ul>
   </div>
