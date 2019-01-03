@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   before_action :get_params, only: [:create, :update]
   before_action :get_instructors, only: [:create, :update]
   before_action :get_assignment,  except: [:connect_index, :index, :new, :create]
-  before_action :get_assignment_group, only: [:create, :update, :show] 
+  before_action :get_assignment_group, only: [:create, :update, :show, :new, :edit] 
   before_action :get_verticals
   before_action :get_redirect_path
 

@@ -4,6 +4,8 @@ Allows the following:
   @assignment -- if included, embeds the assignment page.
 %>
 
+<% @assignment = nil unless defined? @assignment %>
+
 <% provide(:title, @assignment_group.name) %>
 <div class="container-fluid assignment-page" data-assignment_group-id="<%= @assignment_group.id %>">
   
@@ -71,30 +73,30 @@ Allows the following:
       </div>
 
       <% if false %>
-<div class="row">
-        <div class="col-sm-12">
-          <div class="assignments">
-            <h2>Versions of assignment by class
-              <% if can_edit? %>
-                <span class="edit-toggle">
-                <a href="<%= new_assignment_group_assignment_path @assignment_group %>">
-                  <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add a new class">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  </button>
-                </a>
-                </span>
-              <% end %>
-            </h2>
-            <ul>
-              <%= render(partial: "assignments/assignment_list_item", 
-              collection: sort_by(@assignment_group.assignments, :semester), 
-              as: :assignment, 
-              locals: {print_header: true, assignment_group: @assignment_group}) || 
-              "There are currently no assignments." %>
-            </ul>
-          </div>
-        </div>
-      </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="assignments">
+                      <h2>Versions of assignment by class
+                        <% if can_edit? %>
+                          <span class="edit-toggle">
+                          <a href="<%= new_assignment_group_assignment_path @assignment_group %>">
+                            <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add a new class">
+                              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            </button>
+                          </a>
+                          </span>
+                        <% end %>
+                      </h2>
+                      <ul>
+                        <%= render(partial: "assignments/assignment_list_item", 
+                        collection: sort_by(@assignment_group.assignments, :semester), 
+                        as: :assignment, 
+                        locals: {print_header: true, assignment_group: @assignment_group}) || 
+                        "There are currently no assignments." %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
       <% end %>
 
     </div>
@@ -174,7 +176,7 @@ Allows the following:
                   <%= render(partial: "assignments/assignment_list_item", 
                   collection: sort_by(@assignment_group.assignments, :semester), 
                   as: :assignment, 
-                  locals: {print_header: true, assignment_group: @assignment_group}) || 
+                  locals: {assignment_group: @assignment_group, target_assignment_id: @assignment.nil? ? "" : @assignment.id }) || 
                   "<i>There are currently no assignments.</i>".html_safe %>
                 </ul>
               </div>
@@ -187,7 +189,7 @@ Allows the following:
 
   </div> <%# End row. %>
 
-  <% if defined? @assignment %>
+  <% unless @assignment.nil? %>
   <hr>   
   <div class="row"> <%# Start row. %>
 

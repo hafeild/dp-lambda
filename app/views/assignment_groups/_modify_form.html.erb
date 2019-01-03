@@ -43,6 +43,14 @@
           editor_options: bootsy_editing_options %>
       </div>
 
+
+      <div class="form-group">
+        <%= f.label :authors %><span class="required-input">*</span><br/>
+        Add a comma separated list of author (user) ids.
+        <%= text_field_tag 'assignment_group[authors]', (defined?(@assignment_group) ? @assignment_group.author_ids_csv : nil), class: "form-control",
+          placeholder: "e.g., 1,3,34" %>
+      </div>
+
       <p>
       You will have an opportunity to add attachments, resource links, and examples after you
       save.

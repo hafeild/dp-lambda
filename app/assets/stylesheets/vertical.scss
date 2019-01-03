@@ -51,9 +51,6 @@
   .date {
   }
 
-
-
-
   .snippet {
   }
 
@@ -95,6 +92,12 @@ li .snippet {
     color: #ccc;
   }
 }
+
+.assignment-list-item.selected {
+  // color: orange;
+  color: #555;
+}
+
 
 div.entries {
   margin-top: 1em;

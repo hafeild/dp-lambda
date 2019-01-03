@@ -3,7 +3,7 @@
 
   <div class="row">
     <div class="col-md-12 col-md-offset-0">
-      <%= form_for(@assignment, url: action, method: method, 
+      <%= form_for(@assignment, url: assignment_group_assignments_path(@assignment_group), method: method, 
         html: {class: "vertical-form"}) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       
@@ -13,45 +13,85 @@
       <% end %>
 
       <div class="form-group">
-        <%= f.label :assignment_name %><span class="required-input">*</span> 
-        (max 200 characters)
-        <%= f.text_field :name, class: "form-control", 
-          placeholder: "e.g., Analyze your social network" %>
+        <%= f.label :instructors %><span class="required-input">*</span><br/>
+        Add a comma separated list of author (user) ids.
+        <%= text_field_tag 'assignment[instructors]', (defined?(@assignment) ? @assignment.instructor_ids_csv : nil), class: "form-control",
+          placeholder: "e.g., 1,3,34" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :author %><span class="required-input">*</span> 
-        <%= f.text_field :author, class: "form-control", 
-          placeholder: "e.g., Pat Smith" %>
+        <%= f.label :semester %><span class="required-input">*</span><br/>
+        The semester (season and year, e.g., Fall 2018).
+        <%= f.text_field :semester, class: "form-control", 
+          placeholder: "e.g., Fall 2018" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :summary %><span class="required-input">*</span><br/>
-        This should be a short, one sentence overview of the assignment. This will appear in the assignments listing and search results.
-        <%= f.text_area :summary, class: "form-control",
-          placeholder: "e.g., Represent data as a set of nodes and connections, then calculate network metrics over the data." %>
+        <%= f.label :course_prefix %><span class="required-input">*</span><br/>
+        <%= f.text_field :course_prefix, class: "form-control", 
+          placeholder: "e.g., PSY" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :description %><br/>
-        This should be a general overview of the assignment and how it integrates with other course material and learning objectives. This should not contain the assignment itself (please upload assignment handouts on the next screen).
-        <%= f.bootsy_area :description,  
-          rows: 10, class: "form-control add-to-vertical unchanged",
-          editor_options: bootsy_editing_options %>
+        <%= f.label :course_number %><span class="required-input">*</span><br/>
+        <%= f.text_field :course_number, class: "form-control", 
+          placeholder: "e.g., 101" %>
       </div>
 
       <div class="form-group">
-	  <%= f.label :learning_curve %> <br/>
-		<%= f.radio_button :learning_curve, 'Low' %> Low
-		<%= f.radio_button :learning_curve, 'Medium' %> Medium
-		<%= f.radio_button :learning_curve, 'High' %> High
+        <%= f.label :course_title %><span class="required-input">*</span><br/>
+        <%= f.text_field :course_title, class: "form-control", 
+          placeholder: "e.g., Intro to Psychology" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :hours_of_instruction_required %> <br/>
+        <%= f.label :field_of_study %><span class="required-input">*</span><br/>
+        <%= f.text_field :field_of_study, class: "form-control", 
+          placeholder: "e.g., Psychology" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :notes %><br/>
+        Describe anything particular to this version of the assignment.
+        <%= f.text_area :notes,  
+          rows: 10, class: "form-control" %>
+      </div>
+
+
+      <div class="form-group">
+        <%= f.label :outcome_summary %><br/>
+        After the assignment has been completed, describe what went well and what didn't.
+        <%= f.text_area :outcome_summary,  
+          rows: 10, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :learning_curve %> <br/>
+        <%= f.radio_button :learning_curve, 'Low' %> Low
+        <%= f.radio_button :learning_curve, 'Medium' %> Medium
+        <%= f.radio_button :learning_curve, 'High' %> High
+      </div>
+
+      <div class="form-group">
+        <%= f.label :hours_of_instruction %> <br/>
         How many hours of in-class instruction is this assignment expected to require?
         <%= f.number_field :instruction_hours, class: "form-control", 
           placeholder: "e.g., 5" %>
+      </div>
+
+
+      <div class="form-group">
+        <%= f.label :students_given_assignment %> <br/>
+        How many student were given the assignment?
+        <%= f.number_field :students_given_assignment, class: "form-control", 
+          placeholder: "e.g., 15" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :project_length_weeks %> <br/>
+        How many weeks were students given to complete the project?
+        <%= f.number_field :project_length_weeks, class: "form-control", 
+          placeholder: "e.g., 2" %>
       </div>
 
       <p>

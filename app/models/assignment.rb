@@ -74,6 +74,10 @@ class Assignment < ApplicationRecord
   end
   #### End aliases
 
+  def instructor_ids_csv
+    instructors.map{|i| i.id}.join(",")
+  end
+
   def course
     "#{course_prefix}#{course_number}"
   end

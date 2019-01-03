@@ -17,9 +17,9 @@ Rails.application.routes.draw do
   resources :examples
 
   resources :assignment_groups do
-    resources :assignments, only: [:create, :new, :show]
+    resources :assignments, only: [:create, :new, :show, :update]
   end
-  resources :assignments, except: [:create, :new, :show]
+  resources :assignments, except: [:create, :new, :show, :update]
 
   ## Resources.
   resources :web_resources, except: [:index, :destroy]
