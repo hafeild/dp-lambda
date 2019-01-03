@@ -332,8 +332,10 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "shouldn't update assignment entry when not logged in" do 
     assignment = assignments(:one)
+    assignment_group = assignment.assignment_group
 
-    patch :update, params: { id: assignment.id, 
+    patch :update, params: { assignment_group_id: assignment_group.id,
+      id: assignment.id, 
       assignment: { 
         instructors: users(:foo).id, course_prefix: "x", course_number: "y",
         course_title: "z", field_of_study: "a", semester: "b"
@@ -359,8 +361,10 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "shouldn't update assignment entry then redirect to edit page on invalid parameter" do 
     log_in_as users(:foo)
     assignment = assignments(:one)
+    assignment_group = assignment.assignment_group
 
-    patch :update, params: { id: assignment.id, 
+    patch :update, params: { assignment_group_id: assignment_group.id,
+      id: assignment.id, 
       assignment: { 
         instructors: users(:foo).id, course_prefix: "x"*4, course_number: "y",
         course_title: "z", field_of_study: "a", semester: "b"
@@ -386,7 +390,9 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "should update the assignment and redirect to its assignment group page" do
     log_in_as users(:foo)
     assignment = assignments(:one)
+    assignment_group = assignment.assignment_group
     patch :update, params: { id: assignment.id, 
+      assignment_group_id: assignment_group.id,
       assignment: { 
         instructors: users(:foo).id, course_prefix: "x", course_number: "y",
         course_title: "z", field_of_study: "a", semester: "b"
@@ -414,8 +420,10 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "should return unknown assignment json error on update" do
     ## No assignment parameter.
     @request.env['CONTENT_TYPE'] = 'application/json'
+    assignment_group = assignment_groups(:one)
     log_in_as users(:foo)
-    patch :update, format: :json, params: {id: 0, assignment: { 
+    patch :update, format: :json, params: {
+      assignment_group_id: assignment_group.id, id: 0, assignment: { 
       course_title: "z", field_of_study: "a", semester: "b" }}
     result = JSON.parse(@response.body)
     assert_not result['success']
@@ -428,8 +436,10 @@ class AssignmentsControllerTest < ActionController::TestCase
     @request.env['CONTENT_TYPE'] = 'application/json'
     log_in_as users(:foo)
     assignment = assignments(:one)
+    assignment_group = assignment.assignment_group
 
-    patch :update, format: :json, params: { id:assignment.id,
+    patch :update, format: :json, params: { 
+      assignment_group_id: assignment_group.id, id:assignment.id,
       assignment: {
         instructors: users(:foo).id.to_s, course_prefix: "x", course_number: "y",
         course_title: "z", field_of_study: "a", semester: "b"
@@ -446,8 +456,10 @@ class AssignmentsControllerTest < ActionController::TestCase
     @request.env['CONTENT_TYPE'] = 'application/json'
     log_in_as users(:foo)
     assignment = assignments(:two)
+    assignment_group = assignment.assignment_group
 
-    patch :update, format: :json, params: { id:assignment.id,
+    patch :update, format: :json, params: { 
+      assignment_group_id: assignment_group.id, id:assignment.id,
       assignment: {
         instructors: [users(:foo).id,users(:bar).id].join(","), 
         course_prefix: "x", course_number: "y",
@@ -479,8 +491,10 @@ class AssignmentsControllerTest < ActionController::TestCase
     @request.env['CONTENT_TYPE'] = 'application/json'
     log_in_as users(:foo)
     assignment = assignments(:one)
+    assignment_group = assignment.assignment_group
 
-    patch :update, format: :json, params: { id: assignment.id, 
+    patch :update, format: :json, params: { 
+      assignment_group_id: assignment_group.id, id: assignment.id, 
       assignment: { 
         instructors: users(:foo).id.to_s, course_prefix: "x"*4, course_number: "y",
         course_title: "z", field_of_study: "a", semester: "b"
