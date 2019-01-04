@@ -45,9 +45,31 @@ user3:
   permission_level: admin
   is_registered: true
 
+user4:
+  username: user4
+  first_name: user 
+  last_name: "4"
+  email: user4@gmail.com
+  role: Student
+  field_of_study: ENG
+  password_digest:  <%= User.digest('password') %>
+  activation_digest:
+  activated: true
+  activated_at: 2015-11-02 16:00:00
+  remember_digest:
+  permission_level: viewer
+  is_registered: true
+
 stub1:
   first_name: stub
-  last_name: by
-  email: stubby@mail.com
+  last_name: by1
+  email: stubby1@mail.com
   is_registered: false
   created_by: foo
+
+stub2:
+  first_name: stub
+  last_name: by2
+  email: stubby2@mail.com
+  is_registered: false
+  created_by: bar

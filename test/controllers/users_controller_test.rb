@@ -88,6 +88,7 @@ class UsersControllerTest < ActionController::TestCase
     end
     end
   end
+  ##############################################################################
   
   ##############################################################################
   ## Testing create_stub
@@ -180,63 +181,11 @@ class UsersControllerTest < ActionController::TestCase
         "Error message incorrect: #{result['error']}"
     end
   end
+  ##############################################################################
+
 
   ##############################################################################
   ## Testing update
-  
-  test "should delete user" do
-    user = users(:foo)
-    log_in_as user
-    post :destroy, params: { id: user.id }
-    user.reload
-    assert_not user.username.nil?, "Username nill"
-    assert user.email == "", "Email not blank"
-    assert user.first_name == nil, "First name not nill"
-    assert user.last_name == nil, "Last name not nill"
-    assert user.role == nil, "Role not nill"
-    assert user.field_of_study == nil, "Field of study not nill"
-    assert user.password_digest == nil, "Password digest not nill"
-    assert user.activation_digest == nil, "Activation digest not nill"
-    assert user.activated == nil, "Activated not nill"
-    assert user.activated_at == nil, "Activated at not nill"
-    assert user.remember_digest == nil, "Remember digest not nill"
-    assert user.reset_digest == nil, "Reset digest not nill"
-    assert user.reset_sent_at == nil, "Reset sent at not nill"
-    assert user.permission_level == nil, "Permission level not nill"
-    assert user.permission_level_granted_on == nil, "Permission level granted on not nill"
-    assert user.permission_level_granted_by_id == nil, "Permission level granted by ID not nill"
-    assert user.deleted, "Deleted flag not set"
-  end
-
-  ## test that a non-logged in user can't delete anyone
-  test "cant delete unless logged in" do
-    user = users(:foo)
-    post :destroy, params: { id: user.id }
-    user.reload
-    assert_not user.deleted, "Unlogged in user deleted"
-  end
-  
-  ## test that a user cannot delete another user
-  ## FIX LATER -- ADMINS CAN DELETE OTHER USERS
-  test "can only delete yourself" do
-    user = users(:foo)
-    user2 = users(:bar)
-    log_in_as user
-    post :destroy, params: { id: user2.id }
-	user2.reload
-    assert_not user2.deleted, "User deleted by other user"
-  end
-  
-  ## test that a deleted user cannot login
-  test "cannot log in after deleted" do
-    user = users(:foo)
-	log_in_as user
-	post :destroy, params: { id: user.id }
-    user.reload
-	log_in_as user
-    assert user.deleted, "User logged in after being deleted"
-  end
-  
   test "can't update user settings unless logged in as user" do
     log_in_as users(:foo)
     bar = users(:bar)
@@ -325,6 +274,8 @@ class UsersControllerTest < ActionController::TestCase
     assert user.username != "x", "Username updated"
     assert user.email != "x@mail.org", "Email updated"
   end
+  ##############################################################################
+
   
   ##############################################################################
   ## Testing update_stub
@@ -484,5 +435,142 @@ class UsersControllerTest < ActionController::TestCase
     assert_not user.first_name == new_first_name, "First name changed."
     assert_not user.last_name == new_last_name, "Last name changed."
   end
+  ##############################################################################
+
+  ##############################################################################
+  ## Testing destroy
+  test "should delete user" do
+    user = users(:foo)
+    log_in_as user
+    post :destroy, params: { id: user.id }
+    user.reload
+    assert user.username == "removed0", "Username not removed: #{user.username}."
+    assert user.email == "removed0@localhost", "Email not removed: #{user.email}."
+    assert user.first_name == "User", "First name not removed: #{user.first_name}."
+    assert user.last_name == "Removed", "Last name not removed: #{user.last_name}."
+    assert user.role == nil, "Role not nill"
+    assert user.field_of_study == nil, "Field of study not nill"
+    assert user.password_digest == nil, "Password digest not nill"
+    assert user.activation_digest == nil, "Activation digest not nill"
+    assert user.activated == nil, "Activated not nill"
+    assert user.activated_at == nil, "Activated at not nill"
+    assert user.remember_digest == nil, "Remember digest not nill"
+    assert user.reset_digest == nil, "Reset digest not nill"
+    assert user.reset_sent_at == nil, "Reset sent at not nill"
+    assert user.permission_level == nil, "Permission level not nill"
+    assert user.permission_level_granted_on == nil, "Permission level granted on not nill"
+    assert user.permission_level_granted_by_id == nil, "Permission level granted by ID not nill"
+    assert user.deleted, "Deleted flag not set"
+  end
+
+  ## test that a non-logged in user can't delete anyone
+  test "can't delete unless logged in" do
+    user = users(:foo)
+    post :destroy, params: { id: user.id }
+    user.reload
+    assert_not user.deleted, "Unlogged in user deleted"
+  end
+  
+  ## test that a user cannot delete another user
+  test "can only delete yourself or must be an admin" do
+    user = users(:bar)
+    user2 = users(:foo)
+    log_in_as user
+    post :destroy, params: { id: user2.id }
+    user2.reload
+    assert_not user2.deleted, "User deleted by non-admin"
+
+    user = users(:foo)
+    user2 = users(:bar)
+    log_in_as user
+    post :destroy, params: { id: user2.id }
+    user2.reload
+    assert user2.deleted, "User not deleted by admin"
+  end
+  
+  ## test that a deleted user cannot login
+  test "cannot log in after deleted" do
+    user = users(:foo)
+    log_in_as user
+    post :destroy, params: { id: user.id }
+    user.reload
+    log_in_as user
+    assert user.deleted, "User logged in after being deleted"
+  end
+  ##############################################################################
+
+  ##############################################################################
+  ## Testing destroy_stub
+  test "should remove an existing user_stub" do
+    stub = users(:stub2)
+    log_in_as stub.created_by
+
+    post :destroy_stub, format: :json, params: { id: stub.id }
+    result = JSON.parse(@response.body)
+    assert result['success'], @response.body
+    
+
+    stub.reload
+    assert stub.username == "removed0", "Username not removed: #{stub.username}"
+    assert stub.email == "removed0@localhost", "Email not removed: #{stub.email}"
+    assert stub.first_name == "User", "First name not removed: #{stub.first_name}."
+    assert stub.last_name == "Removed", "Last name not removed: #{stub.last_name}."
+
+    assert stub.deleted, "Stub not marked as deleted."
+  end
+
+
+  test "shouldn't destory a registered user via destroy_stub" do
+    user = users(:bar)
+    log_in_as users(:foo)
+
+    post :destroy_stub, format: :json, params: { id: user.id }
+    result = JSON.parse(@response.body)
+    assert_not result['success'], @response.body
+
+    user.reload
+    assert_not user.username == "removed0", "Username removed: #{user.username}"
+    assert_not user.email == "removed1@localhost", "Email removed: #{user.email}."
+    assert_not user.first_name == "User", "First name removed: #{user.first_name}."
+    assert_not user.last_name == "Removed", "Last name removed: #{user.last_name}."
+
+    assert_not user.deleted, "Stub marked as deleted."
+  end
+
+  test "shouldn't destory a stub when not creator or admin" do
+    user = users(:stub1)
+    log_in_as users(:bar)
+
+    post :destroy_stub, format: :json, params: { id: user.id }
+    result = JSON.parse(@response.body)
+    assert_not result['success'], @response.body
+
+    user.reload
+    assert_not user.username == "removed0", "Username removed: #{user.username}"
+    assert_not user.email == "removed1@localhost", "Email removed: #{user.email}."
+    assert_not user.first_name == "User", "First name removed: #{user.first_name}."
+    assert_not user.last_name == "Removed", "Last name removed: #{user.last_name}."
+
+    assert_not user.deleted, "Stub marked as deleted."
+  end
+
+  test "should remove an existing user_stub when admin" do
+    stub = users(:stub2)
+    log_in_as users(:foo)
+
+    post :destroy_stub, format: :json, params: { id: stub.id }
+    result = JSON.parse(@response.body)
+    assert result['success'], @response.body
+    
+
+    stub.reload
+    assert stub.username == "removed0", "Username not removed: #{stub.username}"
+    assert stub.email == "removed0@localhost", "Email not removed: #{stub.email}"
+    assert stub.first_name == "User", "First name not removed: #{stub.first_name}."
+    assert stub.last_name == "Removed", "Last name not removed: #{stub.last_name}."
+
+    assert stub.deleted, "Stub not marked as deleted."
+  end
+  ##############################################################################
 
 end

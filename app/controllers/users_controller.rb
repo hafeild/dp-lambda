@@ -6,10 +6,11 @@ class UsersController < ApplicationController
   before_action :user_is_admin, only: [:index]
   before_action :user_can_edit, only: [:new_stub, :create_stub, 
     :edit_stub, :update_stub, :destroy_stub]
-  before_action :get_user, only: [:edit_stub, :update_stub, :destroy_stub]
+  before_action :get_user, only: [:destroy, :edit_stub, :update_stub, :destroy_stub]
   before_action :confirm_is_stub, only: [:edit_stub, :update_stub, :destroy_stub]
   before_action :user_can_modify_stub, only: [:edit_stub, :update_stub, 
     :destroy_stub]
+  before_action :user_can_destroy, only: [:destroy]
 
   def index
     @users = User.all
@@ -73,30 +74,43 @@ class UsersController < ApplicationController
   # delete all information EXCEPT for the username
   def destroy
    
-    @user = User.find(params[:id])
-    @user.email = ""
-    @user.first_name = nil
-    @user.last_name = nil
-    @user.role = nil
-    @user.field_of_study = nil
-    @user.password_digest = nil
-    @user.activation_digest = nil
-    @user.activated = nil
-    @user.activated_at = nil
-    @user.remember_digest = nil
-    @user.reset_digest = nil
-    @user.reset_sent_at = nil
-    # @user.created_at = nil
-    # @user.updated_at = nil
-    @user.permission_level = nil
-    @user.permission_level_granted_on = nil
-    @user.permission_level_granted_by_id = nil
-    @user.deleted = true
-    @user.save(validate: false)
-    log_out
-    
-    redirect_to root_url
-   end
+    ## Begin transaction.
+    begin
+      User.transaction do
+        deleted_user_count = User.where({deleted: true}).size
+
+        @user.username = "removed#{deleted_user_count}"
+        @user.email = "removed#{deleted_user_count}@localhost"
+        @user.first_name = "User"
+        @user.last_name = "Removed"
+        @user.role = nil
+        @user.field_of_study = nil
+        @user.password_digest = nil
+        @user.activation_digest = nil
+        @user.activated = nil
+        @user.activated_at = nil
+        @user.remember_digest = nil
+        @user.reset_digest = nil
+        @user.reset_sent_at = nil
+        # @user.created_at = nil
+        # @user.updated_at = nil
+        @user.permission_level = nil
+        @user.permission_level_granted_on = nil
+        @user.permission_level_granted_by_id = nil
+        @user.deleted = true
+        @user.save(validate: false)
+        log_out
+        
+      end
+      respond_with_success root_url
+
+    rescue => e
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
+      error = "There was an error! #{e}"
+      flash[:danger] = error
+      respond_with_error error, get_redirect_path
+    end
+  end
 
   def update
     email_updated = false
@@ -124,7 +138,7 @@ class UsersController < ApplicationController
       end
     end
 
-    Rails.logger.info(cur_params.to_unsafe_h.map{|k,v| "#{k}: #{v}"}.join("\n"))
+    # Rails.logger.info(cur_params.to_unsafe_h.map{|k,v| "#{k}: #{v}"}.join("\n"))
 
     ## If the update was successful...
     if @user.update_attributes(cur_params)
@@ -194,8 +208,6 @@ class UsersController < ApplicationController
 
     rescue => e
       # puts "#{e.message} #{e.backtrace.join("\n")}"
-      # Rails.logger.info(e)
-      # Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
       error = "There was an error! #{e}"
       flash[:danger] = error
       respond_with_error error, get_redirect_path
@@ -219,8 +231,6 @@ class UsersController < ApplicationController
 
     rescue => e
       # puts "#{e.message} #{e.backtrace.join("\n")}"
-      # Rails.logger.info(e)
-      # Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
       error = "There was an error! #{e}"
       flash[:danger] = error
       respond_with_error error, get_redirect_path
@@ -228,6 +238,39 @@ class UsersController < ApplicationController
   end
 
   def destroy_stub
+    begin
+      User.transaction do
+        deleted_user_count = User.where({deleted: true}).size
+
+        @user.username = "removed#{deleted_user_count}"
+        @user.email = "removed#{deleted_user_count}@localhost"
+        @user.first_name = "User"
+        @user.last_name = "Removed"
+        @user.role = nil
+        @user.field_of_study = nil
+        @user.password_digest = nil
+        @user.activation_digest = nil
+        @user.activated = nil
+        @user.activated_at = nil
+        @user.remember_digest = nil
+        @user.reset_digest = nil
+        @user.reset_sent_at = nil
+        @user.permission_level = nil
+        @user.permission_level_granted_on = nil
+        @user.permission_level_granted_by_id = nil
+        @user.deleted = true
+        @user.save(validate: false)
+      end
+
+      respond_with_success get_redirect_path
+
+    rescue => e
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
+      error = "There was an error! #{e}"
+      flash[:danger] = error
+      respond_with_error error, get_redirect_path
+    end
+
   end
   ####################################
 
@@ -279,4 +322,11 @@ class UsersController < ApplicationController
         respond_with_error "You do not have permissions to modify the requested user stub."
       end
     end
+
+    def user_can_destroy
+      unless current_user.is_admin? or @user.id == current_user.id
+        respond_with_error "You do not have permissions to modify the requested user stub."
+      end
+    end
+
 end
