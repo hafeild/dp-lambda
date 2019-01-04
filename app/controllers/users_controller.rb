@@ -26,13 +26,14 @@ class UsersController < ApplicationController
     ## Begin transaction.
     begin
       User.transaction do
-        @user = User.find_by(email: user_params[:email])
-        if @user.nil? or @user.is_registered
-          @user = User.new(user_params)
-        else
-          @user.update(user_params)
-        end
+        # @user = User.find_by(email: user_params[:email])
+        # if @user.nil? or @user.is_registered
+        #   @user = User.new(user_params)
+        # else
+        #   @user.update(user_params)
+        # end
 
+        @user = User.new(user_params)
         @user.activated = false
         @user.is_registered = true
         

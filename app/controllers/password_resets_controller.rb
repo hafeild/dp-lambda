@@ -36,6 +36,9 @@ class PasswordResetsController < ApplicationController
       render 'edit'
     elsif @user.update_attributes(user_params)
       @user.reset_digest = nil
+      unless @user.activated
+        @user.activate
+      end
       @user.save
       log_in @user
       flash[:success] = "Password has been reset."
