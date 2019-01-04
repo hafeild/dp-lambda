@@ -90,6 +90,98 @@ class UsersControllerTest < ActionController::TestCase
   end
   
   ##############################################################################
+  ## Testing create_stub
+  test "should create a new user stub" do
+    log_in_as users(:bar)
+    assert_difference "User.count", 1, "User not created" do
+      post :create_stub, format: :json, params: { user: { 
+        email: "x@mail.org",
+        first_name: "X",
+        last_name: "Y"
+      } }
+      result = JSON.parse(@response.body)
+      assert result['success'], @response.body
+      assert result['data'].has_key?('user_stub'),
+        "Missing user_stub key: #{@response.body}"
+
+      user_stub = result['data']['user_stub']
+
+      assert user_stub.has_key?('json'), 
+        "Missing data.user_stub.json: #{@response.body}"
+      assert user_stub['json']['id'] == User.last.id, 
+        "Wrong user id (expected #{User.last.id}): #{@response.body}"
+      assert user_stub['json']['first_name'] == User.last.first_name,
+        "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
+      assert user_stub['json']['last_name'] == User.last.last_name,
+        "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
+      assert user_stub['json']['email'] == User.last.email,
+        "Wrong email (expected #{User.last.email}): #{@response.body}"
+      assert user_stub.has_key?('html'),
+        "Missing data.user_stub.html: #{@response.body}"
+      # assert false, user_stub['html']
+      num_spans = user_stub['html'].scan(/<span\b/).size
+      assert num_spans == 2,
+        "Missing expected number of span tags (got #{num_spans}, expected 2) "+
+        "in data.html: #{user_stub['html']}"
+    end
+  end
+  
+  test "create_stub should fail because insufficient arguments" do
+    log_in_as users(:bar)
+
+    ## Missing first_name.
+    assert_no_difference "User.count", "User created" do
+      post :create_stub, format: :json, params: { user: { 
+        email: "x@mail.org",
+        last_name: "Y"
+      } }
+      result = JSON.parse(@response.body)
+      assert_not result['success'], "Should have found an error: #{@response.body}"
+      assert result['error'] == "There was an error! Validation failed: First name can't be blank",
+        "Error message incorrect: #{result['error']}."
+    end
+
+    ## Missing last_name.
+    assert_no_difference "User.count", "User created" do
+      post :create_stub, format: :json, params: { user: { 
+        email: "x@mail.org",
+        first_name: "X"
+      } }
+      result = JSON.parse(@response.body)
+      assert_not result['success'], "Should have found an error: #{@response.body}"
+      assert result['error'] == "There was an error! Validation failed: Last name can't be blank",
+        "Error message incorrect: #{result['error']}."
+    end
+  
+    ## Missing email.
+    assert_no_difference "User.count", "User created" do
+      post :create_stub, format: :json, params: { user: { 
+        first_name: "X",
+        last_name: "Y"
+      } }
+      result = JSON.parse(@response.body)
+      assert_not result['success'], "Should have found an error: #{@response.body}"
+      assert result['error'] == "There was an error! Validation failed: "+
+        "Email can't be blank, Email is invalid",
+        "Error message incorrect: #{result['error']}"
+    end
+  end
+  
+  test "shouldn't create a user stub if not logged in" do
+    assert_no_difference "User.count", "User created" do
+      post :create_stub, format: :json, params: { user: { 
+        email: "x@mail.org",
+        first_name: "X",
+        last_name: "Y"
+      } }
+      result = JSON.parse(@response.body)
+      assert_not result['success'], "Should have found an error: #{@response.body}"
+      assert result['error'] == "This action requires that you be logged in.",
+        "Error message incorrect: #{result['error']}"
+    end
+  end
+
+  ##############################################################################
   ## Testing update
   
   test "should delete user" do
@@ -234,5 +326,40 @@ class UsersControllerTest < ActionController::TestCase
     assert user.email != "x@mail.org", "Email updated"
   end
   
-  
+  ##############################################################################
+  ## Testing update_stub
+  # test "should update an existing user_stub" do
+  #   log_in_as users(:bar)
+  #   assert_difference "User.count", 1, "User not created" do
+  #     post :create_stub, format: :json, params: { user: { 
+  #       email: "x@mail.org",
+  #       first_name: "X",
+  #       last_name: "Y"
+  #     } }
+  #     result = JSON.parse(@response.body)
+  #     assert result['success'], @response.body
+  #     assert result['data'].has_key?('user_stub'),
+  #       "Missing user_stub key: #{@response.body}"
+
+  #     user_stub = result['data']['user_stub']
+
+  #     assert user_stub.has_key?('json'), 
+  #       "Missing data.user_stub.json: #{@response.body}"
+  #     assert user_stub['json']['id'] == User.last.id, 
+  #       "Wrong user id (expected #{User.last.id}): #{@response.body}"
+  #     assert user_stub['json']['first_name'] == User.last.first_name,
+  #       "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
+  #     assert user_stub['json']['last_name'] == User.last.last_name,
+  #       "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
+  #     assert user_stub['json']['email'] == User.last.email,
+  #       "Wrong email (expected #{User.last.email}): #{@response.body}"
+  #     assert user_stub.has_key?('html'),
+  #       "Missing data.user_stub.html: #{@response.body}"
+  #     # assert false, user_stub['html']
+  #     num_spans = user_stub['html'].scan(/<span\b/).size
+  #     assert num_spans == 2,
+  #       "Missing expected number of span tags (got #{num_spans}, expected 2) "+
+  #       "in data.html: #{user_stub['html']}"
+  #   end
+  # end
 end

@@ -1,8 +1,15 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy, 
+    :new_stub, :create_stub, :edit_stub, :update_stub, :destroy_stub]
   before_action :correct_user,   only: [:edit, :update, :destroy]
   before_action :reauthenticate,  only: [:update]
   before_action :user_is_admin, only: [:index]
+  before_action :user_can_edit, only: [:new_stub, :create_stub, 
+    :edit_stub, :update_stub, :destroy_stub]
+  before_action :get_user_stub, only: [:edit_stub, :update_stub, :destroy_stub]
+  before_action :is_stub, only: [:edit_stub, :update_stub, :destroy_stub]
+  before_action :user_can_modify_stub, only: [:edit_stub, :update_stub, 
+    :destroy_stub]
 
   def index
     @users = User.all
@@ -18,8 +25,15 @@ class UsersController < ApplicationController
     ## Begin transaction.
     begin
       User.transaction do
-        @user = User.new(user_params)
+        @user = User.find_by(email: user_params[:email])
+        if @user.nil? or @user.is_registered
+          @user = User.new(user_params)
+        else
+          @user.update(user_params)
+        end
+
         @user.activated = false
+        @user.is_registered = true
         
         ## All new users start off as viewers. Requests for other permission levels
         ## are process in the transaction below.
@@ -48,6 +62,7 @@ class UsersController < ApplicationController
       flash[:success] = "Please check your email to activate your account."
       redirect_to root_url
     rescue => e
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
       # Rails.logger.info(e)
       # Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
       flash[:danger] = "There was an error! #{e}"
@@ -154,6 +169,50 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+
+  ####################################
+  ## For user stubs.
+  ##
+  def new_stub
+  end
+
+  def create_stub
+    ## Begin transaction.
+    begin
+      User.transaction do
+        @user = User.new(user_params)
+        @user.activated = false
+        @user.is_registered = false
+        @user.save!
+        @user.reload
+      end
+
+      respond_with_success get_redirect_path, 
+        {user_stub: {json: @user.summary_data_json, 
+          html: render_to_string(partial: 'users/badge')}}
+          # html: render_to_string(partial: 'users/badge', formats: [:html])}}
+
+    rescue => e
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
+      # Rails.logger.info(e)
+      # Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
+      error = "There was an error! #{e}"
+      flash[:danger] = error
+      respond_with_error error, get_redirect_path
+    end
+  end
+
+  def edit_stub
+  end
+
+  def update_stub
+  end
+
+  def destroy_stub
+  end
+  ####################################
+
+
   private
 
     ## Extracts all of the permitted parameters for a user.
@@ -182,4 +241,23 @@ class UsersController < ApplicationController
     #     redirect_to login_url
     #   end
     # end
+
+    def get_user_stub
+      @user_stub = User.find_by(id: params[:id])
+      if @user_stub.nil?
+        respond_with_error "A user id must be provided."
+      end
+    end
+
+    def is_stub
+      if @user_stub.is_registered
+        respond_with_error "The requested user is registered an cannot be modified."
+      end
+    end
+
+    def user_can_modify_stub
+      if user_is_admin or (!@user_stub.creator.nil? and @user_stub.creator.id == current_user.id)
+        respond_with_error "You do not have permissions to modify the requested user stub."
+      end
+    end
 end

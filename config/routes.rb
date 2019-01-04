@@ -10,6 +10,11 @@ Rails.application.routes.draw do
   delete  'logout' => 'sessions#destroy'
   get     'users'  => 'users#index'
 
+  ## User stubs.
+  post   'user_stubs'     => 'users#create_stub'
+  patch  'user_stubs/:id' => 'users#update_stub'
+  delete 'user_stubs/:id' => 'users#destroy_stub'
+
   ## Verticals.
   resources :software
   resources :datasets

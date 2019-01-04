@@ -21,6 +21,8 @@ class User < ApplicationRecord
   ## - permission_level_granted_on
   ## - permission_level_granted_by
   ## - deleted
+  ## - is_registered
+  ## - created_by (user)
   ## - authored_assignment_groups (AssignmentGroups)
   ## - instructed_assignments (Assignments)
   ## - created_assignment_groups (AssignmentGroups)
@@ -28,16 +30,21 @@ class User < ApplicationRecord
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
-  has_and_belongs_to_many :authored_assignment_groups, class_name: "AssignmentGroup", join_table: "assignment_groups_authors"
-  has_and_belongs_to_many :instructed_assignments, class_name: "Assignment", join_table: "assignments_instructors"
-  has_many :created_assignment_groups, class_name: "AssignmentGroup", foreign_key: "creator_id"
-  has_many :created_assignments, class_name: "Assignment", foreign_key: "creator_id"
+  has_and_belongs_to_many :authored_assignment_groups, 
+    class_name: "AssignmentGroup", join_table: "assignment_groups_authors"
+  has_and_belongs_to_many :instructed_assignments, 
+    class_name: "Assignment", join_table: "assignments_instructors"
+  has_many :created_assignment_groups, 
+    class_name: "AssignmentGroup", foreign_key: "creator_id"
+  has_many :created_assignments, 
+    class_name: "Assignment", foreign_key: "creator_id"
 
-  has_secure_password
+  has_secure_password validations: false
   has_many :permission_requests
   # has_many :reviewed_permission_requests, through: :permission_requests,
   #   source: :reviewed_by 
   belongs_to :permission_level_granted_by, class_name: "User", optional: true
+  belongs_to :created_by, class_name: "User", optional: true
 
   ## Emails will be lowercased.
   before_save :downcase_email
@@ -45,11 +52,11 @@ class User < ApplicationRecord
   ## Creates a unique activation code, which will be emailed to users.
   before_create :create_activation_digest
 
-  ## Validate username -- must be there, must be unique, and can't be longer 
-  ## 50 characters.
-  validates :username, presence: true, length: {maximum: 50},
-    uniqueness: {case_sensitive: false}
 
+
+  #########################################
+  ## Validations for stubs and non-stubs:
+  ##
   ## Validate first and last names -- must be there and can't be longer than 
   ## 50 chars.
   validates :first_name, presence: true, length: {maximum: 50}
@@ -61,15 +68,40 @@ class User < ApplicationRecord
   validates :email, presence: true, length: {maximum: 255},
       format: {with: VALID_EMAIL_REGEX}
 
-  ## Validate a new password.
-  validates :password, presence: true,
-    length: {minimum: 8, maximum: 50}, allow_nil: true
+  validates :is_registered, inclusion: { in: [true, false] }
+  ##
+  ########################################
 
-  ## Validate role.
-  validates :role, presence: true
+  ##############################
+  ## Validations for non-stubs:
+  ##
+  ## A stub is a user placeholder created by another user, e.g., so they can
+  ## label that "user" as an author or instrtuctor. User stubs
+  ## are unregistered users. A new user may signup and take over a stub if
+  ## their email matches.
+  def is_stub?
+    !is_registered
+  end
 
-  ## Validate field of study.
-  validates :field_of_study, presence: true
+  with_options unless: :is_stub? do |non_stub|
+
+    ## Validate username -- must be there, must be unique, and can't be longer 
+    ## 50 characters.
+    non_stub.validates :username, presence: true, length: {maximum: 50},
+      uniqueness: {case_sensitive: false}
+
+    ## Validate a new password.
+    non_stub.validates :password, presence: true,
+      length: {minimum: 8, maximum: 50}, allow_nil: true
+
+    ## Validate role.
+    non_stub.validates :role, presence: true
+
+    ## Validate field of study.
+    non_stub.validates :field_of_study, presence: true
+  end
+  ##
+  ##############################
 
   ## Uses BCrypt to salt/encrypt a password.
   def User.digest(string)
@@ -166,6 +198,15 @@ class User < ApplicationRecord
   
   def is_deleted?
     deleted != false
+  end
+
+  def summary_data_json
+    {
+      id: id,
+      first_name: first_name,
+      last_name: last_name,
+      email: email
+    }
   end
 
   private

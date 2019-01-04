@@ -1,0 +1,8 @@
+<%#
+Expects access to @user. This creates a badge, e.g., for use in author and
+instructor selection.
+%>
+<div class="user-badge <%= @user.is_stub? ? "user-stub" : "" %>">
+  <span class="name"><%= @user.full_name %></span> 
+  <span class="email">(<%= @user.email %>)</span>
+</div>

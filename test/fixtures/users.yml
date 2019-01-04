@@ -13,6 +13,7 @@ foo:
   activated_at: 2015-11-02 16:00:00
   remember_digest:
   permission_level: admin
+  is_registered: true
 
 bar:
   username: barster
@@ -27,3 +28,4 @@ bar:
   activated_at: 2015-11-02 16:00:00
   remember_digest:
   permission_level: editor
+  is_registered: true

@@ -113,9 +113,9 @@ class ApplicationController < ActionController::Base
     ## Responds successfully, either as JSON or HTML based on the requested
     ## format.
     ## @param path The path to redirect to.
-    def respond_with_success(path)
+    def respond_with_success(path, data={})
       respond_to do |format|
-        format.json { render json: {success: true, redirect: path} }
+        format.json { render json: {success: true, redirect: path, data: data} }
         format.html { redirect_to path }
       end
     end
