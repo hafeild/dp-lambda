@@ -6,8 +6,8 @@ class UsersController < ApplicationController
   before_action :user_is_admin, only: [:index]
   before_action :user_can_edit, only: [:new_stub, :create_stub, 
     :edit_stub, :update_stub, :destroy_stub]
-  before_action :get_user_stub, only: [:edit_stub, :update_stub, :destroy_stub]
-  before_action :is_stub, only: [:edit_stub, :update_stub, :destroy_stub]
+  before_action :get_user, only: [:edit_stub, :update_stub, :destroy_stub]
+  before_action :confirm_is_stub, only: [:edit_stub, :update_stub, :destroy_stub]
   before_action :user_can_modify_stub, only: [:edit_stub, :update_stub, 
     :destroy_stub]
 
@@ -206,6 +206,25 @@ class UsersController < ApplicationController
   end
 
   def update_stub
+    ## Begin transaction.
+    begin
+      User.transaction do
+        @user.update!(user_params)
+        @user.reload
+      end
+
+      respond_with_success get_redirect_path, 
+        {user_stub: {json: @user.summary_data_json, 
+          html: render_to_string(partial: 'users/badge')}}
+
+    rescue => e
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
+      # Rails.logger.info(e)
+      # Rails.logger.info("\t"+ e.backtrace.join("\n\t"))
+      error = "There was an error! #{e}"
+      flash[:danger] = error
+      respond_with_error error, get_redirect_path
+    end
   end
 
   def destroy_stub
@@ -242,21 +261,21 @@ class UsersController < ApplicationController
     #   end
     # end
 
-    def get_user_stub
-      @user_stub = User.find_by(id: params[:id])
-      if @user_stub.nil?
+    def get_user
+      @user = User.find_by(id: params[:id])
+      if @user.nil?
         respond_with_error "A user id must be provided."
       end
     end
 
-    def is_stub
-      if @user_stub.is_registered
+    def confirm_is_stub
+      if @user.is_registered
         respond_with_error "The requested user is registered an cannot be modified."
       end
     end
 
     def user_can_modify_stub
-      if user_is_admin or (!@user_stub.creator.nil? and @user_stub.creator.id == current_user.id)
+      unless current_user.is_admin? or (!@user.created_by.nil? and @user.created_by.id == current_user.id)
         respond_with_error "You do not have permissions to modify the requested user stub."
       end
     end

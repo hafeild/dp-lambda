@@ -328,38 +328,161 @@ class UsersControllerTest < ActionController::TestCase
   
   ##############################################################################
   ## Testing update_stub
-  # test "should update an existing user_stub" do
-  #   log_in_as users(:bar)
-  #   assert_difference "User.count", 1, "User not created" do
-  #     post :create_stub, format: :json, params: { user: { 
-  #       email: "x@mail.org",
-  #       first_name: "X",
-  #       last_name: "Y"
-  #     } }
-  #     result = JSON.parse(@response.body)
-  #     assert result['success'], @response.body
-  #     assert result['data'].has_key?('user_stub'),
-  #       "Missing user_stub key: #{@response.body}"
+  test "should update an existing user_stub" do
+    stub = users(:stub1)
+    log_in_as users(:foo)
+    new_email = "x@mail.org"
+    new_first_name = "X"
+    new_last_name = "Y"
 
-  #     user_stub = result['data']['user_stub']
+    post :update_stub, format: :json, params: { id: stub.id, user: { 
+      email: new_email,
+      first_name: new_first_name,
+      last_name: new_last_name
+    } }
+    result = JSON.parse(@response.body)
+    assert result['success'], @response.body
+    assert result['data'].has_key?('user_stub'),
+      "Missing user_stub key: #{@response.body}"
 
-  #     assert user_stub.has_key?('json'), 
-  #       "Missing data.user_stub.json: #{@response.body}"
-  #     assert user_stub['json']['id'] == User.last.id, 
-  #       "Wrong user id (expected #{User.last.id}): #{@response.body}"
-  #     assert user_stub['json']['first_name'] == User.last.first_name,
-  #       "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
-  #     assert user_stub['json']['last_name'] == User.last.last_name,
-  #       "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
-  #     assert user_stub['json']['email'] == User.last.email,
-  #       "Wrong email (expected #{User.last.email}): #{@response.body}"
-  #     assert user_stub.has_key?('html'),
-  #       "Missing data.user_stub.html: #{@response.body}"
-  #     # assert false, user_stub['html']
-  #     num_spans = user_stub['html'].scan(/<span\b/).size
-  #     assert num_spans == 2,
-  #       "Missing expected number of span tags (got #{num_spans}, expected 2) "+
-  #       "in data.html: #{user_stub['html']}"
-  #   end
-  # end
+    stub.reload
+    assert stub.email == new_email, "Email not changed."
+    assert stub.first_name == new_first_name, "First name not changed."
+    assert stub.last_name == new_last_name, "Last name not changed."
+
+    user_stub = result['data']['user_stub']
+
+    assert user_stub.has_key?('json'), 
+      "Missing data.user_stub.json: #{@response.body}"
+    assert user_stub['json']['id'] == stub.id, 
+      "Wrong user id (expected #{User.last.id}): #{@response.body}"
+    assert user_stub['json']['first_name'] == stub.first_name,
+      "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
+    assert user_stub['json']['last_name'] == stub.last_name,
+      "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
+    assert user_stub['json']['email'] ==stub.email,
+      "Wrong email (expected #{User.last.email}): #{@response.body}"
+    assert user_stub.has_key?('html'),
+      "Missing data.user_stub.html: #{@response.body}"
+    # assert false, user_stub['html']
+    num_spans = user_stub['html'].scan(/<span\b/).size
+    assert num_spans == 2,
+      "Missing expected number of span tags (got #{num_spans}, expected 2) "+
+      "in data.html: #{user_stub['html']}"
+  end
+
+  test "should update an existing user_stub if admin, but not creator" do
+    stub = users(:stub1)
+    log_in_as users(:user3)
+    new_email = "x@mail.org"
+    new_first_name = "X"
+    new_last_name = "Y"
+
+    post :update_stub, format: :json, params: { id: stub.id, user: { 
+      email: new_email,
+      first_name: new_first_name,
+      last_name: new_last_name
+    } }
+    result = JSON.parse(@response.body)
+    assert result['success'], @response.body
+    assert result['data'].has_key?('user_stub'),
+      "Missing user_stub key: #{@response.body}"
+
+    stub.reload
+    assert stub.email == new_email, "Email not changed."
+    assert stub.first_name == new_first_name, "First name not changed."
+    assert stub.last_name == new_last_name, "Last name not changed."
+
+    user_stub = result['data']['user_stub']
+
+    assert user_stub.has_key?('json'), 
+      "Missing data.user_stub.json: #{@response.body}"
+    assert user_stub['json']['id'] == stub.id, 
+      "Wrong user id (expected #{User.last.id}): #{@response.body}"
+    assert user_stub['json']['first_name'] == stub.first_name,
+      "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
+    assert user_stub['json']['last_name'] == stub.last_name,
+      "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
+    assert user_stub['json']['email'] ==stub.email,
+      "Wrong email (expected #{User.last.email}): #{@response.body}"
+    assert user_stub.has_key?('html'),
+      "Missing data.user_stub.html: #{@response.body}"
+    # assert false, user_stub['html']
+    num_spans = user_stub['html'].scan(/<span\b/).size
+    assert num_spans == 2,
+      "Missing expected number of span tags (got #{num_spans}, expected 2) "+
+      "in data.html: #{user_stub['html']}"
+  end
+
+  test "shouldn't update an existing user_stub if not the creator or admin" do
+    stub = users(:stub1)
+
+    log_in_as users(:bar)
+    new_email = "x@mail.org"
+    new_first_name = "X"
+    new_last_name = "Y"
+
+    post :update_stub, format: :json, params: { id: stub.id, user: { 
+      email: new_email,
+      first_name: new_first_name,
+      last_name: new_last_name
+    } }
+    result = JSON.parse(@response.body)
+    assert_not result['success'], @response.body
+    assert result['error'] == "You do not have permissions to modify the requested user stub.",
+      "Error message incorrect: #{result['error']}"
+
+    stub.reload
+    assert_not stub.email == new_email, "Email changed."
+    assert_not stub.first_name == new_first_name, "First name changed."
+    assert_not stub.last_name == new_last_name, "Last name changed."
+  end
+
+  test "shouldn't update an existing user_stub if not logged in" do
+    stub = users(:stub1)
+
+    new_email = "x@mail.org"
+    new_first_name = "X"
+    new_last_name = "Y"
+
+    post :update_stub, format: :json, params: { id: stub.id, user: { 
+      email: new_email,
+      first_name: new_first_name,
+      last_name: new_last_name
+    } }
+    result = JSON.parse(@response.body)
+    assert_not result['success'], @response.body
+    assert result['error'] == "This action requires that you be logged in.",
+      "Error message incorrect: #{result['error']}"
+
+    stub.reload
+    assert_not stub.email == new_email, "Email changed."
+    assert_not stub.first_name == new_first_name, "First name changed."
+    assert_not stub.last_name == new_last_name, "Last name changed."
+  end
+
+
+  test "shouldn't update a registered user via update_stub" do
+    user = users(:bar)
+    log_in_as users(:foo)
+    new_email = "x@mail.org"
+    new_first_name = "X"
+    new_last_name = "Y"
+
+    post :update_stub, format: :json, params: { id: user.id, user: { 
+      email: new_email,
+      first_name: new_first_name,
+      last_name: new_last_name
+    } }
+    result = JSON.parse(@response.body)
+    assert_not result['success'], @response.body
+    assert result['error'] == "The requested user is registered an cannot be modified.",
+      "Error message incorrect: #{result['error']}"
+
+    user.reload
+    assert_not user.email == new_email, "Email changed."
+    assert_not user.first_name == new_first_name, "First name changed."
+    assert_not user.last_name == new_last_name, "Last name changed."
+  end
+
 end

@@ -29,3 +29,25 @@ bar:
   remember_digest:
   permission_level: editor
   is_registered: true
+
+user3:
+  username: user3
+  first_name: user 
+  last_name: "3"
+  email: user3@gmail.com
+  role: Student
+  field_of_study: ENG
+  password_digest:  <%= User.digest('password') %>
+  activation_digest:
+  activated: true
+  activated_at: 2015-11-02 16:00:00
+  remember_digest:
+  permission_level: admin
+  is_registered: true
+
+stub1:
+  first_name: stub
+  last_name: by
+  email: stubby@mail.com
+  is_registered: false
+  created_by: foo
