@@ -119,6 +119,7 @@ class UsersController < ApplicationController
     cur_params = user_params
     
     @user = User.find(params[:id])
+    @user.is_registered = true
 
     if cur_params.key?(:email) and cur_params[:email] != @user.email
       email_updated = true
@@ -192,12 +193,28 @@ class UsersController < ApplicationController
   end
 
   def create_stub
+    password = SecureRandom.base64(15)
     ## Begin transaction.
     begin
       User.transaction do
         @user = User.new(user_params)
+        @user.password = password
+        @user.password_confirmation = password
         @user.activated = false
         @user.is_registered = false
+        
+        ## Generate a username.
+        unless user_params[:first_name].nil? or user_params[:last_name].nil?
+          username_base = (user_params[:first_name][0] +
+            user_params[:first_name]).downcase
+          username = username_base
+          i = 0
+          while !User.find_by(username: username).nil?
+            username = "#{username_base}#{i+=1}"
+          end
+          @user.username = username
+        end
+
         @user.save!
         @user.reload
       end

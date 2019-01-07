@@ -6,7 +6,16 @@
 
     <div class="form-container">
       <p class="instructions">
+      <% if @user.is_stub? %>
+        This is a stub account (another user created it as a placeholder, e.g.,
+        to include you as an author or instructor). You have now claimed the
+        account by confirming your email address. However, in order to activate
+        this account, you must supply the information below. Please also update
+        any information that is present but incorrect. You may also choose a new
+        username.
+      <% else %>
         Edit your current information.
+      <% end %>
       </p> 
         <%= form_for(@user) do |f| %>
           <%= render 'shared/error_messages', object: f.object %>

@@ -124,6 +124,7 @@ class UsersControllerTest < ActionController::TestCase
       assert num_spans == 2,
         "Missing expected number of span tags (got #{num_spans}, expected 2) "+
         "in data.html: #{user_stub['html']}"
+      assert User.last.username = "XY"
     end
   end
   
@@ -181,6 +182,35 @@ class UsersControllerTest < ActionController::TestCase
         "Error message incorrect: #{result['error']}"
     end
   end
+
+
+  test "should create a new user stub with a unique username" do
+    log_in_as users(:bar)
+    assert_difference "User.count", 2, "Users not created" do
+      post :create_stub, format: :json, params: { user: { 
+        email: "x@mail.org",
+        first_name: "X",
+        last_name: "Y"
+      } }
+      result = JSON.parse(@response.body)
+      assert result['success'], @response.body
+      assert result['data'].has_key?('user_stub'),
+        "Missing user_stub key: #{@response.body}"
+      assert User.last.username = "xy"
+
+      post :create_stub, format: :json, params: { user: { 
+        email: "x1@mail.org",
+        first_name: "X",
+        last_name: "Y"
+      } }
+      result = JSON.parse(@response.body)
+      assert result['success'], @response.body
+      assert result['data'].has_key?('user_stub'),
+        "Missing user_stub key: #{@response.body}"
+      assert User.last.username = "xy1"
+    end
+  end
+
   ##############################################################################
 
 

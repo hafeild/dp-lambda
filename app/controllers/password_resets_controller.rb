@@ -11,14 +11,14 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    if params[:password_reset][:username].nil? or 
-        params[:password_reset][:username].empty?
-      flash[:warning] = "Please provide a username."
+    if params[:password_reset][:email].nil? or 
+        params[:password_reset][:email].empty?
+      flash[:warning] = "Please provide an email."
       render 'new'
       return
     end
 
-    @user = User.find_by(username: params[:password_reset][:username])
+    @user = User.find_by(email: params[:password_reset][:email])
 
     if @user
       @user.create_reset_digest
@@ -42,7 +42,11 @@ class PasswordResetsController < ApplicationController
       @user.save
       log_in @user
       flash[:success] = "Password has been reset."
-      redirect_to root_url
+      if @user.is_stub?
+        redirect_to edit_user_path(@user)
+      else
+        redirect_to root_url
+      end
     else
       render 'edit'
     end
@@ -74,6 +78,14 @@ class PasswordResetsController < ApplicationController
     def validate_user
       if @user.nil? or @user.reset_digest.nil? or 
           not @user.authenticated?(:reset, params[:id])
+        if @user.nil? 
+          Rails.logger.info("validate_user failed: @user nil.")
+        elsif @user.reset_digest.nil?
+          Rails.logger.info("validate_user failed: reset_digest is nil.")
+        else
+          Rails.logger.info("validate_user failed: authentication failed.")
+        end
+
         flash[:danger] = "Your request could not be completed."
         redirect_to root_url
       end

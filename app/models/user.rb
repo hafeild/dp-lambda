@@ -39,7 +39,9 @@ class User < ApplicationRecord
   has_many :created_assignments, 
     class_name: "Assignment", foreign_key: "creator_id"
 
-  has_secure_password validations: false
+  has_secure_password
+  # has_secure_password validations: false
+
   has_many :permission_requests
   # has_many :reviewed_permission_requests, through: :permission_requests,
   #   source: :reviewed_by 
@@ -66,9 +68,13 @@ class User < ApplicationRecord
   ## and must be in the correct format.
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: {maximum: 255},
-      format: {with: VALID_EMAIL_REGEX}
+      format: {with: VALID_EMAIL_REGEX}, uniqueness: {case_sensitive: false}
 
   validates :is_registered, inclusion: { in: [true, false] }
+
+  ## Validate a new password.
+  validates :password, presence: true,
+    length: {minimum: 8, maximum: 50}, allow_nil: true
   ##
   ########################################
 
@@ -80,7 +86,7 @@ class User < ApplicationRecord
   ## are unregistered users. A new user may signup and take over a stub if
   ## their email matches.
   def is_stub?
-    !is_registered
+    is_registered == false
   end
 
   with_options unless: :is_stub? do |non_stub|
@@ -90,15 +96,16 @@ class User < ApplicationRecord
     non_stub.validates :username, presence: true, length: {maximum: 50},
       uniqueness: {case_sensitive: false}
 
-    ## Validate a new password.
-    non_stub.validates :password, presence: true,
-      length: {minimum: 8, maximum: 50}, allow_nil: true
-
     ## Validate role.
     non_stub.validates :role, presence: true
 
     ## Validate field of study.
     non_stub.validates :field_of_study, presence: true
+
+    # ## Validate a new password.
+    # non_stub.validates :password, presence: true,
+    #   length: {minimum: 8, maximum: 50}, allow_nil: true
+    
   end
   ##
   ##############################
