@@ -1,0 +1,23 @@
+<% provide(:title, "search results") %>
+<div class="container serp">
+    <p>
+    Found <%= @search.total %> results in <%= @query_seconds.round(3) %> seconds
+    for <strong><%= @query %></strong>.
+    </p>
+
+  <ul class="results">
+    <% @rank = 0 %>
+    <% @search.each_hit_with_result do |hit, result| %>
+      <li class="search-result" data-rank="<%= @rank %>">
+        <%= @rank %>.
+        ID: <%= result.id %>, 
+        Username: <%= result.username %>,
+        Email: <%= result.email %>,
+        Name: <%= result.full_name %>,
+        Score: [<%= hit.score %>]
+      </li>
+      <% @rank += 1 %>
+    <% end %>
+  </ul>
+
+</div>

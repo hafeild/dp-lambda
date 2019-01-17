@@ -1,0 +1,19 @@
+<% 
+res = []
+@search.each_hit_with_result do |hit,result|
+  res << {
+    id: result.id, 
+    username: result.username, 
+    name: result.full_name,
+    score: hit.score
+  }
+end
+%>
+<%=
+raw({
+  "q": @query,
+  "res": res,
+  "time": @query_seconds,
+  "total_matches": @search.total
+}.to_json)
+%>

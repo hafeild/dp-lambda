@@ -114,6 +114,7 @@ Rails.application.routes.draw do
   resources :permission_requests, only: [:show, :index, :create, :update]
 
   ## Search.
+  get "search/users/:q" => "search#match_users"
   get "search/:vertical" => "search#show"
   
 

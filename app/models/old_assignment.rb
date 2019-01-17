@@ -58,64 +58,64 @@ class OldAssignment < ApplicationRecord
   end
 
   ## For search.
-  searchable do
-    text :author, :name, :summary, :description, :learning_curve
+  # searchable do
+  #   text :author, :name, :summary, :description, :learning_curve
     
-    text :creator do 
-      creator.username
-    end
+  #   text :creator do 
+  #     creator.username
+  #   end
 
-    text :tags do
-      tags.map{|tag| tag.text}
-    end
+  #   text :tags do
+  #     tags.map{|tag| tag.text}
+  #   end
 
-    text :assignment_results do
-      assignment_results.map{ |res| res.to_s}
-    end
+  #   text :assignment_results do
+  #     assignment_results.map{ |res| res.to_s}
+  #   end
 
-    text :assignments do
-      related_assignments.map{|a| "#{a.name} #{a.summary}"} 
-    end
+  #   text :assignments do
+  #     related_assignments.map{|a| "#{a.name} #{a.summary}"} 
+  #   end
 
-    text :web_resources do
-      web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
-    end
+  #   text :web_resources do
+  #     web_resources.map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
+  #   end
 
-    text :examples do
-      examples.map{|example| "#{example.title} #{example.summary}"}
-    end
+  #   text :examples do
+  #     examples.map{|example| "#{example.title} #{example.summary}"}
+  #   end
 
-    text :analyses do
-      analyses.map{|a| "#{a.name} #{a.summary}"}
-    end
+  #   text :analyses do
+  #     analyses.map{|a| "#{a.name} #{a.summary}"}
+  #   end
 
-    text :datasets do
-      datasets.map{|d| "#{d.name} #{d.summary}"}
-    end
+  #   text :datasets do
+  #     datasets.map{|d| "#{d.name} #{d.summary}"}
+  #   end
 
-    text :software do
-      software.map{|s| "#{s.name} #{s.summary}"}
-    end
+  #   text :software do
+  #     software.map{|s| "#{s.name} #{s.summary}"}
+  #   end
 
-    text :attachments do
-      attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
-    end
+  #   text :attachments do
+  #     attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
+  #   end
 
-    ## For scoping and faceting.
-    double :instruction_hours_facet do 
-      instruction_hours
-    end
-    integer :creator_facet do 
-      creator_id
-    end
-    string :author_facet do 
-      author
-    end
-    string :learning_curve_facet do
-      learning_curve
-    end
+  #   ## For scoping and faceting.
+  #   double :instruction_hours_facet do 
+  #     instruction_hours
+  #   end
+  #   integer :creator_facet do 
+  #     creator_id
+  #   end
+  #   string :author_facet do 
+  #     author
+  #   end
+  #   string :learning_curve_facet do
+  #     learning_curve
+  #   end
 
-  end
+  # end
 
   def delink
     tags.clear

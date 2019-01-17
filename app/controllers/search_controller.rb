@@ -1,6 +1,6 @@
 class SearchController < ApplicationController  
-  before_action :set_search_indicator
-  before_action :get_vertical_map
+  before_action :set_search_indicator, only: [:show]
+  before_action :get_vertical_map, only: [:show]
   before_action :get_redirect_path
   
   def show    
@@ -11,6 +11,11 @@ class SearchController < ApplicationController
         :advanced, :nq, :sq, :dq, :tq, :eq, :wrq, :aq, :lcq, :all, :sr)
       @vertical = @search_params.require(:vertical)
       
+      # if @vertical == 'users'
+      #   match_users
+      #   return
+      # end
+
       ## Check that vertical is valid:
       throw Exception.new('Invalid vertical.') unless valid_vertical(@vertical)
       
@@ -120,6 +125,37 @@ class SearchController < ApplicationController
         @redirect_path
     end
   end
+
+  def match_users
+    begin
+      start_time = Time.now
+
+      @search_params = params.permit(:q)
+      #@query = params.require(:query).to_s.downcase
+      @query = get_with_default(@search_params, :q, "")
+
+      query_body = Proc.new do |dsl|
+        dsl.order_by :score, :desc
+        dsl.paginate page: 1, per_page: 10
+        # dsl.paginate cursor: cursor, per_page: 10
+        dsl.fulltext @query do
+          fields :username, :email, :last_name, :first_name
+        end
+      end
+
+      @search = Sunspot.search(User, &query_body)
+
+      end_time = Time.now
+      @query_seconds = (end_time - start_time)/1000.0
+      render 'show_matched_users'
+    rescue => e
+      puts "#{e.message} #{e.backtrace.join("\n")}"
+      respond_with_error "There was an error while executing your search: #{e}.",
+        @redirect_path
+    end
+
+  end
+
   
   private  
     def set_search_indicator
