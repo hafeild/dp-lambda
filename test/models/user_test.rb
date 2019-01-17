@@ -59,8 +59,18 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  test "username shouldn't contain @" do
+    @user.username = "foo@mail.com"
+    assert_not @user.valid?
+  end
+
   test "email should not be too long" do
     @user.email = "a" * 244 + "@example.com"
+    assert_not @user.valid?
+  end
+
+  test "email should be unique" do
+    @user.email = users(:bar).email
     assert_not @user.valid?
   end
 

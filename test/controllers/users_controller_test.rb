@@ -139,8 +139,8 @@ class UsersControllerTest < ActionController::TestCase
       } }
       result = JSON.parse(@response.body)
       assert_not result['success'], "Should have found an error: #{@response.body}"
-      assert result['error'] == "There was an error! Validation failed: First name can't be blank",
-        "Error message incorrect: #{result['error']}."
+      assert result['error'] == "There was an error! Validation failed: First name can't be blank, Username can't be blank",
+        "Error message incorrect: #{@response.body}."
     end
 
     ## Missing last_name.
@@ -151,7 +151,7 @@ class UsersControllerTest < ActionController::TestCase
       } }
       result = JSON.parse(@response.body)
       assert_not result['success'], "Should have found an error: #{@response.body}"
-      assert result['error'] == "There was an error! Validation failed: Last name can't be blank",
+      assert result['error'] == "There was an error! Validation failed: Last name can't be blank, Username can't be blank",
         "Error message incorrect: #{result['error']}."
     end
   

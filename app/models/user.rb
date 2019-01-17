@@ -67,8 +67,14 @@ class User < ApplicationRecord
   ## Validate email -- can't be longer than 255 characters
   ## and must be in the correct format.
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  NO_AT_SIGNS_REGEX = /\A[^@]*\z/i
   validates :email, presence: true, length: {maximum: 255},
       format: {with: VALID_EMAIL_REGEX}, uniqueness: {case_sensitive: false}
+
+  ## Validate username -- must be there, must be unique, and can't be longer 
+  ## 50 characters.
+  validates :username, presence: true, length: {maximum: 50},
+  uniqueness: {case_sensitive: false}, format: {with: NO_AT_SIGNS_REGEX}
 
   validates :is_registered, inclusion: { in: [true, false] }
 
@@ -90,11 +96,6 @@ class User < ApplicationRecord
   end
 
   with_options unless: :is_stub? do |non_stub|
-
-    ## Validate username -- must be there, must be unique, and can't be longer 
-    ## 50 characters.
-    non_stub.validates :username, presence: true, length: {maximum: 50},
-      uniqueness: {case_sensitive: false}
 
     ## Validate role.
     non_stub.validates :role, presence: true

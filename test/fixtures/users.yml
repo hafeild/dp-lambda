@@ -61,6 +61,7 @@ user4:
   is_registered: true
 
 stub1:
+  username: sby1
   first_name: stub
   last_name: by1
   email: stubby1@mail.com
@@ -69,6 +70,7 @@ stub1:
   password_digest: <%= User.digest('password') %>
 
 stub2:
+  username: sby2
   first_name: stub
   last_name: by2
   email: stubby2@mail.com
