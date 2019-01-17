@@ -4,20 +4,26 @@ class SessionsController < ApplicationController
 
   ## Log a user in.
   def create
-    user = User.find_by(username: params[:session][:username])
-    
+    ## Check if it's an email, not a username.
+    if(params[:session][:username] =~ /.*@.*/)
+      user = User.find_by(email: params[:session][:username])
+    else
+      user = User.find_by(username: params[:session][:username])
+    end
+
     if user and !user.is_stub? and user.authenticate(params[:session][:password])
       if !user.deleted? and user.activated?
         ## Log in.
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+        flash[:info] = "Welcome back! You are now logged in"
         redirect_back_or root_url
       elsif user.deleted?
           message = "Account has been deleted."
           flash[:warning] = message
           redirect_to root_url
       elsif !user.activated?
-        message = "Account not activated."+
+        message = "Account not activated. "+
           "Check your email for the activation link or click "+
           "\"Forgot password\" to a have a new one emailed to you."
         flash[:warning] = message
@@ -30,7 +36,7 @@ class SessionsController < ApplicationController
         redirect_to root_url
     else
       ## Error!
-      flash.now[:danger] = 'Invalid email/password combination'
+      flash.now[:danger] = 'Invalid username/email and password combination'
       # render 'new'
       redirect_to login_path
     end
