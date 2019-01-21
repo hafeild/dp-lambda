@@ -36,15 +36,26 @@ class OldAssignment < ApplicationRecord
     foreign_key: :from_assignment_id,
     association_foreign_key: :to_assignment_id
 
-  has_and_belongs_to_many :tags
-  has_and_belongs_to_many :web_resources
-  has_and_belongs_to_many :examples
-  has_and_belongs_to_many :software
-  has_and_belongs_to_many :analyses
-  has_and_belongs_to_many :datasets
-  has_many :assignment_results
-  
-  has_and_belongs_to_many :attachments
+    has_and_belongs_to_many :tags, class_name: 'Tag', join_table: :old_assignments_tags, foreign_key: :tag_id, association_foreign_key: :assignment_id
+
+    has_and_belongs_to_many :web_resources, class_name: 'WebResource', join_table: :old_assignments_web_resources, foreign_key: :web_resource_id, association_foreign_key: :assignment_id
+
+    has_and_belongs_to_many :examples, class_name: 'Example', join_table: :old_assignments_examples, foreign_key: :example_id, association_foreign_key: :assignment_id
+    has_and_belongs_to_many :software, class_name: 'Software', join_table: :old_assignments_software, foreign_key: :software_id, association_foreign_key: :assignment_id
+    has_and_belongs_to_many :analyses, class_name: 'Analysis', join_table: :analyses_old_assignments, foreign_key: :analysis_id, association_foreign_key: :assignment_id
+    has_and_belongs_to_many :datasets, class_name: 'Dataset', join_table: :old_assignments_datasets, foreign_key: :dataset_id, association_foreign_key: :assignment_id
+    has_and_belongs_to_many :attachments, class_name: 'Attachment', join_table: :old_assignments_attachments, foreign_key: :attachment_id, association_foreign_key: :assignment_id
+
+    has_many :assignment_results, foreign_key: :assignment_id
+
+  # has_and_belongs_to_many :tags
+  # has_and_belongs_to_many :web_resources
+  # has_and_belongs_to_many :examples
+  # has_and_belongs_to_many :software
+  # has_and_belongs_to_many :analyses
+  # has_and_belongs_to_many :datasets
+  # has_many :assignment_results
+  # has_and_belongs_to_many :attachments
 
   ## Ensure the presence of required fields. 
   validates :name, presence: true, length: {minimum: 1, maximum: 200}, 

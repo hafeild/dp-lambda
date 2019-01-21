@@ -103,6 +103,59 @@ class Assignment < ApplicationRecord
     ].join(" ")
   end
 
+  ## Copies everything, including associations.
+  def deep_clone
+    # a = clone
+
+    a = Assignment.new
+    a.assignment_group = assignment_group
+    a.notes = notes
+    a.course_prefix = course_prefix
+    a.course_number = course_number
+    a.course_title = course_title
+    a.semester = semester
+    a.learning_curve = learning_curve
+    a.field_of_study = field_of_study
+    a.project_length_weeks = project_length_weeks
+    a.students_given_assignment = students_given_assignment
+    a.instruction_hours = instruction_hours
+    a.average_student_score = average_student_score
+    a.outcome_summary = outcome_summary
+    a.creator = creator
+
+    
+    # ## Clone associations.
+    #a.instructors = instructors 
+    # a.tags = tags 
+    # a.web_resources = web_resources
+    # a.examples = examples
+    # a.software = software
+    # a.analyses = analyses
+    # a.datasets = datasets
+    # a.assignments_related_to = assignments_related_to
+    # a.assignments_related_from = assignments_related_from
+
+    instructors.each{|i| a.instructors << i}
+    tags.each{|i| a.tags << i}
+    web_resources.each{|i| a.web_resources << i}
+    examples.each{|i| a.examples << i}
+    software.each{|i| a.software << i}
+    analyses.each{|i| a.analyses << i}
+    datasets.each{|i| a.datasets << i}
+
+    assignments_related_from.each{|i| a.assignments_related_from << i}
+    assignments_related_to.each{|i| a.assignments_related_to << i}
+
+    ## Requires copies to be made.
+    attachments.each do |attachment|
+      attachment_copy = attachment.clone
+      attachment_copy.save!
+      a.attachments << attachment_copy
+    end
+
+    a
+  end
+
   ## For search.
   searchable do
     text :notes, :learning_curve
