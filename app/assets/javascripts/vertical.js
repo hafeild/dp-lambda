@@ -121,6 +121,7 @@ var translateUsersToIds = function(){
   $('.user-search-target').val(ids.join(','));
 };
 
+
 /**
  * Adds listeners to vertical connections (e.g., connect a software entry to
  * an assignment).

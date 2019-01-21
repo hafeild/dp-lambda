@@ -29,6 +29,11 @@
         <div class="ui-widget user-search-wrapper">
           <input id="user-search" autocomplete="off">
           <div id="picked-users">
+            <% if defined? @assignment_group %>
+              <% @assignment_group.authors.each do |u| %>
+                <span class="user" data-id="<%= u.id %>"><span class="name"><%= u.full_name %> (<%= u.username %>)</span><span class="remove-user"><span class="glyphicon glyphicon-remove"></span></span></span>
+              <% end %>
+            <% end %>
           </div>
         </div>
 
