@@ -37,8 +37,7 @@ class AssignmentGroup < ApplicationRecord
   validates :summary, presence: true, length: {minimum: 1}
 
   #validates :description, presence: true, length: {minimum: 1}
-  validates :authors, presence: true
-  # validates :authors, length: {minimum: 1}
+  validates :authors, presence: true, length: {minimum: 1}
 
   def author_ids_csv
     authors.map{|a| a.id}.join(",")

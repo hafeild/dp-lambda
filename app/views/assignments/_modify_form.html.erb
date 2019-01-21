@@ -15,8 +15,13 @@
       <div class="form-group">
         <%= f.label :instructors %><span class="required-input">*</span><br/>
         Add a comma separated list of author (user) ids.
-        <%= text_field_tag 'assignment[instructors]', (defined?(@assignment) ? @assignment.instructor_ids_csv : nil), class: "form-control",
-          placeholder: "e.g., 1,3,34" %>
+        <%= hidden_field_tag 'assignment[instructors]', (defined?(@assignment) ? @assignment.instructor_ids_csv : nil), class: "user-search-target" %>
+
+        Search for a user to add as instructor by name, username, or email: 
+        <div class="ui-widget user-search-wrapper">
+          <input id="user-search" autocomplete="off">
+          <div id="picked-users">
+          </div>
       </div>
 
       <div class="form-group">
