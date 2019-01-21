@@ -320,7 +320,9 @@ class AssignmentsControllerTest < ActionController::TestCase
     }
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error'] == "There was an error saving the assignment entry."
+    assert result['error'] == "There was an error saving the assignment "+
+      "entry: Validation failed: Course prefix is too long (maximum is 3 "+
+      "characters).", result['error']
   end
 
 

@@ -47,6 +47,7 @@ class AssignmentGroupsController < ApplicationController
       ActiveRecord::Base.transaction do
         @data[:creator] = current_user
         @data[:authors] = @authors
+  
         assignment_group = AssignmentGroup.create!(@data)
         respond_with_success get_redirect_path(assignment_group_path(assignment_group))
       end

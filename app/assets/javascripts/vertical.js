@@ -4,11 +4,21 @@
  * Created by hfeild on 22-Apr-2017.
  */
 
+// Keycodes
+var LEFT = 37;
+var RIGHT = 38;
+var UP = 39;
+var DOWN = 40;
+var listIndex = -1;
+var maxSuggestionIndex = 0;
+
+var currentUserSuggestionLookup = {};
 
 /**
  * Initializes listeners and calls setup functions when the page loads.
  */
-$(document).ready(function(event){
+$(document).ready(
+function(event){
   // Only add the connection listeners on a page with connections.
   if($('.connect-resource').size() > 0){
     addConnectionListeners();
@@ -29,7 +39,87 @@ $(document).ready(function(event){
   }
   
   $(document).on('click', '.no-submit', cancelFormSubmissionFollowLink);
+
+  // User search suggestions for adding authors/instructors on assignment 
+  // [group] pages.
+  if($('#user-search').size() > 0){
+    // $(document).on('keydown', '#user-search', getUserSuggestions);
+    $("#user-search").autocomplete({
+      source: getUserSuggestions,
+      select: addUser,
+      focus: (e,ui) => e.preventDefault()
+    });
+    $('#user-search').keypress(e =>{
+        if (e.keyCode == 13) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+    );
+    $(document).on('mousedown', '.add-user', addUser);
+    $(document).on('mousedown', '.remove-user', removeUser);
+    // Copy over all of the picked user to the user-search-target field.
+
+  }
 });
+
+var getUserSuggestions = function(autoSuggestInput, autoSuggestCallback){
+  var query = autoSuggestInput.term; //this.value;
+
+  $.ajax(`/search/users/${encodeURIComponent(query)}`,{
+    data: {format: 'json'},
+    method: 'get',
+    success: function(response){
+      var suggestions = [];
+      currentUserSuggestionLookup = {};
+
+      if(response.res){
+        response.res.forEach(u => 
+          suggestions.push({
+            label: `${u.name} (${u.username})`,
+            value: u.id
+          })
+        );
+      } 
+      autoSuggestCallback(suggestions);
+    },
+    error: function(jqXHR, textStatus, error){
+      alert('Error: '+ textStatus +' '+ error);
+      autoSuggestCallback([]);
+    }
+  });
+
+};
+
+
+var addUser = function(event, ui){
+  var userId = ui.item.value;
+  var userName = ui.item.label;
+
+  // Create a new element in the picked-users list.
+  var user = $(`<span class="user" data-id="${userId}"><span class="name">${userName}</span></span>`);
+  user.append('<span class="remove-user"><span class="glyphicon glyphicon-remove"></span></span>');
+  $('#picked-users').append(user);
+
+  // Clear the search box.
+  $('#user-search').val('');
+
+  translateUsersToIds();
+
+  event.preventDefault();
+  return false;
+};
+
+var removeUser = function(){
+  $(this).parents('.user').remove();
+  translateUsersToIds();
+};
+
+var translateUsersToIds = function(){
+  var ids = $.map($('#picked-users .user'), (elm,i) => elm.getAttribute('data-id'));
+  console.log('ids:', ids);
+  $('.user-search-target').val(ids.join(','));
+};
 
 /**
  * Adds listeners to vertical connections (e.g., connect a software entry to

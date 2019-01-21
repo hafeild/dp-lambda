@@ -57,7 +57,8 @@ class AssignmentsController < ApplicationController
         respond_with_success assignment_group_assignment_path(@assignment_group, assignment)
       end
     rescue => e
-      respond_with_error "There was an error saving the assignment entry.",
+      # puts "#{@instructor_ids} #{e.message} #{e.backtrace.join("\n")}"
+      respond_with_error "There was an error saving the assignment entry: #{e}.",
         new_assignment_group_assignment_path
     end
   end

@@ -19,14 +19,32 @@
           placeholder: "e.g., Analyze your social network" %>
       </div>
 
-      <%# Until we figure out how we want to add authors... %>
-      <% if false %>
-                <div class="form-group">
-                  <%= f.label :author %><span class="required-input">*</span> 
-                  <%= f.text_field :author, class: "form-control", 
-                    placeholder: "e.g., Pat Smith" %>
-                </div>
-      <% end %>
+      <div class="form-group">
+        <%= f.label :authors %><span class="required-input">*</span><br/>
+        Add one or more authors (users).
+        <%= hidden_field_tag 'assignment_group[authors]', (defined?(@assignment_group) ? @assignment_group.author_ids_csv : nil),
+        class: "user-search-target" %>
+
+        Search for a user to add as author by name, username, or email: 
+        <!--
+        <div class="dropdown" id="user-search-wrapper">
+          <input type="text" id="user-search" autocomplete="off">
+          
+          <ul id="user-serp" class="dropdown-menu" aria-labelledby="user-search-btn">
+          </ul>
+        </div>
+        <div id="picked-users">
+        </div>
+        -->
+
+        <div class="ui-widget user-search-wrapper">
+          <input id="user-search" autocomplete="off">
+          <div id="picked-users">
+          </div>
+        </div>
+
+
+      </div>
 
       <div class="form-group">
         <%= f.label :summary %><span class="required-input">*</span><br/>
@@ -44,18 +62,12 @@
       </div>
 
 
-      <div class="form-group">
-        <%= f.label :authors %><span class="required-input">*</span><br/>
-        Add a comma separated list of author (user) ids.
-        <%= text_field_tag 'assignment_group[authors]', (defined?(@assignment_group) ? @assignment_group.author_ids_csv : nil), class: "form-control",
-          placeholder: "e.g., 1,3,34" %>
-      </div>
-
+<!--
       <p>
       You will have an opportunity to add attachments, resource links, and examples after you
       save.
       </p>
-
+-->
       <%= f.submit "Save", 
         id: "form-submit", class: "btn btn-primary" %>
 
