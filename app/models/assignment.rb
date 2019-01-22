@@ -25,6 +25,8 @@ class Assignment < ApplicationRecord
 
   include Bootsy::Container
 
+  after_save :reindex_assignment_group
+
   belongs_to :creator, class_name: "User"
   has_and_belongs_to_many :instructors, class_name: "User", join_table: "assignments_instructors"
   belongs_to :assignment_group
@@ -242,21 +244,30 @@ class Assignment < ApplicationRecord
   end
 
   def delete_from_connection
-    [[assignment_group], assignments_related_to, assignments_related_from,analyses, datasets, software, examples].each do |connectionSet|
+    [[assignment_group], analyses, datasets, software, examples].each do |connectionSet|
       connectionSet.each do |connection|
         connection.assignments.delete(self)
         connection.save!
       end
+
+      #assignments_related_to, assignments_related_from
     end
   end
 
   def reindex_associations
-    [[assignment_group], assignments_related_to, assignments_related_from,analyses, datasets, software, examples].each do |connectionSet|
+    [[assignment_group], analyses, datasets, software, examples].each do |connectionSet|
       connectionSet.each do |connection|
         connection.reload
         connection.save!
       end
+      # assignments_related_to, assignments_related_from,
     end
+  end
+
+  def reindex_assignment_group
+    assignment_group.reload
+    assignment_group.save!
+    # Sunspot.index(assignment_group)
   end
 
 end

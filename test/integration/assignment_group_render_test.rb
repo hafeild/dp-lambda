@@ -10,180 +10,187 @@ class AssignmentGroupRenderTest < ActionDispatch::IntegrationTest
 
     get assignment_group_path(assignment_group.id)
     assert_template "assignment_groups/show"
-    assert_select ".name", assignment_group.name
+    assert_select ".name-text", assignment_group.name
     assert_select ".author", assignment_group.authors.first.full_name
     assert_select ".summary", assignment_group.summary
     assert_select ".description", assignment_group.description
+
+    assignment_group.assignments.each do |assignment|
+      assert_select "a[href=?]", assignment_group_assignment_path(
+        assignment_group.id, assignment.id), count: 1
+    end
 
     assert_select "a[href=?]", edit_assignment_group_path(assignment_group.id), count: 0
     assert_select "a[href=?][data-method=delete]", assignment_group_path(assignment_group.id), 
       count: 0
   end
 
-  # test "should display edit option on a assignment page when logged in" do
-  #   log_in_as users(:foo)
-  #   assignment = assignments(:one)
+  test "should display edit option on an assignment group page when logged in" do
+    log_in_as users(:foo)
+    assignment_group = assignment_groups(:one)
 
-  #   get assignment_path(assignment.id)
-  #   assert_template "assignments/show"
-  #   assert_select ".name-text", assignment.name
-  #   assert_select ".author", assignment.author
-  #   assert_select ".summary", assignment.summary
-  #   assert_select ".learning_curve", assignment.learning_curve
-  #   assert_select ".instruction_hours", assignment.instruction_hours.to_s
-  #   assert_select ".description", assignment.description
+    get assignment_group_path(assignment_group.id)
+    assert_template "assignment_groups/show"
+    assert_select ".name-text", assignment_group.name
+    assert_select ".author", assignment_group.authors.first.full_name
+    assert_select ".summary", assignment_group.summary
+    assert_select ".description", assignment_group.description
 
-  #   assert_select "a[href=?]", edit_assignment_path(assignment.id), count: 1
-  #   assert_select "a[href=?][data-method=delete]", assignment_path(assignment.id), 
-  #     count: 1
-  # end
+    assignment_group.assignments.each do |assignment|
+      assert_select "a[href=?]", assignment_group_assignment_path(
+        assignment_group.id, assignment.id), count: 1
+    end
 
-  # test "should display a 404 page if id isn't valid" do 
-  #   response = get assignment_path(-1)
-  #   assert response == 404
-  #   assert_select "h1", "The page you were looking for doesn't exist."
-  # end
+    assert_select "a[href=?]", edit_assignment_group_path(assignment_group.id), count: 1
+    assert_select "a[href=?][data-method=delete]", assignment_group_path(assignment_group.id), 
+      count: 1
+  end
 
-
-  # ## Tests for index.
-  # test "should display all assignment entries" do 
-  #   assignments = [assignments(:one), assignments(:two), assignments(:three), 
-  #                  assignments(:four)]
-
-  #   get assignments_path
-  #   assert_template "assignments/index"
-
-  #   assert_select ".assignment.index-entry", count: assignments.size
-
-  #   assignments.each do |assignment|
-  #     assert_select "div", "data-assignment-id" => assignment.id do
-  #       assert_select ".name", assignment.name
-  #       assert_select ".summary", assignment.summary
-  #     end
-  #   end
-  # end
+  test "should display a 404 page if id isn't valid" do 
+    response = get assignment_group_path(-1)
+    assert response == 404
+    assert_select "h1", "The page you were looking for doesn't exist."
+  end
 
 
-  # ## Navigate from the home page to the assignment index, then visit a specific
-  # ## assignment page.
-  # test "should be able to navigate to assignment page from home page" do 
-  #   assignment = assignments(:two)
+  ## Tests for index.
+  test "should display all assignment group entries" do 
+    assignment_groups = AssignmentGroup.all
 
-  #   get root_url
-  #   assert_select "a", href: assignments_path
+    get assignment_groups_path
+    assert_template "assignment_groups/index"
 
-  #   ## "Click" on the link.
-  #   get assignments_path
-  #   assert_template "assignments/index"
-  #   assert_select "a", href: assignment_path(assignment.id)
+    assert_select ".assignment_group.index-entry", count: assignment_groups.size
 
-  #   ## "Click" on the assignment page link.
-  #   get assignment_path(assignment.id)
-  #   assert_template "assignments/show"
-  # end
+    assignment_groups.each do |assignment_group|
+      assert_select "div", "data-assignment-group-id" => assignment_group.id do
+        assert_select ".name", assignment_group.name
+        assert_select ".summary", assignment_group.summary
+      end
+    end
+  end
 
 
-  # ## Navigate from the home page to the assignment index, then visit a specific
-  # ## assignment page, edit it, and submit the changes.
-  # test "should be able to navigate to assignment page and edit from home page" do 
-  #   log_in_as users(:foo)
+  ## Navigate from the home page to the assignment group index, then visit a 
+  ## specific assignment group page.
+  test "should be able to navigate to assignment page from home page" do 
+    assignment_group = assignment_groups(:two)
 
-  #   assignment = assignments(:two)
+    get root_url
+    assert_select "a", href: assignment_groups_path
 
-  #   get root_url
-  #   assert_select "a", href: assignments_path
+    ## "Click" on the link.
+    get assignment_groups_path
+    assert_template "assignment_groups/index"
+    assert_select "a", href: assignment_group_path(assignment_group.id)
 
-  #   ## "Click" on the link.
-  #   get assignments_path
-  #   assert_template "assignments/index"
-  #   assert_select "a", href: assignment_path(assignment.id)
+    ## "Click" on the assignment page link.
+    get assignment_group_path(assignment_group.id)
+    assert_template "assignment_groups/show"
+  end
 
-  #   ## "Click" on the assignment page link.
-  #   get assignment_path(assignment.id)
-  #   assert_template "assignments/show"
-  #   assert_select "a[href=?]", edit_assignment_path(assignment.id), count: 1
 
-  #   ## "Click" the edit button.
-  #   get edit_assignment_path(assignment.id)
-  #   assert_template "assignments/edit"
+  ## Navigate from the home page to the assignment group index, then visit a 
+  ## specific assignment_group group page, edit it, and submit the changes.
+  test "should be able to navigate to assignment group page and edit from home page" do 
+    log_in_as users(:foo)
 
-  #   ## Simulate submitting the changes.
-  #   @request.env['CONTENT_TYPE'] = 'application/json'
-  #   patch assignment_path(assignment.id)+'.json', params: {assignment: {
-  #     name: "A VERY NEW NAME!"
-  #   }}
-  #   result = JSON.parse(@response.body)
-  #   assert result['success']
-  #   assert result['redirect'] == assignment_path(assignment.id)
+    assignment_group = assignment_groups(:two)
+
+    get root_url
+    assert_select "a", href: assignment_groups_path
+
+    ## "Click" on the link.
+    get assignment_groups_path
+    assert_template "assignment_groups/index"
+    assert_select "a", href: assignment_group_path(assignment_group.id)
+
+    ## "Click" on the assignment_group page link.
+    get assignment_group_path(assignment_group.id)
+    assert_template "assignment_groups/show"
+    assert_select "a[href=?]", edit_assignment_group_path(assignment_group.id), count: 1
+
+    ## "Click" the edit button.
+    get edit_assignment_group_path(assignment_group.id)
+    assert_template "assignment_groups/edit"
+
+    ## Simulate submitting the changes.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    patch assignment_group_path(assignment_group.id)+'.json', params: {assignment_group: {
+      name: "A VERY NEW NAME!"
+    }}
+    result = JSON.parse(@response.body)
+    assert result['success']
+    assert result['redirect'] == assignment_group_path(assignment_group.id)
     
-  #   get result['redirect']
-  #   assert_template "assignments/show"
+    get result['redirect']
+    assert_template "assignment_groups/show"
 
-  #   assert_select ".name-text", "A VERY NEW NAME!"
-  # end
-
-
+    assert_select ".name-text", "A VERY NEW NAME!"
+  end
 
 
-  # ## From the homepage, create a new assignment page and navigate to it from the
-  # ## assignment index.
-  # test "should be able to create a new assignment page, navigate to it, "+
-  #     "and delete it" do
-  #   log_in_as users(:foo)
 
-  #   assignment_name = "MY ASSIGNMENT"
-  #   assignment_description = "YABBA DABBA DOO"
-  #   assignment_summary = "A ASSIGNMENT SUMMARY"
-  #   assignment_author = "AN AUTHOR"
 
-  #   get root_url
-  #   assert_select "a", href: new_assignment_path
+  ## From the homepage, create a new assignment grou ppage and navigate to it 
+  ## from the assignment group index.
+  test "should be able to create a new assignment group page, navigate to it, "+
+      "and delete it" do
+    log_in_as users(:foo)
 
-  #   ## "Click" on the link.
-  #   get new_assignment_path
-  #   assert_template "assignments/new"
+    assignment_group_name = "MY ASSIGNMENT"
+    assignment_group_description = "YABBA DABBA DOO"
+    assignment_group_summary = "A ASSIGNMENT SUMMARY"
+    assignment_group_author = users(:foo).id.to_s
 
-  #   ## Simulate submitting the page info.
-  #   @request.env['CONTENT_TYPE'] = 'application/json'
-  #   post assignments_path+'.json', params: {assignment: {
-  #     author: assignment_author, name: assignment_name,  
-  #     summary: assignment_summary, description: assignment_description
-  #   }}
-  #   assignment = Assignment.last
-  #   assert assignment.name == assignment_name
-  #   assert assignment.summary == assignment_summary
-  #   assert assignment.description == assignment_description
-  #   result = JSON.parse(@response.body)
-  #   assert result['success']
-  #   get result['redirect']
-  #   assert_template "assignments/show"
-  #   assert_select ".name-text", assignment.name
-  #   assert_select "a", href: assignments_path
+    get root_url
+    assert_select "a", href: new_assignment_group_path
 
-  #   ## "Click" on the Assignment link.
-  #   get assignments_path
-  #   assert_template "assignments/index"
-  #   assert_select "a", href: assignment_path(assignment.id)
+    ## "Click" on the link.
+    get new_assignment_group_path
+    assert_template "assignment_groups/new"
 
-  #   ## "Click" on the assignment page link.
-  #   get assignment_path(assignment.id)
-  #   assert_template "assignments/show"
+    ## Simulate submitting the page info.
+    @request.env['CONTENT_TYPE'] = 'application/json'
+    post assignment_groups_path+'.json', params: {assignment_group: {
+      authors: assignment_group_author, name: assignment_group_name,  
+      summary: assignment_group_summary, description: assignment_group_description
+    }}
+    assignment_group = AssignmentGroup.last
+    assert assignment_group.name == assignment_group_name
+    assert assignment_group.summary == assignment_group_summary
+    assert assignment_group.description == assignment_group_description
+    result = JSON.parse(@response.body)
+    assert result['success']
+    get result['redirect']
+    assert_template "assignment_groups/show"
+    assert_select ".name-text", assignment_group.name
+    assert_select "a", href: assignment_groups_path
 
-  #   ## Delete the page.
-  #   assert_select "a[href=?][data-method=delete]", assignment_path(assignment.id), 
-  #     count: 1
-  #   delete assignment_path(assignment.id)
-  #   follow_redirect!
-  #   assert_template 'assignments/index'
+    ## "Click" on the AssignmentGroup link.
+    get assignment_groups_path
+    assert_template "assignment_groups/index"
+    assert_select "a", href: assignment_group_path(assignment_group.id)
 
-  #   ## "Click" on the Assignment link.
-  #   get assignments_path
-  #   assert_template "assignments/index"
+    ## "Click" on the assignment_group page link.
+    get assignment_group_path(assignment_group.id)
+    assert_template "assignment_groups/show"
 
-  #   ## Confirm that the deleted assignment page is not there.
-  #   assert_select "a[href=?]", assignment_path(assignment.id), count: 0
+    ## Delete the page.
+    assert_select "a[href=?][data-method=delete]", assignment_group_path(assignment_group.id), 
+      count: 1
+    delete assignment_group_path(assignment_group.id)
+    follow_redirect!
+    assert_template 'assignment_groups/index'
 
-  # end
+    ## "Click" on the Assignment link.
+    get assignment_groups_path
+    assert_template "assignment_groups/index"
+
+    ## Confirm that the deleted assignment_group page is not there.
+    assert_select "a[href=?]", assignment_group_path(assignment_group.id), count: 0
+
+  end
 
 
 end

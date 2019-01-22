@@ -12,17 +12,17 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_template 'password_resets/new'
   end
 
-  test "invalid username on forgot password page raises an error" do
+  test "invalid email on forgot password page raises an error" do
     # Invalid username.
-    post password_resets_path, params: { password_reset: { uesrname: "" } }
+    post password_resets_path, params: { password_reset: { email: "" } }
     assert_not flash.empty?
     assert_template 'password_resets/new'
   end
 
-  test "a valid username generates a new reset digest" do
-    # Valid username.
+  test "a valid email generates a new reset digest" do
+    # Valid email..
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     assert_not_equal @user.reset_digest, @user.reload.reset_digest, 
       "New digest not generated"
     assert_equal 1, ActionMailer::Base.deliveries.size, "email not sent"
@@ -34,7 +34,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
   test "invalid username with valid reset token raises an error" do
     # Password reset form
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
 
     # Wrong username.
@@ -46,7 +46,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
   test "inactive user can still reset password" do
     # Inactive user.
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
 
     user.toggle!(:activated)
@@ -54,9 +54,9 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_template 'password_resets/edit'
   end
 
-  test "right username, wront token raises an error" do
+  test "right username, wrong token raises an error" do
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
     # Right username, wrong token
     get edit_password_reset_path('wrong token', username: user.username)
@@ -66,7 +66,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
 
   test "right username, right token, but expired raises an error" do
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
     # Right username, right token, but expired
     user.update_attribute(:reset_sent_at, 3.hours.ago)
@@ -78,7 +78,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
 
   test "right username, right token works" do
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
     # Right username, right token
     get edit_password_reset_path(user.reset_token, username: user.username)
@@ -89,7 +89,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
 
   test "token only works once" do
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
     # Right username, right token
     get edit_password_reset_path(user.reset_token, username: user.username)
@@ -99,7 +99,6 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
       username: user.username,
       user: { password:              "password_new",
               password_confirmation: "password_new" } }
-
 
     get edit_password_reset_path(user.reset_token, username: user.username)
     assert_not flash.empty?
@@ -111,7 +110,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
 
   test "invalid password and confirmation raises an error" do
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
 
     # Invalid password & confirmation
@@ -124,7 +123,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
 
   test "empty password with right confirmation raises an error" do
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
     # Empty password
     patch password_reset_path(user.reset_token), params: {
@@ -137,7 +136,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
 
   test "valid password and confirmation works" do
     post password_resets_path, params: {
-      password_reset: { username: @user.username } }
+      password_reset: { email: @user.email } }
     user = assigns(:user)
     # Valid password & confirmation
     patch password_reset_path(user.reset_token), params: {

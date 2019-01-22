@@ -59,7 +59,7 @@ class Example < ApplicationRecord
     end
 
     text :assignments do
-      assignments.map{|a| "#{a.assignment_group.name} #{a.assignment_group.summary} #{a.notes}"} 
+      assignments.map{|a| "#{a.assignment_group.name} #{a.assignment_group.summary} #{a.notes} #{a.course_title} #{a.course_prefix} #{a.course_title} #{a.semester}"} 
     end
 
     text :analyses do

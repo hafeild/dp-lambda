@@ -188,30 +188,29 @@ ul.authors, ul.instructors {
   margin-left: 1.5em;
 }
 
-
-.user {
-  margin-right: .5em;
-  padding: .5em;
-  cursor: pointer;
-  user-select: none;
-
-  background: $brand-primary;
-  color: white;
-
-  .remove-user {
-    margin-left: .5em;
-    :hover {
-      color: $brand-danger;
-    }
-  }
-
-  border-radius: 3px;
-}
-
 .ui-autocomplete li {
   list-style: none;
 }
 
 #picked-users {
   display: inline-block;
+
+  .user {
+    margin-right: .5em;
+    padding: .5em;
+    cursor: pointer;
+    user-select: none;
+  
+    background: $brand-primary;
+    color: white;
+  
+    .remove-user {
+      margin-left: .5em;
+      :hover {
+        color: $brand-danger;
+      }
+    }
+  
+    border-radius: 3px;
+  }
 }

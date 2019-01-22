@@ -2,7 +2,7 @@ one:
   name: assignment group 1
   summary: a short summary
   description: a long description
-  tags: multiTag1
+  tags: multiTag1, one
   authors: foo
   creator: foo
 
@@ -22,3 +22,19 @@ three:
   creator: foo
   authors: foo
   web_resources: soloWebResource_AssignmentGroupThree
+
+for_search_tests_1:
+  name: assignment group for search tests
+  summary: whatever
+  description: blah blah blah
+  tags: multiTag1, multiTag2
+  creator: foo
+  authors: foo
+
+for_search_tests_2:
+  name: assignment group for search tests 2
+  summary: whatever
+  description: blah blah blah
+  tags: multiTag1, multiTag2
+  creator: foo
+  authors: foo

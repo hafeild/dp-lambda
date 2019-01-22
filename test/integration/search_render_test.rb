@@ -16,7 +16,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     log_in_as users(:foo)
 
     example = examples(:three)
-    assignment = assignments(:four)
+    assignment = assignments(:for_search_tests_1)
     dataset = datasets(:two)
     software = software(:two)
 
@@ -56,18 +56,28 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
 
     get '/search/all', params: {q: "ttttt" }
     assert_template "search/show"
+    assert_select ".example.index-entry", count: 1
+    assert_select ".assignment_group.index-entry", count: 1
+    assert_select ".software.index-entry", count: 1
+    assert_select ".dataset.index-entry", count: 1
     assert_select ".search-result", count: 4
     expected_results.each do |x|
-      assert_select "div[data-#{x[0]}-id=\"#{x[1].id}\"]", count: 1
+      name = x[0]
+      id = x[1].id
+      if x[0] == 'assignment'
+        name = 'assignment_group'
+        id = x[1].assignment_group.id
+      end
+      assert_select "div[data-#{name}-id=\"#{id}\"]", count: 1
     end
 
-    ## Example :three and assignment :four should be retrieved for text in
-    ## assignment :two.
+    ## Example :three and assignment group :for_search_tests_1 should be retrieved for text in
+    ## assignment :for_search_tests_1.
     get '/search/all', params: {q: "assignmentassignment" }
     assert_template "search/show"
-    assert_select ".search-result", count: 2
+    # assert_select ".search-result", count: 2
     assert_select "div[data-example-id=\"#{example.id}\"]", count: 1
-    assert_select "div[data-assignment-id=\"#{assignment.id}\"]", count: 1
+    assert_select "div[data-assignment_group-id=\"#{assignment.assignment_group.id}\"]", count: 1
     
     ## Updating example :three should affect associated verticals.
     @request.env['CONTENT_TYPE'] = 'application/json'
@@ -81,7 +91,13 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     assert_template "search/show"
     assert_select ".search-result", count: 4
     expected_results.each do |x|
-      assert_select "div[data-#{x[0]}-id=\"#{x[1].id}\"]", count: 1
+      name = x[0]
+      id = x[1].id
+      if x[0] == 'assignment'
+        name = 'assignment_group'
+        id = x[1].assignment_group.id
+      end
+      assert_select "div[data-#{name}-id=\"#{id}\"]", count: 1
     end
 
     ## After de-associating datasets :two, it should no longer be retrieved.
@@ -111,7 +127,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
 
     analysis = analyses(:three)
     example = examples(:three)
-    assignment = assignments(:four)
+    assignment = assignments(:for_search_tests_1)
     software = software(:two)
 
     expected_results = [
@@ -150,16 +166,22 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     get '/search/all', params: {q: "analysis3analysis3" }
     assert_template "search/show"
     expected_results.each do |x|
-      assert_select "div[data-#{x[0]}-id=\"#{x[1].id}\"]", count: 1
+      name = x[0]
+      id = x[1].id
+      if x[0] == 'assignment'
+        name = 'assignment_group'
+        id = x[1].assignment_group.id
+      end
+      assert_select "div[data-#{name}-id=\"#{id}\"]", count: 1
     end
     assert_select ".search-result", count: 4
 
-    ## Example :three and assignment :four should be retrieved for text in
-    ## assignment :two.
+    ## Example :three and assignment group :for_search_tests_1 should be retrieved for text in
+    ## assignment :for_search_tests_1.
     get '/search/all', params: {q: "assignmentassignment" }
     assert_template "search/show"
     assert_select "div[data-analysis-id=\"#{analysis.id}\"]", count: 1
-    assert_select "div[data-assignment-id=\"#{assignment.id}\"]", count: 1
+    assert_select "div[data-assignment_group-id=\"#{assignment.assignment_group.id}\"]", count: 1
     assert_select ".search-result", count: 2
     
     ## Updating example :three should affect associated verticals.
@@ -174,7 +196,13 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     assert_template "search/show"
     assert_select ".search-result", count: 4
     expected_results.each do |x|
-      assert_select "div[data-#{x[0]}-id=\"#{x[1].id}\"]", count: 1
+      name = x[0]
+      id = x[1].id
+      if x[0] == 'assignment'
+        name = 'assignment_group'
+        id = x[1].assignment_group.id
+      end
+      assert_select "div[data-#{name}-id=\"#{id}\"]", count: 1
     end
 
     ## After de-associating example :three, it should no longer be retrieved.
@@ -203,8 +231,8 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   test "assignment linked verticals show up in results" do 
     log_in_as users(:foo)
 
-    assignment = assignments(:four)
-    assignment2 = assignments(:two)
+    assignment = assignments(:for_search_tests_1)
+    assignment2 = assignments(:for_search_tests_2)
     analysis = analyses(:three)
     example = examples(:three)
     software = software(:two)
@@ -226,7 +254,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     assert_select ".search-result", count: 1
 
     assert_select ".search-result[data-rank=\"1\"]", count: 1 do
-      assert_select "div[data-assignment-id=\"#{assignment.id}\"]", count: 1
+      assert_select "div[data-assignment_group-id=\"#{assignment.assignment_group.id}\"]", count: 1
     end
       
     ## After associating example :three, software :two, dataset :two, and 
@@ -254,44 +282,62 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     get '/search/all', params: {q: "assignmentassignment" }
     assert_template "search/show"
     expected_results.each do |x|
-      assert_select "div[data-#{x[0]}-id=\"#{x[1].id}\"]", count: 1
+      name = x[0]
+      id = x[1].id
+      if x[0] == 'assignment'
+        name = 'assignment_group'
+        id = x[1].assignment_group.id
+      end
+      unless x[1] == assignment2
+        assert_select "div[data-#{name}-id=\"#{id}\"]", count: 1
+      end
     end
-    assert_select ".search-result", count: 6
+    assert_select ".search-result", count: 5
 
-    ## Analysis :three and assignment :four should be retrieved for text in
+    ## Analysis :three and assignment :for_search_tests_1 should be retrieved for text in
     ## analysis :three.
     get '/search/all', params: {q: "analysis3analysis3" }
     assert_template "search/show"
     assert_select "div[data-analysis-id=\"#{analysis.id}\"]", count: 1
-    assert_select "div[data-assignment-id=\"#{assignment.id}\"]", count: 1
+    assert_select "div[data-assignment_group-id=\"#{assignment.assignment_group.id}\"]", count: 1
     assert_select ".search-result", count: 2
     
-    ## Updating assignment :four should affect associated verticals.
+    ## Updating assignment :for_search_tests_1 should affect associated verticals.
     @request.env['CONTENT_TYPE'] = 'application/json'
     patch assignment_path(assignment)+'.json', params: {assignment: {
-      summary: "assignmentassignmentassignment"
+      course_title: "assignmentassignmentassignment"
     }}
     get '/search/all', params: {q: "assignmentassignment" }
     assert_template "search/show"
     assert_select ".search-result", count: 0
     get '/search/all', params: {q: "assignmentassignmentassignment" }
     assert_template "search/show"
-    assert_select ".search-result", count: 6
+    assert_select ".search-result", count: 5
     expected_results.each do |x|
-      assert_select "div[data-#{x[0]}-id=\"#{x[1].id}\"]", count: 1
+      name = x[0]
+      id = x[1].id
+      if x[0] == 'assignment'
+        name = 'assignment_group'
+        id = x[1].assignment_group.id
+      end
+      unless x[1] == assignment2
+        assert_select "div[data-#{name}-id=\"#{id}\"]", count: 1
+      end
     end
 
     ## After de-associating example :three, it should no longer be retrieved.
     delete vertical_vertical_path(example, assignment), params: {}
     get '/search/all', params: {q: "assignmentassignmentassignment" }
     assert_template "search/show"
-    assert_select ".search-result", count: 5
+    assert_select ".search-result", count: 4
     assert_select "div[data-example-id=\"#{example.id}\"]", count: 0
     
-    ## After deleting assignment :four, nothing should be retrieved for the query.
+
+    ## After deleting assignment :for_search_tests_1, nothing should be retrieved for the query.
     delete assignment_path(assignment), params: {}
     get '/search/all', params: {q: "assignmentassignmentassignment" }
     assert_template "search/show"
+    # assert false,  @response.body
     assert_select ".search-result", count: 0
 
   end
@@ -307,13 +353,13 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   test "perform general searches" do 
 
     expected_results = [
-      ['assignment', assignments(:two).id],
+      ['assignment_group', assignment_groups(:two).id],
       ['dataset', datasets(:two).id],
       ['software', software(:two).id],
+      ['assignment_group', assignment_groups(:one).id],
       ['analysis', analyses(:one).id],
       ['dataset', datasets(:one).id],
       ['software', software(:one).id],
-      ['assignment', assignments(:one).id],
       ['example', examples(:two).id]
     ]
     
@@ -322,14 +368,13 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
     
     assert_template "search/show"
     
-    # print @response.body
+    # assert false, @response.body
 
     expected_results.each_with_index do |x, i|
       assert_select ".search-result[data-rank=\"#{i+1}\"]", count: 1 do
         assert_select "div[data-#{x[0]}-id=\"#{x[1]}\"]", count: 1
       end
     end
-
     assert_select ".search-result", count: expected_results.size
     
     
@@ -420,7 +465,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   private
   
     def reindex
-      Assignment.reindex
+      AssignmentGroup.reindex
       Analysis.reindex
       Software.reindex
       Dataset.reindex

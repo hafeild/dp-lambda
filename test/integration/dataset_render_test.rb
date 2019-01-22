@@ -42,7 +42,7 @@ class DatasetRenderTest < ActionDispatch::IntegrationTest
 
   ## Tests for index.
   test "should display all dataset entries" do 
-    datasets = [datasets(:one), datasets(:two)]
+    datasets = Dataset.all
 
     get datasets_path
     assert_template "datasets/index"

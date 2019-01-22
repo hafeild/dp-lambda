@@ -28,10 +28,11 @@ class AdminToolsTest < ActionDispatch::IntegrationTest
     log_in_as users(:foo)
     get users_path
     assert_template "users/index"
-    assert flash.keys.size == 0
+    assert flash.keys.size == 1
+    assert_equal flash[:info], "Welcome back! You are now logged in"
     
-    assert_select "tr.user", 2
-    [users(:foo), users(:bar)].each do |user|
+    assert_select "tr.user", User.all.size
+    User.all.each do |user|
       assert_select "#user-#{user.id}>td.permission_level", user.permission_level
     end
   end
@@ -78,7 +79,9 @@ class AdminToolsTest < ActionDispatch::IntegrationTest
     ## All unreviewed permission requests listed.
     get permission_requests_path
     assert_template "permission_requests/index"
-    assert flash.keys.size == 0
+    assert flash.keys.size == 1
+    assert_equal flash[:info], "Welcome back! You are now logged in"
+
     assert_select "tr.permission_request", 2
     [permission_request, permission_requests(:pr2)].each do |pr|
       assert_select "#permission_request-#{pr.id}>td.level-requested", 

@@ -42,6 +42,8 @@ three:
   course_title: Writing Essays
   field_of_study: English
   semester: Winter 2017
+  examples: two
+  datasets: one
 
 four:
   assignment_group: two
@@ -52,6 +54,8 @@ four:
   course_title: Writing Essays
   field_of_study: English
   semester: Winter 2017
+  analyses: one
+  software: one
 
 five:
   creator: bar
@@ -78,3 +82,28 @@ six:
   analyses: soloAnalysis_AssignmentSix, multiAnalysis1
   software: multiSoftware1, soloSoftware_AssignmentSix
   datasets: soloDataset_AssignmentSix, multiDataset1
+
+for_search_tests_1:
+  assignment_group: for_search_tests_1
+  creator: bar
+  instructors: bar
+  assignments_related_from: one
+  assignments_related_to: one
+  course_prefix: ENG
+  course_number: 302
+  course_title: assignmentassignment
+  field_of_study: English
+  semester: Winter 2017
+
+for_search_tests_2:
+  assignment_group: for_search_tests_2
+  creator: bar
+  instructors: bar
+  assignments_related_from: one
+  assignments_related_to: one
+  course_prefix: ENG
+  course_number: 302
+  course_title: a simple title
+  field_of_study: English
+  semester: Winter 2017
+  assignments_related_to: for_search_tests_1

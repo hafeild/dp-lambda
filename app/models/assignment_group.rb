@@ -89,7 +89,7 @@ class AssignmentGroup < ApplicationRecord
 
     text :tags do
       # all_tags
-      assignments.map{|a| a.tags.map{|tag| tag.text}}.flatten
+      tags.map{|t| t.text} + assignments.map{|a| a.tags.map{|tag| tag.text}}.flatten
     end
 
     text :web_resources do
