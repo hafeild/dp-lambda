@@ -89,7 +89,7 @@ class SearchController < ApplicationController
       end
       
       if @vertical == 'all'
-        @search = Sunspot.search( Assignment, Analysis, Software, Dataset, 
+        @search = Sunspot.search( AssignmentGroup, Analysis, Software, Dataset, 
           Example, &query_body )
       else
         @search = Sunspot.search @vertical_map[@vertical], &query_body
@@ -118,7 +118,7 @@ class SearchController < ApplicationController
       end
     rescue => e 
       # render text: e
-      # puts "#{e.message} #{e.backtrace.join("\n")}"
+      puts "#{e.message} #{e.backtrace.join("\n")}"
 
       
       respond_with_error "There was an error while executing your search: #{e}.", 
@@ -165,7 +165,7 @@ class SearchController < ApplicationController
     def get_vertical_map
       @vertical_map = {
         'all' => nil,
-        'assignments' => Assignment,
+        'assignments' => AssignmentGroup,
         'examples' => Example,
         'analyses' => Analysis,
         'datasets' => Dataset,

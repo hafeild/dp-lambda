@@ -81,6 +81,7 @@ namespace :v19_01_data_migration do
       a.assignment_group = ag
       a.instructors << instructor
       a.creator = oa.creator
+      a.created_at = oa.created_at
 
       a.learning_curve = oa.learning_curve
       a.instruction_hours = oa.instruction_hours
@@ -110,6 +111,8 @@ namespace :v19_01_data_migration do
       if clone
         a = a.deep_clone
       end
+
+      a.created_at = ar.created_at
 
       a.course_prefix = this_or_that_if_empty(ar.course_prefix, "???")
       a.course_number = this_or_that_if_empty(ar.course_number, "???")

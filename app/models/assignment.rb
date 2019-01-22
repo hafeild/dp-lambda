@@ -156,81 +156,81 @@ class Assignment < ApplicationRecord
     a
   end
 
-  ## For search.
-  searchable do
-    text :notes, :learning_curve
+  # ## For search.
+  # searchable do
+  #   text :notes, :learning_curve
     
-    text :instructors do 
-      instructors.map{|instructor| [instructor.username, instructor.full_name].join(" ")}
-    end
+  #   text :instructors do 
+  #     instructors.map{|instructor| [instructor.username, instructor.full_name].join(" ")}
+  #   end
 
-    text :authors do 
-      assignment_group.authors.map{|author| [author.username, author.full_name].join(" ")}
-    end
+  #   text :authors do 
+  #     assignment_group.authors.map{|author| [author.username, author.full_name].join(" ")}
+  #   end
 
-    text :creator do 
-      creator.username
-    end
+  #   text :creator do 
+  #     creator.username
+  #   end
 
-    text :tags do
-      (tags + assignment_group.tags).map{|tag| tag.text}.uniq
-    end
+  #   text :tags do
+  #     (tags + assignment_group.tags).map{|tag| tag.text}.uniq
+  #   end
 
-    text :name do 
-      assignment_group.name
-    end
+  #   text :name do 
+  #     assignment_group.name
+  #   end
 
-    text :summary do
-      assignment_group.summary
-    end
+  #   text :summary do
+  #     assignment_group.summary
+  #   end
 
-    text :description do
-      assignment_group.description
-    end
+  #   text :description do
+  #     assignment_group.description
+  #   end
 
-    # text :assignment_group do
-    #   [assignment_group.name, assignment_group.summary].join(" ") 
-    # end
+  #   # text :assignment_group do
+  #   #   [assignment_group.name, assignment_group.summary].join(" ") 
+  #   # end
 
 
-    text :web_resources do
-      (web_resources + assignment_group.web_resources).map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
-    end
+  #   text :web_resources do
+  #     (web_resources + assignment_group.web_resources).map{|wr| "#{wr.url.gsub('/', ' ')} #{wr.description}"} 
+  #   end
 
-    text :examples do
-      examples.map{|example| "#{example.title} #{example.summary}"}
-    end
+  #   text :examples do
+  #     examples.map{|example| "#{example.title} #{example.summary}"}
+  #   end
 
-    text :analyses do
-      analyses.map{|a| "#{a.name} #{a.summary}"}
-    end
+  #   text :analyses do
+  #     analyses.map{|a| "#{a.name} #{a.summary}"}
+  #   end
 
-    text :datasets do
-      datasets.map{|d| "#{d.name} #{d.summary}"}
-    end
+  #   text :datasets do
+  #     datasets.map{|d| "#{d.name} #{d.summary}"}
+  #   end
 
-    text :software do
-      software.map{|s| "#{s.name} #{s.summary}"}
-    end
+  #   text :software do
+  #     software.map{|s| "#{s.name} #{s.summary}"}
+  #   end
 
-    text :attachments do
-      attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
-    end
+  #   text :attachments do
+  #     attachments.map{|a| "#{a.file_attachment_file_name} #{a.description}"}
+  #   end
 
-    ## For scoping and faceting.
-    double :instruction_hours_facet do 
-      instruction_hours
-    end
-    integer :creator_facet do 
-      creator_id
-    end
-    string :instructor_facet do 
-      instructors.map{|instructor| instructor.username}.join(" ")
-    end
-    string :learning_curve_facet do
-      learning_curve
-    end
-  end
+  #   ## For scoping and faceting.
+  #   double :instruction_hours_facet do 
+  #     instruction_hours
+  #   end
+  #   integer :creator_facet do 
+  #     creator_id
+  #   end
+  #   string :instructor_facet do 
+  #     instructors.map{|instructor| instructor.username}.join(" ")
+  #   end
+  #   string :learning_curve_facet do
+  #     learning_curve
+  #   end
+  # end
 
   def delink
     tags.clear

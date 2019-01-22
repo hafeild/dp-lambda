@@ -13,7 +13,7 @@
     background-color: $all-color;
   }
 
-  .assignments, .assignment {
+  .assignments, .assignment, .assignment_groups, .assignment_group {
     background-color: $assignment-color;
   }  
   
@@ -58,7 +58,7 @@
   .serp-for-software .software,
   .serp-for-analyses .analyses, 
   .serp-for-datasets .datasets, 
-  .serp-for-assignments .assignments {
+  .serp-for-assignments .assignments, .serp-for-assignment_groups .assignment_groups{
     color: black;
     border-color: gray;
   }
@@ -67,7 +67,7 @@
     border-bottom-color: $all-color;
   }
 
-  .serp-for-assignments .assignments {
+  .serp-for-assignments .assignments, .serp-for-assignment_groups .assignment_groups{
     border-bottom-color: $assignment-color;
   }
   
