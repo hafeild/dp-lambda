@@ -68,7 +68,7 @@
               <% else %>
                 <th>Instructors:</th>
                 <td>
-                  <%= oxford_comma_list(assignment.instructors.map{|i| "<span class=\"isntructor\">#{sanitize_text i.full_name}</span>"}).html_safe %>
+                  <%= oxford_comma_list(assignment.instructors.map{|i| "<span class=\"instructor\">#{sanitize_text i.full_name}</span>"}).html_safe %>
                 </td>
               <% end %>
 
