@@ -82,6 +82,7 @@ namespace :users do
       puts "\tEmail:      #{user.email}"
       puts "\tRole:       #{user.role}"
       puts "\tField:      #{user.field_of_study}"
+      puts "\tRegistered: #{user.is_registered}"
       puts "\tActivated:  #{user.activated}"
       puts "\tActivated at:#{user.activated_at}"
       puts "\tPer. level  #{user.permission_level}"
@@ -101,14 +102,19 @@ namespace :users do
     def update_user_from_gets(user)
       fields = [:username, :email, :first_name, :last_name, :role,
         :field_of_study, :permission_level, :password, :password_confirmation]
-        
+      required = {username: true, email: true, first_name: true, 
+        last_name: true, role: true, password: true, field_of_study: true}
+
+      original_values = user.attributes
       values = {}
       
       fields.each do |field|
+        is_needed = (required.has_key?(field) && (original_values[field.to_s].nil? || original_values[field.to_s] == "")) ? "(*)" : ""
+
         if field == :password or field == :password_confirmation
-          data = ask("#{field}: ") {|q| q.echo = false}
+          data = ask("#{field}#{is_needed}: ") {|q| q.echo = false}
         else
-          print "#{field}: "
+          print "#{field}#{is_needed}: "
           data = STDIN.gets.chomp
         end
         
@@ -120,7 +126,15 @@ namespace :users do
       if values.has_key? :permission_level
         values[:permission_level_granted_on] = Time.now
       end
-      
+
+      print "registered? (yes/no/<blank>): "
+      data = STDIN.gets.chomp
+      if data == "yes"
+        values[:is_registered] = true
+      elsif data == "no"
+        values[:is_registered] = false
+      end
+
       print "activated? (yes/no/<blank>): "
       data = STDIN.gets.chomp
       if data == "yes" && !user.activated

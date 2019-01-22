@@ -1,7 +1,21 @@
 require 'highline/import'
 
 namespace :v19_01_data_migration do
+
+  desc "Runs all the tasks in this namespace."
+  task all: :environment do
+    Rake::Task["v19_01_data_migration:copy_sunspot_config"].execute
+    Rake::Task["v19_01_data_migration:fix_users"].execute
+    Rake::Task["v19_01_data_migration:migrate_assignments"].execute
+  end
   
+  desc "Copies the updated sunspot configuration file to the solr directory."
+  task copy_sunspot_config: :environment do
+    source = File.join(Dir.pwd, "sunspot", "conf", "schema.xml")
+    target = File.join(Dir.pwd, "solr", "configsets", "sunspot", "conf", "schema.xml")
+    FileUtils.cp_r source, target
+  end
+
   desc "Makes all users registered, not deleted, and removes at signs from usernames."
   task fix_users: :environment do
     User.all.each do |user|
