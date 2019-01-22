@@ -13,6 +13,14 @@ namespace :v19_01_data_migration do
   task copy_sunspot_config: :environment do
     source = File.join(Dir.pwd, "sunspot", "conf", "schema.xml")
     target = File.join(Dir.pwd, "solr", "configsets", "sunspot", "conf", "schema.xml")
+
+    print "Where is your solr root directory? Leave blank to use solr/: "
+    input = STDIN.gets.chomp
+
+    unless input == ""
+      target = File.join(input, "server", "solr", "configsets", "sunspot", "conf", "schema.xml")
+    end
+
     FileUtils.cp_r source, target
   end
 
@@ -81,7 +89,7 @@ namespace :v19_01_data_migration do
       ag.name = oa.name
       ag.summary = oa.summary
       ag.description = oa.description
-      ag.creator = oa.creator
+      ag.creator = oa.creator || author
       ag.created_at = oa.created_at
       ag.authors << author
       oa.tags.each{|i| ag.tags << i}
@@ -94,7 +102,7 @@ namespace :v19_01_data_migration do
       a = Assignment.new
       a.assignment_group = ag
       a.instructors << instructor
-      a.creator = oa.creator
+      a.creator = oa.creator || instructor
       a.created_at = oa.created_at
 
       a.learning_curve = oa.learning_curve
