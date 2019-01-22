@@ -118,7 +118,7 @@ class SearchController < ApplicationController
       end
     rescue => e 
       # render text: e
-      puts "#{e.message} #{e.backtrace.join("\n")}"
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
 
       
       respond_with_error "There was an error while executing your search: #{e}.", 
@@ -149,7 +149,7 @@ class SearchController < ApplicationController
       @query_seconds = (end_time - start_time)/1000.0
       render 'show_matched_users'
     rescue => e
-      puts "#{e.message} #{e.backtrace.join("\n")}"
+      # puts "#{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error while executing your search: #{e}.",
         @redirect_path
     end

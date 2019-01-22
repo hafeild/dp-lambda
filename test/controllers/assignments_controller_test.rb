@@ -373,7 +373,7 @@ class AssignmentsControllerTest < ActionController::TestCase
       } 
     }
 
-    assert_redirected_to edit_assignment_path(assignment), @response.body
+    assert_redirected_to edit_assignment_group_assignment_path(assignment_group, assignment), @response.body
     assignment.reload
     assert assignment.instructors.size == 2, "Instructors updated."
     assert assignment.instructors.exists?(id: users(:foo).id)
@@ -542,7 +542,8 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_difference "Assignment.count", -1, "Assignment not deleted" do
     assert_difference "Tag.count", -1, "Solo tag not removed." do
     assert_difference "WebResource.count", -1, "Multi web resource removed." do
-      delete :destroy, params: { id: assignment.id }
+      delete :destroy, params: { assignment_group_id: assignment_group.id, 
+        id: assignment.id }
       assert_redirected_to assignment_group_path(assignment_group), @response.body
       assignment_group.reload
 
