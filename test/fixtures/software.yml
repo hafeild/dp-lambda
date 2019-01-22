@@ -107,3 +107,10 @@ multiSoftware1:
   summary: a summary
   creator: foo
   description: a description
+
+multiSoftware2:
+  name: multiSoftware2
+  summary: a summary
+  creator: foo
+  description: a description
+  tags: soloTag_SoftwareOne

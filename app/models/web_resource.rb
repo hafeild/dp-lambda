@@ -44,7 +44,7 @@ class WebResource < ApplicationRecord
 
   private
     def reload_connections
-      [assignments, analyses, datasets, software, tags, examples].each do |connectionSet|
+      [assignment_groups, assignments, analyses, datasets, software, tags, examples].each do |connectionSet|
         connectionSet.each do |connection|
           connection.web_resources.delete(self)
           connection.save!

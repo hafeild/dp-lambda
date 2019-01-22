@@ -141,8 +141,8 @@ class TagsControllerTest < ActionController::TestCase
 
   test "should unlink tag to software page" do
     log_in_as users(:foo)
-    software = software(:two)
-    tag = tags(:one)
+    software = software(:multiSoftware2)
+    tag = software.tags.first
     assert_difference "software.tags.size", -1, "Tag not unlinked" do
       delete :disconnect, params: { software_id: software.id, id: tag.id }
       assert_redirected_to software_path(software), @response.body

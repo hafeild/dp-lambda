@@ -31,11 +31,16 @@ class AssignmentGroupTest < ActiveSupport::TestCase
       summary: "a summary",
       description: "a description",
       authors: [users(:foo)],
-      web_resources: [web_resources(:one)],
-      tags: [tags(:one)],
+      # web_resources: [web_resources(:one)],
+      # tags: [tags(:multiTag1)],
       assignments: [assignments(:five)]
     )
-    assert assignment_group.save, "Couldn't save"
+    assert assignment_group.save!, "Couldn't save"
+    assignment_group.reload
+
+    assignment_group.web_resources << web_resources(:one)
+    assignment_group.tags << tags(:multiTag1)
+    assert assignment_group.save!, "Couldn't save"
     assignment_group.reload
 
     assert assignment_group.name == "A very unique name", "Name not saved."
@@ -46,12 +51,14 @@ class AssignmentGroupTest < ActiveSupport::TestCase
       "Creator not recipricated."
     assert users(:foo).authored_assignment_groups.exists?(id: assignment_group.id), 
       "First author not recipricated."
-    assert web_resources(:one).assignment_groups.exists?(id: assignment_group.id),
-      "Web resource not recipricated"
-    assert tags(:one).assignment_groups.exists?(id: assignment_group.id), 
-      "Tag not recipricated"
+    
     assert assignments(:five).assignment_group == assignment_group, 
       "Assignment not recipricated"
+    assert assignment_group.tags.exists?(id: tags(:multiTag1).id), "tag not added"
+    assert tags(:multiTag1).assignment_groups.exists?(id: assignment_group.id), 
+        "Tag not recipricated"
+    assert web_resources(:one).assignment_groups.exists?(id: assignment_group.id),
+      "Web resource not recipricated"
   end
 
 

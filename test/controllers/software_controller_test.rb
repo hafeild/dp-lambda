@@ -231,13 +231,13 @@ class SoftwareControllerTest < ActionController::TestCase
 
     assert_difference 'Software.count', -1, "Software page not removed" do
     assert_difference 'WebResource.count', -1, "Web resource not removed" do
-    assert_difference 'Tag.count', -1, "Tag not removed" do
+    assert_difference 'Tag.count', 0, "Tag removed" do
     assert_difference 'Example.count', 0, "Example removed" do
 
       delete :destroy, params: {id: software.id}
 
       assert Software.find_by(id: software.id).nil?, "Software not removed"
-      assert Tag.find_by(id: tag.id).nil?, "Tag not removed"
+      assert_not Tag.find_by(id: tag.id).nil?, "Tag removed"
       assert WebResource.find_by(id: web_resource.id).nil?, 
         "Web resource not removed"
       assert_not Example.find_by(id: example.id).nil?, "Example removed"
