@@ -31,6 +31,9 @@ gem 'loofah', '>= 2.2.3'
 gem 'rack', '>= 2.0.6'
 gem 'jquery-ui-rails', '6.0.1'
 gem 'minitest', '5.10.3'
+gem "nokogiri", ">= 1.8.5"
+
+
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 

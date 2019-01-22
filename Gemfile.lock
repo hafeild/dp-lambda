@@ -235,6 +235,7 @@ DEPENDENCIES
   loofah (>= 2.2.3)
   mini_magick
   minitest (= 5.10.3)
+  nokogiri (>= 1.8.5)
   paperclip (~> 5.0.0)
   pg (= 0.21)
   puma (~> 3.0)
