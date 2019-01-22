@@ -10,7 +10,7 @@ class SessionsControllerTest < ActionController::TestCase
   test "shouldn't be able to log into a stub account" do
     stub_user = users(:stub1)
     post :create, params: {session: {username: stub_user.username, password: "password"}}
-    assert_redirected_to root_path, @response.body
+    assert_template 'sessions/new', @response.body
     assert flash[:warning] == "This account is only a stub; to claim it, "+
       "click \"Forgot password\" to a have a password reset link emailed "+
       "to you.", "Wrong flash: #{flash[:warning]}"
@@ -40,7 +40,7 @@ class SessionsControllerTest < ActionController::TestCase
     ## Wrong password
     post :create, params: {session: {username: user.email, 
       password: "wrongpassword"}}
-    assert_redirected_to login_path, @response.body
+    assert_template 'sessions/new', @response.body
     assert flash[:danger] == "Invalid username/email and password combination", 
       "Wrong flash message: #{flash[:danger]}" 
   end
@@ -52,7 +52,7 @@ class SessionsControllerTest < ActionController::TestCase
 
     post :create, params: {session: {username: user.username, 
       password: "password"}}
-    assert_redirected_to root_path, @response.body
+    assert_template 'sessions/new', @response.body
     assert flash[:warning] == "Account not activated. Check your email for "+
       "the activation link or click \"Forgot password\" to a have a new one "+
       "emailed to you.", "Wrong flash: #{flash[:warning]}"
@@ -66,7 +66,7 @@ class SessionsControllerTest < ActionController::TestCase
 
     post :create, params: {session: {username: user.username, 
       password: "password"}}
-    assert_redirected_to root_path, @response.body
+    assert_template 'sessions/new', @response.body
     assert flash[:warning] == "Account has been deleted.", 
       "Wrong flash: #{flash[:warning]}"
   end
