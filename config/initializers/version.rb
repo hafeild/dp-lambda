@@ -12,7 +12,7 @@
 ## restart.
 
 ## Update these fields ##
-isRelease = true
+isRelease = false
 yearVersion   = "19" ## Year of release.
 monthVersion  = "01" ## Month of release.
 numberVersion = "00" ## Number of release within Year-Month
