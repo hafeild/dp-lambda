@@ -16,7 +16,7 @@ isRelease = true
 yearVersion   = "19" ## Year of release.
 monthVersion  = "01" ## Month of release.
 numberVersion = "00" ## Number of release within Year-Month
-hotFixNo      = "00" ## Hot fix no. for release.
+hotFixNo      = "01" ## Hot fix no. for release.
 
 VERSION = [
   yearVersion, 

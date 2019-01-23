@@ -116,7 +116,13 @@ namespace :v19_01_data_migration do
       oa.software.each{|i| a.software << i}
       oa.analyses.each{|i| a.analyses << i}
       oa.datasets.each{|i| a.datasets << i}
-      oa.attachments.each{|i| a.attachments << i}
+      oa.attachments.each do |i|
+        a.attachments << i
+        if i.uploaded_by.nil?
+          i.uploaded_by = User.find_by(username: "unkown")
+          i.save!
+        end
+      end
 
       ## Some defaults.
       a.course_prefix = "???"
