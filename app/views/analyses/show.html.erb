@@ -26,15 +26,15 @@
   <div class="tags">
     <% if can_edit? %>
       <span class="edit-toggle">
-		  <a href="<%= vertical_tag_index_path @analysis %>">
-			<button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add Tags">
-			  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-			</button>
-		  </a>
-		   <!-- got merged into ^^
-		   <%-# new_vertical_tag_path @analysis -%>
-		   -->
-		</span>
+      <a href="<%= vertical_tag_index_path @analysis %>">
+      <button class="btn btn-sm btn-link" data-toggle="tooltip" title="Add Tags">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </button>
+      </a>
+       <!-- got merged into ^^
+       <%-# new_vertical_tag_path @analysis -%>
+       -->
+    </span>
     <% end %>
     Tags:
       <%= render(partial: "tags/tag_badge", 
@@ -58,62 +58,64 @@
   <h2 class="m-1">Materials</h2>
   <div class="row">
     <div class="col-sm-4">
-	  <%= render(partial: "attachments/attachment_list",
+    <%= render(partial: "attachments/attachment_list",
       locals: { 
         vertical_from: @analysis, 
         data: @analysis.attachments,
         editable: true,
         title_tag: :h3 }) %>
-	</div>
-	<div class="col-sm-4">
-	  <div class="web-resources">
-		<h3>From the web
-		<% if can_edit? %>
-		  <span class="edit-toggle">
-			  <a href="<%= vertical_web_resource_index_path @analysis %>">
-			    <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
-				  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				</button>
-			  </a>
-			  <!-- got merged into ^^
-			  <%-# new_vertical_web_resource_path @analysis -%>
-			  -->
-		    </span>
-		</h3>
-		<% end %>
-		<ul>
-		  <%= render(partial: "web_resources/web_resource_list_item", 
-			collection: sort_by(@analysis.web_resources, :description), as: :web_resource,
-			locals: {print_header: true, vertical: @analysis}) || 
-			"There are currently no web resources associated with this analysis." %>
-		</ul>
-	  </div>
-	</div>
-	<div class="col-sm-4">
-	</div>
+  </div>
+  <div class="col-sm-4">
+    <div class="web-resources">
+    <h3>From the web
+    <% if can_edit? %>
+      <span class="edit-toggle">
+        <a href="<%= vertical_web_resource_index_path @analysis %>">
+          <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
+        </a>
+        <!-- got merged into ^^
+        <%-# new_vertical_web_resource_path @analysis -%>
+        -->
+        </span>
+    </h3>
+    <% end %>
+    <ul>
+      <%= render(partial: "web_resources/web_resource_list_item", 
+      collection: sort_by(@analysis.web_resources, :description), as: :web_resource,
+      locals: {print_header: true, vertical: @analysis}) || 
+      "There are currently no web resources associated with this analysis." %>
+    </ul>
+    </div>
+  </div>
+  <div class="col-sm-4">
+  </div>
   </div>
   
   <hr>
-  <h2 class="m-1">Used In</h2>
+  <h2 class="m-1">Resources that use this anlaysis</h2>
   <div class="row">
     
-	<div class="col-sm-4">
-	    <%= render(partial: "verticals_shared/related_vertical",
-			locals: {title: "Software", vertical_from: @analysis, 
-             vertical_to: Software.new, editable: true}) %>
-	</div>
-    <div class="col-sm-4">
-	    <%= render(partial: "verticals_shared/related_vertical",
-			locals: {title: "Assignments", vertical_from: @analysis, 
+  <div class="col-sm-4">
+      <%= render(partial: "verticals_shared/related_vertical",
+      locals: {title: "Assignments", vertical_from: @analysis, 
              vertical_to: Assignment.new, editable: true}) %>
-	</div>
-	<div class="col-sm-4">
-	      <%= render(partial: "examples/related_examples",
-			   locals: {title: "Examples", 
+  </div>
+
+  <div class="col-sm-4">
+      <%= render(partial: "verticals_shared/related_vertical",
+      locals: {title: "Software", vertical_from: @analysis, 
+             vertical_to: Software.new, editable: true}) %>
+  </div>
+
+  <div class="col-sm-4">
+        <%= render(partial: "examples/related_examples",
+         locals: {title: "Examples", 
                vertical: @analysis, 
                editable: true,
                title_tag: :h3 }) %>
-	</div>
+  </div>
   </div>
 
 </div>

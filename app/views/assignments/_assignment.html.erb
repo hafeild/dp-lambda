@@ -245,20 +245,9 @@
    
   <hr>
   <div class="related-resources">
-    <h2 class="m-1">Related</h2>
+    <h2 class="m-1">Resources this assignment uses</h2>
     <div class="row">
-      <div class="col-sm-4">
-        <%= render(partial: "verticals_shared/related_vertical",
-          locals: {title: "Other assignments", 
-                  vertical_from: @assignment, 
-                  vertical_to: Assignment.new, 
-                  data: @assignment.related_assignments,
-                  editable: true,
-                  title_tag: :h3 }) %>
 
-  <!--     <button class="expand-all-resources">Expand all</button>
-      <button class="collapse-all-resources">Collapse all</button> -->
-      </div>
 
       <div class="col-sm-4">
         <%= render(partial: "verticals_shared/related_vertical",
@@ -278,9 +267,6 @@
                   title_tag: :h3  }) %>
       </div>
 
-    </div>
-   
-    <div class="row">
       <div class="col-sm-4">
         <%= render(partial: "verticals_shared/related_vertical",
           locals: {title: "Datasets", 
@@ -289,6 +275,11 @@
                   editable: true,
                   title_tag: :h3 }) %>
       </div>
+
+
+    </div>
+   
+    <div class="row">
 
       <div class="col-sm-4">
         <%= render(partial: "examples/related_examples",
@@ -301,6 +292,23 @@
     </div>
   </div>
 
+  <hr>
 
+  <div class="related-resources">
+   <%# <h2 class="m-1">Related</h2> %>
+    <div class="row">
+      <div class="col-sm-4">
+        <%= render(partial: "verticals_shared/related_vertical",
+          locals: {title: "Related assignments", 
+                  vertical_from: @assignment, 
+                  vertical_to: Assignment.new, 
+                  data: @assignment.related_assignments,
+                  editable: true,
+                  title_tag: :h2 }) %>
 
+  <!--     <button class="expand-all-resources">Expand all</button>
+      <button class="collapse-all-resources">Collapse all</button> -->
+      </div>
+    </div>
+  </div>
 </div>
