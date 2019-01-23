@@ -2,15 +2,24 @@
 
 Changes made in each release are summarized below.
 
-## Next
+## NEXT
 
 New features:
 
     * new interface for verticals
     * verticals can now be linked to assignments
+    * assignment face lift!
+      - one assignment can have multiple versions (e.g., for multiple iterations
+        of a course)
+      - authors (of assignments) and instructors (of assignment instances)
+        are now linked to other users
+    * users can login or recover their password with their email
+      - also means each account must have a unique email
+      - ...and no '@'s in usernames
 
 Bug fixes:
 
+    * none
 
 ## 18.08
 
