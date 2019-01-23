@@ -1,0 +1,18 @@
+<% 
+assignments = assignment_group.assignments
+unless assignments.size == 0 or @vertical.class == Assignment && assignments.size == 1 && assignments.first == @vertical
+%>
+
+<div class="assignment_group-grouping">
+
+    <span class="name"><%= assignment_group.name %></span>
+    <span class="summary"><%= assignment_group.summary %></span>
+
+    <%= render partial: 'assignment_index_item', 
+        collection: assignments, as: :assignment %>
+
+</div>
+
+<% end %>
+
+

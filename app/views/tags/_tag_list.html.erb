@@ -11,7 +11,7 @@ This is expecting the following local variables:
 %>
 <% editable = false unless defined?(editable) %>
 <% title = "Tags:" unless defined? title %>
-<% vertical_from_name = vertical_from.class.to_s.downcase %>
+<% vertical_from_name = vertical_from.class.to_s.underscore.gsub(/_/, ' ') %>
 <% title_tag = :span unless defined?(title_tag) %>
 
 

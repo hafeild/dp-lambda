@@ -11,7 +11,11 @@
     </span>
   <% end %>
   <span class="vertical-name"
-    ><%= link_to vertical_to.name, get_vertical_path(vertical_to) %></span> 
+    ><%= link_to vertical_to.name, get_vertical_path(vertical_to) %>
+    <% if vertical_to.class == Assignment %>
+      (<%= vertical_to.course_prefix %><%= vertical_to.course_number %>, <%= vertical_to.semester %>)
+    <% end %>
+    </span> 
   <span class="snippet">
     &ndash; <%= get_snippet(vertical_to.summary, 200)%>
   </span>

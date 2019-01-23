@@ -13,8 +13,8 @@ This is expecting the following local variables:
   <% if not defined?(editable) %>
     <% editable = false %>
   <% end %>
-  <% vertical_from_name = vertical_from.class.to_s.downcase %>
-  <% vertical_to_name = vertical_to.class.to_s.downcase %>
+  <% vertical_from_name = vertical_from.class.to_s.underscore %>
+  <% vertical_to_name = vertical_to.class.to_s.underscore %>
   <% vertical_to_names = vertical_to_name.pluralize(2) %>
   <% if not defined?(data) or data.nil? %>
     <% data = vertical_from.public_send(vertical_to_names) %>

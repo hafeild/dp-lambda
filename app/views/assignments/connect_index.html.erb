@@ -21,8 +21,13 @@
       <% else %>
         <h2>Assignments</h2>
         <div class="connection-index">
-          <%= render partial: 'assignment_index_item', 
-            collection: @assignments, as: :assignment %>
+
+          <%= render partial: 'assignment_group_index_item', 
+            collection: AssignmentGroup.all, as: :assignment_group %>
+
+          <%# render partial: 'assignment_index_item', 
+             collection: @assignments, as: :assignment %>
+
         </div>
       <% end %> 
     </div>

@@ -96,6 +96,10 @@ class Assignment < ApplicationRecord
     (assignments_related_to + assignments_related_from).uniq
   end
 
+  def has_related_assignment?(a)
+    assignments_related_to.exists?(a.id) || assignments_related_from.exists?(a.id) 
+  end
+
   def to_s
     [instructors.map{|i| [i.username, i.full_name].join(" ")}.join(" "), 
      course, course_prefix, course_number, course_title,

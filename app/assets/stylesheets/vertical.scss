@@ -214,3 +214,25 @@ ul.authors, ul.instructors {
     border-radius: 3px;
   }
 }
+
+.assignment_group-grouping {
+  padding: .5em;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding-bottom: 0;
+  margin-bottom: 2em;
+
+  .name {
+    font-size: 150%;
+    display: block;
+    font-weight: bold;
+    margin-bottom: .1em;
+  }
+
+  .summary {
+    display: block;
+    margin-bottom: .5em;
+  }
+
+
+}
