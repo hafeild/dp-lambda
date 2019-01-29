@@ -73,7 +73,7 @@ class SearchController < ApplicationController
           end
 
           dsl.adjust_solr_params do |params|
-            params[:mm] = 1
+            params["q.op"] = "OR"
           end
         end
 
@@ -91,7 +91,7 @@ class SearchController < ApplicationController
               tags: 1.0, web_resources: 0.75, examples: 0.5
           end
           dsl.adjust_solr_params do |params|
-            params[:mm] = 1
+            params["q.op"] = "OR"
           end
         end
       end
