@@ -43,7 +43,7 @@
 	  <%= render(partial: "tags/tag_badge", 
 		collection: sort_by(@example.tags, :text), as: :tag,
 		locals: {print_header: true, vertical: @example}) || 
-		"There are currently no tags associated with this example." %>
+		"There are currently no tags associated with this how-to." %>
 	
   </div>
 	  
@@ -89,13 +89,13 @@
             collection: sort_by(@example.web_resources, :description), 
             as: :web_resource,
             locals: {print_header: true, vertical: @example}) || 
-            "There are currently no web resources associated with this example." %>
+            "There are currently no web resources associated with this how-to." %>
         </ul>
       </div>
 	</div>
   </div>
   <hr>
-  <h2 class="m-1">Resources that use this example</h2>
+  <h2 class="m-1">Resources that use this how-to</h2>
   <div class="row">
 	<div class="col-sm-4">
 	<%= render(partial: "verticals_shared/related_vertical",
@@ -114,7 +114,7 @@
 	</div>
   </div>
   <hr>
-  <h2 class="m-1">Resources this example uses</h2>
+  <h2 class="m-1">Resources this how-to uses</h2>
   <div class="row">
 	<div class="col-sm-4">
 	        <%= render(partial: "verticals_shared/related_vertical",
