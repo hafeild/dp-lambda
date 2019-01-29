@@ -52,7 +52,7 @@ service alice-solr restart
 
 if [ "$reindex" == "1" ]; then
   echo "Reindexing..."
-  bin/rake sunspot:reindex
+  bin/rake sunspot:reindex RAILS_ENV=production
 fi
 
 echo "Removing maintenance message..."
