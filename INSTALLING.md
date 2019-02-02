@@ -367,6 +367,13 @@ into that file. Replace `yourdomain.com` with whatever your domain is.
         ErrorLog ${APACHE_LOG_DIR}/alice.error.log
         CustomLog ${APACHE_LOG_DIR}/alice.access.log combined
         LogLevel warn
+
+        RewriteEngine On
+        RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+        RewriteCond %{DOCUMENT_ROOT}/../site-down -f
+        RewriteCond %{SCRIPT_FILENAME} !/maintenance.html
+        RewriteRule ^.*$ /maintenance.html [R=503,L]
+        ErrorDocument 503 /maintenance.html
     
         <Proxy balancer://unicornservers>
             BalancerMember http://127.0.0.1:5000
@@ -417,6 +424,13 @@ into that file. Replace `yourdomain.com` with whatever your domain is.
         CustomLog ${APACHE_LOG_DIR}/alice.access.log combined
         LogLevel warn
     
+        RewriteEngine On
+        RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+        RewriteCond %{DOCUMENT_ROOT}/../site-down -f
+        RewriteCond %{SCRIPT_FILENAME} !/maintenance.html
+        RewriteRule ^.*$ /maintenance.html [R=503,L]
+        ErrorDocument 503 /maintenance.html
+
         <Proxy balancer://unicornservers>
             BalancerMember http://127.0.0.1:5000
         </Proxy>
