@@ -32,9 +32,8 @@
       <div class="row">
         <div class="col-sm-12 notes-wrapper">
           <h2>Notes</h2>
-          <div class="notes">
-              <%= ((@assignment.notes.nil? or @assignment.notes.empty?) ? "<span class=\"no-data\">No notes yet.</span>" : sanitize_text(@assignment.notes)).html_safe %>
-          </div>
+          <div class="notes"
+              ><%= ((@assignment.notes.nil? or @assignment.notes.empty?) ? "<span class=\"no-data\">No notes yet.</span>" : sanitize_text(@assignment.notes)).html_safe %></div>
         </div>
       </div>
 
@@ -42,9 +41,8 @@
       <div class="row">
         <div class="col-sm-12 outcome_summary-wrapper">
           <h2>Outcome summary</h2>
-          <div class="outcome_summary">
-              <%= ((@assignment.outcome_summary.nil? or @assignment.outcome_summary.empty?) ? "<span class=\"no-data\">No outcome summary yet.</span>" : sanitize_text(@assignment.outcome_summary)).html_safe %>
-          </div>
+          <div class="outcome_summary"
+              ><%= ((@assignment.outcome_summary.nil? or @assignment.outcome_summary.empty?) ? "<span class=\"no-data\">No outcome summary yet.</span>" : sanitize_text(@assignment.outcome_summary)).html_safe %></div>
         </div>
       </div>
 
