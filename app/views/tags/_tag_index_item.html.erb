@@ -29,7 +29,8 @@ end
   </div>
 
   <span class="entry-data-wrapper">
-    <span class="name"><%= 
+    <span class="text"><%= 
       link_to tag.text, tag_path(tag) %></span>
+    <span class="count">(<%= tag.belongs_to_count %>)</span>
   </span>
 </div>

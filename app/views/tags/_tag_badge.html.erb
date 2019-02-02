@@ -1,6 +1,6 @@
 
 <div class="tag-badge">
-  <%= link_to tag.text, tag_path(tag) %>
+  <%= link_to tag.text, tag_path(tag) %> (<%= tag.belongs_to_count%>)
   
   <% if can_edit? and defined? vertical %>
     <span class="edit-toggle">

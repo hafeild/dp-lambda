@@ -5,11 +5,13 @@
  */
 
 /* See vertical.css.scss for general .index-entry info. */
+
+$connect_button_width: 7em;
+
 .connection-index .index-entry {
   padding: 0px;
   vertical-align: middle;
   position: relative;
-  $connect_button_width: 7em;
 
   .connect-resource {
     display: inline-block;
@@ -39,4 +41,24 @@
 
 li.resource {
   margin-top: .5em;
+}
+
+
+.tag.index-entry {
+  min-height: 0 !important;
+  width: 100%;
+  margin-bottom: .5em !important;
+  padding: 0 !important;
+
+  .entry-data-wrapper {
+    padding: .2em .5em .2em $connect_button_width+.2 !important;
+    font-size: 110%;
+
+    .text {
+      display: inline-block;
+    }
+    .count {
+      color: #888;
+    }
+  }
 }
