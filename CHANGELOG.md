@@ -2,15 +2,20 @@
 
 Changes made in each release are summarized below.
 
-## NEXT
+## 19.02
 
 New features:
 
-    * ...
+    * updated assignment listing and search results (now includes versions)
+    * wider author/instructor search box
+    * whitespace is now honored when displaying notes and outcome summaries
+      for assignments
+    * tags have counts (the number of pages each is associated with)
 
 Bug fixes:
 
-    * ...
+    * no more mystery text appearing at the bottom of the assignment and
+      assignment group edit pages when selecting authors or instructors
 
 ## 19.01
 
