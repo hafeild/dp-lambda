@@ -14,7 +14,8 @@
 
       <div class="form-group">
         <%= f.label :instructors %><span class="required-input">*</span><br/>
-        Add a comma separated list of author (user) ids.
+        Add one or more instructors (users).
+
         <%= hidden_field_tag 'assignment[instructors]', (defined?(@assignment) ? @assignment.instructor_ids_csv : nil), class: "user-search-target" %>
 
         Search for a user to add as instructor by name, username, or email: 
