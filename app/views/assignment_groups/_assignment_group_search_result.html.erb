@@ -3,16 +3,28 @@
   <a href="<%= assignment_group_path(assignment_group.id) %>" 
     data-assignment_group-id="<%= assignment_group.id %>"><span class="name"><%= assignment_group.name %></span></a>
 
-  <span class="metadata"><span class="author"><%= assignment_group.authors.map{|a| a.full_name}.join(", ") %></span> <span class="date">(<%= assignment_group.created_at.strftime('%B %Y') %>)</span></span>
+  <span class="metadata">
+    <span class="author"><%= assignment_group.authors.map{|a| a.full_name}.join(", ") %></span>
+    <span class="added-by">Added on <%= assignment_group.created_at.strftime('%B %d, %Y') %> by <%= assignment_group.creator.username %></span> 
+  
+  </span>
 
   <span class="summary"><%= assignment_group.summary %></span>
 
-  <span class="metadata">
-    <span class="added-by">Added on <%= assignment_group.created_at.strftime('%B %d, %Y') %> by <%= assignment_group.creator.username %></span>
-    &mdash;
+  <% if assignment_group.assignments.size > 0 %>
+    Versions:
+    <div class="assignments-list">
+    <% assignment_group.assignments.each do |assignment| %>
+      <div data-assignment-id="<%= assignment.id %> class="assignment-entry"> 
+          <a href="<%=assignment_path(assignment) %>"><span class="assignment-course"><%= assignment.full_title %></span></a>
+          (<span class="instructor"><%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %></span>,
+          <span class="date"><%= assignment.semester %></span>)
+      </div>
+    <% end %>
+    </div>
+  <% end %>
 
-    <span class="years">Taught <%= assignment_group.assignments.size %> <%= 'time'.pluralize(assignment_group.assignments.size) %></span><br/>
-    
+  <span class="metadata">
     <span class="tags"><%= render(partial: "tags/tag_badge", 
     collection: sort_by(assignment_group.tags, :text), as: :tag) %></span>
   </span>
