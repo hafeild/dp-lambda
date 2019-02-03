@@ -101,11 +101,11 @@ class ApplicationController < ActionController::Base
     ## @param redirect_path The path to return to if 'back' isn't an option. 
     ##                      Defaults to root_path.
     ## @param render_it If true, renders the page `redirect_path`. Default: false.
-    def respond_with_error(error, redirect_path=root_path, render_it=false)
+    def respond_with_error(error, redirect_path=root_path, render_it=false, set_flash=true)
       respond_to do |format|
         format.json { render json: {success: false, error: error} }
         format.html do 
-          flash[:danger] = error
+          flash[:danger] = error if set_flash
           if render_it
             render redirect_path 
           else

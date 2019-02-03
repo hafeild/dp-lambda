@@ -44,7 +44,7 @@ class AssignmentsController < ApplicationController
       @data[:instructors] = @instructors
       @assignment = Assignment.new(@data)
       respond_with_error "You must provide a course prefix, number, and title, a field of study, a semester, and one or more instructors.",
-        'new', true
+        'new', true, false
       return
     end
 
@@ -64,7 +64,7 @@ class AssignmentsController < ApplicationController
       @data[:instructors] = @instructors
       @assignment = Assignment.new(@data)
       respond_with_error "There was an error saving the assignment entry: #{e}.",
-        'new', true
+        'new', true, false
     end
   end
 
@@ -84,7 +84,7 @@ class AssignmentsController < ApplicationController
     rescue => e
       @assignment.update_attributes(@data)
       respond_with_error "There was an error updating the assignment entry.",
-        'edit', true
+        'edit', true, false
     end  
   end
 

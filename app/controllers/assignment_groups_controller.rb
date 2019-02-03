@@ -43,7 +43,7 @@ class AssignmentGroupsController < ApplicationController
       @assignment_group = AssignmentGroup.new(@data)
 
       respond_with_error "You must provide a name, summary, and at least one author.",
-        'new', true
+        'new', true, false
       return
     end
 
@@ -60,7 +60,7 @@ class AssignmentGroupsController < ApplicationController
     rescue => e
       # puts "#{@author_ids} #{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error saving the assignment group entry: #{e}",
-        'new', true
+        'new', true, false
     end
   end
 
@@ -82,7 +82,7 @@ class AssignmentGroupsController < ApplicationController
       # puts e.message
       @assignment_group.update_attributes(@data)
       respond_with_error "There was an error updating the assignment group entry.",
-        'edit', true
+      'edit', true, false
     end  
   end
 
