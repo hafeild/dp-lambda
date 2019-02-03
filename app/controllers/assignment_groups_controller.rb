@@ -37,8 +37,13 @@ class AssignmentGroupsController < ApplicationController
         get_with_default(@data, :summary, "").empty? or
         @authors.empty?
 
+      # respond_with_error "You must provide a name, summary, and at least one author.",
+      #   new_assignment_group_path
+      @data[:authors] = @authors
+      @assignment_group = AssignmentGroup.new(@data)
+
       respond_with_error "You must provide a name, summary, and at least one author.",
-        new_assignment_group_path
+        'new', true
       return
     end
 
@@ -49,12 +54,13 @@ class AssignmentGroupsController < ApplicationController
         @data[:authors] = @authors
   
         assignment_group = AssignmentGroup.create!(@data)
+        flash[:success] = "Assignment created successfully!"
         respond_with_success get_redirect_path(assignment_group_path(assignment_group))
       end
     rescue => e
       # puts "#{@author_ids} #{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error saving the assignment group entry: #{e}",
-        new_assignment_group_path
+        'new', true
     end
   end
 
@@ -69,12 +75,13 @@ class AssignmentGroupsController < ApplicationController
         @data[:authors] = @authors if params.require(:assignment_group).has_key?(:authors)
         @assignment_group.update!(@data)
         @assignment_group.reindex_associations
+        flash[:success] = "Assignment updated successfully!"
         respond_with_success get_redirect_path(assignment_group_path(@assignment_group))
       end
     rescue => e
       # puts e.message
       respond_with_error "There was an error updating the assignment group entry.",
-        new_assignment_group_path
+        'edit', true
     end  
   end
 
