@@ -221,6 +221,10 @@ Setup the necessary components:
 
 ### During the first install or after an update
 
+Put the server in maintenance mode:
+
+    touch site-down
+
 Update gems:
 
     bundle install
@@ -235,9 +239,19 @@ Run the unicorn server (restart it if it's already running):
     unicorn_rails -p 5000 -E production
 
 Start up Solr; this should be done using a stand alone Solr instance
-(rather than sunspot). See ["Setting up Solr"](#setting_up_solar) below.
+(rather than sunspot). See ["Setting up Solr"](#setting-up-solr) below.
 It is recommended to install Solr in `/var/www/alice` to keep things
 tidy and so the init script works.
+
+Take the server out of maintenance mode:
+
+    rm site-down
+
+If you've created an alice your and followed the instructions in
+["Make Unicorn and Solr start at boot"](#make-unicorn-and-solr-start-at-boot),
+you can run the following after every update instead:
+
+    config/update-production.sh
 
 ### Make Unicorn and Solr start at boot
 
@@ -246,6 +260,8 @@ them executable (as a user with sudo access):
 
     sudo cp init.d/* /etc/init.d/
     sudo chmod +x /etc/init.d/alice*
+    ## So you can use the services via the alice user.
+    sudo chgrp alice /etc/init.d/alice*
     sudo update-rc.d alice-unicorn defaults
     sudo update-rc.d alice-solr defaults
 
@@ -259,14 +275,17 @@ Solr.
 
 Start the Unicorn service by doing:
 
-    sudo service alice-unicorn start
+    service alice-unicorn start
 
 Start Solr by doing:
 
-    sudo service alice-solr start
+    service alice-solr start
 
 You can stop and restart, as well -- just replace `start` above with `stop` or 
 `restart`.
+
+Prepend with sudo if you are not manipulating the services as the
+alice user.
 
 
 ### Truncating the database
@@ -275,7 +294,7 @@ You can stop and restart, as well -- just replace `start` above with `stop` or
     `bundle exec rake db:drop db:create db:schema:load RAILS_ENV=production`
 
 
-<a id="setting_up_solr"></a>
+
 # Setting up Solr
 
 Download Solr 6.6.0 or higher from here: 
