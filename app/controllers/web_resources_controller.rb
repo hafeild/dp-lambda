@@ -22,26 +22,28 @@ class WebResourcesController < ApplicationController
   end
 
   def create
+    @web_resource = WebResource.new @params
     begin
         throw Exception("No vertical specified!") if @vertical.nil?
-        @web_resource = WebResource.create! @params
+        @web_resource.save!
         @vertical.web_resources << @web_resource
         @vertical.save!
       respond_with_success @redirect_path
-    rescue
-      respond_with_error("The web resource could not be created; check if an "+
-        "existing resource has the same URL and description.", @redirect_path)
+    rescue => e
+      respond_with_error "The web resource could not be created: #{e}.", 
+        'new', true, false
     end
   end
 
   def update
+    @web_resource.update_attributes @params
     begin
-      @web_resource.update_attributes! @params
+      @web_resource.save!
       respond_with_success @redirect_path
     rescue => e 
       puts e.message
-      respond_with_error "The web resource could not be updated.", 
-        @redirect_path
+      respond_with_error "The web resource could not be updated: #{e}.", 
+        'edit', true, false
     end
   end
 
