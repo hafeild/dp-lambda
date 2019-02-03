@@ -32,29 +32,25 @@ class SoftwareController < ApplicationController
   def create
 
     ## Make sure we have the required fields.
-    if get_with_default(@data, :name, "").empty? or 
-        get_with_default(@data, :summary, "").empty? or
-        get_with_default(@data, :description, "").empty?
-      respond_with_error "You must provide a name, summary, and description.",
-        new_software_path
-      return
-    end
+    # if get_with_default(@data, :name, "").empty? or 
+    #     get_with_default(@data, :summary, "").empty? or
+    #     get_with_default(@data, :description, "").empty?
+    #   respond_with_error "You must provide a name, summary, and description.",
+    #     new_software_path
+    #   return
+    # end
 
     ## Create the new entry.
+    @data[:creator] = current_user
+    @software = Software.new(@data)
     begin
       ActiveRecord::Base.transaction do
-        software = Software.new(
-          creator: current_user, name: @data[:name], summary: @data[:summary], 
-          description: @data[:description]
-        )
-
-        software.save!
-
-        respond_with_success get_redirect_path(software_path(software))
+        @software.save!
+        respond_with_success get_redirect_path(software_path(@software))
       end
     rescue => e
-      respond_with_error "There was an error saving the software entry.",
-        new_software_path
+      respond_with_error "There was an error saving the software entry: #{e}.",
+        'new', true, false
     end
   end
 
@@ -65,16 +61,16 @@ class SoftwareController < ApplicationController
   ## vertical entry.
   def update
     begin
+      @software.update(@data.permit(:name, :description, :summary))
       ActiveRecord::Base.transaction do
-        @software.update(@data.permit(:name, :description, :summary))
         @software.save!
         @software.reindex_associations
         
         respond_with_success get_redirect_path(software_path(@software))
       end
     rescue => e
-      respond_with_error "There was an error updating the software entry.",
-        new_software_path
+      respond_with_error "There was an error updating the software entry: #{e}.",
+        'edit', true, false
     end  
   end
 
@@ -93,7 +89,7 @@ class SoftwareController < ApplicationController
       end
     rescue => e
       respond_with_error "There was an error removing the software entry.",
-        new_software_path
+        software_path(@software)
     end
   end
 
