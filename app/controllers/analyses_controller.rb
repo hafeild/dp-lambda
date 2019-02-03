@@ -30,31 +30,27 @@ class AnalysesController < ApplicationController
 
   ## Creates a new analysis entry. 
   def create
+    @data[:creator] = current_user
+    @analysis = Analysis.new(@data)
 
-    ## Make sure we have the required fields.
-    if get_with_default(@data, :name, "").empty? or 
-        get_with_default(@data, :summary, "").empty? or
-        get_with_default(@data, :description, "").empty?
-      respond_with_error "You must provide a name, summary, and description.",
-        new_analysis_path
-      return
-    end
+    # ## Make sure we have the required fields.
+    # if get_with_default(@data, :name, "").empty? or 
+    #     get_with_default(@data, :summary, "").empty? or
+    #     get_with_default(@data, :description, "").empty?
+    #   respond_with_error "You must provide a name, summary, and description.",
+    #     'new', true, false
+    #   return
+    # end
 
     ## Create the new entry.
     begin
       ActiveRecord::Base.transaction do
-        analysis = Analysis.new(
-          creator: current_user, name: @data[:name], summary: @data[:summary], 
-          description: @data[:description]
-        )
-
-        analysis.save!
-
-        respond_with_success get_redirect_path(analysis_path(analysis))
+        @analysis.save!
+        respond_with_success get_redirect_path(analysis_path(@analysis))
       end
     rescue => e
-      respond_with_error "There was an error saving the analysis entry.",
-        new_analysis_path
+      respond_with_error "There was an error saving the analysis entry: #{e}.",
+        'new', true, false
     end
   end
 
@@ -74,8 +70,8 @@ class AnalysesController < ApplicationController
       end
     rescue => e
       #puts "#{e.message} #{e.backtrace.join("\n")}"
-      respond_with_error "There was an error updating the analysis entry.",
-        new_analysis_path
+      respond_with_error "There was an error updating the analysis entry: #{e}",
+        'edit', true, false
     end  
   end
 

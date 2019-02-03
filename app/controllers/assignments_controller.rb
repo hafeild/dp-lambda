@@ -35,34 +35,35 @@ class AssignmentsController < ApplicationController
   def create
 
     ## Make sure we have the required fields.
-      if get_with_default(@data, :course_prefix, "").empty? or 
-        get_with_default(@data, :course_number, "").empty? or 
-        get_with_default(@data, :course_title, "").empty? or 
-        get_with_default(@data, :field_of_study, "").empty? or
-        get_with_default(@data, :semester, "").empty? or
-        @instructors.empty?
-      @data[:instructors] = @instructors
-      @assignment = Assignment.new(@data)
-      respond_with_error "You must provide a course prefix, number, and title, a field of study, a semester, and one or more instructors.",
-        'new', true, false
-      return
-    end
+    #   if get_with_default(@data, :course_prefix, "").empty? or 
+    #     get_with_default(@data, :course_number, "").empty? or 
+    #     get_with_default(@data, :course_title, "").empty? or 
+    #     get_with_default(@data, :field_of_study, "").empty? or
+    #     get_with_default(@data, :semester, "").empty? or
+    #     @instructors.empty?
+    #   @data[:instructors] = @instructors
+    #   @assignment = Assignment.new(@data)
+    #   respond_with_error "You must provide a course prefix, number, and title, a field of study, a semester, and one or more instructors.",
+    #     'new', true, false
+    #   return
+    # end
+
+    @data[:creator] = current_user
+    @data[:assignment_group] = @assignment_group
+    @data[:instructors] = @instructors
+    @assignment = Assignment.new(@data)
 
     ## Create the new entry.
     begin
       ActiveRecord::Base.transaction do
-        @data[:creator] = current_user
-        @data[:assignment_group] = @assignment_group
-        @data[:instructors] = @instructors
-        assignment = Assignment.create!(@data)
-        assignment.reload
+
+        @assignment.save!
+        @assignment.reload
         flash[:success] = "Assignment version successfully created!"
-        respond_with_success assignment_group_assignment_path(@assignment_group, assignment)
+        respond_with_success assignment_path(@assignment)
       end
     rescue => e
       # puts "#{@instructor_ids} #{e.message} #{e.backtrace.join("\n")}"
-      @data[:instructors] = @instructors
-      @assignment = Assignment.new(@data)
       respond_with_error "There was an error saving the assignment entry: #{e}.",
         'new', true, false
     end

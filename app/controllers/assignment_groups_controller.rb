@@ -32,30 +32,30 @@ class AssignmentGroupsController < ApplicationController
   ## Creates a new assignment_group entry. 
   def create
 
-    ## Make sure we have the required fields.
-    if get_with_default(@data, :name, "").empty? or 
-        get_with_default(@data, :summary, "").empty? or
-        @authors.empty?
+    # ## Make sure we have the required fields.
+    # if get_with_default(@data, :name, "").empty? or 
+    #     get_with_default(@data, :summary, "").empty? or
+    #     @authors.empty?
 
-      # respond_with_error "You must provide a name, summary, and at least one author.",
-      #   new_assignment_group_path
-      @data[:authors] = @authors
-      @assignment_group = AssignmentGroup.new(@data)
+    #   # respond_with_error "You must provide a name, summary, and at least one author.",
+    #   #   new_assignment_group_path
+    #   @data[:authors] = @authors
+    #   @assignment_group = AssignmentGroup.new(@data)
 
-      respond_with_error "You must provide a name, summary, and at least one author.",
-        'new', true, false
-      return
-    end
+    #   respond_with_error "You must provide a name, summary, and at least one author.",
+    #     'new', true, false
+    #   return
+    # end
 
     ## Create the new entry.
+    @data[:creator] = current_user
+    @data[:authors] = @authors
+    @assignment_group = AssignmentGroup.new(@data)
     begin
       ActiveRecord::Base.transaction do
-        @data[:creator] = current_user
-        @data[:authors] = @authors
-  
-        assignment_group = AssignmentGroup.create!(@data)
+        @assignment_group.save!
         flash[:success] = "Assignment created successfully!"
-        respond_with_success get_redirect_path(assignment_group_path(assignment_group))
+        respond_with_success get_redirect_path(assignment_group_path(@assignment_group))
       end
     rescue => e
       # puts "#{@author_ids} #{e.message} #{e.backtrace.join("\n")}"

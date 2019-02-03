@@ -292,8 +292,9 @@ class AssignmentsControllerTest < ActionController::TestCase
     }
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error']=="You must provide a course prefix, number, and title, a field of study, a semester, and one or more instructors.",
-      result['error']
+    assert result['error']=="There was an error saving the assignment entry: "+
+      "Validation failed: Instructors can't be blank, Instructors is too "+
+      "short (minimum is 1 character).", result['error']
   end
 
   test "should return required params not supplied json error" do

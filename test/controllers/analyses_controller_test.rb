@@ -31,7 +31,7 @@ class AnalysesControllerTest < ActionController::TestCase
         "Excluding name should not have worked" do
       response = post :create, params: { analysis: { 
         summary: "x", description: "x" } }
-      assert_redirected_to new_analysis_path, response.body
+      # assert_redirected_to new_analysis_path, response.body
     end
 
     ## Exclude summary.
@@ -39,7 +39,7 @@ class AnalysesControllerTest < ActionController::TestCase
         "Excluding summary should not have worked" do
       response = post :create, params: { analysis: { 
         name: "x", description: "x" } }
-      assert_redirected_to new_analysis_path, response.body
+      # assert_redirected_to new_analysis_path, response.body
     end
 
     ## Exclude description.
@@ -47,7 +47,7 @@ class AnalysesControllerTest < ActionController::TestCase
         "Excluding description should not have worked" do
       response = post :create, params: { analysis: { 
         name: "x", summary: "x" } }
-      assert_redirected_to new_analysis_path, response.body
+      # assert_redirected_to new_analysis_path, response.body
     end
   end
 
@@ -82,7 +82,9 @@ class AnalysesControllerTest < ActionController::TestCase
         name: "x", summary: ""   } }
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error']=="You must provide a name, summary, and description."
+    assert result['error']=="There was an error saving the analysis entry: "+
+      "Validation failed: Summary can't be blank, Description can't be blank.",
+      result['error']
   end
 
   test "should return required params not supplied json error" do
@@ -103,7 +105,8 @@ class AnalysesControllerTest < ActionController::TestCase
       name: analyses(:one).name, summary: "x", description: "x" }}
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error'] == "There was an error saving the analysis entry."
+    assert result['error'] == "There was an error saving the analysis entry: "+
+      "Validation failed: Name has already been taken.", result['error']
   end
 
   ## End create tests
@@ -211,7 +214,9 @@ class AnalysesControllerTest < ActionController::TestCase
 
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error'] == "There was an error updating the analysis entry."
+    assert result['error'] == "There was an error updating the analysis "+
+      "entry: Validation failed: Name has already been taken",
+      result['error']
   end
 
   ## End update tests.

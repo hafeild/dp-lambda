@@ -121,8 +121,10 @@ class AssignmentGroupsControllerTest < ActionController::TestCase
         name: "x", summary: ""} }
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error'] == "You must provide a name, summary, and at least one author.", 
-      result['error']
+    assert result['error'] == "There was an error saving the assignment group "+
+      "entry: Validation failed: Summary can't be blank, Summary is too "+
+      "short (minimum is 1 character), Authors can't be blank, Authors is "+
+      "too short (minimum is 1 character)", result['error']
   end
 
   test "should return required params not supplied json error" do
