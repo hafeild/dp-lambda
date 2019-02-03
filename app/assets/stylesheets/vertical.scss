@@ -256,3 +256,13 @@ ul.authors, ul.instructors {
 .outcome_summary, .notes {
   white-space:  pre-wrap;
 }
+
+.field_with_errors {
+  display: inline-block;
+
+  color: $brand-danger;
+}
+
+#error_explanation li {
+  margin-left: 2em;
+}

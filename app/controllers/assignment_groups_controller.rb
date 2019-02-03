@@ -80,6 +80,7 @@ class AssignmentGroupsController < ApplicationController
       end
     rescue => e
       # puts e.message
+      @assignment_group.update_attributes(@data)
       respond_with_error "There was an error updating the assignment group entry.",
         'edit', true
     end  
@@ -100,7 +101,7 @@ class AssignmentGroupsController < ApplicationController
     rescue => e
       # puts "#{e.message}"
       respond_with_error "There was an error removing the assignment group entry. #{e}",
-        new_assignment_group_path
+        assignment_group_path(@assignment_group)
     end
   end
 

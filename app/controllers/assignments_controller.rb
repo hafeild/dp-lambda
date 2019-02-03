@@ -41,8 +41,10 @@ class AssignmentsController < ApplicationController
         get_with_default(@data, :field_of_study, "").empty? or
         get_with_default(@data, :semester, "").empty? or
         @instructors.empty?
+      @data[:instructors] = @instructors
+      @assignment = Assignment.new(@data)
       respond_with_error "You must provide a course prefix, number, and title, a field of study, a semester, and one or more instructors.",
-        new_assignment_group_assignment_path
+        'new', true
       return
     end
 
@@ -54,12 +56,15 @@ class AssignmentsController < ApplicationController
         @data[:instructors] = @instructors
         assignment = Assignment.create!(@data)
         assignment.reload
+        flash[:success] = "Assignment version successfully created!"
         respond_with_success assignment_group_assignment_path(@assignment_group, assignment)
       end
     rescue => e
       # puts "#{@instructor_ids} #{e.message} #{e.backtrace.join("\n")}"
+      @data[:instructors] = @instructors
+      @assignment = Assignment.new(@data)
       respond_with_error "There was an error saving the assignment entry: #{e}.",
-        new_assignment_group_assignment_path
+        'new', true
     end
   end
 
@@ -77,8 +82,9 @@ class AssignmentsController < ApplicationController
         respond_with_success assignment_group_assignment_path(@assignment.assignment_group,@assignment)
       end
     rescue => e
+      @assignment.update_attributes(@data)
       respond_with_error "There was an error updating the assignment entry.",
-        edit_assignment_group_assignment_path(@assignment.assignment_group, @assignment)
+        'edit', true
     end  
   end
 
@@ -98,7 +104,7 @@ class AssignmentsController < ApplicationController
     rescue => e
       # puts "#{e.message}"
       respond_with_error "There was an error removing the assignment entry. #{e}",
-        new_assignment_group_assignment_path
+        assignment_path(@assignment)
     end
   end
 
