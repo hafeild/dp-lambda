@@ -28,14 +28,13 @@ class ExamplesController < ApplicationController
   end
 
   def create
+    @params[:creator] = current_user
+    @example = Example.new(@params)
     begin
-        if  @params[:summary].nil? or  @params[:summary].size == 0
-          raise "Summary must be present and non-empty."
-        end
-
-        @example = Example.create!(title: @params[:title], 
-          summary: @params[:summary], description: @params[:description],
-          creator: current_user)
+        # if  @params[:summary].nil? or  @params[:summary].size == 0
+        #   raise "Summary must be present and non-empty."
+        # end
+        @example.save!
 
         unless @vertical.nil?
           @vertical.examples << @example
@@ -43,19 +42,23 @@ class ExamplesController < ApplicationController
         end
 
       respond_with_success get_redirect_path(example_path(@example))
-    rescue
-      respond_with_error "The example could not be created.", @redirect_path
+    rescue => e
+      respond_with_error "The example could not be created: #{e}.", 'new', 
+        true, false
     end
   end
 
   def update
+    @example.update_attributes @params
+
     begin
-      @example.update_attributes! @params
+      @example.save!
       @example.reindex_associations
       respond_with_success get_redirect_path(example_path(@example))
     rescue => e
       # puts "#{e.message} #{e.backtrace.join("\n")}"
-      respond_with_error "The example could not be updated.", @redirect_path
+      respond_with_error "The example could not be updated.", 
+        'edit', true, false
     end
   end
 
