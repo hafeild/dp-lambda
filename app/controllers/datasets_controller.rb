@@ -32,29 +32,25 @@ class DatasetsController < ApplicationController
   def create
 
     ## Make sure we have the required fields.
-    if get_with_default(@data, :name, "").empty? or 
-        get_with_default(@data, :summary, "").empty? or
-        get_with_default(@data, :description, "").empty?
-      respond_with_error "You must provide a name, summary, and description.",
-        new_dataset_path
-      return
-    end
+    # if get_with_default(@data, :name, "").empty? or 
+    #     get_with_default(@data, :summary, "").empty? or
+    #     get_with_default(@data, :description, "").empty?
+    #   respond_with_error "You must provide a name, summary, and description.",
+    #     new_dataset_path
+    #   return
+    # end
 
     ## Create the new entry.
+    @data[:creator] = current_user
+    @dataset = Dataset.new(@data)
     begin
       ActiveRecord::Base.transaction do
-        dataset = Dataset.new(
-          creator: current_user, name: @data[:name], summary: @data[:summary], 
-          description: @data[:description]
-        )
-
-        dataset.save!
-
-        respond_with_success get_redirect_path(dataset_path(dataset))
+        @dataset.save!
+        respond_with_success get_redirect_path(dataset_path(@dataset))
       end
     rescue => e
-      respond_with_error "There was an error saving the dataset entry.",
-        new_dataset_path
+      respond_with_error "There was an error saving the dataset entry: #{e}.",
+        'new', true, false
     end
   end
 
@@ -73,8 +69,8 @@ class DatasetsController < ApplicationController
         respond_with_success get_redirect_path(dataset_path(@dataset))
       end
     rescue => e
-      respond_with_error "There was an error updating the dataset entry.",
-        new_dataset_path
+      respond_with_error "There was an error updating the dataset entry: #{e}.",
+        'edit', true, false
     end  
   end
 
