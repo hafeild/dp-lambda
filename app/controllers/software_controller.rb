@@ -61,9 +61,8 @@ class SoftwareController < ApplicationController
   ## vertical entry.
   def update
     begin
-      @software.update(@data.permit(:name, :description, :summary))
       ActiveRecord::Base.transaction do
-        @software.save!
+        @software.update!(@data.permit(:name, :description, :summary))
         @software.reindex_associations
         
         respond_with_success get_redirect_path(software_path(@software))

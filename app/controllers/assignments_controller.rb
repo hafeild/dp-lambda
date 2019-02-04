@@ -83,7 +83,6 @@ class AssignmentsController < ApplicationController
         respond_with_success assignment_group_assignment_path(@assignment.assignment_group,@assignment)
       end
     rescue => e
-      @assignment.update_attributes(@data)
       respond_with_error "There was an error updating the assignment entry.",
         'edit', true, false
     end  

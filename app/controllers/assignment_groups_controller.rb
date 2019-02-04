@@ -27,6 +27,7 @@ class AssignmentGroupsController < ApplicationController
   end
 
   def edit
+    @assignment_id = get_with_default(params.permit(:assignment_id), :assignment_id, nil)
   end
 
   ## Creates a new assignment_group entry. 
@@ -70,6 +71,7 @@ class AssignmentGroupsController < ApplicationController
   ## and deleted altogether if the resource isn't associated with another
   ## vertical entry.
   def update
+
     begin
       ActiveRecord::Base.transaction do
         @data[:authors] = @authors if params.require(:assignment_group).has_key?(:authors)
@@ -80,9 +82,9 @@ class AssignmentGroupsController < ApplicationController
       end
     rescue => e
       # puts e.message
-      @assignment_group.update_attributes(@data)
-      respond_with_error "There was an error updating the assignment group entry.",
-      'edit', true, false
+      # puts e.backtrace.join("\n")
+      respond_with_error "There was an error updating the assignment group entry: #{e}.",
+        'edit', true, false
     end  
   end
 

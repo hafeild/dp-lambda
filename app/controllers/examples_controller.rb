@@ -49,10 +49,9 @@ class ExamplesController < ApplicationController
   end
 
   def update
-    @example.update_attributes @params
 
     begin
-      @example.save!
+      @example.update! @params
       @example.reindex_associations
       respond_with_success get_redirect_path(example_path(@example))
     rescue => e

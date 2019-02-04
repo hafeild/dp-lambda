@@ -12,6 +12,10 @@
           value: @vertical.id %>
       <% end %>
 
+      <% unless @assignment_id.nil? %>
+        <%= hidden_field_tag 'redirect_path', assignment_group_assignment_path(@assignment_group, @assignment_id) %>
+      <% end %>
+
       <div class="form-group">
         <%= f.label :assignment_name %><span class="required-input">*</span> 
         (max 200 characters)

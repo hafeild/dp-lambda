@@ -36,12 +36,11 @@ class WebResourcesController < ApplicationController
   end
 
   def update
-    @web_resource.update_attributes @params
     begin
-      @web_resource.save!
+      @web_resource.update! @params
       respond_with_success @redirect_path
     rescue => e 
-      puts e.message
+      # puts e.message
       respond_with_error "The web resource could not be updated: #{e}.", 
         'edit', true, false
     end

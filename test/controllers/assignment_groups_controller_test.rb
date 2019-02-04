@@ -279,7 +279,11 @@ class AssignmentGroupsControllerTest < ActionController::TestCase
 
     result = JSON.parse(@response.body)
     assert_not result['success']
-    assert result['error'] == "There was an error updating the assignment group entry."
+    assert_equal result['error'], 
+      "There was an error updating the assignment group entry: Validation "+
+      "failed: Name has already been taken.",
+      result['error']
+
   end
 
   ## End update tests.
