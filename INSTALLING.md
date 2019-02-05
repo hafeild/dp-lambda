@@ -365,7 +365,8 @@ would like to run the development server (WebBricks), either:
 
 Create a site configuration file in `/etc/apache2/site-avaialble/`, e.g.,
 `/etc/apache2/site-avaialble/alice-ssl.conf`. Copy and paste the following
-into that file. Replace `yourdomain.com` with whatever your domain is.
+into that file. Replace `yourdomain.com` with whatever your domain is and
+modify the `DocumentRoot` as necessary:
     
     <IfModule mod_ssl.c>
     <VirtualHost *:80>
@@ -432,7 +433,8 @@ https://yourdomain.com and see the Alice home page.
 
 Create a site configuration file in `/etc/apache2/site-avaialble/`, e.g.,
 `/etc/apache2/site-avaialble/alice.conf`. Copy and paste the following
-into that file. Replace `yourdomain.com` with whatever your domain is.
+into that file. Replace `yourdomain.com` with whatever your domain is and
+modify the `DocumentRoot` as necessary:
     
     <VirtualHost *:80>
         ServerName yourdomain.com
