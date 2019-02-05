@@ -47,7 +47,7 @@ class Example < ApplicationRecord
     text :summary, :description
 
     text :name do
-      :title
+      title
     end
 
     text :attachments do

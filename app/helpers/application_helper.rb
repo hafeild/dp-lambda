@@ -202,5 +202,14 @@ module ApplicationHelper
     assignment_group_assignment_path(assignment.assignment_group, assignment)
   end
 
+
+  def vertical_to_name(vertical)
+    if vertical.class == Example
+      "How-to"
+    else
+      vertical.class.to_s.underscore
+    end
+  end
+
 end
 

@@ -71,6 +71,10 @@ class SearchController < ApplicationController
               field_queries.call(dsl)
             end
           end
+
+          dsl.adjust_solr_params do |params|
+            params[:mm] = 1
+          end
         end
 
       ## Simple keyword queries.
@@ -81,9 +85,13 @@ class SearchController < ApplicationController
           dsl.order_by :score, :desc
           #dsl.paginate page: 1, per_page: 10
           dsl.paginate cursor: cursor, per_page: 10
-          dsl.keywords @query do
+          # dsl.keywords @query do
+          dsl.fulltext @query do
             boost_fields name: 20.0, summary: 15.0, description: 10.0,
               tags: 1.0, web_resources: 0.75, examples: 0.5
+          end
+          dsl.adjust_solr_params do |params|
+            params[:mm] = 1
           end
         end
       end
