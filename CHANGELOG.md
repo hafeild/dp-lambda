@@ -2,6 +2,16 @@
 
 Changes made in each release are summarized below.
 
+## NEXT
+
+New features:
+
+  * ...
+
+Bug fixes: 
+
+  * ...
+
 ## 19.02.01
 
 New features:
