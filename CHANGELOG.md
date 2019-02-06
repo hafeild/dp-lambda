@@ -2,15 +2,27 @@
 
 Changes made in each release are summarized below.
 
-## NEXT VERSION
+## NEXT
 
 New features:
 
-  * ...
+  * examples have been renamed "How-tos" to make their purpose clearer
+  * added production database backup and restore instructions to INSTALLING.md
+  * errors encountered while creating or updating any vertical will now
+    kick the user back to the form they were editing with the values they
+    entered re-populated in the form along with detailed error messages
+  * editing an assignment group page with an assignment showing will
+    redirect back to that page when the update completes
+  * there's now an `update-production.sh` script for running all the update
+    procedures on a production server
 
 Bug fixes: 
 
-  * ...
+  * short search queries were treated as conjunctions (all terms must appear in
+    each result) instead of disjunctions (only one term must appear in each
+    result); now they're correctly treated as the latter
+  * sqlite3-dev, required for installation on Linux, has been added to the
+    installation instructions
 
 ## 19.02
 
