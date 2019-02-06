@@ -288,14 +288,28 @@ Prepend with sudo if you are not manipulating the services as the
 alice user.
 
 
-### Truncating the database
+
+### Production database operations
+
+Replace `ALICE_DB_NAME` witn the name of your alice database and `DB_DUMP_FILE`
+with whatever you want to name the backup file.
+
+#### Backup up Database
+
+    sudo -u postgres pg_dump -a ALICE_DB_NAME > DB_DUMP_FILE
+
+#### Restore database from backup
+
+    sudo -u postgres psql ALICE_DB_NAME < DB_DUMP_FILE
+
+#### Truncating the database
 **WARNING:** this will delete everything from the database permanently.
 
     `bundle exec rake db:drop db:create db:schema:load RAILS_ENV=production`
 
 
 
-# Setting up Solr
+## Setting up Solr
 
 Download Solr 6.6.0 or higher from here: 
 
@@ -336,8 +350,6 @@ When you need to stop a Solr instance, do:
 
 You need to start the appropriate Solr instance (`bin/solr start -p <port>`) any
 time you intend to modify Alice records through the server or perform a search.
-
-
 
 
 
@@ -477,3 +489,4 @@ Restart the server:
     sudo service apache2 restart
 
 Now visit http://yourdomain.com and you should see the Alice homepage.
+
