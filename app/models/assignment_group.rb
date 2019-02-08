@@ -17,6 +17,8 @@ class AssignmentGroup < ApplicationRecord
   ## - datasets
 
   include Bootsy::Container
+  mount_uploader :thumbnail, ThumbnailUploader
+  attr_accessor :tumbnail_cache
 
   ## Destroys all assignments when destroyed.
   before_destroy :destroy_assignments

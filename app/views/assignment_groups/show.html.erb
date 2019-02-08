@@ -8,7 +8,9 @@ Allows the following:
 
 <% provide(:title, @assignment_group.name) %>
 <div class="container-fluid assignment-page" data-assignment_group-id="<%= @assignment_group.id %>">
-  
+
+  <%= render(partial: "verticals_shared/show_thumbnail", 
+      locals: {vertical: @assignment_group}) %>
   <h1 class="name"><span class="name-text"><%= @assignment_group.name %></span>
   <% if can_edit? %>
   <button type="button" class="btn btn-primary btn-sm edit-toggle enable-editing">

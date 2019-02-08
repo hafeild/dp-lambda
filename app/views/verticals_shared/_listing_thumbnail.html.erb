@@ -1,0 +1,10 @@
+<%#
+Generates the HTML for an index view.
+Expects at least: 
+
+  vertical -- Anything with a thubmnail field.
+%>
+
+<div class="thumbnail-wrapper index-view">
+  <%= image_tag(vertical.thumbnail.tile.url) if vertical.thumbnail? %>
+</div>

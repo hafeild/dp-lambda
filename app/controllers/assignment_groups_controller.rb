@@ -59,7 +59,7 @@ class AssignmentGroupsController < ApplicationController
         respond_with_success get_redirect_path(assignment_group_path(@assignment_group))
       end
     rescue => e
-      # puts "#{@author_ids} #{e.message} #{e.backtrace.join("\n")}"
+      puts "#{@author_ids} #{e.message} #{e.backtrace.join("\n")}"
       respond_with_error "There was an error saving the assignment group entry: #{e}",
         'new', true, false
     end
@@ -81,8 +81,8 @@ class AssignmentGroupsController < ApplicationController
         respond_with_success get_redirect_path(assignment_group_path(@assignment_group))
       end
     rescue => e
-      # puts e.message
-      # puts e.backtrace.join("\n")
+      puts e.message
+      puts e.backtrace.join("\n")
       respond_with_error "There was an error updating the assignment group entry: #{e}.",
         'edit', true, false
     end  
@@ -119,7 +119,7 @@ class AssignmentGroupsController < ApplicationController
     def get_params
       begin
         @data = params.require(:assignment_group).permit(
-          :name, :summary, :description, :thumbnail_url
+          :name, :summary, :description, :thumbnail
         )
         @author_ids = get_with_default(
           params.require(:assignment_group).permit(:authors), :authors, "")

@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190104024850) do
+ActiveRecord::Schema.define(version: 20190207112533) do
 
   create_table "analyses", force: :cascade do |t|
     t.string   "name"
     t.text     "summary"
     t.text     "description"
-    t.string   "thumbnail_url"
+    t.string   "thumbnail"
     t.integer  "creator_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "analyses_assignments", id: false, force: :cascade do |t|
@@ -61,10 +61,10 @@ ActiveRecord::Schema.define(version: 20190104024850) do
     t.string   "name"
     t.text     "summary"
     t.text     "description"
-    t.string   "thumbnail_url"
+    t.string   "thumbnail"
     t.integer  "creator_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "assignment_groups_authors", id: false, force: :cascade do |t|
@@ -210,10 +210,10 @@ ActiveRecord::Schema.define(version: 20190104024850) do
     t.string   "name"
     t.text     "summary"
     t.text     "description"
-    t.string   "thumbnail_url"
+    t.string   "thumbnail"
     t.integer  "creator_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "datasets_examples", force: :cascade do |t|
@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(version: 20190104024850) do
     t.datetime "updated_at",  null: false
     t.integer  "creator_id"
     t.string   "summary"
+    t.string   "thumbnail"
   end
 
   create_table "examples_software", force: :cascade do |t|
@@ -321,10 +322,10 @@ ActiveRecord::Schema.define(version: 20190104024850) do
     t.string   "name"
     t.text     "summary"
     t.text     "description"
-    t.string   "thumbnail_url"
+    t.string   "thumbnail"
     t.integer  "creator_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "software_tags", force: :cascade do |t|
