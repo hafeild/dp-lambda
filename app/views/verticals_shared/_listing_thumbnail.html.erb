@@ -6,5 +6,10 @@ Expects at least:
 %>
 
 <div class="thumbnail-wrapper index-view">
-  <%= image_tag(vertical.thumbnail.tile.url) if vertical.thumbnail? %>
+  <% if vertical.thumbnail? %>
+    <%= image_tag(vertical.thumbnail.tile.url) %>
+  <% else %>
+    <div class="empty"></div>
+  <% end %>
+
 </div>
