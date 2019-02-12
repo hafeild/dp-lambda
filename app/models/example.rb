@@ -10,6 +10,9 @@ class Example < ApplicationRecord
   ## - web_resources
 
   include Bootsy::Container
+  mount_uploader :thumbnail, ThumbnailUploader
+  attr_accessor :tumbnail_cache
+
   has_and_belongs_to_many :software
   has_and_belongs_to_many :datasets
   has_and_belongs_to_many :analyses

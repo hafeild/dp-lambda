@@ -19,6 +19,14 @@
           placeholder: "e.g., Pride and Prejudice" %>
       </div>
 
+      <%# Thumnail selection. %>
+      <div class="form-group">
+        <%= f.label :thumbnail %>
+        <%= image_tag(@dataset.thumbnail.tiny.url) if @dataset.thumbnail? %>
+        <%= f.file_field :thumbnail %>
+        <%= f.hidden_field :thumbnail_cache %>
+      </div>
+
       <div class="form-group">
         <%= f.label :summary %><span class="required-input">*</span><br/>
         This should be a short overview of the dataset.

@@ -21,6 +21,14 @@
             placeholder: "e.g., Creating a simple NodeXL graph" %>
         </div>    
 
+        <%# Thumnail selection. %>
+        <div class="form-group">
+          <%= f.label :thumbnail %>
+          <%= image_tag(@example.thumbnail.tiny.url) if @example.thumbnail? %>
+          <%= f.file_field :thumbnail %>
+          <%= f.hidden_field :thumbnail_cache %>
+        </div>
+
         <!-- Summary -->
         <div class="form-group">
           <label>Summary</label><span class="required-input">*</span> 

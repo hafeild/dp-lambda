@@ -23,6 +23,7 @@
           placeholder: "e.g., Analyze your social network" %>
       </div>
 
+      <%# Thumnail selection. %>
       <div class="form-group">
         <%= f.label :thumbnail %>
         <%= image_tag(@assignment_group.thumbnail.tiny.url) if @assignment_group.thumbnail? %>

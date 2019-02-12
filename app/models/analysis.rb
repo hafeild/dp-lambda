@@ -11,6 +11,8 @@ class Analysis < ApplicationRecord
   ## - attachments
 
   include Bootsy::Container
+  mount_uploader :thumbnail, ThumbnailUploader
+  attr_accessor :tumbnail_cache
 
   belongs_to :creator, class_name: "User"
   has_and_belongs_to_many :tags

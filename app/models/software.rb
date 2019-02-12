@@ -10,7 +10,9 @@ class Software < ApplicationRecord
   ## - examples
 
   include Bootsy::Container
-
+  mount_uploader :thumbnail, ThumbnailUploader
+  attr_accessor :tumbnail_cache
+  
   #after_destroy :reload_connections
 
   belongs_to :creator, class_name: "User"
