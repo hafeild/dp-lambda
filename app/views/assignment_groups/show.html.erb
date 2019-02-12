@@ -9,32 +9,32 @@ Allows the following:
 <% provide(:title, @assignment_group.name) %>
 <div class="container-fluid assignment-page" data-assignment_group-id="<%= @assignment_group.id %>">
 
-  <%= render(partial: "verticals_shared/show_thumbnail", 
-      locals: {vertical: @assignment_group}) %>
-  <h1 class="name"><span class="name-text"><%= @assignment_group.name %></span>
-  <% if can_edit? %>
-  <button type="button" class="btn btn-primary btn-sm edit-toggle enable-editing">
-    Enable editing
-  </button>
-  <button type="button" class="btn btn-primary btn-sm edit-toggle disable-editing">
-    Disable editing
-  </button>
+  <div class="vertical-header">
+    <h1 class="name"><span class="name-text"><%= @assignment_group.name %></span>
+    <% if can_edit? %>
+    <button type="button" class="btn btn-primary btn-sm edit-toggle enable-editing">
+      Enable editing
+    </button>
+    <button type="button" class="btn btn-primary btn-sm edit-toggle disable-editing">
+      Disable editing
+    </button>
 
-  <span class="edit-toggle">
-    <a href="<%= edit_assignment_group_path(@assignment_group.id) %><%= "?assignment_id=#{@assignment.id}" unless @assignment.nil? %>"  
-    ><button type="button" class="btn btn-link btn-sm" data-toggle="tooltip" title="Edit Assignment">
-      <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-    </button
-    ></a>
-    <%= link_to @assignment_group, method: :delete, data: {
-      confirm: "Are you sure you want to delete this page?"} do  
-    %><button type="button" class="btn btn-link btn-sm x-btn" data-toggle="tooltip" title="Delete Assignment">
-      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
-    </button
-    ><% end %>
-  </span>
-  <% end %>
-  </h1>
+    <span class="edit-toggle">
+      <a href="<%= edit_assignment_group_path(@assignment_group.id) %><%= "?assignment_id=#{@assignment.id}" unless @assignment.nil? %>"  
+      ><button type="button" class="btn btn-link btn-sm" data-toggle="tooltip" title="Edit Assignment">
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+      </button
+      ></a>
+      <%= link_to @assignment_group, method: :delete, data: {
+        confirm: "Are you sure you want to delete this page?"} do  
+      %><button type="button" class="btn btn-link btn-sm x-btn" data-toggle="tooltip" title="Delete Assignment">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+      </button
+      ><% end %>
+    </span>
+    <% end %>
+    </h1>
+  </div>
 
 
   <%= render(partial: "tags/tag_list",
@@ -93,6 +93,10 @@ Allows the following:
     </div>
 
     <div class="col-sm-6">
+      <div class="row">
+        <%= render(partial: "verticals_shared/show_thumbnail", 
+          locals: {vertical: @assignment_group}) %>
+      </div>
       <div class="metadata-wrapper">
         <!-- <h2>Metadata</h2> -->
         <div class="metadata">

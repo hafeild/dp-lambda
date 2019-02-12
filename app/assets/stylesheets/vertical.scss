@@ -305,3 +305,39 @@ ul.authors, ul.instructors {
 
   }
 }
+
+.vertical-header {
+  // .thumbnail-wrapper {
+  //   img {
+  //     width: 100%;
+  //   }
+  //   height: 200px;
+  //   overflow: hidden;
+  // }
+
+  vertical-align: bottom;
+
+  .thumbnail-wrapper.show-view {
+    display: inline-block;
+
+    img {
+      width: 400px;
+    }
+
+  }
+
+  h1 {
+    display: inline-block;
+  }
+}
+
+  .thumbnail-wrapper {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1em;
+    img {
+      width: 300px;
+    }
+    // height: 200px;
+    // overflow: hidden;
+  }
