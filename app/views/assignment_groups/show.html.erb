@@ -45,7 +45,7 @@ Allows the following:
 
   <div class="row"> <%# Start row. %>
 
-    <div class="col-sm-6">
+    <div class="col-sm-8">
 
       <div class="row">
         <div class="col-sm-12 summary-wrapper">
@@ -92,7 +92,7 @@ Allows the following:
 
     </div>
 
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <div class="row">
         <%= render(partial: "verticals_shared/show_thumbnail", 
           locals: {vertical: @assignment_group}) %>
@@ -148,7 +148,7 @@ Allows the following:
                 collection: sort_by(@assignment_group.web_resources, :description), 
                 as: :web_resource, 
                 locals: {print_header: true, vertical: @assignment_group}) || 
-                "<i>There are currently no web resources associated with this assignment group.</i>".html_safe %>
+                "<span class=\"no-data\">There are currently no web resources associated with this assignment group.</span>".html_safe %>
               </ul>
             </div>
           </div>
