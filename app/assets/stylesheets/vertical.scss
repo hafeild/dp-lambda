@@ -269,23 +269,38 @@ ul.authors, ul.instructors {
 .assignment_group.index-entry {
   padding: 0;
 
-  height: 600px;
+  height: 500px;
+  position: relative;
 
   .assignments-list {
     padding-left: 1em;
     margin-bottom: .5em;
   }
 
-  .content-wrapper {
+  .item-content {
     padding: 0 .5em 1em .5em;
+    height: 275px;
+    overflow: hidden;
+  }
 
+  .item-footer {
+    position: absolute;
+    bottom: .1em;
+    padding: 0 .5em .5em .5em;
   }
 
   .thumbnail-wrapper.index-view {
-    height: 200px;
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: center;
+
+
+    height: 175px;
     width: 100%;
     display: block;
     overflow: hidden;
+
+    border-bottom: 1px solid #ccc;
 
     img {
       width: 100%;
