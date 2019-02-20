@@ -272,6 +272,11 @@ ul.authors, ul.instructors {
   height: 500px;
   position: relative;
 
+  box-shadow: 0 3px 30px 3px #eee;
+  border: none;
+
+  margin-bottom: 2em;
+
   .assignments-list {
     padding-left: 1em;
     margin-bottom: .5em;
