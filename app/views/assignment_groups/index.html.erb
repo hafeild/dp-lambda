@@ -17,8 +17,9 @@
         <% 
         @i = 0 
         @total = @assignment_groups.size
+        
         %>
-        <%= render @assignment_groups %>
+        <%= render @assignment_groups.sort{|x,y| y.created_at <=> x.created_at} %>
       </div>
     </div>
 
