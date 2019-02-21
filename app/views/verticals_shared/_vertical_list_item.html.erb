@@ -10,10 +10,12 @@
       <% end %>
     </span>
   <% end %>
-  <span class="vertical-name"
-    ><%= link_to vertical_to.name, get_vertical_path(vertical_to) %>
+  <span class="vertical-name">
     <% if vertical_to.class == Assignment %>
+      <%= link_to vertical_to.name, show_assignment_path(vertical_to) %>
       (<%= vertical_to.course_prefix %><%= vertical_to.course_number %>, <%= vertical_to.semester %>)
+    <% else %>
+      <%= link_to vertical_to.name, get_vertical_path(vertical_to) %>
     <% end %>
     </span> 
   <span class="snippet">

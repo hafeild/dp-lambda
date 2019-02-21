@@ -36,7 +36,7 @@ versions_limit = -1 ## most recent
         <div class="assignments-list">
         <% assignment_group.assignments.order(created_at: :desc).first(versions_limit).each do |assignment| %>
           <div data-assignment-id="<%= assignment.id %> class="assignment-entry"> 
-              <a href="<%=assignment_path(assignment) %>"><span class="assignment-course"><%= assignment.course %></span>
+              <a href="<%=show_assignment_path(assignment) %>"><span class="assignment-course"><%= assignment.course %></span>
               (<span class="instructor"><%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %></span>,
               <span class="date"><%= assignment.semester %></span>)</a>
           </div>

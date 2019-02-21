@@ -202,6 +202,13 @@ module ApplicationHelper
     assignment_group_assignment_path(assignment.assignment_group, assignment)
   end
 
+  def show_assignment_path(assignment)
+    if assignment.class != "Assignment"
+      assignment = Assignment.find_by(id: assignment)
+    end
+    "#{assignment_group_path(assignment.assignment_group)}##{assignment.id}"
+  end
+
 
   def vertical_to_name(vertical)
     if vertical.class == Example

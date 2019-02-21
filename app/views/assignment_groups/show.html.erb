@@ -184,14 +184,21 @@ Allows the following:
 
   </div> <%# End row. %>
 
-  <% unless @assignment.nil? %>
-  <hr>   
-  <div class="row"> <%# Start row. %>
-
-  <%= render @assignment %>
+  <%= render @assignment_group.assignments, as: :assignment %>
 
 
-  </div> <%# End row. %>
+
+
+  <% if false %>
+    <% unless @assignment.nil? %>
+    <hr>   
+    <div class="row"> <%# Start row. %>
+
+    <%= render @assignment %>
+
+
+    </div> <%# End row. %>
+    <% end %>
   <% end %>
 
 </div>

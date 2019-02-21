@@ -1,13 +1,20 @@
-<div class="container-fluid assignment-page" data-assignment-id="<%= @assignment.id %>">
-  <h1><span class="name-text"><%= @assignment.course %> <%= @assignment.course_title %>, <%= @assignment.semester %></span>
+<%
+assignment = assignment if not assignment.nil?
+%>
+
+<hr>   
+<div class="row">
+<div class="container-fluid assignment-page" data-assignment-id="<%= assignment.id %>">
+  <a name="<%= assignment.id %>"></a> <span class="back-to-top"><a href="#">(Back to top)</a></span>
+  <h1><span class="name-text"><%= assignment.course %> <%= assignment.course_title %>, <%= assignment.semester %></span>
     <% if can_edit? %>
       <span class="edit-toggle">
-      <%= link_to edit_assignment_group_assignment_path(@assignment.assignment_group, @assignment.id)  do  
+      <%= link_to edit_assignment_group_assignment_path(assignment.assignment_group, assignment.id)  do  
       %><button type="button" class="btn btn-link btn-sm" data-toggle="tooltip" title="Edit Assignment">
         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
       </button
       ><% end %>
-      <%= link_to assignment_group_assignment_path(@assignment.assignment_group, @assignment), method: :delete, data: {
+      <%= link_to assignment_group_assignment_path(assignment.assignment_group, assignment), method: :delete, data: {
         confirm: "Are you sure you want to delete this page?"} do  
       %><button type="button" class="btn btn-link btn-sm x-btn" data-toggle="tooltip" title="Delete Assignment">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
@@ -17,11 +24,11 @@
     <% end %>
   </h1>
 
-  <%# link_to "See other versions of this assignment.",  assignment_group_path(@assignment.assignment_group) %>
+  <%# link_to "See other versions of this assignment.",  assignment_group_path(assignment.assignment_group) %>
 
   <%= render(partial: "tags/tag_list",
     locals: {title: "Tags:", 
-            vertical_from: @assignment, 
+            vertical_from: assignment, 
             editable: true,
             title_tag: :span  }) %>
 
@@ -35,7 +42,7 @@
             <div class="col-sm-12 notes-wrapper">
               <h2>Notes</h2>
               <div class="notes"
-                  ><%= ((@assignment.notes.nil? or @assignment.notes.empty?) ? "<span class=\"no-data\">No notes yet.</span>" : sanitize_text(@assignment.notes)).html_safe %></div>
+                  ><%= ((assignment.notes.nil? or assignment.notes.empty?) ? "<span class=\"no-data\">No notes yet.</span>" : sanitize_text(assignment.notes)).html_safe %></div>
             </div>
           </div>
 
@@ -44,7 +51,7 @@
             <div class="col-sm-12 outcome_summary-wrapper">
               <h2>Outcome summary</h2>
               <div class="outcome_summary"
-                  ><%= ((@assignment.outcome_summary.nil? or @assignment.outcome_summary.empty?) ? "<span class=\"no-data\">No outcome summary yet.</span>" : sanitize_text(@assignment.outcome_summary)).html_safe %></div>
+                  ><%= ((assignment.outcome_summary.nil? or assignment.outcome_summary.empty?) ? "<span class=\"no-data\">No outcome summary yet.</span>" : sanitize_text(assignment.outcome_summary)).html_safe %></div>
             </div>
           </div>
 
@@ -58,16 +65,16 @@
           <div class="row">
           <table class="metadata">
             <tr>
-              <% if @assignment.instructors.size <= 1 %>
+              <% if assignment.instructors.size <= 1 %>
                 <th>Instructor:</th> 
                 <td>
                   <%# No instructor (not good!!) %>
-                  <% if @assignment.instructors.size == 0 %>
+                  <% if assignment.instructors.size == 0 %>
                     <span class=\"no-data\">No instructor assigned.</span>
 
                   <%# One instructdor. %>
                   <% else %>
-                    <span class="instructor"><%= @assignment.instructors.first.full_name %></span>
+                    <span class="instructor"><%= assignment.instructors.first.full_name %></span>
                   <% end %>
                 </td>
             </tr><tr>
@@ -80,23 +87,23 @@
                 </td>
               <% end %>
 
-              <th>Field of study: </th><td><span class="field_of_study"><%= @assignment.field_of_study || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Field of study: </th><td><span class="field_of_study"><%= assignment.field_of_study || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr><tr>
 
-              <th>Learning curve:</th><td><span class="learning_curve"><%= @assignment.learning_curve || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Learning curve:</th><td><span class="learning_curve"><%= assignment.learning_curve || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
             </tr><tr>
 
-              <th>Hours of instruction: </th><td><span class="instruction_hours"><%= @assignment.instruction_hours || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Hours of instruction: </th><td><span class="instruction_hours"><%= assignment.instruction_hours || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr><tr>
 
               <th>Assignment duration (weeks): </th>
-              <td><span class="project_length_weeks"><%= @assignment.project_length_weeks || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <td><span class="project_length_weeks"><%= assignment.project_length_weeks || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
             </tr><tr>
               
               <th>Students given assignment: </th>
-              <td><span class="students_given_assignment"><%= @assignment.students_given_assignment || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <td><span class="students_given_assignment"><%= assignment.students_given_assignment || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr>
 
@@ -119,7 +126,7 @@
         <div class="col-sm-12 notes-wrapper">
           <h2>Notes</h2>
           <div class="notes"
-              ><%= ((@assignment.notes.nil? or @assignment.notes.empty?) ? "<span class=\"no-data\">No notes yet.</span>" : sanitize_text(@assignment.notes)).html_safe %></div>
+              ><%= ((assignment.notes.nil? or assignment.notes.empty?) ? "<span class=\"no-data\">No notes yet.</span>" : sanitize_text(assignment.notes)).html_safe %></div>
         </div>
       </div>
 
@@ -128,7 +135,7 @@
         <div class="col-sm-12 outcome_summary-wrapper">
           <h2>Outcome summary</h2>
           <div class="outcome_summary"
-              ><%= ((@assignment.outcome_summary.nil? or @assignment.outcome_summary.empty?) ? "<span class=\"no-data\">No outcome summary yet.</span>" : sanitize_text(@assignment.outcome_summary)).html_safe %></div>
+              ><%= ((assignment.outcome_summary.nil? or assignment.outcome_summary.empty?) ? "<span class=\"no-data\">No outcome summary yet.</span>" : sanitize_text(assignment.outcome_summary)).html_safe %></div>
         </div>
       </div>
 
@@ -136,16 +143,16 @@
         <div class="col-sm-12 metadata-wrapper">
           <table class="metadata">
             <tr>
-              <% if @assignment.instructors.size <= 1 %>
+              <% if assignment.instructors.size <= 1 %>
                 <th>Instructor:</th> 
                 <td>
                   <%# No instructor (not good!!) %>
-                  <% if @assignment.instructors.size == 0 %>
+                  <% if assignment.instructors.size == 0 %>
                     <span class=\"no-data\">No instructor assigned.</span>
 
                   <%# One instructdor. %>
                   <% else %>
-                    <span class="instructor"><%= @assignment.instructors.first.full_name %></span>
+                    <span class="instructor"><%= assignment.instructors.first.full_name %></span>
                   <% end %>
                 </td>
               <%# Multiple instrucdtors. %>
@@ -156,19 +163,19 @@
                 </td>
               <% end %>
 
-              <th>Field of study: </th><td><span class="field_of_study"><%= @assignment.field_of_study || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Field of study: </th><td><span class="field_of_study"><%= assignment.field_of_study || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr><tr>
 
-              <th>Learning curve:</th><td><span class="learning_curve"><%= @assignment.learning_curve || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
-              <th>Hours of instruction: </th><td><span class="instruction_hours"><%= @assignment.instruction_hours || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Learning curve:</th><td><span class="learning_curve"><%= assignment.learning_curve || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Hours of instruction: </th><td><span class="instruction_hours"><%= assignment.instruction_hours || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr><tr>
 
               <th>Assignment duration (weeks): </th>
-              <td><span class="project_length_weeks"><%= @assignment.project_length_weeks || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <td><span class="project_length_weeks"><%= assignment.project_length_weeks || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
               <th>Students given assignment: </th>
-              <td><span class="students_given_assignment"><%= @assignment.students_given_assignment || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <td><span class="students_given_assignment"><%= assignment.students_given_assignment || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 
             </tr>
 
@@ -190,23 +197,23 @@
           <div class="row">
             <div class="col">
 
-              <% if @assignment.assignment_group.authors.size <= 1 %>
+              <% if assignment.assignment_group.authors.size <= 1 %>
                 <b>Author:</b> 
 
                 <%# No authors (not good!!) %>
-                <% if @assignment.assignment_group.authors.size == 0 %>
+                <% if assignment.assignment_group.authors.size == 0 %>
                   No author assigned!
 
                 <%# One author. %>
                 <% else %>
-                  <span class="author"><%= @assignment.assignment_group.authors.first.full_name %></span>
+                  <span class="author"><%= assignment.assignment_group.authors.first.full_name %></span>
                 <% end %>
 
               <%# Multiple authors. %>
               <% else %>
                 <b>Authors:</b>
                 <ul class="authors">
-                  <% @assignment.assignment_group.authors.each do |author| %>
+                  <% assignment.assignment_group.authors.each do |author| %>
                     <li><span class=\"author\"><%= author.full_name %></span></li>
                   <% end %>
                 </ul>
@@ -219,23 +226,23 @@
           <div class="row">
             <div class="col">
 
-              <% if @assignment.instructors.size <= 1 %>
+              <% if assignment.instructors.size <= 1 %>
                 <b>Instructor:</b> 
 
                 <%# No instructor (not good!!) %>
-                <% if @assignment.instructors.size == 0 %>
+                <% if assignment.instructors.size == 0 %>
                   No instructor assigned!
 
                 <%# One instructdor. %>
                 <% else %>
-                  <span class="instructor"><%= @assignment.instructors.first.full_name %></span>
+                  <span class="instructor"><%= assignment.instructors.first.full_name %></span>
                 <% end %>
 
               <%# Multiple instrucdtors. %>
               <% else %>
                 <b>Instructors:</b>
                 <ul class="instructors">
-                  <% @assignment.instructors.each do |instructor| %>
+                  <% assignment.instructors.each do |instructor| %>
                     <li><span class=\"instructor\"><%= instructor.full_name %></span></li>
                   <% end %>
                 </ul>
@@ -246,35 +253,35 @@
           <%# Learning curve %>
           <div class="row">
             <div class="col">
-              <b>Learning curve: </b><span class="learning_curve"><%= @assignment.learning_curve %></span>
+              <b>Learning curve: </b><span class="learning_curve"><%= assignment.learning_curve %></span>
             </div>
           </div>
           
           <%# Instruction hours %>
           <div class="row">
             <div class="col">
-              <b>Expected instruction hours: </b><span class="instruction_hours"><%= @assignment.instruction_hours %></span>
+              <b>Expected instruction hours: </b><span class="instruction_hours"><%= assignment.instruction_hours %></span>
             </div>
           </div>
 
           <%# Field of study %>
           <div class="row">
             <div class="col">
-              <b>Field of study: </b><span class="field_of_study"><%= @assignment.field_of_study %></span>
+              <b>Field of study: </b><span class="field_of_study"><%= assignment.field_of_study %></span>
             </div>
           </div>
 
           <%# Project length %>
           <div class="row">
             <div class="col">
-              <b>Assignment duration (weeks): </b><span class="project_length_weeks"><%= @assignment.project_length_weeks %></span>
+              <b>Assignment duration (weeks): </b><span class="project_length_weeks"><%= assignment.project_length_weeks %></span>
             </div>
           </div>
 
           <%# Students given assignment %>
           <div class="row">
             <div class="col">
-              <b>Students given assignment: </b><span class="students_given_assignment"><%= @assignment.students_given_assignment %></span>
+              <b>Students given assignment: </b><span class="students_given_assignment"><%= assignment.students_given_assignment %></span>
             </div>
           </div>
 
@@ -293,8 +300,8 @@
     <div class="col-sm-4">
       <%= render(partial: "attachments/attachment_list",
       locals: { 
-        vertical_from: @assignment, 
-        data: @assignment.attachments,
+        vertical_from: assignment, 
+        data: assignment.attachments,
         editable: true,
         title_tag: :h3 }) %>
     </div>
@@ -305,22 +312,22 @@
         <h3>From the web
           <% if can_edit? %>
             <span class="edit-toggle">
-              <a href="<%= vertical_web_resource_index_path @assignment %>">
+              <a href="<%= vertical_web_resource_index_path assignment %>">
                 <button class="btn btn-sm btn-link" data-toggle="tooltip" title="New web resource">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
               </button>
               </a>
               <!-- got merged into ^^
-              <%-# new_vertical_web_resource_path @assignment -%>
+              <%-# new_vertical_web_resource_path assignment -%>
               -->
             </span>
           <% end %>
         </h3>
         <ul>
           <%= render(partial: "web_resources/web_resource_list_item", 
-            collection: sort_by(@assignment.web_resources, :description), 
+            collection: sort_by(assignment.web_resources, :description), 
             as: :web_resource, 
-            locals: {print_header: true, vertical: @assignment}) || 
+            locals: {print_header: true, vertical: assignment}) || 
             "<span class=\"no-data\">There are currently no web resources associated with this assignment.</span>".html_safe %>
         </ul>
       </div>
@@ -337,7 +344,7 @@
       <div class="col-sm-4">
         <%= render(partial: "verticals_shared/related_vertical",
           locals: {title: "Analyses", 
-                  vertical_from: @assignment, 
+                  vertical_from: assignment, 
                   vertical_to: Analysis.new, 
                   editable: true,
                   title_tag: :h3  }) %>
@@ -346,7 +353,7 @@
       <div class="col-sm-4">
         <%= render(partial: "verticals_shared/related_vertical",
           locals: {title: "Software", 
-                  vertical_from: @assignment, 
+                  vertical_from: assignment, 
                   vertical_to: Software.new, 
                   editable: true,
                   title_tag: :h3  }) %>
@@ -355,7 +362,7 @@
       <div class="col-sm-4">
         <%= render(partial: "verticals_shared/related_vertical",
           locals: {title: "Datasets", 
-                  vertical_from: @assignment, 
+                  vertical_from: assignment, 
                   vertical_to: Dataset.new, 
                   editable: true,
                   title_tag: :h3 }) %>
@@ -369,7 +376,7 @@
       <div class="col-sm-4">
         <%= render(partial: "examples/related_examples",
           locals: {title: "How-tos", 
-                  vertical: @assignment, 
+                  vertical: assignment, 
                   editable: true,
                   title_tag: :h3 }) %>
       </div>
@@ -385,9 +392,9 @@
       <div class="col-sm-4">
         <%= render(partial: "verticals_shared/related_vertical",
           locals: {title: "Related assignments", 
-                  vertical_from: @assignment, 
+                  vertical_from: assignment, 
                   vertical_to: Assignment.new, 
-                  data: @assignment.related_assignments,
+                  data: assignment.related_assignments,
                   editable: true,
                   title_tag: :h2 }) %>
 
@@ -396,4 +403,7 @@
       </div>
     </div>
   </div>
+</div>
+
+
 </div>

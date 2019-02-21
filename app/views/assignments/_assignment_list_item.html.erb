@@ -33,7 +33,7 @@ Parameters:
       (<%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %>,
       <%= assignment.semester %>)</span>
   <% else %>
-    <%= link_to assignment_path(assignment) do %>
+    <a href="#<%=assignment.id %>">
       <span class="name"><%= assignment.full_title %> 
         <%# Gives us a list of instructors like this:
           Single instructor:         Jones
@@ -42,6 +42,6 @@ Parameters:
         %>
         (<%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %>,
         <%= assignment.semester %>)</span>
-    <% end %>
+    </a>
   <% end %>
 </li>
