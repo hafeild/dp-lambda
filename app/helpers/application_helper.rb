@@ -29,6 +29,23 @@ module ApplicationHelper
     elsif vertical.class == Analysis
       analysis_path(vertical)
     elsif vertical.class == Assignment
+      show_assignment_path(vertical)
+    elsif vertical.class == AssignmentGroup
+      assignment_group_path(vertical)
+    elsif vertical.class == Example
+      example_path(vertical)
+    end
+  end
+
+  ## Returns the path to the given vertical.
+  def get_vertical_uri(vertical)
+    if vertical.class == Software
+      software_path(vertical)
+    elsif vertical.class == Dataset
+      dataset_path(vertical)
+    elsif vertical.class == Analysis
+      analysis_path(vertical)
+    elsif vertical.class == Assignment
       assignment_path(vertical)
     elsif vertical.class == AssignmentGroup
       assignment_group_path(vertical)
@@ -40,38 +57,38 @@ module ApplicationHelper
   ##############################################################################
   ## The following generate paths for vertical-examples.
   def new_vertical_example_path(vertical)
-    "#{get_vertical_path(vertical)}/examples/new"
+    "#{get_vertical_uri(vertical)}/examples/new"
   end
 
   def edit_vertical_example_path(vertical, example)
-    "#{get_vertical_path(vertical)}/examples/#{example.id}/edit"
+    "#{get_vertical_uri(vertical)}/examples/#{example.id}/edit"
   end
 
   def vertical_example_path(vertical, example)
-    "#{get_vertical_path(vertical)}/examples/#{example.id}"
+    "#{get_vertical_uri(vertical)}/examples/#{example.id}"
   end
 
   def vertical_example_index_path(vertical)
-    "#{get_vertical_path(vertical)}/examples"
+    "#{get_vertical_uri(vertical)}/examples"
   end
   ##############################################################################
 
   ##############################################################################
   ## The following generate paths for vertical-web_resources.
   def new_vertical_web_resource_path(vertical)
-    "#{get_vertical_path(vertical)}/web_resources/new"
+    "#{get_vertical_uri(vertical)}/web_resources/new"
   end
 
   def edit_vertical_web_resource_path(vertical, web_resource)
-    "#{get_vertical_path(vertical)}/web_resources/#{web_resource.id}/edit"
+    "#{get_vertical_uri(vertical)}/web_resources/#{web_resource.id}/edit"
   end
 
   def vertical_web_resource_path(vertical, web_resource)
-    "#{get_vertical_path(vertical)}/web_resources/#{web_resource.id}"
+    "#{get_vertical_uri(vertical)}/web_resources/#{web_resource.id}"
   end
 
   def vertical_web_resource_index_path(vertical)
-    "#{get_vertical_path(vertical)}/web_resources"
+    "#{get_vertical_uri(vertical)}/web_resources"
   end
   ##############################################################################
 
@@ -79,19 +96,19 @@ module ApplicationHelper
   ##############################################################################
   ## The following generate paths for vertical-tag.
   def new_vertical_tag_path(vertical)
-    "#{get_vertical_path(vertical)}/tags/new"
+    "#{get_vertical_uri(vertical)}/tags/new"
   end
 
   def edit_vertical_tag_path(vertical, tag)
-    "#{get_vertical_path(vertical)}/tags/#{tag.id}/edit"
+    "#{get_vertical_uri(vertical)}/tags/#{tag.id}/edit"
   end
 
   def vertical_tag_path(vertical, tag)
-    "#{get_vertical_path(vertical)}/tags/#{tag.id}"
+    "#{get_vertical_uri(vertical)}/tags/#{tag.id}"
   end
 
   def vertical_tag_index_path(vertical)
-    "#{get_vertical_path(vertical)}/tags"
+    "#{get_vertical_uri(vertical)}/tags"
   end
   ##############################################################################
 
@@ -99,23 +116,23 @@ module ApplicationHelper
   ##############################################################################
   ## The following generate paths for vertical-attachment.
   def new_vertical_attachment_path(vertical)
-    "#{get_vertical_path(vertical)}/attachments/new"
+    "#{get_vertical_uri(vertical)}/attachments/new"
   end
 
   def edit_vertical_attachment_path(vertical, attachment)
-    "#{get_vertical_path(vertical)}/attachments/#{attachment.id}/edit"
+    "#{get_vertical_uri(vertical)}/attachments/#{attachment.id}/edit"
   end
 
   def vertical_attachment_path(vertical, attachment)
-    "#{get_vertical_path(vertical)}/attachments/#{attachment.id}"
+    "#{get_vertical_uri(vertical)}/attachments/#{attachment.id}"
   end
 
   def vertical_attachments_path(vertical)
-    "#{get_vertical_path(vertical)}/attachments"
+    "#{get_vertical_uri(vertical)}/attachments"
   end
 
   def reorder_vertical_attachments_path(vertical)
-    "#{get_vertical_path(vertical)}/attachments/reorder"
+    "#{get_vertical_uri(vertical)}/attachments/reorder"
   end
   ##############################################################################
 
@@ -123,20 +140,20 @@ module ApplicationHelper
   ##############################################################################
   ## The following generate paths for vertical-vertical.
   def vertical_vertical_path(vertical1, vertical2)
-    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
+    [get_vertical_uri(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
       vertical2.id
       ].join("/")
   end
 
   def edit_vertical_vertical_path(vertical1, vertical2)
-    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
+    [get_vertical_uri(vertical1), vertical2.class.to_s.downcase.pluralize(2), 
       vertical2.id, "edit"
       ].join("/")
   end
 
 
   def vertical_vertical_index_path(vertical1, vertical2)
-    [get_vertical_path(vertical1), vertical2.class.to_s.downcase.pluralize(2)].join("/")
+    [get_vertical_uri(vertical1), vertical2.class.to_s.downcase.pluralize(2)].join("/")
   end
 
   ##############################################################################
