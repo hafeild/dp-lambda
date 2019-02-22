@@ -1,5 +1,5 @@
 <% provide(:title, "Analyses") %>
-<div class="container">
+<div class="container vertical-index analysis-index">
 
   <h1>Analyses
 
@@ -13,7 +13,12 @@
   <% end %>
   </h1>
   <div id="analysis-entries" class="entries">
-    <%= render @analyses %>
+        <% 
+        @i = 0 
+        @total = @analyses.size
+        
+        %>
+        <%= render @analyses %>
   </div>
 
 </div>
