@@ -5,7 +5,7 @@ Parameters:
   - target_assignment_id (id of the assignment to highlight; "" if none)
 
 %>
-<li class="resource vertical-li assignment-list-item <%= "selected" if assignment.id == target_assignment_id %>">
+<li class="resource vertical-li assignment-list-item">
 
   <% if false %>
           <% if can_edit? %>
@@ -28,11 +28,6 @@ Parameters:
           <% end %>
   <% end %>
   
-  <% if assignment.id == target_assignment_id %>
-    <span class="name"><%= assignment.full_title %> 
-      (<%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %>,
-      <%= assignment.semester %>)</span>
-  <% else %>
     <a href="#<%=assignment.id %>">
       <span class="name"><%= assignment.full_title %> 
         <%# Gives us a list of instructors like this:
@@ -43,5 +38,5 @@ Parameters:
         (<%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %>,
         <%= assignment.semester %>)</span>
     </a>
-  <% end %>
+
 </li>

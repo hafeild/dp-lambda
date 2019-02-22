@@ -77,7 +77,6 @@ assignment = assignment if not assignment.nil?
                     <span class="instructor"><%= assignment.instructors.first.full_name %></span>
                   <% end %>
                 </td>
-            </tr><tr>
 
               <%# Multiple instrucdtors. %>
               <% else %>
@@ -86,6 +85,9 @@ assignment = assignment if not assignment.nil?
                   <%= oxford_comma_list(assignment.instructors.map{|i| "<span class=\"instructor\">#{sanitize_text i.full_name}</span>"}).html_safe %>
                 </td>
               <% end %>
+
+            </tr><tr>
+
 
               <th>Field of study: </th><td><span class="field_of_study"><%= assignment.field_of_study || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
 

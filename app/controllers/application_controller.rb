@@ -162,7 +162,11 @@ class ApplicationController < ActionController::Base
       if params.key? :redirect_path
         @redirect_path = params[:redirect_path]
       elsif not @vertical.nil?
-        @redirect_path = get_vertical_path(@vertical)
+        if @vertical.class == "Assignment"
+          @redirect_path = show_assignment_path(@vertical)
+        else
+          @redirect_path = get_vertical_path(@vertical)
+        end
       else
         @redirect_path = default
       end

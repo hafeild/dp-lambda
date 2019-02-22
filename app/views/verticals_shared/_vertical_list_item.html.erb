@@ -10,16 +10,19 @@
       <% end %>
     </span>
   <% end %>
-  <span class="vertical-name">
-    <% if vertical_to.class == Assignment %>
+  <% if vertical_to.class == Assignment %>
+    <span class="vertical-name">
       <%= link_to vertical_to.name, show_assignment_path(vertical_to) %>
       (<%= vertical_to.course_prefix %><%= vertical_to.course_number %>, <%= vertical_to.semester %>)
-    <% else %>
+    <span class="vertical-name">
+  <% else %>
+    <span class="vertical-name">
       <%= link_to vertical_to.name, get_vertical_path(vertical_to) %>
-    <% end %>
     </span> 
-  <span class="snippet">
-    &ndash; <%= get_snippet(vertical_to.summary, 200)%>
-  </span>
+    <span class="snippet">
+      &ndash; <%= get_snippet(vertical_to.summary, 200)%>
+    </span>
+  <% end %>
+
   
 </li>
