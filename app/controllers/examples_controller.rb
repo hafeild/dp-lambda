@@ -123,7 +123,7 @@ class ExamplesController < ApplicationController
     def get_params
       begin
         @params = params.require(:example).permit(
-          :title, :summary, :description, :bootsy_image_gallery_id
+          :title, :summary, :description, :bootsy_image_gallery_id, :thumbnail
         )
       rescue => e
         respond_with_error "Required parameters not supplied."

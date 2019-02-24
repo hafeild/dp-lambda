@@ -1,5 +1,5 @@
 <% provide(:title, "How-tos") %>
-<div class="container">
+<div class="container vertical-index example-index">
   <h1>How-tos
 
   <% if can_edit? %>
@@ -12,6 +12,10 @@
   </h1>
   
   <div id="example-entries" class="entries">
+    <% 
+    @i = 0 
+    @total = @examples.size
+    %>
     <%= render @examples %>
   </div>
 
