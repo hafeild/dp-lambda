@@ -62,7 +62,7 @@ class DatasetsController < ApplicationController
   def update
     begin
       ActiveRecord::Base.transaction do
-        @dataset.update(@data.permit(:name, :description, :summary))
+        @dataset.update(@data.permit(:name, :description, :summary, :thumbnail))
         @dataset.save!
         @dataset.reindex_associations
 

@@ -1,5 +1,5 @@
 <% provide(:title, "Datasets") %>
-<div class="container">
+<div class="container vertical-index dataset-index">
 
   <h1>Datasets
 
@@ -12,6 +12,10 @@
   <% end %>
   </h1>
   <div id="dataset-entries" class="entries">
+    <% 
+    @i = 0 
+    @total = @datasets.size
+    %>
     <%= render @datasets %>
   </div>
 
