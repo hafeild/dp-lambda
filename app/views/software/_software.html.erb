@@ -1,3 +1,59 @@
+<% 
+itemsPerRow = 3 
+
+## Character/list limits.
+title_max = 100
+summary_max = 200
+field_of_study_max = 300;
+versions_limit = -1 ## most recent
+%>
+
+<% if @i % itemsPerRow == 0 %>
+<div class="row">
+<% end %>
+
+<div class="col-md-4">
+  <div class="software index-entry">
+    <a href="<%= software_path(software) %>" 
+      data-analysis-id="<%= software.id %>"
+      ><%= render(partial: "verticals_shared/listing_thumbnail", 
+          locals: {vertical: software}) %></a>
+
+    <div class="item-content">
+      <a href="<%= software_path(software) %>" 
+      data-analysis-id="<%= software.id %>"><span class="name"><%= get_snippet(software.name, title_max) %></span></a>
+
+      <span class="metadata">
+        <span class="author"><%= software.creator.full_name %></span> 
+      </span>
+
+      <span class="summary"><%= get_snippet(software.summary, summary_max) %></span>
+    </div>
+
+    <div class="item-footer">
+      <span class="metadata">
+        <% 
+        fields_of_study = software.assignments.map{|a| a.field_of_study}.uniq 
+        unless fields_of_study.nil? or fields_of_study.size == 0  %>
+          <span class="fields-of-study">
+            Used in: 
+            <%=  get_snippet(oxford_comma_list(fields_of_study), field_of_study_max) %>
+            </span>
+        <% end   %>
+
+      </span>
+    </div>
+  </div>
+</div> <%# End col-md-3 %>
+
+<% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
+</div>
+<% end %>
+
+<% @i += 1 %>
+
+
+<% if false %>
 <div data-software-id="<%= software.id %>" class="software index-entry">
 
   <span class="name"><%= link_to software.name, software_path(software) %></span>
@@ -25,3 +81,4 @@
   </span>
   
 </div>
+<% end %>

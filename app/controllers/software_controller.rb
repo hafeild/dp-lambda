@@ -62,7 +62,7 @@ class SoftwareController < ApplicationController
   def update
     begin
       ActiveRecord::Base.transaction do
-        @software.update!(@data.permit(:name, :description, :summary))
+        @software.update!(@data.permit(:name, :description, :summary, :thumbnail))
         @software.reindex_associations
         
         respond_with_success get_redirect_path(software_path(@software))
