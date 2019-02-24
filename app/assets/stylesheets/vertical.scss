@@ -266,13 +266,14 @@ ul.authors, ul.instructors {
 }
 
 
-.vertical-index index-entry {
+.vertical-index .index-entry {
   padding: 0;
 
-  height: 500px;
+  height: 375px;
   position: relative;
 
-  box-shadow: 0 3px 30px 3px #eee;
+  // box-shadow: 0 3px 30px 3px #eee;
+  box-shadow: 0 15px 30px rgba(0,0,0,.1);
   border: none;
 
   margin-bottom: 2em;
@@ -284,7 +285,7 @@ ul.authors, ul.instructors {
 
   .item-content {
     padding: 0 .5em 1em .5em;
-    height: 275px;
+    height: 150px;
     overflow: hidden;
   }
 
@@ -320,6 +321,14 @@ ul.authors, ul.instructors {
   }
 }
 
+.vertical-index .assignment_group.index-entry {
+  height: 500px;
+  .item-content {
+    height: 275px;
+  }
+}
+
+
 .vertical-header {
   // .thumbnail-wrapper {
   //   img {
@@ -348,3 +357,9 @@ ul.authors, ul.instructors {
   }
 }
 
+
+.analysis-page, .software-page, .dataset-page, example-page {
+  .thumbnail-wrapper.show-view {
+    margin-top: 20px;
+  }
+}

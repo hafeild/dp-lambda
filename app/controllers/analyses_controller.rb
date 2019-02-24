@@ -62,7 +62,7 @@ class AnalysesController < ApplicationController
   def update
     begin
       ActiveRecord::Base.transaction do
-        @analysis.update(@data.permit(:name, :description, :summary))
+        @analysis.update(@data.permit(:name, :description, :summary, :thumbnail))
         @analysis.save!
         @analysis.reindex_associations
 
