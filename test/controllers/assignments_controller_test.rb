@@ -31,7 +31,7 @@ class AssignmentsControllerTest < ActionController::TestCase
           } 
         }
         assignment = Assignment.last
-        assert_redirected_to assignment_group_assignment_path(assignment.assignment_group, assignment), @response.body
+        assert_redirected_to show_assignment_path(assignment), @response.body
 
         assignment_group.reload
         assert assignment_group.assignments.exists?(id: assignment.id)
@@ -276,7 +276,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     }
     result = JSON.parse(@response.body)
     assert result['success'], @response.body
-    assert result['redirect'] == assignment_group_assignment_path(assignment_group, Assignment.last), @response.body
+    assert result['redirect'] == show_assignment_path(Assignment.last), @response.body
   end
 
   test "should return missing params json error message" do
@@ -451,7 +451,7 @@ class AssignmentsControllerTest < ActionController::TestCase
 
     result = JSON.parse(@response.body)
     assert result['success'], @response.body
-    assert result['redirect'] == assignment_path(assignment.id), @response.body
+    assert result['redirect'] == show_assignment_path(assignment), @response.body
   end
 
   test "should update multiple instructors." do
@@ -472,7 +472,7 @@ class AssignmentsControllerTest < ActionController::TestCase
 
     result = JSON.parse(@response.body)
     assert result['success'], @response.body
-    assert result['redirect'] == assignment_path(assignment.id), @response.body
+    assert result['redirect'] == show_assignment_path(assignment), @response.body
 
     assignment.reload
     assert assignment.instructors.size == 2, "Instructors not updated."
@@ -584,7 +584,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_difference "assignment1.assignments_related_to.count", 1, "Assignment not linked" do
     assert_difference "assignment2.assignments_related_from.count", 1, "Assignment not linked" do
       post :connect, params: {assignment_group_id: assignment1.assignment_group.id, assignment_id: assignment1.id, id: assignment2.id}
-      assert_redirected_to assignment_path(assignment1), @response.body
+      assert_redirected_to show_assignment_path(assignment1), @response.body
       assignment1.reload
       assignment2.reload
       assert assignment1.assignments_related_to.exists?(id: assignment2.id), 
@@ -615,7 +615,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_difference "assignment1.assignments_related_to.count", -1, "Assignment not unlinked" do
     assert_difference "assignment2.assignments_related_from.count", -1, "Assignment not unlinked" do
       delete :disconnect, params: {assignment_group_id: assignment1.assignment_group.id, assignment_id: assignment1.id, id: assignment2.id}
-      assert_redirected_to assignment_path(assignment1), @response.body
+      assert_redirected_to show_assignment_path(assignment1), @response.body
       assignment1.reload
       assignment2.reload
       assert_not assignment1.assignments_related_to.exists?(id: assignment2.id), 

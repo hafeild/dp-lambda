@@ -60,7 +60,7 @@ class AssignmentsController < ApplicationController
         @assignment.save!
         @assignment.reload
         flash[:success] = "Assignment version successfully created!"
-        respond_with_success assignment_path(@assignment)
+        respond_with_success show_assignment_path(@assignment)
       end
     rescue => e
       # puts "#{@instructor_ids} #{e.message} #{e.backtrace.join("\n")}"
@@ -80,7 +80,7 @@ class AssignmentsController < ApplicationController
         @data[:instructors] = @instructors if params.require(:assignment).has_key?(:instructors)
         @assignment.update!(@data)
         @assignment.reindex_associations
-        respond_with_success assignment_group_assignment_path(@assignment.assignment_group,@assignment)
+        respond_with_success show_assignment_path(@assignment)
       end
     rescue => e
       respond_with_error "There was an error updating the assignment entry.",
@@ -104,7 +104,7 @@ class AssignmentsController < ApplicationController
     rescue => e
       # puts "#{e.message}"
       respond_with_error "There was an error removing the assignment entry. #{e}",
-        assignment_path(@assignment)
+        show_assignment_path(@assignment)
     end
   end
 

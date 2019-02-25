@@ -8,7 +8,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assignment = assignments(:one)
     assignment_group = assignment.assignment_group
 
-    get assignment_group_assignment_path(assignment_group.id, assignment.id)
+    get show_assignment_path(assignment)
     assert_template "assignment_groups/show"
     assert_select ".name-text", assignment.name
     assert_select ".author", assignment.authors.first.full_name
@@ -27,8 +27,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", edit_assignment_group_assignment_path(
       assignment_group.id, assignment.id), count: 0
     assert_select "a[href=?][data-method=delete]", 
-      assignment_group_assignment_path(assignment_group.id, assignment.id), 
-      count: 0
+      show_assignment_path(assignment), count: 0
   end
 
   test "should display edit option on a assignment page when logged in" do
@@ -36,7 +35,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assignment = assignments(:one)
     assignment_group = assignment.assignment_group
 
-    get assignment_group_assignment_path(assignment_group.id, assignment.id)
+    get show_assignment_path(assignment)
     assert_template "assignment_groups/show"
     assert_select ".name-text", assignment.name
     assert_select ".author", assignment.authors.first.full_name
@@ -55,12 +54,12 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", edit_assignment_group_assignment_path(
       assignment_group.id, assignment.id), count: 1
     assert_select "a[href=?][data-method=delete]", 
-      assignment_group_assignment_path(assignment_group.id, assignment.id), 
+      assignment_path(assignment), 
       count: 1
   end
 
   test "should display a 404 page if id isn't valid" do 
-    response = get assignment_group_assignment_path(assignment_groups(:one).id, -1)
+    response = get assignment_group_assignment_path(AssignmentGroup.first, -1)
     assert response == 404
     assert_select "h1", "The page you were looking for doesn't exist."
   end
@@ -102,10 +101,10 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     ## "Click" on the assignment group page link.
     get assignment_group_path(assignment_group.id)
     assert_template "assignment_groups/show"
-    assert_select "a", href: assignment_group_assignment_path(assignment_group.id, assignment.id)
+    assert_select "a", href: show_assignment_path(assignment)
 
     ## "Click" on the assignment link.
-    get assignment_group_assignment_path(assignment_group.id, assignment.id)
+    get show_assignment_path(assignment)
     assert_template "assignment_groups/show"
   end
 
@@ -129,10 +128,10 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     ## "Click" on the assignment group page link.
     get assignment_group_path(assignment_group.id)
     assert_template "assignment_groups/show"
-    assert_select "a", href: assignment_group_assignment_path(assignment_group.id, assignment.id)
+    assert_select "a", href: show_assignment_path(assignment)
 
     ## "Click" on the assignment link.
-    get assignment_group_assignment_path(assignment_group.id, assignment.id)
+    get show_assignment_path(assignment)
     assert_template "assignment_groups/show"
     assert_select "a[href=?]", edit_assignment_group_assignment_path(
       assignment_group.id, assignment.id), count: 1
@@ -143,14 +142,13 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
 
     ## Simulate submitting the changes.
     @request.env['CONTENT_TYPE'] = 'application/json'
-    patch assignment_group_assignment_path(assignment_group.id, assignment.id)+
+    patch assignment_path(assignment)+
       '.json', params: {assignment: {
         course_title: "A VERY NEW NAME!"
     }}
     result = JSON.parse(@response.body)
     assert result['success']
-    assert result['redirect'] == assignment_group_assignment_path(
-      assignment_group.id, assignment.id)
+    assert result['redirect'] == show_assignment_path(assignment)
     
     get result['redirect']
     assert_template "assignment_groups/show"
@@ -223,8 +221,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assert_select "a", href: assignment_group_assignments_path(assignment_group.id)
 
     ## Delete the page.
-    assert_select "a[href=?][data-method=delete]", 
-      assignment_group_assignment_path(assignment_group.id, assignment.id), 
+    assert_select "a[href=?][data-method=delete]", assignment_path(assignment), 
       count: 1
     delete assignment_group_assignment_path(assignment_group.id, assignment.id)
     follow_redirect!
@@ -235,8 +232,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
     assert_template "assignment_groups/show"
 
     ## Confirm that the deleted assignment page is not there.
-    assert_select "a[href=?]", assignment_group_assignment_path(
-      assignment_group.id, assignment.id), count: 0
+    assert_select "a[href=?]", "##{assignment.id}", count: 0
 
   end
 

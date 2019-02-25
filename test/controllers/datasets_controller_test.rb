@@ -275,7 +275,7 @@ class DatasetsControllerTest < ActionController::TestCase
     assert_difference "assignment.datasets.count", 1, "Dataset not linked" do
     assert_difference "dataset.assignments.count", 1, "Assignment not linked" do
       post :connect, params: {assignment_group_id: assignment.assignment_group.id, assignment_id: assignment.id, id: dataset.id}
-      assert_redirected_to assignment_path(assignment), @response.body
+      assert_redirected_to show_assignment_path(assignment), @response.body
       assignment.reload
       dataset.reload
       assert assignment.datasets.exists?(id: dataset.id), 
@@ -322,7 +322,7 @@ class DatasetsControllerTest < ActionController::TestCase
     assert_difference "assignment.datasets.count", -1, "Dataset not linked" do
     assert_difference "dataset.assignments.count", -1, "Assignment not linked" do
       delete :disconnect, params: {assignment_group_id: assignment.assignment_group.id, assignment_id: assignment.id, id: dataset.id}
-      assert_redirected_to assignment_path(assignment), @response.body
+      assert_redirected_to show_assignment_path(assignment), @response.body
       assignment.reload
       dataset.reload
       assert_not assignment.datasets.exists?(id: dataset.id), 

@@ -16,8 +16,7 @@ class AssignmentGroupRenderTest < ActionDispatch::IntegrationTest
     assert_select ".description", assignment_group.description
 
     assignment_group.assignments.each do |assignment|
-      assert_select "a[href=?]", assignment_group_assignment_path(
-        assignment_group.id, assignment.id), count: 1
+      assert_select "a[href=?]",show_assignment_path(assignment), count: 1
     end
 
     assert_select "a[href=?]", edit_assignment_group_path(assignment_group.id), count: 0
@@ -37,8 +36,7 @@ class AssignmentGroupRenderTest < ActionDispatch::IntegrationTest
     assert_select ".description", assignment_group.description
 
     assignment_group.assignments.each do |assignment|
-      assert_select "a[href=?]", assignment_group_assignment_path(
-        assignment_group.id, assignment.id), count: 1
+      assert_select "a[href=?]", show_assignment_path(assignment), count: 1
     end
 
     assert_select "a[href=?]", edit_assignment_group_path(assignment_group.id), count: 1

@@ -4,7 +4,6 @@ one:
   name: A name
   summary: apple orange eggplant
   description: apple
-  thumbnail_url: a.url
   creator: foo
 
   
@@ -12,7 +11,6 @@ two:
   name: Another name
   summary: tractor car car car truck
   description: car
-  thumbnail_url: another.url
   creator: bar
   examples: one
   web_resources: one
