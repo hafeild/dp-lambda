@@ -5,7 +5,7 @@ itemsPerRow = 3
 title_max = 100
 summary_max = 200
 field_of_study_max = 300;
-versions_limit = -1 ## most recent
+# versions_limit = -1 ## most recent
 %>
 
 <% if @i % itemsPerRow == 0 %>
@@ -34,7 +34,7 @@ versions_limit = -1 ## most recent
       <% if assignment_group.assignments.size > 0 %>
         <span class="version-header">Versions:</span>
         <div class="assignments-list">
-        <% assignment_group.assignments.order(created_at: :desc).first(versions_limit).each do |assignment| %>
+        <% assignment_group.assignments.order(created_at: :desc).each do |assignment| %>
           <div data-assignment-id="<%= assignment.id %> class="assignment-entry"> 
               <a href="<%=show_assignment_path(assignment) %>"><span class="assignment-course"><%= assignment.course %></span>
               (<span class="instructor"><%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %></span>,
