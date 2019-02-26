@@ -5,11 +5,8 @@ Expects at least:
   vertical -- Anything with a thubmnail field.
 %>
 
-<div class="thumbnail-wrapper show-view" 
-  <% if vertical.thumbnail? %>
-    style="background-image: url('<%= vertical.thumbnail.tile.url %>')">
-    <%# image_tag(vertical.thumbnail.tile.url) %>
-  <% else %>
-    >
-  <% end %>
-</div>  
+<% if vertical.thumbnail? %>
+  <div class="thumbnail-wrapper show-view" 
+      style="background-image: url('<%= vertical.thumbnail.tile.url %>')">
+  </div>  
+<% end %>
