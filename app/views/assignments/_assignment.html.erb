@@ -100,8 +100,15 @@ assignment = assignment if not assignment.nil?
 
             </tr><tr>
 
-              <th>Assignment duration (weeks): </th>
-              <td><span class="project_length_weeks"><%= assignment.project_length_weeks || "<span class=\"no-data\">Not provided</span>".html_safe %></span></td>
+              <th>Assignment duration: </th>
+              <td><span class="project_length_weeks">
+              <% if assignment.project_length_weeks.nil? %>
+                <span class="no-data">Not provided</span>
+              <% else %>
+                <%= assignment.project_length_weeks %> 
+                <%= "week".pluralize(assignment.project_length_weeks) %>
+              <% end %>
+              </span></td>
             </tr><tr>
               
               <th>Students given assignment: </th>

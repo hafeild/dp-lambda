@@ -358,7 +358,7 @@ ul.authors, ul.instructors {
 }
 
 
-.analysis-page, .software-page, .dataset-page, example-page {
+.analysis-page, .software-page, .dataset-page, .example-page {
 
   .thumbnail-wrapper.show-view {
     margin-top: 20px;
@@ -377,5 +377,20 @@ ul.authors, ul.instructors {
     img {
       width: 100%;
     }
+  }
+}
+
+.assignment-page {
+  .thumbnail-wrapper.show-view {
+    //margin-top: 20px;
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: center;
+
+
+    height: 175px;
+    width: 100%;
+    display: block;
+    overflow: hidden;
   }
 }

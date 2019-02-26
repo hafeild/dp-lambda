@@ -37,15 +37,16 @@ Allows the following:
   </div>
 
 
-  <%= render(partial: "tags/tag_list",
-    locals: {title: "Tags:", 
-            vertical_from: @assignment_group, 
-            editable: true,
-            title_tag: :span  }) %>
-
   <div class="row"> <%# Start row. %>
-
     <div class="col-sm-8">
+
+      <%= render(partial: "tags/tag_list",
+        locals: {title: "Tags:", 
+                vertical_from: @assignment_group, 
+                editable: true,
+                title_tag: :span  }) %>
+
+
 
       <div class="row">
         <div class="col-sm-12 summary-wrapper">
