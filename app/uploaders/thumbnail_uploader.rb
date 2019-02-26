@@ -22,10 +22,9 @@ class ThumbnailUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  # process scale: [200, 300]
-  #
+  # process scale: [600, 600]
+  # #
   # def scale(width, height)
-  #   # do something
   # end
 
   # Create different versions of your uploaded files:

@@ -6,7 +6,9 @@ Changes made in each release are summarized below.
 
 New features:
 
-  * ...
+  * all verticals now support thumbnails
+  * index pages have a new tiled look
+  * assignment pages now list all assignment versions
 
 Bug fixes: 
 
