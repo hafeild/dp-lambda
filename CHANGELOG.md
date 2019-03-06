@@ -10,7 +10,16 @@ New features:
 
 Bug fixes:
 
-  * ...
+  * updated a vulnerable library
+    - required update to Ruby 2.3.5
+      ```
+      rbenv install 2.3.5
+      rbenv global 2.3.5
+      gem install bundler
+      gem pristine --all
+      bundler install
+      ```
+
 
 ## 19.02.02
 

@@ -3,8 +3,8 @@
 ## Development
 
 ### First time setup
-First, install Ruby 2.3 or greater. If developing on Windows, install
-[RailsInstaller](http://railsinstaller.org/en) (Ruby 2.3). There may be in issue
+First, install Ruby 2.3.5 or greater. If developing on Windows, install
+[RailsInstaller](http://railsinstaller.org/en) (Ruby 2.3.5). There may be in issue
 with a few of the commands, so after cloning, do the following in the alice
 directory (this will remove rails, but don't worry, it'll be reinstalled with
 the next step):
@@ -181,10 +181,10 @@ Download rbenv, etc.:
         ~/.rbenv/plugins/ruby-build
     source ~/.bashrc
  
-Install and configure Ruby v2.3.0:
+Install and configure Ruby v2.3.5:
 
-    rbenv install 2.3.0
-    rbenv global 2.3.0
+    rbenv install 2.3.5
+    rbenv global 2.3.5
     gem install bundler
 
 ### First time installing Alice
