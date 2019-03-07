@@ -1,5 +1,5 @@
 <%# 
-This creates a hidden form with toggle button. The form allows the
+This creates a new stub user form modal. The form allows the
 user to create a new user. Upon successful creation, an even will be
 triggered on the document element: 
   'userstub:created', id
@@ -7,7 +7,45 @@ triggered on the document element:
 In jQuery, listen for this like this:
 
   $(document).on('userstub:created', function(event, id){ ... });
+
+Call this partial *at the bottom* of your page (below any form).
 %>
 
-TODO
+<div class="new-user-stub-modal modal fade" tabindex="-1" 
+  role="dialog" aria-labelledby="Form for adding an author stub">
 
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <div class="user-stub-form-toggle user-stub-form">
+
+        <form>
+          <div class="form-group">
+            <label>First name</label>
+            <input class="form-control" type="text" name="user[first_name]">
+          </div>
+
+          <div class="form-group">
+            <label>Last name</label>
+            <input class="form-control" type="text" name="user[last_name]">
+          </div>
+
+          <div class="form-group">
+            <label>Email</label> (no emails will be sent; this is only so this 
+            account can be claimed in the future by whomever this email belongs to)
+            <input class="form-control" type="text" name="user[email]">
+          </div>
+
+          <button class="btn btn-primary">Create stub user account</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </form>
+      </div>
+
+      <div class="user-stub-form-toggle user-stub-wait hidden">
+        ...waiting...
+      </div>
+
+    </div>
+  </div>
+
+</div>
