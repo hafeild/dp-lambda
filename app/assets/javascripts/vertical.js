@@ -11,6 +11,9 @@ var UP = 39;
 var DOWN = 40;
 var listIndex = -1;
 var maxSuggestionIndex = 0;
+var processingCounter = 0;
+var processing = false;
+var processingId;
 
 var currentUserSuggestionLookup = {};
 
@@ -61,7 +64,83 @@ function(event){
     // Copy over all of the picked user to the user-search-target field.
 
   }
+
+  // User stub form submission.
+  $(document).on('submit', '.user-stub-form form', submitUserStubForm);
+  $(document).on('userstub:created', addStubUser);
+
 });
+
+/**
+ * Animates a processing indicator:
+ * 
+ *    Processing
+ *    Processing.
+ *    Processing..
+ *    Processing...
+ *    Processing
+ *    ...
+ * 
+ * On the first call, set the second parameter to true. The animation will
+ * continue until the global `processing` flag is turned off.
+ * 
+ * @param $elm The jQuery element to add the text to.
+ * @param start Whether to start the animation (true) or continue an existing 
+ *              anitmation (false). If the former, the global `processing` flag 
+ *              will be set to true; otherwise, the global `processing` flag 
+ *              will be checked an the animation will only continue if 
+ *              `processing` is true. Default: false.
+ */
+var animateProcessing = function($elm, start){
+  if(start){
+    processing = true;
+    processingId = setInterval(animateProcessing, 250, $elm);
+    processingCounter = 0;
+  }
+
+  if(processing){
+    processingCounter = processingCounter % 4;
+    if(processingCounter == 0){
+      $elm.text('Processing');
+    } else if(processingCounter == 1){
+      $elm.text('Processing.');
+    } else if(processingCounter == 2){
+      $elm.text('Processing..');
+    } else {
+      $elm.text('Processing...');
+    }
+    processingCounter++;
+
+  } else {
+    clearInterval(processingId);
+  }
+};
+
+/**
+ * Turns of processing animation.
+ */
+var unanimateProcessing = function(){
+  processing = false;
+}
+
+/**
+ * Submits a new user stub form. Updates the modal to display an animation
+ * until the server is heard back from. Then either displays an error message
+ * or the newly created user is added to the list of authors/instructors for
+ * the assignment.
+ * 
+ * @param event The submission event that trigger this.
+ */
+var submitUserStubForm = function(event){
+  var $form = $(this);
+
+  $.post({
+    url: '...',
+    data: $form.serialize(),
+    // TODO
+  });
+}
+
 
 var getUserSuggestions = function(autoSuggestInput, autoSuggestCallback){
   var query = autoSuggestInput.term; //this.value;

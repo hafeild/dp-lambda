@@ -18,20 +18,20 @@ Call this partial *at the bottom* of your page (below any form).
     <div class="modal-content">
 
       <div class="user-stub-form-toggle user-stub-form">
-
+        <h2>New user stub form</h2>
         <form>
           <div class="form-group">
-            <label>First name</label>
+            <label>First name of the new user</label>
             <input class="form-control" type="text" name="user[first_name]">
           </div>
 
           <div class="form-group">
-            <label>Last name</label>
+            <label>Last name of the new user</label>
             <input class="form-control" type="text" name="user[last_name]">
           </div>
 
           <div class="form-group">
-            <label>Email</label> (no emails will be sent; an email is only required so this 
+            <label>New user's email</label> (no emails will be sent; an email address is only required so this 
             account can be claimed in the future by whomever it belongs to)
             <input class="form-control" type="text" name="user[email]">
           </div>
@@ -42,7 +42,13 @@ Call this partial *at the bottom* of your page (below any form).
       </div>
 
       <div class="user-stub-form-toggle user-stub-wait hidden">
-        ...waiting to hear back...
+        <h2>Processing</h2>
+        <p class="message">Please wait...</p>
+      </div>
+
+      <div class="user-stub-form-toggle user-stub-wait hidden">
+        <h2>Error!</h2>
+        <p class="error-message"></p>
       </div>
 
     </div>
