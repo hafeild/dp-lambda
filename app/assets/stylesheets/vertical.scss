@@ -202,20 +202,23 @@ ul.authors, ul.instructors {
   .user {
     margin-right: .5em;
     padding: .5em;
-    cursor: pointer;
     user-select: none;
   
-    background: $brand-primary;
-    color: white;
+    // background: lightsteelblue;
+    // color: white;
+    color: $brand-primary;
+    border-radius: 10px;
+    border: 1px solid #bbb;
+
   
     .remove-user {
       margin-left: .5em;
       :hover {
         color: $brand-danger;
       }
+      cursor: pointer;
     }
   
-    border-radius: 3px;
   }
 }
 
@@ -393,4 +396,15 @@ ul.authors, ul.instructors {
     display: block;
     overflow: hidden;
   }
+}
+
+.new-user-stub-modal {
+  .modal-content {
+    padding: 1em;
+  }
+}
+
+.add-stub-user-modal-button-wrapper {
+  margin-top: .5em;
+  margin-bottom: .5em;
 }
