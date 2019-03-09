@@ -49,6 +49,10 @@
           </div>
         </div>
 
+        <div class="add-stub-user-modal-button-wrapper">
+          Can't find an author you want? Create a stub account for them: 
+          <%= render(partial: "users/stub_user_form_trigger") %>
+        </div>
 
       </div>
 
@@ -85,6 +89,8 @@
 
     </div>
   </div>
+
+  <%= render(partial: "users/stub_user_form") %>
 
 
 </div>

@@ -68,6 +68,10 @@ function(event){
   // User stub form submission.
   $(document).on('submit', '.user-stub-form form', submitUserStubForm);
   $(document).on('userstub:created', addStubUser);
+  $(document).on('show.bs.modal', '.new-user-stub-modal', (event) => {
+    $('.user-stub-form-toggle').addClass('hidden');
+    $('.user-stub-form').removeClass('hidden');
+  });
 
 });
 
@@ -141,38 +145,43 @@ var submitUserStubForm = function(event){
   $processingDiv.removeClass('hidden');
 
   $.post({
-    url: 'user_stubs',
+    url: '/user_stubs',
     data: $form.serialize(),
     success: function(data){
+      console.log(data);
+
       unanimateProcessing();
 
       // Handle any errors.
       if(!data.success){
-        submitUserStubError(data.error);
+        userStubSubmissionError(data.error);
         return;
       }
 
-      var user = data.user_stub.json;
-      addStubUser(user.id,`${user.first_name} ${user.last_name}`);
+      var user = data.data.user_stub.json;
+      $(document).trigger('userstub:created', [user.id,
+        `${user.first_name} ${user.last_name} (${user.username})`]);
 
       // Close the modal.
       $('.new-user-stub-modal').modal('hide');
     },
     error: function(jqXHR, textStatus, errorThrown){
       unanimateProcessing();
-      submitUserStubError(errorThrown);
+      userStubSubmissionError(errorThrown);
     },
     dataType: 'json'
   });
   
   animateProcessing($processingDiv.find('.message'), true);
+
+  event.preventDefault();
 }
 
 /**
  * Raises an error in the user stub modal.
  * @param error The error to display.
  */
-var submitUserStubError = function (error){
+var userStubSubmissionError = function (error){
   $('.user-stub-form-toggle').addClass('hidden');
   var $errorDiv = $('.user-stub-error');
   $errorDiv.removeClass('hidden')
@@ -184,12 +193,13 @@ var submitUserStubError = function (error){
  *  
  * @param event The event that triggered this (can be null).
  * @param userId The id of the user.
- * @param userName The name of the user (first and last name).
+ * @param displayName The display name of the user e.g., (first and last name
+ *                    (username)).
  */
-var addStubUser = function(event, userId, userName){
+var addStubUser = function(event, userId, displayName){
   // Create a new element in the picked-users list.
   var user = $(`<span class="user" data-id="${userId}"><span class="name">`+
-               `${userName}</span></span>`);
+               `${displayName}</span></span>`);
   user.append(
     '<span class="remove-user"><span class="glyphicon glyphicon-remove">'+
     '</span></span>');
