@@ -81,7 +81,7 @@ Allows the following:
                       </h2>
                       <ul>
                         <%= render(partial: "assignments/assignment_list_item", 
-                        collection: sort_by(@assignment_group.assignments, :semester), 
+                        collection: sort_by(@assignment_group.assignments, :created_at), 
                         as: :assignment, 
                         locals: {print_header: true, assignment_group: @assignment_group}) || 
                         "There are currently no assignments." %>
@@ -170,7 +170,7 @@ Allows the following:
                 </b>
                 <ul>
                   <%= render(partial: "assignments/assignment_list_item", 
-                  collection: sort_by(@assignment_group.assignments, :semester), 
+                  collection: sort_by(@assignment_group.assignments, :created_at), 
                   as: :assignment, 
                   locals: {assignment_group: @assignment_group, target_assignment_id: @assignment.nil? ? "" : @assignment.id }) || 
                   "<i>There are currently no assignments.</i>".html_safe %>
@@ -185,7 +185,7 @@ Allows the following:
 
   </div> <%# End row. %>
 
-  <%= render @assignment_group.assignments, as: :assignment %>
+  <%= render sort_by(@assignment_group.assignments, :created_at), as: :assignment %>
 
 
 
