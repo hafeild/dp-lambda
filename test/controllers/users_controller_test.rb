@@ -115,8 +115,8 @@ class UsersControllerTest < ActionController::TestCase
         "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
       assert user_stub['json']['last_name'] == User.last.last_name,
         "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
-      assert user_stub['json']['email'] == User.last.email,
-        "Wrong email (expected #{User.last.email}): #{@response.body}"
+      assert user_stub['json']['username'] == User.last.username,
+        "Wrong username (expected #{User.last.username}): #{@response.body}"
       assert user_stub.has_key?('html'),
         "Missing data.user_stub.html: #{@response.body}"
       # assert false, user_stub['html']
@@ -341,8 +341,8 @@ class UsersControllerTest < ActionController::TestCase
       "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
     assert user_stub['json']['last_name'] == stub.last_name,
       "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
-    assert user_stub['json']['email'] ==stub.email,
-      "Wrong email (expected #{User.last.email}): #{@response.body}"
+    assert user_stub['json']['username'] ==stub.username,
+      "Wrong username (expected #{User.last.username}): #{@response.body}"
     assert user_stub.has_key?('html'),
       "Missing data.user_stub.html: #{@response.body}"
     # assert false, user_stub['html']
@@ -384,8 +384,8 @@ class UsersControllerTest < ActionController::TestCase
       "Wrong first_name (expected #{User.last.first_name}): #{@response.body}"
     assert user_stub['json']['last_name'] == stub.last_name,
       "Wrong last_name (expected #{User.last.last_name}): #{@response.body}"
-    assert user_stub['json']['email'] ==stub.email,
-      "Wrong email (expected #{User.last.email}): #{@response.body}"
+      assert user_stub['json']['username'] ==stub.username,
+      "Wrong username (expected #{User.last.username}): #{@response.body}"
     assert user_stub.has_key?('html'),
       "Missing data.user_stub.html: #{@response.body}"
     # assert false, user_stub['html']
