@@ -117,7 +117,7 @@ var animateProcessing = function($elm, start){
 };
 
 /**
- * Turns of processing animation.
+ * Turns off processing animation.
  */
 var unanimateProcessing = function(){
   processing = false;
@@ -134,14 +134,78 @@ var unanimateProcessing = function(){
 var submitUserStubForm = function(event){
   var $form = $(this);
 
+  $('.user-stub-form-toggle').addClass('hidden');
+  var $processingDiv = $('.user-stub-wait') 
+
+  // Show the processing modal.
+  $processingDiv.removeClass('hidden');
+
   $.post({
-    url: '...',
+    url: 'user_stubs',
     data: $form.serialize(),
-    // TODO
+    success: function(data){
+      unanimateProcessing();
+
+      // Handle any errors.
+      if(!data.success){
+        submitUserStubError(data.error);
+        return;
+      }
+
+      var user = data.user_stub.json;
+      addStubUser(user.id,`${user.first_name} ${user.last_name}`);
+
+      // Close the modal.
+      $('.new-user-stub-modal').modal('hide');
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+      unanimateProcessing();
+      submitUserStubError(errorThrown);
+    },
+    dataType: 'json'
   });
+  
+  animateProcessing($processingDiv.find('.message'), true);
 }
 
+/**
+ * Raises an error in the user stub modal.
+ * @param error The error to display.
+ */
+var submitUserStubError = function (error){
+  $('.user-stub-form-toggle').addClass('hidden');
+  var $errorDiv = $('.user-stub-error');
+  $errorDiv.removeClass('hidden')
+  $errorDiv.find('.error-message').html(error);
+}
 
+/**
+ * Adds the given id to the picked-users list.
+ *  
+ * @param event The event that triggered this (can be null).
+ * @param userId The id of the user.
+ * @param userName The name of the user (first and last name).
+ */
+var addStubUser = function(event, userId, userName){
+  // Create a new element in the picked-users list.
+  var user = $(`<span class="user" data-id="${userId}"><span class="name">`+
+               `${userName}</span></span>`);
+  user.append(
+    '<span class="remove-user"><span class="glyphicon glyphicon-remove">'+
+    '</span></span>');
+  $('#picked-users').append(user);
+  translateUsersToIds();
+}
+
+/**
+ * Hits the server to gather user suggestions based on what has been entered
+ * into the search box. Each suggestions includes a label (first and last name)
+ * and value (user id) field.
+ * 
+ * @param autoSuggestInput The text that's been entered.
+ * @param autoSuggestCallback  The function to call after generating the 
+ *                             list of suggestions.
+ */
 var getUserSuggestions = function(autoSuggestInput, autoSuggestCallback){
   var query = autoSuggestInput.term; //this.value;
 
@@ -170,30 +234,40 @@ var getUserSuggestions = function(autoSuggestInput, autoSuggestCallback){
 
 };
 
-
+/**
+ * Processes a user selected from the user suggestion; add them to the picked
+ * users list.
+ * 
+ * @param event The event that triggered this.
+ * @param ui The jQuery UI element that was selected. Should have
+ *          item.value and item.label fields.
+ */
 var addUser = function(event, ui){
   var userId = ui.item.value;
   var userName = ui.item.label;
 
-  // Create a new element in the picked-users list.
-  var user = $(`<span class="user" data-id="${userId}"><span class="name">${userName}</span></span>`);
-  user.append('<span class="remove-user"><span class="glyphicon glyphicon-remove"></span></span>');
-  $('#picked-users').append(user);
+  addStubUser(null, userId, userName);
 
   // Clear the search box.
   $('#user-search').val('');
-
-  translateUsersToIds();
 
   event.preventDefault();
   return false;
 };
 
+/**
+ * Removes a user from the picked users list.
+ */
 var removeUser = function(){
   $(this).parents('.user').remove();
   translateUsersToIds();
 };
 
+/**
+ * Adds the id of every picked user to the hidden form field for picked users
+ * (this id list is what the server processes to add those users as authors
+ * or instructors).
+ */
 var translateUsersToIds = function(){
   var ids = $.map($('#picked-users .user'), (elm,i) => elm.getAttribute('data-id'));
   console.log('ids:', ids);

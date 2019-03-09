@@ -2,7 +2,7 @@
 This creates a new stub user form modal. The form allows the
 user to create a new user. Upon successful creation, an even will be
 triggered on the document element: 
-  'userstub:created', id
+  'userstub:created', userId, userName
 
 In jQuery, listen for this like this:
 
@@ -46,7 +46,7 @@ Call this partial *at the bottom* of your page (below any form).
         <p class="message">Please wait...</p>
       </div>
 
-      <div class="user-stub-form-toggle user-stub-wait hidden">
+      <div class="user-stub-form-toggle user-stub-error hidden">
         <h2>Error!</h2>
         <p class="error-message"></p>
       </div>
