@@ -6,10 +6,11 @@ Changes made in each release are summarized below.
 
 New features:
 
-  * ...
+  * editors can now add stub users as instructors or authors when creating or editing assignment pages
 
 Bug fixes:
 
+  * emails are no longer retrievable for users/user stubs
   * updated a vulnerable library
     - required update to Ruby 2.3.5
       ```
