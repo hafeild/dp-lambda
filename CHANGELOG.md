@@ -10,6 +10,7 @@ New features:
 
 Bug fixes:
 
+  * assignments are now ordered by creation date
   * emails are no longer retrievable for users/user stubs
   * updated a vulnerable library
     - required update to Ruby 2.3.5
