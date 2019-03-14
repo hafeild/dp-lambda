@@ -7,6 +7,7 @@ Changes made in each release are summarized below.
 New features:
 
   * editors can now add stub users as instructors or authors when creating or editing assignment pages
+  * non-assignment vertical listings no longer include the creator's name
 
 Bug fixes:
 
