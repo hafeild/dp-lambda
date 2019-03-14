@@ -21,6 +21,8 @@ Bug fixes:
       gem pristine --all
       bundler install
       ```
+  * thumbnail files are no longer saved in their original size; everything is
+    resized to under 600x600 pixels
 
 
 ## 19.02.02
