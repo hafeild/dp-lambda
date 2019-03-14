@@ -25,6 +25,9 @@ Bug fixes:
   * thumbnail files are no longer saved in their original size; everything is
     resized to under 600x600 pixels
   * upgraded the actionview library to v5.0.7.2 to mitigate a vulnerability
+  * updated INSTALLING.md to include the new version of ruby
+  * updated INSTALLING.md to include g++ as one of the prereqs for installing
+    on a production system
 
 ## 19.02.02
 

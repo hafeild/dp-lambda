@@ -120,7 +120,7 @@ Install the following packages:
 
     sudo apt-get update
     sudo apt-get install -y git imagemagick nodejs postgresql libpq-dev \
-        make libreadline-dev sqlite3 libsqlite3-dev apache2 sendmail
+        make libreadline-dev sqlite3 libsqlite3-dev apache2 sendmail g++
 
 You will need Java 1.8 in order to use Solr; to install the Oracle version, do:
 
