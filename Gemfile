@@ -7,6 +7,7 @@ end
 
 
 gem 'rails', '~> 5.0.2'
+# gem 'rails', '~> 5.0.3'
 gem 'bcrypt', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
 gem 'figaro',       '1.1.1'
 gem 'sqlite3', '~> 1.3.1'
@@ -33,6 +34,9 @@ gem 'rack', '>= 2.0.6'
 gem 'jquery-ui-rails', '6.0.1'
 gem 'minitest', '5.10.3'
 gem "nokogiri", ">= 1.8.5"
+# gem "actionview", ">= 5.0.7.2"
+
+
 
 
 
