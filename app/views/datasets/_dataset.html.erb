@@ -23,10 +23,6 @@ versions_limit = -1 ## most recent
       <a href="<%= dataset_path(dataset) %>" 
       data-dataset-id="<%= dataset.id %>"><span class="name"><%= get_snippet(dataset.name, title_max) %></span></a>
 
-      <span class="metadata">
-        <span class="author"><%= dataset.creator.full_name %></span> 
-      </span>
-
       <span class="summary"><%= get_snippet(dataset.summary, summary_max) %></span>
     </div>
 

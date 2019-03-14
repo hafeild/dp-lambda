@@ -23,9 +23,6 @@ versions_limit = -1 ## most recent
       <a href="<%= analysis_path(analysis) %>" 
       data-analysis-id="<%= analysis.id %>"><span class="name"><%= get_snippet(analysis.name, title_max) %></span></a>
 
-      <span class="metadata">
-        <span class="author"><%= analysis.creator.full_name %></span> 
-      </span>
 
       <span class="summary"><%= get_snippet(analysis.summary, summary_max) %></span>
     </div>

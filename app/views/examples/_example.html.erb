@@ -23,9 +23,11 @@ versions_limit = -1 ## most recent
       <a href="<%= example_path(example) %>" 
       data-example-id="<%= example.id %>"><span class="name"><%= get_snippet(example.name, title_max) %></span></a>
 
+    <% if false %>
       <span class="metadata">
         <span class="author"><%= example.creator.full_name %></span> 
       </span>
+    <% end %>
 
       <span class="summary"><%= get_snippet(example.summary, summary_max) %></span>
     </div>

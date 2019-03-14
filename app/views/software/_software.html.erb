@@ -23,10 +23,6 @@ versions_limit = -1 ## most recent
       <a href="<%= software_path(software) %>" 
       data-analysis-id="<%= software.id %>"><span class="name"><%= get_snippet(software.name, title_max) %></span></a>
 
-      <span class="metadata">
-        <span class="author"><%= software.creator.full_name %></span> 
-      </span>
-
       <span class="summary"><%= get_snippet(software.summary, summary_max) %></span>
     </div>
 
