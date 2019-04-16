@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   mount Bootsy::Engine => '/bootsy', as: 'bootsy'
 
   ## Static pages.
-  root    'static_pages#home'
+  root    'homepage#show'
   get     'password_resets/edit'
   get     'signup' => 'users#new'
   get     'login'  => 'sessions#new'
