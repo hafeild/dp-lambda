@@ -1,0 +1,77 @@
+
+<% 
+itemsPerRow = 3 
+
+## Character/list limits.
+title_max = 100
+# versions_limit = -1 ## most recent
+%>
+
+<style>
+.entry{
+  height: 174px;
+  max-width: 345px;
+  width: 100%;
+  display: table;
+  padding: 5%;
+  background: #888888;
+  opacity: .75;
+  border: none;
+  transition: opacity .5s;
+}
+
+.entry:hover{
+  opacity: 1;
+  transition: opacity .5s;
+}
+
+.wrapper{
+  display: table-cell;
+  vertical-align: middle;
+  text-align:center
+  
+}
+
+.no-hover:hover{
+  text-decoration: none;
+}
+
+.wrapper .author, .wrapper .name{
+  color: #ffffff;
+}
+
+</style>
+
+<% if @i % itemsPerRow == 0 %>
+<div class="row item
+  <% if @i == 0 %>
+    active
+  <% end %>
+">
+<% end %>
+
+  <div class="col-sm-4">
+    
+    <a href="<%= vertical_path(vertical.id) %>" data-vertical-id="<%= vertical.id %>" class="no-hover">
+      <div data-vertical-id="<%= vertical.id %>" class="vertical entry index-entry thumbnail-wrapper"
+          <% if vertical.thumbnail? %>
+            style="background-image: url('<%= vertical.thumbnail.tile.url %>')"
+            <%# image_tag(vertical.thumbnail.tile.url) %>
+          <% else %>
+            style="background: steelblue;"
+          <% end %>
+          >
+        
+        <div class="wrapper">
+          <span class="name"><%= vertical.name %></span>
+          <span class="author"><%= oxford_comma_list vertical.authors.map{|a| a.full_name} %></span> 
+        </div>
+      </div>
+    </a>
+  </div>
+
+<% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
+</div>
+<% end %>
+
+<% @i += 1 %>

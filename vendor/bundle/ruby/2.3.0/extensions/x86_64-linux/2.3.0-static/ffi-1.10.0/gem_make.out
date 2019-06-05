@@ -1,0 +1,54 @@
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/ffi-1.10.0/ext/ffi_c
+/home/mhenry/.rbenv/versions/2.3.5/bin/ruby -r ./siteconf20190326-41295-egkj16.rb extconf.rb
+checking for ffi_call() in -lffi... yes
+checking for ffi_closure_alloc()... yes
+checking for ffi_raw_call()... yes
+checking for ffi_prep_raw_closure()... yes
+checking for shlwapi.h... no
+checking for ruby/thread.h... yes
+checking for rb_thread_blocking_region()... no
+checking for rb_thread_call_with_gvl()... yes
+checking for rb_thread_call_without_gvl()... yes
+checking for ffi_prep_cif_var()... yes
+creating extconf.h
+creating Makefile
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /home/mhenry/alice/vendor/bundle/ruby/2.3.0/extensions/x86_64-linux/2.3.0-static/ffi-1.10.0/mkmf.log
+
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/ffi-1.10.0/ext/ffi_c
+make "DESTDIR=" clean
+
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/ffi-1.10.0/ext/ffi_c
+make "DESTDIR="
+compiling Buffer.c
+compiling ClosurePool.c
+compiling StructByReference.c
+compiling DynamicLibrary.c
+compiling ffi.c
+compiling Platform.c
+compiling Pointer.c
+compiling MappedType.c
+compiling Struct.c
+compiling Function.c
+compiling Types.c
+compiling MethodHandle.c
+compiling Call.c
+compiling Variadic.c
+compiling AbstractMemory.c
+compiling FunctionInfo.c
+compiling Thread.c
+compiling DataConverter.c
+compiling ArrayType.c
+compiling MemoryPointer.c
+compiling LastError.c
+compiling LongDouble.c
+compiling Type.c
+compiling StructByValue.c
+compiling StructLayout.c
+linking shared-object ffi_c.so
+
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/ffi-1.10.0/ext/ffi_c
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20190326-41295-5u9v3v

@@ -1,0 +1,19 @@
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/byebug-11.0.0/ext/byebug
+/home/mhenry/.rbenv/versions/2.3.5/bin/ruby -r ./siteconf20190326-41295-li5uvi.rb extconf.rb
+creating Makefile
+
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/byebug-11.0.0/ext/byebug
+make "DESTDIR=" clean
+
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/byebug-11.0.0/ext/byebug
+make "DESTDIR="
+compiling locker.c
+compiling byebug.c
+compiling threads.c
+compiling breakpoint.c
+compiling context.c
+linking shared-object byebug/byebug.so
+
+current directory: /home/mhenry/alice/vendor/bundle/ruby/2.3.0/gems/byebug-11.0.0/ext/byebug
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 byebug.so ./.gem.20190326-41295-p2j2ks/byebug

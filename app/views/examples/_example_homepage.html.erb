@@ -1,0 +1,76 @@
+
+<% 
+itemsPerRow = 3 
+
+## Character/list limits.
+title_max = 100
+# versions_limit = -1 ## most recent
+%>
+
+<style>
+.entry{
+  height: 174px;
+  max-width: 345px;
+  width: 100%;
+  display: table;
+  padding: 5%;
+  background: #888888;
+  opacity: .75;
+  border: none;
+  transition: opacity .5s;
+}
+
+.entry:hover{
+  opacity: 1;
+  transition: opacity .5s;
+}
+
+.wrapper{
+  display: table-cell;
+  vertical-align: middle;
+  text-align:center
+  
+}
+
+.no-hover:hover{
+  text-decoration: none;
+}
+
+.wrapper .author, .wrapper .name{
+  color: #ffffff;
+}
+
+</style>
+
+<% if @i % itemsPerRow == 0 %>
+<div class="row item
+  <% if @i == 0 %>
+    active
+  <% end %>
+">
+<% end %>
+
+  <div class="col-sm-4">
+    
+    <a href="<%= example_path(example.id) %>" data-example-id="<%= example.id %>" class="no-hover">
+      <div data-example-id="<%= example.id %>" class="example entry index-entry thumbnail-wrapper"
+          <% if example.thumbnail? %>
+            style="background-image: url('<%= example.thumbnail.tile.url %>')"
+            <%# image_tag(example.thumbnail.tile.url) %>
+          <% else %>
+            style="background: #888888;"
+          <% end %>
+          >
+        
+        <div class="wrapper">
+          <span class="name"><%= example.name %></span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+<% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
+</div>
+<% end %>
+
+<% @i += 1 %>
