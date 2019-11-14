@@ -22,18 +22,18 @@ gem 'jquery-rails'
 #gem 'jbuilder', '~> 2.5'
 gem 'rails-controller-testing', '1.0.1'
 gem 'bootsy'
-gem 'mini_magick'
+gem 'mini_magick', '>= 4.9.4'
 gem 'sunspot_rails', '2.3.0'
 gem 'sunspot_solr', '2.3.0'
 gem 'rb-readline'
 gem 'highline'
 gem "paperclip", "~> 5.0.0"
 gem 'rails-html-sanitizer', '~> 1.0.4'
-gem 'loofah', '>= 2.2.3'
+gem 'loofah', '>= 2.3.1'
 gem 'rack', '>= 2.0.6'
 gem 'jquery-ui-rails', '6.0.1'
 gem 'minitest', '5.10.3'
-gem "nokogiri", ">= 1.8.5"
+gem "nokogiri", ">= 1.10.4"
 # gem "actionview", ">= 5.0.7.2"
 
 
