@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
 
   ## Log a user in.
   def create
+
     ## Check if it's an email, not a username.
     if(params[:session][:username] =~ /.*@.*/)
       user = User.find_by(email: params[:session][:username])
@@ -15,6 +16,7 @@ class SessionsController < ApplicationController
       if !user.deleted? and user.activated?
         ## Log in.
         log_in user
+
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         flash[:info] = "Welcome back! You are now logged in"
         redirect_back_or root_url

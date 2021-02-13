@@ -19,7 +19,7 @@ class AnalysisRenderTest < ActionDispatch::IntegrationTest
   end
 
   test "should display edit option on a analysis page when logged in" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
     analysis = analyses(:one)
 
     get analysis_path(analysis.id)
@@ -80,7 +80,7 @@ class AnalysisRenderTest < ActionDispatch::IntegrationTest
   ## Navigate from the home page to the analysis index, then visit a specific
   ## analysis page, edit it, and submit the changes.
   test "should be able to navigate to analysis page and edit from home page" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     analysis = analyses(:two)
 
@@ -123,7 +123,7 @@ class AnalysisRenderTest < ActionDispatch::IntegrationTest
   ## analysis index.
   test "should be able to create a new analysis page, navigate to it, "+
       "and delete it" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     analysis_name = "MY ANALYSIS"
     analysis_description = "YABBA DABBA DOO"

@@ -53,15 +53,17 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with remembering" do
     cookies.delete('remember_token')
-    log_in_as(@user, remember_me: '1')
-    assert_not_nil cookies['remember_token']
+    log_in_as_integration(@user, {remember_me: '1', password: 'password'})
+    assert flash[:info] == "Welcome back! You are now logged in", flash.to_json
+    assert_not_nil cookies['remember_token'], cookies.to_json
     assert is_logged_in?
   end
 
   test "login without remembering" do
     cookies.delete('remember_token')
-    log_in_as(@user, remember_me: '0')
-    assert_nil cookies['remember_token']
+    log_in_as_integration(@user, {remember_me: '0', password: 'password'})
+    assert flash[:info] == "Welcome back! You are now logged in", flash.to_json
+    assert_nil cookies['remember_token'], cookies.to_json
     assert is_logged_in?
   end
 end

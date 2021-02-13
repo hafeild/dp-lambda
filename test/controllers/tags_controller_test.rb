@@ -209,8 +209,10 @@ class TagsControllerTest < ActionController::TestCase
     patch :update, params: { analysis_id: analysis.id, id: tag.id,
       tag: { text: "A better tag!" } }
     assert_redirected_to analysis_path(analysis), @response.body
-    tag.reload
-    assert tag.text == "a better tag!"
+    assert flash.empty?, flash.to_json
+    # tag.reload
+    tag = Tag.find(tag.id)
+    assert tag.text == "a better tag!", tag.text
   end
 
   ##############################################################################

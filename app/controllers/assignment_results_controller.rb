@@ -32,7 +32,7 @@ class AssignmentResultsController < ApplicationController
 
   def update
     begin
-      @assignment_result.update_attributes! @params
+      @assignment_result.update! @params
       @assignment_result.assignment.reload
       @assignment_result.assignment.save!
       respond_with_success @redirect_path
