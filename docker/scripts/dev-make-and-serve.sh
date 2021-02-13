@@ -27,7 +27,8 @@ fi
     bundle exec rake db:migrate &&
     bundle exec rake sunspot:solr:start &&
     echo "Running server; use ctrl-c to exit and drop to the command line." &&
-    bin/rails s -b 0.0.0.0
+    bin/rails s -b 0.0.0.0 &&
+    bundle exec rake sunspot:solr:stop
 
 ## Launches an interactive ash shell for development.
 ash
