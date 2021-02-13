@@ -143,7 +143,7 @@ class UsersController < ApplicationController
     # Rails.logger.info(cur_params.to_unsafe_h.map{|k,v| "#{k}: #{v}"}.join("\n"))
 
     ## If the update was successful...
-    if @user.update_attributes(cur_params)
+    if @user.update(cur_params)
 
       ## Check the requested permission level -- editor and admin require
       ## adding a permission request and sending an email.
