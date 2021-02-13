@@ -34,11 +34,12 @@ class ActiveSupport::TestCase
   end 
 
   def log_in_as_integration(user, options={})
-    password    = options[:password]    || 'password'
-    remember_me = options[:remember_me] || '1'
-    post login_path, params: { session: { email:       user.email,
-                                password:    password,
-                                remember_me: remember_me } }
+    password    = options.has_key?(:password) ? options[:password] : 'password'
+    remember_me = options.has_key?(:remember_me) ? options[:remember_me] : '1'
+    post login_path, params: { session: { 
+        username:       user.email,
+        password:    password,
+        remember_me: remember_me } }
   end
 
 
