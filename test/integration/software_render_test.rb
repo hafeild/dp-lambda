@@ -19,7 +19,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
   end
 
   test "should display edit option on a software page when logged in" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
     software = software(:one)
 
     get software_path(software.id)
@@ -80,7 +80,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
   ## Navigate from the home page to the software index, then visit a specific
   ## software page, edit it, and submit the changes.
   test "should be able to navigate to software page and edit from home page" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     software = software(:two)
 
@@ -123,7 +123,7 @@ class SoftwareRenderTest < ActionDispatch::IntegrationTest
   ## software index.
   test "should be able to create a new software page, navigate to it, "+
       "and delete it" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     software_name = "MY SOFTWARE"
     software_description = "YABBA DABBA DOO"

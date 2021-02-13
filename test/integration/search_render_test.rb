@@ -13,7 +13,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   ## original vertical is removed.
   
   test "example linked verticals show up in results" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     example = examples(:three)
     assignment = assignments(:for_search_tests_1)
@@ -123,7 +123,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   ## original vertical is removed.
   
   test "analysis linked verticals show up in results" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     analysis = analyses(:three)
     example = examples(:three)
@@ -229,7 +229,7 @@ class SearchRenderTest < ActionDispatch::IntegrationTest
   ## original vertical is removed.
   
   test "assignment linked verticals show up in results" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     assignment = assignments(:for_search_tests_1)
     assignment2 = assignments(:for_search_tests_2)

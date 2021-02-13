@@ -19,7 +19,7 @@ class DatasetRenderTest < ActionDispatch::IntegrationTest
   end
 
   test "should display edit option on a dataset page when logged in" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
     dataset = datasets(:one)
 
     get dataset_path(dataset.id)
@@ -80,7 +80,7 @@ class DatasetRenderTest < ActionDispatch::IntegrationTest
   ## Navigate from the home page to the dataset index, then visit a specific
   ## dataset page, edit it, and submit the changes.
   test "should be able to navigate to dataset page and edit from home page" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     dataset = datasets(:two)
 
@@ -123,7 +123,7 @@ class DatasetRenderTest < ActionDispatch::IntegrationTest
   ## dataset index.
   test "should be able to create a new dataset page, navigate to it, "+
       "and delete it" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     dataset_name = "MY DATASET"
     dataset_description = "YABBA DABBA DOO"

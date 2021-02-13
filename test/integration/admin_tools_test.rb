@@ -14,7 +14,7 @@ class AdminToolsTest < ActionDispatch::IntegrationTest
   end
   
   test "should not display users if user not an admin" do 
-    log_in_as users(:bar)
+    log_in_as_integration users(:bar)
     get users_path
     assert_redirected_to root_path
     follow_redirect!
@@ -25,7 +25,7 @@ class AdminToolsTest < ActionDispatch::IntegrationTest
   
   
   test "should display users if an admin" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
     get users_path
     assert_template "users/index"
     assert flash.keys.size == 1
@@ -56,7 +56,7 @@ class AdminToolsTest < ActionDispatch::IntegrationTest
   end
   
   test "should not display permission requests if user not an admin" do 
-    log_in_as users(:bar)
+    log_in_as_integration users(:bar)
     get permission_requests_path
     assert_redirected_to root_path
     follow_redirect!
@@ -73,7 +73,7 @@ class AdminToolsTest < ActionDispatch::IntegrationTest
   end
   
   test "should display permission requests if an admin" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
     permission_request = permission_requests(:pr1)
     
     ## All unreviewed permission requests listed.

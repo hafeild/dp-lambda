@@ -31,7 +31,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
   end
 
   test "should display edit option on a assignment page when logged in" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
     assignment = assignments(:one)
     assignment_group = assignment.assignment_group
 
@@ -112,7 +112,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
   ## Navigate from the home page to the assignment group index, then visit a specific
   ## assignment group page, select a specific assignment page, edit it, and submit the changes.
   test "should be able to navigate to assignment page and edit from home page" do 
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     assignment = assignments(:two)
     assignment_group = assignment.assignment_group
@@ -164,7 +164,7 @@ class AssignmentRenderTest < ActionDispatch::IntegrationTest
   ## assignment index.
   test "should be able to create a new assignment page, navigate to it, "+
       "and delete it" do
-    log_in_as users(:foo)
+    log_in_as_integration users(:foo)
 
     assignment_group = assignment_groups(:one)
 
