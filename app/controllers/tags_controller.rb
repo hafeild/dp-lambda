@@ -47,10 +47,10 @@ class TagsController < ApplicationController
 
   def update
     begin
-      @tag.update_attributes!(text: @params[:text].downcase)
+      @tag.update!(text: @params[:text].downcase)
       respond_with_success @redirect_path
-    rescue
-      respond_with_error "The tag could not be updated.", 
+    rescue => e
+      respond_with_error "The tag could not be updated: #{e}.", 
         @redirect_path
     end
   end

@@ -219,13 +219,6 @@ class User < ApplicationRecord
   end
 
   searchable do
-    #text :username, :email, :last_name, :first_name
-    # text :username, as: :username_autocompletable
-    # text :email, as: :email_autocompletable
-    # text :last_name, as: :last_name_autocompletable
-    # text :first_name, as: :first_name_autocompletable
-
-
     text :username_autocompletable do
       username
     end
