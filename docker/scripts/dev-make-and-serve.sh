@@ -3,6 +3,12 @@
 ## Installs any new gems, performs any outstanding migrations, and starts the
 ## server. This is the command that the Docker dev container runs on startup.
 
+trap ctrl_c INT
+
+function ctrl_c() {
+        echo "** Trapped CTRL-C; dropping to command line..."
+}
+
 ## Clear out an old pids.
 rm -f tmp/pids/*
 

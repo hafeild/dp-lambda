@@ -3,3 +3,5 @@
 rm -f tmp/pids/server.pid
 
 exec "$@"
+
+ash
