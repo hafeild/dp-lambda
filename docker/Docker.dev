@@ -5,6 +5,7 @@ RUN apk add --no-cache \
     git \
     icu-dev \
     imagemagick \
+    openjdk8-jre \
     nodejs \
     npm \
     postgresql-dev \
