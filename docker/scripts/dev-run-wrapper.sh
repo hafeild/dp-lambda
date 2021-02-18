@@ -13,6 +13,12 @@ fi
 ## Clear out an old pids.
 rm -f tmp/pids/*
 
+if [ ! -f "config/application.yml" ]; then 
+    echo "Please copy `application.EXAMPLE.yml` to config/application.yml and "
+    echo "configure as necessary before running this command again."
+    exit
+fi
+
 status=0
 
 ## Only run `bundle install` if the Gemfile has been updated.
