@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #####
 # Fires up the development container; use ctrl-c to drop to the command line,
@@ -10,4 +10,11 @@
 ## Grab the development host port from config/application.yml (DEV_HOST_PORT).
 hostPort=$(grep DEV_HOST_PORT: config/application.yml | perl -pe 's/(^.*: )|\s|"//g')
 
-docker run -ti --rm -p $hostPort:3000 -v "$PWD:/usr/src/app" alice-dev
+cmd="$@"
+if [[ $# -gt 0 ]] && [ "$1" == "user-admin" ]; then
+    cmd="docker/scripts/dev-users-rake.sh $2"
+elif [[ $# -gt 0 ]] && [ "$1" == "test" ]; then
+    cmd="docker/scripts/dev-run-tests.sh $2"
+fi
+
+docker run -ti --rm -p $hostPort:3000 -v "$PWD:/usr/src/app" alice-dev $cmd

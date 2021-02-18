@@ -219,19 +219,25 @@ class User < ApplicationRecord
   end
 
   searchable do
-    text :username_autocompletable do
-      username
-    end
-    text :email_autocompletable do
-      email
-    end
-    text :last_name_autocompletable do
-      last_name
-    end
-    text :first_name_autocompletable do 
-      first_name
-    end
-    #, :email, :first_name, :last_name, as: :autocompletable
+    text :username, {as: :username_autocompletable}
+    text :email, {as: :email_autocompletable}
+    text :last_name, {as: :last_name_autocompletable}
+    text :first_name,{as: :first_name_autocompletable}
+
+    
+    # text :username_autocompletable do
+    #   username
+    # end
+    # text :email_autocompletable do
+    #   email
+    # end
+    # text :last_name_autocompletable do
+    #   last_name
+    # end
+    # text :first_name_autocompletable do 
+    #   first_name
+    # end
+    # text :username, :email, :first_name, :last_name
   end
 
 

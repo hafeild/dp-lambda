@@ -138,7 +138,7 @@ class SearchController < ApplicationController
     begin
       start_time = Time.now
 
-      @search_params = params.permit(:q)
+      @search_params = params.permit(:q, :format)
       #@query = params.require(:query).to_s.downcase
       @query = get_with_default(@search_params, :q, "")
 

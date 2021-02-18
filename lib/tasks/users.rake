@@ -61,6 +61,31 @@ namespace :users do
     end
   end
 
+  desc "Activates an existing user."
+  task :activate, [:username] => [:environment] do |task, args|
+    if args.username.nil?
+      print "Enter username: "
+      username = STDIN.gets.chomp
+    else
+      username = args.username
+    end
+    
+    begin
+      user = User.find_by!(username: username)
+      if user.activated
+        puts "This user is already activated."
+      else
+        puts user.update!({
+          activated: true, 
+          activated_at: Time.now
+        })
+        puts "Success!"
+      end
+    rescue => e 
+      puts e 
+    end
+  end
+
   desc "Lists all the users in the database."
   task list: :environment do
     User.all.each do |user|

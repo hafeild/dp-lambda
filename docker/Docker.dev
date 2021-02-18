@@ -21,4 +21,4 @@ RUN bundle install
 VOLUME /usr/src/app
 
 ENTRYPOINT ["ash", "docker/scripts/dev-entrypoint.sh"]
-CMD ["docker/scripts/dev-make-and-serve.sh"]
+CMD ["docker/scripts/dev-run-wrapper.sh"]
