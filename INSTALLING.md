@@ -20,17 +20,25 @@ git clone https://github.com/hafeild/alice.git
 cd alice
 git checkout -t origin/develop
 ```
+
+Second, copy `application.EXAMPLE.yml` to `config/application.yml` and edit
+as necessary (most of this can stay as is for development).
+
 Next, build the Docker image:
 
 ```bash
-docker/scripts/build-dev-image.sh`
+docker/scripts/build-dev-image.sh
 ```
 
 You should do this step anytime you've finalized making changes to the Gemfile
 or pull changes that affect the Gemfile; this will save you time when you go
 to run the container.
 
-To start the container, do:
+
+Create an admin user (see (Adding users)[#adding-users]).
+
+
+To start the server, do:
 
 ```bash
 docker/scripts/run-dev-container.sh
@@ -39,17 +47,11 @@ docker/scripts/run-dev-container.sh
 This will run the container, perform any outstanding database migrations on the
 development database (sqlite), start Sunspot Solr (for indexing and searching),
 and start the rails server listening on port 3000. You can use `ctrl-c` to exit
-the server and drop to a shell, e.g., to perform rake tasks, run tests, etc. If
-you want to exit the container, type `exit`. Otherwise, if you want to restart
-the server, enter this from within the container:
-
-```bash
-bin/rails s -b 0.0.0.0
-```
+the server and exit the container. 
 
 This command also mounts the Alice directory as a volume in the container, so
 you can use whatever text editor or IDE you'd like to edit files on your machine
-and see those changes in the container. The container is based on Docker's
+and see those changes in the container. The container is based on the Docker
 Alpine image, which is a lightweight Linux distribution and uses ash rather than
 bash as the shell. If you need additional tools installed, use the `apk add
 <package>` command in the ash shell.
@@ -58,6 +60,7 @@ In development mode, rails will integrate most changes to the app live, so
 you only need to restart the server if you change a configuration file (which 
 are only checked when the server starts) or modify gems.
 
+<a name="adding-users"></a>
 ### Adding users
 
 You should first add a default `admin` user. To do this, ensure the server
@@ -156,7 +159,12 @@ docker/scripts/run-dev-container.sh ash
 
 This doesn't do anything on spin up: no database migrations, and no checks to
 see if the Gemfile has been updated, no Solr configuration, startup, or
-re-indexing. You'll need to do those things manually if you need any of them.
+re-indexing. You'll need to do those things manually if you need any of them. 
+If you use this method and want to run the server, enter this in ash:
+
+```bash
+bin/rails s -b 0.0.0.0
+```
 
 If you want to run a shell script that is running after all that set up, do
 

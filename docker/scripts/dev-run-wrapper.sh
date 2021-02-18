@@ -22,12 +22,18 @@ if [ Gemfile -nt Gemfile.lock ]; then
     echo "IMPORTANT: don't forget to re-build your Docker image."
 fi
 
-## Copy over solr configuration file.
-cat sunspot/conf/schema.xml > solr/configsets/sunspot/conf/schema.xml
+if [ $status -eq 0 ] && [ ! -d "solr/" ]; then 
+    echo "Performing initial Solr startup..."
+    bundle exec rake sunspot:solr:start && 
+        bundle exec rake sunspot:solr:stop
+    status=$?
+fi
 
 ## Perform DB migration, solr startup, reindexing, and finally run the user's
 ## command.
 [ $status -eq 0 ] && 
+    ## Copy over solr configuration file.
+    cat sunspot/conf/schema.xml > solr/configsets/sunspot/conf/schema.xml &&
     bundle exec rake db:migrate &&
     bundle exec rake sunspot:solr:start &&
     echo "Reindexing..." &&
