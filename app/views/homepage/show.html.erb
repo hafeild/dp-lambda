@@ -1,187 +1,205 @@
 
 <div class="vertical-launcher">
 
-  <h2 class="home-page">Recent Assignments</h2>
+  <% if @assignment_groups.size > 0 %>
+    <h2 class="home-page">Recent Assignments</h2>
     <% 
     @i = 0 
     @total = @assignment_groups.size
     %>
     <% if @total < 4 %>
-    <%= render partial:"assignment_groups/assignment_group_homepage", collection: @assignment_groups, as: :assignment_group  %>
-    <%else%>
-    <div id="assignments_carousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#assignments_carousel" data-slide-to="0" class="active"></li>
-        <%if @total > 3%>
-        <li data-target="#assignments_carousel" data-slide-to="1"></li>
-        <%end%>
-        <%if @total > 6%>
-        <li data-target="#assignments_carousel" data-slide-to="2"></li>
-        <%end%>
-      </ol>
-
-      <!-- Wrapper for slides -->
-      <div class="carousel-inner">
       <%= render partial:"assignment_groups/assignment_group_homepage", collection: @assignment_groups, as: :assignment_group  %>
-      </div>
+    <%else%>
+      <div id="assignments_carousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#assignments_carousel" data-slide-to="0" class="active"></li>
+          <%if @total > 3%>
+          <li data-target="#assignments_carousel" data-slide-to="1"></li>
+          <%end%>
+          <%if @total > 6%>
+          <li data-target="#assignments_carousel" data-slide-to="2"></li>
+          <%end%>
+        </ol>
 
-      <!-- Left and right controls -->
-      <a class="left carousel-control" href="#assignments_carousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#assignments_carousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+        <%= render partial:"assignment_groups/assignment_group_homepage", collection: @assignment_groups, as: :assignment_group  %>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#assignments_carousel" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#assignments_carousel" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
     <%end%>
-  <h2 class="home-page">Recent Analyses</h2>
-  <div id="analysis-entries" class="entries">
+  <% end %>
+    
+
+  <% if @analyses.size > 0 %>
+    <h2 class="home-page">Recent Analyses</h2>
+    <div id="analysis-entries" class="entries">
+      <% 
+      @i = 0 
+      @total = @analyses.size
+      %>
+      <% if @total < 4 %>
+        <%= render  partial:"analyses/analysis_homepage", collection: @analyses, as: :analysis  %>
+      <%else%>
+        <div id="analyses_carousel" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#analyses_carousel" data-slide-to="0" class="active"></li>
+            <%if @total > 3%>
+            <li data-target="#analyses_carousel" data-slide-to="1"></li>
+            <%end%>
+            <%if @total > 6%>
+            <li data-target="#analyses_carousel" data-slide-to="2"></li>
+            <%end%>
+          </ol>
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+          <%= render  partial:"analyses/analysis_homepage", collection: @analyses, as: :analysis  %>
+          </div>
+
+          <!-- Left and right controls -->
+          <a class="left carousel-control" href="#analyses_carousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#analyses_carousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      <%end%>
+    </div>
+  <%end%>
+
+  <% if @software.size > 0 %>
+    <h2 class="home-page">Recent Software</h2>
     <% 
-    @i = 0 
-    @total = @analyses.size
-    %>
-    <% if @total < 4 %>
-    <%= render  partial:"analyses/analysis_homepage", collection: @analyses, as: :analysis  %>
-    <%else%>
-    <div id="analyses_carousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#analyses_carousel" data-slide-to="0" class="active"></li>
-        <%if @total > 3%>
-        <li data-target="#analyses_carousel" data-slide-to="1"></li>
-        <%end%>
-        <%if @total > 6%>
-        <li data-target="#analyses_carousel" data-slide-to="2"></li>
-        <%end%>
-      </ol>
+      @i = 0 
+      @total = @software.size
+      %>
+      <% if @total < 4 %>
+        <%= render  partial:"software/software_homepage", collection: @software, as: :software  %>
+      <%else%>
+        <div id="software_carousel" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#software_carousel" data-slide-to="0" class="active"></li>
+            <%if @total > 3%>
+            <li data-target="#software_carousel" data-slide-to="1"></li>
+            <%end%>
+            <%if @total > 6%>
+            <li data-target="#software_carousel" data-slide-to="2"></li>
+            <%end%>
+          </ol>
 
-      <!-- Wrapper for slides -->
-      <div class="carousel-inner">
-      <%= render  partial:"analyses/analysis_homepage", collection: @analyses, as: :analysis  %>
-      </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+          <%= render  partial:"software/software_homepage", collection: @software, as: :software  %>
+          </div>
 
-      <!-- Left and right controls -->
-      <a class="left carousel-control" href="#analyses_carousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#analyses_carousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  </div>
+          <!-- Left and right controls -->
+          <a class="left carousel-control" href="#software_carousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#software_carousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+    <%end%>
   <%end%>
-  <h2 class="home-page">Recent Software</h2>
-  <% 
-    @i = 0 
-    @total = @software.size
+
+
+  <% if @datasets.size > 0 %>
+    <h2 class="home-page">Recent Datasets</h2>
+    <% 
+      @i = 0 
+      @total = @datasets.size
     %>
     <% if @total < 4 %>
-    <%= render  partial:"software/software_homepage", collection: @software, as: :software  %>
-    <%else%>
-    <div id="software_carousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#software_carousel" data-slide-to="0" class="active"></li>
-        <%if @total > 3%>
-        <li data-target="#software_carousel" data-slide-to="1"></li>
-        <%end%>
-        <%if @total > 6%>
-        <li data-target="#software_carousel" data-slide-to="2"></li>
-        <%end%>
-      </ol>
-
-      <!-- Wrapper for slides -->
-      <div class="carousel-inner">
-      <%= render  partial:"software/software_homepage", collection: @software, as: :software  %>
-      </div>
-
-      <!-- Left and right controls -->
-      <a class="left carousel-control" href="#software_carousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#software_carousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  <%end%>
-  <h2 class="home-page">Recent Datasets</h2>
-  <% 
-    @i = 0 
-    @total = @datasets.size
-    %>
-    <% if @total < 4 %>
-    <%= render  partial:"datasets/dataset_homepage", collection: @datasets, as: :dataset  %>
-    <%else%>
-    <div id="datasets_carousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#datasets_carousel" data-slide-to="0" class="active"></li>
-        <%if @total > 3%>
-        <li data-target="#datasets_carousel" data-slide-to="1"></li>
-        <%end%>
-        <%if @total > 6%>
-        <li data-target="#datasets_carousel" data-slide-to="2"></li>
-        <%end%>
-      </ol>
-
-      <!-- Wrapper for slides -->
-      <div class="carousel-inner">
       <%= render  partial:"datasets/dataset_homepage", collection: @datasets, as: :dataset  %>
-      </div>
+    <%else%>
+      <div id="datasets_carousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#datasets_carousel" data-slide-to="0" class="active"></li>
+          <%if @total > 3%>
+          <li data-target="#datasets_carousel" data-slide-to="1"></li>
+          <%end%>
+          <%if @total > 6%>
+          <li data-target="#datasets_carousel" data-slide-to="2"></li>
+          <%end%>
+        </ol>
 
-      <!-- Left and right controls -->
-      <a class="left carousel-control" href="#datasets_carousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#datasets_carousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+        <%= render  partial:"datasets/dataset_homepage", collection: @datasets, as: :dataset  %>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#datasets_carousel" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#datasets_carousel" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    <%end%>
   <%end%>
-  <h2 class="home-page">Recent How-Tos</h2>
-  <% 
-    @i = 0 
-    @total = @examples.size
+
+
+  <% if @examples.size > 0 %>
+    <h2 class="home-page">Recent How-Tos</h2>
+    <% 
+      @i = 0 
+      @total = @examples.size
     %>
     <% if @total < 4 %>
-    <%= render  partial:"examples/example_homepage", collection: @examples, as: :example  %>
-    <%else%>
-    <div id="examples_carousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#examples_carousel" data-slide-to="0" class="active"></li>
-        <%if @total > 3%>
-        <li data-target="#examples_carousel" data-slide-to="1"></li>
-        <%end%>
-        <%if @total > 6%>
-        <li data-target="#examples_carousel" data-slide-to="2"></li>
-        <%end%>
-      </ol>
-
-      <!-- Wrapper for slides -->
-      <div class="carousel-inner">
       <%= render  partial:"examples/example_homepage", collection: @examples, as: :example  %>
-      </div>
+    <%else%>
+      <div id="examples_carousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#examples_carousel" data-slide-to="0" class="active"></li>
+          <%if @total > 3%>
+          <li data-target="#examples_carousel" data-slide-to="1"></li>
+          <%end%>
+          <%if @total > 6%>
+          <li data-target="#examples_carousel" data-slide-to="2"></li>
+          <%end%>
+        </ol>
 
-      <!-- Left and right controls -->
-      <a class="left carousel-control" href="#examples_carousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#examples_carousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+        <%= render  partial:"examples/example_homepage", collection: @examples, as: :example  %>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#examples_carousel" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#examples_carousel" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    <%end%>
   <%end%>
+
 </div>
 
