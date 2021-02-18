@@ -8,6 +8,38 @@ namespace :users do
     update_user_from_gets user
   end
 
+  desc "Adds an 'admin' user to the database."
+  task add_admin: :environment do 
+    puts "This will create an 'admin' user."
+    password = ask("Enter a password for the 'admin' user: ") {|q| q.echo = false}
+    password_confirmation = ask("Re-enter password: ") {|q| q.echo = false}
+    begin
+      user = User.new({
+        username: 'admin',
+        email: 'admin@localhost.com',
+        first_name: 'Alice',
+        last_name: 'Admin',
+        role: 'admin',
+        field_of_study: 'Administration',
+        permission_level: 'admin',
+        password: password,
+        password_confirmation: password_confirmation,
+        permission_level_granted_by_id: nil,
+        permission_level_granted_on: Time.now,
+        activated: true,
+        activated_at: Time.now,
+        is_registered: true
+      })
+
+      user.save!
+      puts "Successfully created a new user 'admin':"
+      print_user user
+    rescue => e
+      puts "Couldn't create admin user."
+      puts e
+    end
+  end
+
   desc "Edits an existing user in the database."
   task :edit, [:username] => [:environment] do |task, args|
     if args.username.nil?
@@ -110,7 +142,7 @@ namespace :users do
       puts "\tRegistered: #{user.is_registered}"
       puts "\tActivated:  #{user.activated}"
       puts "\tActivated at:#{user.activated_at}"
-      puts "\tPer. level  #{user.permission_level}"
+      puts "\tPer. level:  #{user.permission_level}"
       puts "\tGranted on: #{user.permission_level_granted_on}"
       puts "\tGranted by: #{user.permission_level_granted_by.nil? \
         ? "-" \
@@ -138,6 +170,9 @@ namespace :users do
 
         if field == :password or field == :password_confirmation
           data = ask("#{field}#{is_needed}: ") {|q| q.echo = false}
+        elsif field == :permission_level
+          print "#{field}#{is_needed} (viewer, editor, admin): "
+          data = STDIN.gets.chomp
         else
           print "#{field}#{is_needed}: "
           data = STDIN.gets.chomp

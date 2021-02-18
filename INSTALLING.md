@@ -60,23 +60,34 @@ are only checked when the server starts) or modify gems.
 
 ### Adding users
 
-You should first add a default admin user. To do this, ensure the server
+You should first add a default `admin` user. To do this, ensure the server
 isn't running (or any instance of the development container) and 
 run the following:
 
 ```bash
 docker/scripts/run-dev-container.sh user-admin users:add_admin
-# follow the prompts to select a username, email, and password
+# follow the prompts to enter/confirm a password
 ```
 
-You can create additional users using the "Sign up" form in the running app.
-In the production environment, an activation email will be sent to users when
-they register and contain a link they must click before they can log into the
-system. No emails are sent in the development environment, but the email text 
-is displayed in the server logs (this is what is displayed in your terminal
-when you are running the server using the `docker/scripts/run-dev-container.sh` 
-script). Any time you add a user through the "Sign up" form, copy and past the 
-activation URL from that email message in the log, or you can use the `users:activate[USERNAME]` rake task to activate the user:
+You can create additional users two ways: through the command line or through
+the web application. To add a user via the command line, use this command:
+
+```bash
+docker/scripts/run-dev-container.sh user-admin users:add
+# follow the prompts to enter information; be sure to set 'is_registered' and 
+# 'activated' to true or the user won't be be able to sign in.
+```
+
+To create additional users through the web app, start the server and use the
+"Sign up" page. In the production environment, an activation email will be sent
+to users when they register and contain a link they must click before they can
+log into the system. No emails are sent in the development environment, but the
+email text is displayed in the server logs (this is what is displayed in your
+terminal when you are running the server using the
+`docker/scripts/run-dev-container.sh` script). Any time you add a user through
+the "Sign up" form, copy and past the activation URL from that email message in
+the log, or you can use the `users:activate[USERNAME]` rake task to activate the
+user:
 
 ```bash
 ## Replace USERNAME with the username of the user you'd like to activate.
