@@ -88,6 +88,7 @@ li .snippet {
   padding-left: .5em;
   padding-right: .5em;
   color: white;
+  background-color: brown;
   a, a:active, a:hover, a:visited {
     color: white;
   }
@@ -326,6 +327,7 @@ ul.authors, ul.instructors {
 
 .vertical-index .assignment_group.index-entry {
   height: 500px;
+  border: 20px, solid, #0000;
   .item-content {
     height: 275px;
   }
@@ -362,20 +364,19 @@ ul.authors, ul.instructors {
 
 
 .analysis-page, .software-page, .dataset-page, .example-page {
-
+  background-color: #d3d3d3;
   .thumbnail-wrapper.show-view {
-    margin-top: 20px;
+    margin-top: 50px;
     background-size: cover;
     background-position-x: 50%;
     background-position-y: center;
+    border: 5px solid #45b6fe;
 
 
     height: 175px;
     width: 100%;
     display: block;
     overflow: hidden;
-
-    // border-bottom: 1px solid #ccc;
 
     img {
       width: 100%;
@@ -384,11 +385,13 @@ ul.authors, ul.instructors {
 }
 
 .assignment-page {
+  background-color: #d3d3d3;
   .thumbnail-wrapper.show-view {
-    //margin-top: 20px;
+    margin-bottom: 20px;
     background-size: cover;
     background-position-x: 50%;
     background-position-y: center;
+    border: 5px solid #45b6fe;
 
 
     height: 175px;

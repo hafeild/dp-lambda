@@ -24,9 +24,6 @@
 
       <div class="navbar-right">
         <ul class="nav navbar-nav">
-          <li>
-            <%= link_to "Home", root_path %>
-          </li>
           <!-- <li><%= link_to "About", "#" %></li>
           <li><%= link_to "Help", "#" %></li> -->
           <% if logged_in? %>
@@ -85,12 +82,12 @@
                       <i class="glyphicon glyphicon-search"></i>
                     </button>
                    </div>
-                </div><br/>
-               <a href="#" 
+                </div>
+               <button href="#" 
                 class="hide-advanced-search advanced-search-control hidden"
-                >Hide advanced search</a>
-               <a href="#" class="trigger-advanced-search advanced-search-control"
-                >Advanced search</a>
+                >Hide advanced search</button>
+               <button href="#" class="trigger-advanced-search advanced-search-control"
+                >Advanced search</button>
               </form>
             </li>
           <% end %>
