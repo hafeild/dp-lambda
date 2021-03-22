@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_112533) do
+ActiveRecord::Schema.define(version: 2021_03_22_202940) do
 
   create_table "analyses", force: :cascade do |t|
     t.string "name"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_112533) do
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_draft"
   end
 
   create_table "analyses_assignments", id: false, force: :cascade do |t|
@@ -122,6 +123,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_112533) do
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_draft"
   end
 
   create_table "assignments_assignments", force: :cascade do |t|
@@ -216,6 +218,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_112533) do
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_draft"
   end
 
   create_table "datasets_examples", force: :cascade do |t|
@@ -244,6 +247,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_112533) do
     t.integer "creator_id"
     t.string "summary"
     t.string "thumbnail"
+    t.boolean "is_draft"
   end
 
   create_table "examples_software", force: :cascade do |t|
@@ -328,6 +332,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_112533) do
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_draft"
   end
 
   create_table "software_tags", force: :cascade do |t|

@@ -80,7 +80,8 @@ li .snippet {
   margin-top: 1em;
 }
 
-.tag-badge {
+
+.tag-badge-0 {
   font-size: 85%;
   border-radius: 2em;
   background-color: lighten($brand-primary, 0%);
@@ -88,7 +89,7 @@ li .snippet {
   padding-left: .5em;
   padding-right: .5em;
   color: white;
-  background-color: brown;
+  background-color: red;
   a, a:active, a:hover, a:visited {
     color: white;
   }
@@ -97,6 +98,132 @@ li .snippet {
     color: #ccc;
   }
 }
+
+.tag-badge-1 {
+  font-size: 85%;
+  border-radius: 2em;
+  background-color: lighten($brand-primary, 0%);
+  display: inline-block;
+  padding-left: .5em;
+  padding-right: .5em;
+  color: black;
+  background-color: cyan;
+  a, a:active, a:hover, a:visited {
+    color: black;
+  }
+  
+  .edit:hover, .delete:hover {
+    color: #ccc;
+  }
+}
+
+.tag-badge-2 {
+  font-size: 85%;
+  border-radius: 2em;
+  background-color: lighten($brand-primary, 0%);
+  display: inline-block;
+  padding-left: .5em;
+  padding-right: .5em;
+  color: white;
+  background-color: green;
+  a, a:active, a:hover, a:visited {
+    color: white;
+  }
+  
+  .edit:hover, .delete:hover {
+    color: #ccc;
+  }
+}
+  .tag-badge-3 {
+    font-size: 85%;
+    border-radius: 2em;
+    background-color: lighten($brand-primary, 0%);
+    display: inline-block;
+    padding-left: .5em;
+    padding-right: .5em;
+    color: white;
+    background-color: blue;
+    a, a:active, a:hover, a:visited {
+      color: white;
+    }
+    
+    .edit:hover, .delete:hover {
+      color: #ccc;
+    }
+  }
+
+  .tag-badge-4 {
+    font-size: 85%;
+    border-radius: 2em;
+    background-color: lighten($brand-primary, 0%);
+    display: inline-block;
+    padding-left: .5em;
+    padding-right: .5em;
+    color: white;
+    background-color: brown;
+    a, a:active, a:hover, a:visited {
+      color: white;
+    }
+    
+    .edit:hover, .delete:hover {
+      color: #ccc;
+    }
+  }
+
+  .tag-badge-5 {
+    font-size: 85%;
+    border-radius: 2em;
+    background-color: lighten($brand-primary, 0%);
+    display: inline-block;
+    padding-left: .5em;
+    padding-right: .5em;
+    color: white;
+    background-color: black;
+    a, a:active, a:hover, a:visited {
+      color: white;
+    }
+    
+    .edit:hover, .delete:hover {
+      color: #ccc;
+    }
+  }
+
+  .tag-badge-6 {
+    font-size: 85%;
+    border-radius: 2em;
+    background-color: lighten($brand-primary, 0%);
+    display: inline-block;
+    padding-left: .5em;
+    padding-right: .5em;
+    color: black;
+    background-color: skyblue;
+    a, a:active, a:hover, a:visited {
+      color: black;
+    }
+    
+    .edit:hover, .delete:hover {
+      color: red;
+    }
+  }
+
+  .tag-badge-7 {
+    font-size: 85%;
+    border-radius: 2em;
+    background-color: lighten($brand-primary, 0%);
+    display: inline-block;
+    padding-left: .5em;
+    padding-right: .5em;
+    color: black;
+    background-color: grey;
+    a, a:active, a:hover, a:visited {
+      color: black;
+    }
+    
+    .edit:hover, .delete:hover {
+      color: red;
+    }
+  }
+
 
 span.tag-title, span.summary-title {
   font-weight: bold;
