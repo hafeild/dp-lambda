@@ -12,6 +12,7 @@ versions_limit = -1 ## most recent
 <div class="row">
 <% end %>
 
+<% if dataset.is_draft != true || dataset.creator == current_user %>
 <div class="col-md-4">
   <div class="dataset index-entry">
     <a href="<%= dataset_path(dataset) %>" 
@@ -70,4 +71,5 @@ versions_limit = -1 ## most recent
   </span>
   
 </div>
+<% end %>
 <% end %>

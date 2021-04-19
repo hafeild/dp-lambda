@@ -29,6 +29,13 @@ class ExamplesController < ApplicationController
 
   def create
     @params[:creator] = current_user
+    if params[:button_press] == "Save"
+      @params[:is_draft] = false
+      @success_message = "Dataset created successfully!"
+    else
+      @params[:is_draft] = true
+      @success_message = "Dataset saved as draft!"
+    end
     @example = Example.new(@params)
     begin
         # if  @params[:summary].nil? or  @params[:summary].size == 0

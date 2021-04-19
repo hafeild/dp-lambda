@@ -30,9 +30,15 @@ class AnalysesController < ApplicationController
 
   ## Creates a new analysis entry. 
   def create
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Analysis created successfully!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Analysis saved as draft!"
+    end
     @data[:creator] = current_user
     @analysis = Analysis.new(@data)
-
     # ## Make sure we have the required fields.
     # if get_with_default(@data, :name, "").empty? or 
     #     get_with_default(@data, :summary, "").empty? or

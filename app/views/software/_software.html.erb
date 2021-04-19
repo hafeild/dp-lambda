@@ -12,69 +12,71 @@ versions_limit = -1 ## most recent
 <div class="row">
 <% end %>
 
-<div class="col-md-4">
-  <div class="software index-entry">
-    <a href="<%= software_path(software) %>" 
-      data-analysis-id="<%= software.id %>"
-      ><%= render(partial: "verticals_shared/listing_thumbnail", 
-          locals: {vertical: software}) %></a>
-
-    <div class="item-content">
+<% if (software.is_draft != true || software.creator == current_user) %>
+  <div class="col-md-4">
+    <div class="software index-entry">
       <a href="<%= software_path(software) %>" 
-      data-analysis-id="<%= software.id %>"><span class="name"><%= get_snippet(software.name, title_max) %></span></a>
+        data-analysis-id="<%= software.id %>"
+        ><%= render(partial: "verticals_shared/listing_thumbnail", 
+            locals: {vertical: software}) %></a>
 
-      <span class="summary"><%= get_snippet(software.summary, summary_max) %></span>
+      <div class="item-content">
+        <a href="<%= software_path(software) %>" 
+        data-analysis-id="<%= software.id %>"><span class="name"><%= get_snippet(software.name, title_max) %></span></a>
+
+        <span class="summary"><%= get_snippet(software.summary, summary_max) %></span>
+      </div>
+
+      <div class="item-footer">
+        <span class="metadata">
+          <% 
+          fields_of_study = software.assignments.map{|a| a.field_of_study}.uniq 
+          unless fields_of_study.nil? or fields_of_study.size == 0  %>
+            <span class="fields-of-study">
+              Used in: 
+              <%=  get_snippet(oxford_comma_list(fields_of_study), field_of_study_max) %>
+              </span>
+          <% end   %>
+
+        </span>
+      </div>
     </div>
+  </div> <%# End col-md-3 %>
 
-    <div class="item-footer">
-      <span class="metadata">
-        <% 
-        fields_of_study = software.assignments.map{|a| a.field_of_study}.uniq 
-        unless fields_of_study.nil? or fields_of_study.size == 0  %>
-          <span class="fields-of-study">
-            Used in: 
-            <%=  get_snippet(oxford_comma_list(fields_of_study), field_of_study_max) %>
-            </span>
-        <% end   %>
-
-      </span>
-    </div>
+  <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
   </div>
-</div> <%# End col-md-3 %>
+  <% end %>
 
-<% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
-</div>
-<% end %>
-
-<% @i += 1 %>
+  <% @i += 1 %>
 
 
-<% if false %>
-<div data-software-id="<%= software.id %>" class="software index-entry">
+  <% if false %>
+  <div data-software-id="<%= software.id %>" class="software index-entry">
 
-  <span class="name"><%= link_to software.name, software_path(software) %></span>
+    <span class="name"><%= link_to software.name, software_path(software) %></span>
 
-  <span class="summary"><%= software.summary %></span>
+    <span class="summary"><%= software.summary %></span>
 
-  <span class="metadata">
-    <span class="date">Added on <%= software.created_at.strftime('%B %d, %Y') %> 
-    by <%= software.creator.username %>
+    <span class="metadata">
+      <span class="date">Added on <%= software.created_at.strftime('%B %d, %Y') %> 
+      by <%= software.creator.username %>
+      </span>
+      &mdash;
+
+      <span class="used-in">Used in <%= software.assignments.size %> 
+        <%= 'assignment'.pluralize(software.assignments.size) %> and 
+        <%= software.examples.size %> 
+        <%= 'example'.pluralize(software.examples.size) %></span><br/>
+      <% if software.analyses.size > 0 %>
+        <span class="implements">Analyses implemented: 
+        <%= software.analyses.map{|a|link_to  a.name, get_vertical_path(a)}.join(',').html_safe 
+        %></span><br/>
+      <% end %>
+
+      <span class="tags"><%= render(partial: "tags/tag_badge", 
+      collection: sort_by(software.tags, :text), as: :tag) %></span>
     </span>
-    &mdash;
-
-    <span class="used-in">Used in <%= software.assignments.size %> 
-      <%= 'assignment'.pluralize(software.assignments.size) %> and 
-      <%= software.examples.size %> 
-      <%= 'example'.pluralize(software.examples.size) %></span><br/>
-    <% if software.analyses.size > 0 %>
-      <span class="implements">Analyses implemented: 
-      <%= software.analyses.map{|a|link_to  a.name, get_vertical_path(a)}.join(',').html_safe 
-      %></span><br/>
-    <% end %>
-
-    <span class="tags"><%= render(partial: "tags/tag_badge", 
-    collection: sort_by(software.tags, :text), as: :tag) %></span>
-  </span>
-  
-</div>
+    
+  </div>
+  <% end %>
 <% end %>

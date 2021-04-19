@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_22_202940) do
+ActiveRecord::Schema.define(version: 2021_04_06_034358) do
 
   create_table "analyses", force: :cascade do |t|
     t.string "name"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2021_03_22_202940) do
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_draft"
   end
 
   create_table "assignment_groups_authors", id: false, force: :cascade do |t|

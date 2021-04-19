@@ -50,26 +50,27 @@ title_max = 100
 ">
 <% end %>
 
-  <div class="col-sm-4">
-    
-    <a href="<%= assignment_group_path(assignment_group.id) %>" data-assignment_group-id="<%= assignment_group.id %>" class="no-hover">
-      <div data-assignment_group-id="<%= assignment_group.id %>" class="assignment_group entry index-entry thumbnail-wrapper"
-          <% if assignment_group.thumbnail? %>
-            style="background-image: url('<%= assignment_group.thumbnail.tile.url %>')"
-            <%# image_tag(assignment_group.thumbnail.tile.url) %>
-          <% else %>
-            style="background: #888888;"
-          <% end %>
-          >
-        
-        <div class="wrapper">
-          <span class="name"><%= assignment_group.name %></span>
-          <span class="author"><%= oxford_comma_list assignment_group.authors.map{|a| a.full_name} %></span> 
+<% if assignment_group.is_draft != true || assignment_group.creator == current_user %>
+    <div class="col-sm-4">
+      <a href="<%= assignment_group_path(assignment_group.id) %>" data-assignment_group-id="<%= assignment_group.id %>" class="no-hover">
+        <div data-assignment_group-id="<%= assignment_group.id %>" class="assignment_group entry index-entry thumbnail-wrapper"
+            <% if assignment_group.thumbnail? %>
+              style="background-image: url('<%= assignment_group.thumbnail.tile.url %>')"
+              <%# image_tag(assignment_group.thumbnail.tile.url) %>
+            <% else %>
+              style="background: #FF6347;"
+            <% end %>
+            >
+          
+          <div class="wrapper">
+            <span class="name"><%= assignment_group.name %></span>
+            <span class="author"><%= oxford_comma_list assignment_group.authors.map{|a| a.full_name} %></span> 
+          </div>
         </div>
-      </div>
-    </a>
-  </div>
-
+      </a>
+    </div>
+<% end %>
+    
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>
 <% end %>

@@ -128,8 +128,10 @@
       </p>
 -->
       <%= f.submit "Save", 
-        id: "form-submit", class: "btn btn-primary" %>
+        id: "form-submit", class: "btn btn-primary", :name => "button_press", :value => "Save"  %>
 
+      <%= f.submit "Draft", 
+        id: "form-submit", class: "btn btn-warning", :name => "button_press", :value => "Draft"%>
       
       <button class="btn btn-danger link no-submit"
         data-href="<%= url_for :back %>">Cancel</button>

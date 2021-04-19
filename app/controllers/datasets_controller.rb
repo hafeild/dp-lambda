@@ -42,6 +42,13 @@ class DatasetsController < ApplicationController
 
     ## Create the new entry.
     @data[:creator] = current_user
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Dataset created successfully!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Dataset saved as draft!"
+    end
     @dataset = Dataset.new(@data)
     begin
       ActiveRecord::Base.transaction do

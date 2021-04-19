@@ -50,6 +50,7 @@ title_max = 100
 ">
 <% end %>
 
+<% if (software.is_draft != true || software.creator == current_user) %>
   <div class="col-sm-4">
     
     <a href="<%= software_path(software.id) %>" data-software-id="<%= software.id %>" class="no-hover">
@@ -68,7 +69,7 @@ title_max = 100
       </div>
     </a>
   </div>
-
+<%end%>
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>
 <% end %>

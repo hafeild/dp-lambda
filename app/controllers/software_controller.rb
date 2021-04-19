@@ -42,6 +42,13 @@ class SoftwareController < ApplicationController
 
     ## Create the new entry.
     @data[:creator] = current_user
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Software created successfully!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Software saved as draft!"
+    end
     @software = Software.new(@data)
     begin
       ActiveRecord::Base.transaction do

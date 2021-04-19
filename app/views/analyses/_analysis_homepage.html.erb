@@ -50,8 +50,8 @@ title_max = 100
 ">
 <% end %>
 
+<% if analysis.is_draft != true || analysis.creator == current_user %>
   <div class="col-sm-4">
-    
     <a href="<%= analysis_path(analysis.id) %>" data-analysis-id="<%= analysis.id %>" class="no-hover">
       <div data-analysis-id="<%= analysis.id %>" class="analysis entry index-entry thumbnail-wrapper"
           <% if analysis.thumbnail? %>
@@ -68,7 +68,7 @@ title_max = 100
       </div>
     </a>
   </div>
-
+<%end%>
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>
 <% end %>
