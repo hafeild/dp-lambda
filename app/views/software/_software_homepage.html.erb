@@ -50,26 +50,25 @@ title_max = 100
 ">
 <% end %>
 
-<% if (software.is_draft != true || software.creator == current_user) %>
-  <div class="col-sm-4">
-    
-    <a href="<%= software_path(software.id) %>" data-software-id="<%= software.id %>" class="no-hover">
-      <div data-software-id="<%= software.id %>" class="software entry index-entry thumbnail-wrapper"
-          <% if software.thumbnail? %>
-            style="background-image: url('<%= software.thumbnail.tile.url %>')"
-            <%# image_tag(software.thumbnail.tile.url) %>
-          <% else %>
-            style="background: #888888;"
-          <% end %>
-          >
-        
-        <div class="wrapper">
-          <span class="name"><%= software.name %></span>
-        </div>
+<div class="col-sm-4">
+  
+  <a href="<%= software_path(software.id) %>" data-software-id="<%= software.id %>" class="no-hover">
+    <div data-software-id="<%= software.id %>" class="software entry index-entry thumbnail-wrapper"
+        <% if software.thumbnail? %>
+          style="background-image: url('<%= software.thumbnail.tile.url %>')"
+          <%# image_tag(software.thumbnail.tile.url) %>
+        <% else %>
+          style="background: #888888;"
+        <% end %>
+        >
+      
+      <div class="wrapper">
+        <span class="name"><%= software.name %></span>
       </div>
-    </a>
-  </div>
-<%end%>
+    </div>
+  </a>
+</div>
+
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>
 <% end %>

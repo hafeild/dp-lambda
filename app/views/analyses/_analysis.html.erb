@@ -11,70 +11,69 @@ versions_limit = -1 ## most recent
 <% if @i % itemsPerRow == 0 %>
 <div class="row">
 <% end %>
-<% if analysis.is_draft != true || analysis.creator == current_user %>
-    <div class="col-md-4">
-      <div class="analysis index-entry">
-        <a href="<%= analysis_path(analysis) %>" 
-          data-analysis-id="<%= analysis.id %>"
-          ><%= render(partial: "verticals_shared/listing_thumbnail", 
-              locals: {vertical: analysis}) %></a>
 
-        <div class="item-content">
-          <a href="<%= analysis_path(analysis) %>" 
-          data-analysis-id="<%= analysis.id %>"><span class="name"><%= get_snippet(analysis.name, title_max) %></span></a>
+<div class="col-md-4">
+  <div class="analysis index-entry">
+    <a href="<%= analysis_path(analysis) %>" 
+      data-analysis-id="<%= analysis.id %>"
+      ><%= render(partial: "verticals_shared/listing_thumbnail", 
+          locals: {vertical: analysis}) %></a>
+
+    <div class="item-content">
+      <a href="<%= analysis_path(analysis) %>" 
+      data-analysis-id="<%= analysis.id %>"><span class="name"><%= get_snippet(analysis.name, title_max) %></span></a>
 
 
-          <span class="summary"><%= get_snippet(analysis.summary, summary_max) %></span>
-        </div>
-
-        <div class="item-footer">
-          <span class="metadata">
-            <% 
-            fields_of_study = analysis.assignments.map{|a| a.field_of_study}.uniq 
-            unless fields_of_study.nil? or fields_of_study.size == 0  %>
-              <span class="fields-of-study">
-                Used in: 
-                <%=  get_snippet(oxford_comma_list(fields_of_study), field_of_study_max) %>
-                </span>
-            <% end   %>
-
-          </span>
-        </div>
-      </div>
-    </div> <%# End col-md-3 %>
-
-    <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
+      <span class="summary"><%= get_snippet(analysis.summary, summary_max) %></span>
     </div>
-    <% end %>
 
-    <% @i += 1 %>
-
-
-    <% if false %>
-    <div data-analysis-id="<%= analysis.id %>" class="analysis index-entry">
-
-      <span class="name"><%= link_to analysis.name, analysis_path(analysis) %></span>
-
-      <span class="summary"><%= analysis.summary %></span>
-
+    <div class="item-footer">
       <span class="metadata">
-        <span class="date">Added on <%= analysis.created_at.strftime('%B %d, %Y') %> by <%= analysis.creator.username %></span>
-        &mdash;
+        <% 
+        fields_of_study = analysis.assignments.map{|a| a.field_of_study}.uniq 
+        unless fields_of_study.nil? or fields_of_study.size == 0  %>
+          <span class="fields-of-study">
+            Used in: 
+            <%=  get_snippet(oxford_comma_list(fields_of_study), field_of_study_max) %>
+            </span>
+        <% end   %>
 
-        <span class="used-in">Used in <%= analysis.assignments.size %> 
-          <%= 'assignment'.pluralize(analysis.assignments.size) %> and 
-          <%= analysis.examples.size %> 
-          <%= 'example'.pluralize(analysis.examples.size) %></span><br/>
-        <% if analysis.software.size > 0 %>
-          <span class="implemented-in">Implemented in 
-          <%= analysis.software.map{|s|link_to  s.name, get_vertical_path(s)}.join(',').html_safe 
-          %></span><br/>
-        <% end %>
-        
-        <span class="tags"><%= render(partial: "tags/tag_badge", 
-        collection: sort_by(analysis.tags, :text), as: :tag) %></span>
       </span>
-      
     </div>
-  <%end%>
+  </div>
+</div> <%# End col-md-3 %>
+
+<% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
+</div>
+<% end %>
+
+<% @i += 1 %>
+
+
+<% if false %>
+  <div data-analysis-id="<%= analysis.id %>" class="analysis index-entry">
+
+    <span class="name"><%= link_to analysis.name, analysis_path(analysis) %></span>
+
+    <span class="summary"><%= analysis.summary %></span>
+
+    <span class="metadata">
+      <span class="date">Added on <%= analysis.created_at.strftime('%B %d, %Y') %> by <%= analysis.creator.username %></span>
+      &mdash;
+
+      <span class="used-in">Used in <%= analysis.assignments.size %> 
+        <%= 'assignment'.pluralize(analysis.assignments.size) %> and 
+        <%= analysis.examples.size %> 
+        <%= 'example'.pluralize(analysis.examples.size) %></span><br/>
+      <% if analysis.software.size > 0 %>
+        <span class="implemented-in">Implemented in 
+        <%= analysis.software.map{|s|link_to  s.name, get_vertical_path(s)}.join(',').html_safe 
+        %></span><br/>
+      <% end %>
+      
+      <span class="tags"><%= render(partial: "tags/tag_badge", 
+      collection: sort_by(analysis.tags, :text), as: :tag) %></span>
+    </span>
+    
+  </div>
 <%end%>

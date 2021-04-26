@@ -8,17 +8,26 @@ class AnalysesController < ApplicationController
   before_action :get_redirect_path
 
   def index
-    @analyses = Analysis.all.sort_by { |e| e.name }
+    @analyses = Analysis.where({creator: current_user}).or(Analysis.where({is_draft: false})).sort_by { |e| e.name }
   end
 
   def connect_index
-    @analyses = Analysis.all.sort_by { |e| e.name }
+    @analyses = Analysis.where({creator: current_user}).or(Analysis.where({is_draft: false})).sort_by { |e| e.name }
     if @vertical.class == Analysis
       @analyses.delete(@vertical)
     end
   end
 
   def show
+    if (@analysis.is_draft and @analysis.creator != current_user)
+      error = "You are unauthorised to view this assignment."
+      respond_to do |format|
+        format.json {render json: {success: false, error: error}}
+        format.html do
+          render file: "#{Rails.root}/public/404.html" , status: 404
+        end
+      end
+    end
   end
 
   def new
@@ -66,9 +75,17 @@ class AnalysesController < ApplicationController
   ## and deleted altogether if the resource isn't associated with another
   ## vertical entry.
   def update
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Analysis created successfully!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Analysis saved as draft!"
+    end
+    
     begin
       ActiveRecord::Base.transaction do
-        @analysis.update(@data.permit(:name, :description, :summary, :thumbnail))
+        @analysis.update(@data.permit(:name, :description, :summary, :thumbnail, :is_draft))
         @analysis.save!
         @analysis.reindex_associations
 

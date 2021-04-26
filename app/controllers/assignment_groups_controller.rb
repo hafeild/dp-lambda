@@ -9,17 +9,26 @@ class AssignmentGroupsController < ApplicationController
   before_action :get_redirect_path
 
   def index
-    @assignment_groups = AssignmentGroup.all.sort_by { |e| e.name }
+    @assignment_groups = AssignmentGroup.where({creator: current_user}).or(AssignmentGroup.where({is_draft: false})).sort_by { |e| e.name }
   end
 
   def connect_index
-    @assignment_groups = AssignmentGroup.all.sort_by { |e| e.name }
+    @assignment_groups = AssignmentGroup.where({creator: current_user}).or(AssignmentGroup.where({is_draft: false})).sort_by { |e| e.name }
     if @vertical.class == AssignmentGroup
       @assignment_groups.delete(@vertical)
     end
   end
 
   def show
+    if (@assignment_group.is_draft and @assignment_group.creator != current_user)
+      error = "You are unauthorised to view this assignment."
+      respond_to do |format|
+        format.json {render json: {success: false, error: error}}
+        format.html do
+          render file: "#{Rails.root}/public/404.html" , status: 404
+        end
+      end
+    end
   end
 
   def new
@@ -63,7 +72,14 @@ class AssignmentGroupsController < ApplicationController
   ## and deleted altogether if the resource isn't associated with another
   ## vertical entry.
   def update
-
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Assignment created successfully!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Assignment saved as draft!"
+    end
+    
     begin
       ActiveRecord::Base.transaction do
         @data[:authors] = @authors if params.require(:assignment_group).has_key?(:authors)

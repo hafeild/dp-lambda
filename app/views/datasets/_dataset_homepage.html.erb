@@ -49,26 +49,26 @@ title_max = 100
   <% end %>
 ">
 <% end %>
-<% if dataset.is_draft != true || dataset.creator == current_user %>
-  <div class="col-sm-4">
-    
-    <a href="<%= dataset_path(dataset.id) %>" data-dataset-id="<%= dataset.id %>" class="no-hover">
-      <div data-dataset-id="<%= dataset.id %>" class="dataset entry index-entry thumbnail-wrapper"
-          <% if dataset.thumbnail? %>
-            style="background-image: url('<%= dataset.thumbnail.tile.url %>')"
-            <%# image_tag(dataset.thumbnail.tile.url) %>
-          <% else %>
-            style="background: #888888;"
-          <% end %>
-          >
-        
-        <div class="wrapper">
-          <span class="name"><%= dataset.name %></span>
-        </div>
+
+<div class="col-sm-4">
+  
+  <a href="<%= dataset_path(dataset.id) %>" data-dataset-id="<%= dataset.id %>" class="no-hover">
+    <div data-dataset-id="<%= dataset.id %>" class="dataset entry index-entry thumbnail-wrapper"
+        <% if dataset.thumbnail? %>
+          style="background-image: url('<%= dataset.thumbnail.tile.url %>')"
+          <%# image_tag(dataset.thumbnail.tile.url) %>
+        <% else %>
+          style="background: #888888;"
+        <% end %>
+        >
+      
+      <div class="wrapper">
+        <span class="name"><%= dataset.name %></span>
       </div>
-    </a>
-  </div>
-<%end%>
+    </div>
+  </a>
+</div>
+
 
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>

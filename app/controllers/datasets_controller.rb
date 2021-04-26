@@ -8,17 +8,26 @@ class DatasetsController < ApplicationController
   before_action :get_redirect_path
 
   def index
-    @datasets = Dataset.all.sort_by { |e| e.name }
+    @datasets = Dataset.where({creator: current_user}).or(Dataset.where({is_draft: false})).sort_by { |e| e.name }
   end
 
   def connect_index
-    @datasets = Dataset.all.sort_by { |e| e.name }
+    @datasets = Dataset.where({creator: current_user}).or(Dataset.where({is_draft: false})).sort_by { |e| e.name }
     if @vertical.class == Dataset
       @datasets.delete(@vertical)
     end
   end
 
   def show
+    if (@dataset.is_draft and @dataset.creator != current_user)
+      error = "You are unauthorised to view this assignment."
+      respond_to do |format|
+        format.json {render json: {success: false, error: error}}
+        format.html do
+          render file: "#{Rails.root}/public/404.html" , status: 404
+        end
+      end
+    end
   end
 
   def new
@@ -67,9 +76,16 @@ class DatasetsController < ApplicationController
   ## and deleted altogether if the resource isn't associated with another
   ## vertical entry.
   def update
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Draft published!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Draft updated!"
+    end
     begin
       ActiveRecord::Base.transaction do
-        @dataset.update(@data.permit(:name, :description, :summary, :thumbnail))
+        @dataset.update(@data.permit(:name, :description, :summary, :thumbnail, :is_draft))
         @dataset.save!
         @dataset.reindex_associations
 

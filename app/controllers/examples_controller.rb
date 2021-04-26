@@ -8,6 +8,15 @@ class ExamplesController < ApplicationController
   before_action :get_redirect_path
 
   def show
+    if (@example.is_draft and @example.creator != current_user)
+      error = "You are unauthorised to view this assignment."
+      respond_to do |format|
+        format.json {render json: {success: false, error: error}}
+        format.html do
+          render file: "#{Rails.root}/public/404.html" , status: 404
+        end
+      end
+    end
   end
 
   def new
@@ -17,11 +26,11 @@ class ExamplesController < ApplicationController
   end
 
   def index
-    @examples = Example.all.sort_by{|e| e.title}
+    @examples = Example.where({creator: current_user}).or(Example.where({is_draft: false})).sort_by { |e| e.title }
   end
 
   def connect_index
-    @examples = Example.all.sort_by { |e| e.title }
+    @examples = Example.where({creator: current_user}).or(Example.where({is_draft: false})).sort_by { |e| e.title }
     if @vertical.class == Example
       @examples.delete(@vertical)
     end
@@ -36,6 +45,7 @@ class ExamplesController < ApplicationController
       @params[:is_draft] = true
       @success_message = "Dataset saved as draft!"
     end
+    
     @example = Example.new(@params)
     begin
         # if  @params[:summary].nil? or  @params[:summary].size == 0
@@ -56,7 +66,14 @@ class ExamplesController < ApplicationController
   end
 
   def update
-
+    if params[:button_press] == "Save"
+      @params[:is_draft] = false
+      @success_message = "Dataset created successfully!"
+    else
+      @params[:is_draft] = true
+      @success_message = "Dataset saved as draft!"
+    end
+    
     begin
       @example.update! @params
       @example.reindex_associations

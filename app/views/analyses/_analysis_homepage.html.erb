@@ -50,25 +50,23 @@ title_max = 100
 ">
 <% end %>
 
-<% if analysis.is_draft != true || analysis.creator == current_user %>
-  <div class="col-sm-4">
-    <a href="<%= analysis_path(analysis.id) %>" data-analysis-id="<%= analysis.id %>" class="no-hover">
-      <div data-analysis-id="<%= analysis.id %>" class="analysis entry index-entry thumbnail-wrapper"
-          <% if analysis.thumbnail? %>
-            style="background-image: url('<%= analysis.thumbnail.tile.url %>')"
-            <%# image_tag(analysis.thumbnail.tile.url) %>
-          <% else %>
-            style="background: #888888;"
-          <% end %>
-          >
-        
-        <div class="wrapper">
-          <span class="name"><%= analysis.name %></span>
-        </div>
+<div class="col-sm-4">
+  <a href="<%= analysis_path(analysis.id) %>" data-analysis-id="<%= analysis.id %>" class="no-hover">
+    <div data-analysis-id="<%= analysis.id %>" class="analysis entry index-entry thumbnail-wrapper"
+        <% if analysis.thumbnail? %>
+          style="background-image: url('<%= analysis.thumbnail.tile.url %>')"
+          <%# image_tag(analysis.thumbnail.tile.url) %>
+        <% else %>
+          style="background: #888888;"
+        <% end %>
+        >
+      
+      <div class="wrapper">
+        <span class="name"><%= analysis.name %></span>
       </div>
-    </a>
-  </div>
-<%end%>
+    </div>
+  </a>
+</div>
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>
 <% end %>
