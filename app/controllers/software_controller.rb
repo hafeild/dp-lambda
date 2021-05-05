@@ -8,17 +8,26 @@ class SoftwareController < ApplicationController
   before_action :get_redirect_path
 
   def index
-    @software = Software.all.sort_by { |e| e.name }
+    @software = Software.where({creator: current_user}).or(Software.where({is_draft: false})).sort_by { |e| e.name }
   end
 
   def connect_index
-    @software = Software.all.sort_by { |e| e.name }
+    @softwares = Software.where({creator: current_user}).or(Software.where({is_draft: false})).sort_by { |e| e.name }
     if @vertical.class == Software
       @software.delete(@vertical)
     end
   end
 
   def show
+    if (@software.is_draft and @software.creator != current_user)
+      error = "You are unauthorised to view this assignment."
+      respond_to do |format|
+        format.json {render json: {success: false, error: error}}
+        format.html do
+          render file: "#{Rails.root}/public/404.html" , status: 404
+        end
+      end
+    end
   end
 
   def new
@@ -42,6 +51,13 @@ class SoftwareController < ApplicationController
 
     ## Create the new entry.
     @data[:creator] = current_user
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Software created successfully!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Software saved as draft!"
+    end
     @software = Software.new(@data)
     begin
       ActiveRecord::Base.transaction do
@@ -60,9 +76,17 @@ class SoftwareController < ApplicationController
   ## and deleted altogether if the resource isn't associated with another
   ## vertical entry.
   def update
+    if params[:button_press] == "Save"
+      @data[:is_draft] = false
+      @success_message = "Software created successfully!"
+    else
+      @data[:is_draft] = true
+      @success_message = "Software saved as draft!"
+    end
+
     begin
       ActiveRecord::Base.transaction do
-        @software.update!(@data.permit(:name, :description, :summary, :thumbnail))
+        @software.update!(@data.permit(:name, :description, :summary, :thumbnail, :is_draft))
         @software.reindex_associations
         
         respond_with_success get_redirect_path(software_path(@software))

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get     'password_resets/edit'
   get     'signup' => 'users#new'
   get     'login'  => 'sessions#new'
+  get     'about'  => 'about#index'
   post    'login'  => 'sessions#create'
   delete  'logout' => 'sessions#destroy'
   get     'users'  => 'users#index'

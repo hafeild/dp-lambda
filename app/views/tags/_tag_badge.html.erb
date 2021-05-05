@@ -1,5 +1,4 @@
-
-<div class="tag-badge">
+<div class="tag-badge-<%= tag.id % 8%>">
   <%= link_to tag.text, tag_path(tag) %> (<%= tag.belongs_to_count%>)
   
   <% if can_edit? and defined? vertical %>

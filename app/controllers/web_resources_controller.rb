@@ -22,6 +22,14 @@ class WebResourcesController < ApplicationController
   end
 
   def create
+    @params[:creator] = current_user
+    if params[:button_press] == "Save"
+      @params[:is_draft] = false
+      @success_message = "Web Resource created successfully!"
+    else
+      @params[:is_draft] = true
+      @success_message = "Web Resource saved as draft!"
+    end
     @web_resource = WebResource.new @params
     begin
         throw Exception("No vertical specified!") if @vertical.nil?

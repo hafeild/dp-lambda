@@ -50,24 +50,24 @@ title_max = 100
 ">
 <% end %>
 
-  <div class="col-sm-4">
-    
-    <a href="<%= example_path(example.id) %>" data-example-id="<%= example.id %>" class="no-hover">
-      <div data-example-id="<%= example.id %>" class="example entry index-entry thumbnail-wrapper"
-          <% if example.thumbnail? %>
-            style="background-image: url('<%= example.thumbnail.tile.url %>')"
-            <%# image_tag(example.thumbnail.tile.url) %>
-          <% else %>
-            style="background: #888888;"
-          <% end %>
-          >
-        
-        <div class="wrapper">
-          <span class="name"><%= example.name %></span>
-        </div>
+<div class="col-sm-4">
+  
+  <a href="<%= example_path(example.id) %>" data-example-id="<%= example.id %>" class="no-hover">
+    <div data-example-id="<%= example.id %>" class="example entry index-entry thumbnail-wrapper"
+        <% if example.thumbnail? %>
+          style="background-image: url('<%= example.thumbnail.tile.url %>')"
+          <%# image_tag(example.thumbnail.tile.url) %>
+        <% else %>
+          style="background: #888888;"
+        <% end %>
+        >
+      
+      <div class="wrapper">
+        <span class="name"><%= example.name %></span>
       </div>
-    </a>
-  </div>
+    </div>
+  </a>
+</div>
 
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>
