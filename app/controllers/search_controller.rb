@@ -183,7 +183,7 @@ class SearchController < ApplicationController
   
   
     def valid_vertical(vertical)
-      return @vertical_map.key? vertical
+        return @vertical_map.key? vertical
     end
   
   

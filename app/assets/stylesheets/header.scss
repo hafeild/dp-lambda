@@ -6,6 +6,7 @@
 
 #header {
   text-align: center;
+  background-color: aliceblue;
 }
 
 .version {
@@ -17,6 +18,23 @@
 
   a {
     font-size: 16px;
+    border-radius: 0 0 10px 10px;
+    margin: 0 15px 0 15px;
+    background-color: white;
+  }
+
+  .selected-vertical > a{
+    font-size: 16px;
+    border-radius: 0 0 10px 10px;
+    margin: 0 15px 0 15px;
+    color: white;
+    background-color: #A288E3 !important;
+  }
+
+  a:hover{
+    background-color: grey;
+    color:white;
+    font-style: italic;
   }
 
   ul {
