@@ -7,11 +7,10 @@ summary_max = 200
 field_of_study_max = 300;
 # versions_limit = -1 ## most recent
 %>
-
 <% if @i % itemsPerRow == 0 %>
-<div class="row">
-<% end %>
-
+    <div class="row">
+    <% end %>
+    
 <div class="col-md-4">
   <div class="assignment_group index-entry">
     <a href="<%= assignment_group_path(assignment_group.id) %>" 
@@ -74,85 +73,74 @@ field_of_study_max = 300;
 <% if @i == @total-1 || @i % itemsPerRow == itemsPerRow-1 %>
 </div>
 <% end %>
-
 <% @i += 1 %>
 
 
-
-
-
 <% if false %>
-
-<div class="assignment_group index-entry">
-  <a href="<%= assignment_group_path(assignment_group.id) %>" 
-  data-assignment_group-id="<%= assignment_group.id %>"><span class="name"><%= assignment_group.name %></span></a>
-
-  <span class="metadata">
-    <span class="author"><%= oxford_comma_list assignment_group.authors.map{|a| a.full_name} %></span> 
-    &mdash;
-    <span class="added-by">Added on <%= assignment_group.created_at.strftime('%B %d, %Y') %> by <%= assignment_group.creator.username %></span> 
-  </span>
-
-  <span class="summary"><%= assignment_group.summary %></span>
-
-
-  <% if assignment_group.assignments.size > 0 %>
-    <span class="version-header">Versions:</span>
-    <div class="assignments-list">
-    <% assignment_group.assignments.each do |assignment| %>
-      <div data-assignment-id="<%= assignment.id %> class="assignment-entry"> 
-          <a href="<%=assignment_path(assignment) %>"><span class="assignment-course"><%= assignment.full_title %></span></a>
-          (<span class="instructor"><%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %></span>,
-          <span class="date"><%= assignment.semester %></span>)
-      </div>
-    <% end %>
-    </div>
-  <% end %>
-
-  <span class="metadata">
-    <% 
-    fields_of_study = assignment_group.assignments.map{|a| a.field_of_study}.uniq 
-    if fields_of_study.nil? or fields_of_study.size == 0 
-      fields_of_study = ["Unknown"]
-    end
-    %>
-
-    <span class="fields-of-study"><%= "Field".pluralize(fields_of_study.size) %> of study: <%=  oxford_comma_list fields_of_study %></span><br/>
-
-    <span class="tags"><%= render(partial: "tags/tag_badge", 
-    collection: sort_by(assignment_group.tags, :text), as: :tag) %></span>
-  </span>
-</div>
-
-
-<% end %>
-
-
-
-
-
-
-<% if false %>
-<div class="assignment_group-grouping">
+  <div class="assignment_group index-entry">
     <a href="<%= assignment_group_path(assignment_group.id) %>" 
     data-assignment_group-id="<%= assignment_group.id %>"><span class="name"><%= assignment_group.name %></span></a>
 
+    <span class="metadata">
+      <span class="author"><%= oxford_comma_list assignment_group.authors.map{|a| a.full_name} %></span> 
+      &mdash;
+      <span class="added-by">Added on <%= assignment_group.created_at.strftime('%B %d, %Y') %> by <%= assignment_group.creator.username %></span> 
+    </span>
+
     <span class="summary"><%= assignment_group.summary %></span>
 
-    <% assignment_group.assignments.each do |assignment| %>
-      <div data-assignment-id="<%= assignment.id %>" 
-        <span class="entry-data-wrapper">
-        <!--
-          <span class="name"><%= assignment.name %></span>
-          <span class="summary"><%= assignment.summary %></span>
-        -->
-          <a href="<%=assignment_path(assignment) %>"><span class="course"><%= assignment.full_title %></span></a>
-          (<span class="instructor"><%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %></span>,
-          <span class="date"><%= assignment.semester %></span>)
 
-        </span>
+    <% if assignment_group.assignments.size > 0 %>
+      <span class="version-header">Versions:</span>
+      <div class="assignments-list">
+      <% assignment_group.assignments.each do |assignment| %>
+        <div data-assignment-id="<%= assignment.id %> class="assignment-entry"> 
+            <a href="<%=assignment_path(assignment) %>"><span class="assignment-course"><%= assignment.full_title %></span></a>
+            (<span class="instructor"><%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %></span>,
+            <span class="date"><%= assignment.semester %></span>)
+        </div>
+      <% end %>
       </div>
     <% end %>
 
-</div>
+    <span class="metadata">
+      <% 
+      fields_of_study = assignment_group.assignments.map{|a| a.field_of_study}.uniq 
+      if fields_of_study.nil? or fields_of_study.size == 0 
+        fields_of_study = ["Unknown"]
+      end
+      %>
+
+      <span class="fields-of-study"><%= "Field".pluralize(fields_of_study.size) %> of study: <%=  oxford_comma_list fields_of_study %></span><br/>
+
+      <span class="tags"><%= render(partial: "tags/tag_badge", 
+      collection: sort_by(assignment_group.tags, :text), as: :tag) %></span>
+    </span>
+  </div>
+<% end %>
+
+
+<% if false %>
+  <div class="assignment_group-grouping">
+      <a href="<%= assignment_group_path(assignment_group.id) %>" 
+      data-assignment_group-id="<%= assignment_group.id %>"><span class="name"><%= assignment_group.name %></span></a>
+
+      <span class="summary"><%= assignment_group.summary %></span>
+
+      <% assignment_group.assignments.each do |assignment| %>
+        <div data-assignment-id="<%= assignment.id %>" 
+          <span class="entry-data-wrapper">
+          <!--
+            <span class="name"><%= assignment.name %></span>
+            <span class="summary"><%= assignment.summary %></span>
+          -->
+            <a href="<%=assignment_path(assignment) %>"><span class="course"><%= assignment.full_title %></span></a>
+            (<span class="instructor"><%= oxford_comma_list assignment.instructors.map{|i| i.last_name} %></span>,
+            <span class="date"><%= assignment.semester %></span>)
+
+          </span>
+        </div>
+      <% end %>
+
+  </div>
 <% end %>

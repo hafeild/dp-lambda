@@ -1,44 +1,46 @@
-<div data-example-id="<%= example.id %>" class="example index-entry vertical-result-data">
+<% if example.is_draft != true || example.creator == current_user %>
+  <div data-example-id="<%= example.id %>" class="example index-entry vertical-result-data">
 
-  <span class="name"><%= link_to example.title, example_path(example) %></span>
+    <span class="name"><%= link_to example.title, example_path(example) %></span>
 
-  <span class="metadata"></span>
+    <span class="metadata"></span>
 
-  <% if example.summary.nil? %>
-    <% clean_description = strip_tags example.description %>
-    <% clean_description = clean_description[0..100] + '...' if 
-      clean_description.size > 100 %>
-  <% else %>
-    <% clean_description = example.summary %>
-  <% end %>
-  <span class="summary"><%= clean_description %></span>
+    <% if example.summary.nil? %>
+      <% clean_description = strip_tags example.description %>
+      <% clean_description = clean_description[0..100] + '...' if 
+        clean_description.size > 100 %>
+    <% else %>
+      <% clean_description = example.summary %>
+    <% end %>
+    <span class="summary"><%= clean_description %></span>
 
-  <span class="metadata">
-  <span class="date">Added on <%= example.created_at.strftime('%B %d, %Y') %> 
-  <% unless example.creator.nil? %>
-    by <%= example.creator.username %></span>
-  <% end %>
-  &mdash;
+    <span class="metadata">
+    <span class="date">Added on <%= example.created_at.strftime('%B %d, %Y') %> 
+    <% unless example.creator.nil? %>
+      by <%= example.creator.username %></span>
+    <% end %>
+    &mdash;
 
-  <span class="used-in">Referenced by <%= example.assignments.size %> <%= 'assignment'.pluralize(example.assignments.size) %>.</span><br/>
-  <% if example.analyses.size > 0 %>
-    <span class="demonstrates">Analyses demonstrated: 
-    <%= example.analyses.map{|a|link_to  a.name, get_vertical_path(a)}.join(',').html_safe 
-    %>.</span>
-  <% end %>
-  <% if example.software.size > 0 %>
-    <span class="demonstrates">Software demonstrated: 
-    <%= example.software.map{|s|link_to  s.name, get_vertical_path(s)}.join(',').html_safe 
-    %>.</span>
-  <% end %>
-  <% if example.datasets.size > 0 %>
-    <span class="demonstrates">Datasets used: 
-    <%= example.datasets.map{|d|link_to  d.name, get_vertical_path(d)}.join(',').html_safe 
-    %>.</span>
-  <% end %>
-  <br/>
-  <span class="tags"><%= render(partial: "tags/tag_badge", 
-  collection: sort_by(example.tags, :text), as: :tag) %></span>
-  </span>
+    <span class="used-in">Referenced by <%= example.assignments.size %> <%= 'assignment'.pluralize(example.assignments.size) %>.</span><br/>
+    <% if example.analyses.size > 0 %>
+      <span class="demonstrates">Analyses demonstrated: 
+      <%= example.analyses.map{|a|link_to  a.name, get_vertical_path(a)}.join(',').html_safe 
+      %>.</span>
+    <% end %>
+    <% if example.software.size > 0 %>
+      <span class="demonstrates">Software demonstrated: 
+      <%= example.software.map{|s|link_to  s.name, get_vertical_path(s)}.join(',').html_safe 
+      %>.</span>
+    <% end %>
+    <% if example.datasets.size > 0 %>
+      <span class="demonstrates">Datasets used: 
+      <%= example.datasets.map{|d|link_to  d.name, get_vertical_path(d)}.join(',').html_safe 
+      %>.</span>
+    <% end %>
+    <br/>
+    <span class="tags"><%= render(partial: "tags/tag_badge", 
+    collection: sort_by(example.tags, :text), as: :tag) %></span>
+    </span>
 
-</div>
+  </div>
+<%end%>

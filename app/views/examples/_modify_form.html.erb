@@ -47,7 +47,11 @@
                 editor_options: bootsy_editing_options  %>    
         </div>
 
-        <%= f.submit "Save", id: "form-submit", class: "btn btn-primary" %>
+        <%= f.submit "Save", 
+        id: "form-submit", class: "btn btn-primary", :name => "button_press", :value => "Save"  %>
+
+      <%= f.submit "Draft", 
+        id: "form-submit", class: "btn btn-warning", :name => "button_press", :value => "Draft"%>
 
         
         <button class="btn btn-danger link no-submit" 
