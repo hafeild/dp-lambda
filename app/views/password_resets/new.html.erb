@@ -9,6 +9,8 @@
     </p>
 
     <%= form_for(:password_reset, url: password_resets_path) do |f| %>
+      <!-- reCAPTCHA -->
+      <%= recaptcha_tags %>
       <div class="form-group">
         <%= f.label :email %>
         <%= f.text_field :email, class: 'form-control' %>

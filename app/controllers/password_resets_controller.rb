@@ -11,6 +11,13 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
+    ## Bail if reCAPTCHA invalid.
+    unless verify_recaptcha()
+      flash[:danger] = "Cannot verify reCAPTCHA."
+      render 'new'
+      return
+    end 
+
     if params[:password_reset][:email].nil? or 
         params[:password_reset][:email].empty?
       flash[:warning] = "Please provide an email."

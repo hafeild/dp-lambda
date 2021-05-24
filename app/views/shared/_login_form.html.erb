@@ -4,7 +4,9 @@
     <h1>Log in</h1>
     
     <%= form_for(:session, url: login_path) do |f| %>
-
+      <!-- reCAPTCHA -->
+      <%= recaptcha_tags %>
+      
       <%= f.label "Email or username" %>
       <%= f.text_field :username, class: 'form-control' %>
 

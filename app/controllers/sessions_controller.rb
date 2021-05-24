@@ -5,6 +5,13 @@ class SessionsController < ApplicationController
   ## Log a user in.
   def create
 
+    ## Bail if reCAPTCHA invalid.
+    unless verify_recaptcha()
+      flash[:danger] = "Cannot verify reCAPTCHA."
+      redirect_to edit_user_path(current_user)
+      return
+    end 
+
     ## Check if it's an email, not a username.
     if(params[:session][:username] =~ /.*@.*/)
       user = User.find_by(email: params[:session][:username])

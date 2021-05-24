@@ -26,6 +26,9 @@ class UsersController < ApplicationController
     ## Begin transaction.
     begin
       User.transaction do
+        ## Bail if reCAPTCHA invalid.
+        raise "Cannot verify reCAPTCHA" unless verify_recaptcha()
+
         # @user = User.find_by(email: user_params[:email])
         # if @user.nil? or @user.is_registered
         #   @user = User.new(user_params)
@@ -118,6 +121,14 @@ class UsersController < ApplicationController
     permissions_updated = false
     cur_params = user_params
     
+    ## Bail if reCAPTCHA invalid.
+    unless verify_recaptcha()
+      flash[:danger] = "Cannot verify reCAPTCHA."
+      redirect_to edit_user_path(current_user)
+      return
+    end 
+
+
     @user = User.find(params[:id])
     @user.is_registered = true
 

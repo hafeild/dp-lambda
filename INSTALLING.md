@@ -21,8 +21,12 @@ cd alice
 git checkout -t origin/develop
 ```
 
-Second, copy `application.EXAMPLE.yml` to `config/application.yml` and edit
-as necessary (most of this can stay as is for development).
+Second, copy `application.EXAMPLE.yml` to `config/application.yml` and edit as
+necessary (most of this can stay as is for development). You'll need to register
+for a reCAPTCHA v2 Checkbox key; this is used to protect against bot-generated
+spam on any forms that result in emails being sent out as well as the login.
+Paste the key and secret to the corresponding entries in
+`config/application.yml`.
 
 Next, build the Docker image:
 

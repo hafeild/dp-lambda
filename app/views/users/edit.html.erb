@@ -20,6 +20,9 @@
         <%= form_for(@user) do |f| %>
           <%= render 'shared/error_messages', object: f.object %>
           
+          <!-- reCAPTCHA -->
+          <%= recaptcha_tags %>
+
           <div class="form-group">
             <%= f.label :username %> (1&ndash;50 characters)
             <%= f.text_field :username, value: @user.username, 

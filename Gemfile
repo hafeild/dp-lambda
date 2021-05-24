@@ -25,6 +25,7 @@ gem 'rails-controller-testing', '1.0.5'
 gem 'rails-html-sanitizer', '1.3'
 gem 'rack', '2.2.3'
 gem 'rb-readline'
+gem "recaptcha"
 gem 'sass-rails', '6.0'
 gem 'sqlite3', '1.4.2'
 gem 'sunspot_rails', '2.5'
